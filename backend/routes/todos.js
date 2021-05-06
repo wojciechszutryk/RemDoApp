@@ -20,12 +20,14 @@ router.route('/:id').delete((req, res) => {
 });
 
 router.route('/update/:id').post((req, res) => {
+    console.log(req.params.id)
     Task.findById(req.params.id)
         .then(todo => {
             todo.text = req.body.text;
             todo.startDate = Date.parse(req.body.startDate);
             todo.deadline = Date.parse(req.body.deadline);
             todo.important = req.body.important;
+            todo.finishDate = Date.parse(req.body.finishDate);
 
             todo.save()
                 .then(() => res.json('Task updated successfully'))
@@ -39,8 +41,9 @@ router.route('/add').post((req, res) => {
     const startDate = Date.parse(req.body.startDate);
     const deadline = Date.parse(req.body.deadline);
     const important = req.body.important ? req.body.important : false;
+    const finishDate = req.body.finishDate ? req.body.finishDate : false;
 
-    const newTask = new Task({text, startDate, deadline, important})
+    const newTask = new Task({text, startDate, deadline, important, finishDate})
     newTask.save()
         .then(() => res.json('Task added successfully'))
         .catch(err => res.status(400).json('Error: '+err));

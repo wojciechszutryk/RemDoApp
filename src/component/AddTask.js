@@ -5,7 +5,7 @@ class AddTask extends Component {
     state = {
         text: '',
         important: false,
-        deadline: new Date().toISOString().slice(0,10),
+        deadline: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0,10),
         textError: false
     }
     handleDescriptionChange = (e) => {
@@ -52,12 +52,12 @@ class AddTask extends Component {
 
                     <div className='col-md-4'>
                         <label htmlFor="text">Task description</label>
-                        <input type="text" id="text" value={this.state.text} onChange={this.handleDescriptionChange} placeholder={this.state.textError && `Don't add empty task`}/>
+                        <input type="text" id="text" value={this.state.text} onChange={this.handleDescriptionChange} placeholder={this.state.textError ? `Don't add empty task` : undefined}/>
                     </div>
 
                     <div className='col-md-4'>
                         <label htmlFor="deadline">Deadline</label>
-                        <input type="date" id="deadline" value={this.state.deadline} onChange={this.handleDate} min={new Date().toISOString().slice(0,10)} max='2024-01-31'/>
+                        <input type="date" id="deadline" value={this.state.deadline} onChange={this.handleDate} min={new Date().toISOString().slice(0,10)} max='2026-01-31'/>
                     </div>
 
                     <div className='col-8 offset-2 mt-4 col-md-2 offset-md-5 mt-md-1'>
