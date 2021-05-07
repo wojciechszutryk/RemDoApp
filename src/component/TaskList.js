@@ -64,11 +64,15 @@ class TaskList extends React.Component {
         let finished = this.props.tasks.filter(task => parseInt(task.finishDate.slice(0,4))>=2021)
         unfinished = this.searchTask(unfinished)
         finished = this.sortFinished(finished)
-        console.log(unfinished)
-        console.log(finished)
 
         const unfinishedTasks = unfinished.map(task => {
-                return <Task key={task._id+(Math.random()*1000).toString()} task={task} finish={this.props.finish} delete={this.props.delete} />
+                return <Task
+                    key={task._id+(Math.random()*1000).toString()}
+                    task={task}
+                    finish={this.props.finish}
+                    delete={this.props.delete}
+                    handleColorChange={this.props.handleColorChange}
+                />
         });
         const finishedTasks = finished.map(task => {
                 return <FinishedTask key={task._id+(Math.random()*1000).toString()} task={task} delete={this.props.delete}/>

@@ -42,7 +42,6 @@ const App = () => {
   //     finishDate: '2022-12-31',
   //   },
   // ]);
-  console.log(tasks)
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_SERVER_URL}/todos`)
@@ -72,6 +71,26 @@ const App = () => {
     setTasks(tasksCopy);
   };
 
+  const handleColorChange = (id, inputColor) => {
+    const tasksCopy = [...tasks];
+    tasksCopy.forEach(task => {
+          if (task._id === id) {
+            task.color = inputColor;
+            axios.post(process.env.REACT_APP_SERVER_URL+'/todos/update/'+id,   {
+              text: task.text,
+              startDate: task.startDate,
+              deadline: task.deadline,
+              important: task.important,
+              finishDate: task.finishDate,
+              color: inputColor,
+            }).then(r => console.log(r.data))
+                .catch(err => console.log(err));
+          }
+        }
+    )
+    setTasks(tasksCopy);
+  };
+
   const handleDeleteTask = (id) => {
     const tasksCopy = [...tasks];
     tasksCopy.forEach(task => {
@@ -91,6 +110,7 @@ const App = () => {
       deadline,
       important,
       finishDate: new Date(1998,12,31).toISOString().slice(0,10),
+      color: `rgb(${Math.floor(Math.random() *100)},${Math.floor(Math.random() *100)},${Math.floor(Math.random() *100)})`,
     }
     axios.post(process.env.REACT_APP_SERVER_URL+'/todos/add',   {
       text,
@@ -98,6 +118,7 @@ const App = () => {
       deadline,
       important,
       finishDate: new Date(1998,12,31).toISOString().slice(0,10),
+      color: `rgb(${Math.floor(Math.random() *100)},${Math.floor(Math.random() *100)},${Math.floor(Math.random() *100)})`
     }).then(r => console.log(r.data))
       .catch(err => console.log(err));
     setTasks([...tasks, newTask])
@@ -113,7 +134,7 @@ const App = () => {
           </section>
           <hr className="col-12"/>
           <article className='col-12'>
-            <TaskList tasks={tasks} finish={handleFinishTask} delete={handleDeleteTask}/>
+            <TaskList tasks={tasks} finish={handleFinishTask} delete={handleDeleteTask} handleColorChange={handleColorChange}/>
           </article>
         </div>
       </div>

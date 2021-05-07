@@ -28,6 +28,7 @@ router.route('/update/:id').post((req, res) => {
             todo.deadline = Date.parse(req.body.deadline);
             todo.important = req.body.important;
             todo.finishDate = Date.parse(req.body.finishDate);
+            todo.color = Date.parse(req.body.color);
 
             todo.save()
                 .then(() => res.json('Task updated successfully'))
@@ -42,8 +43,9 @@ router.route('/add').post((req, res) => {
     const deadline = Date.parse(req.body.deadline);
     const important = req.body.important ? req.body.important : false;
     const finishDate = req.body.finishDate ? req.body.finishDate : false;
+    const color = req.body.color ? req.body.color : `rgb(${Math.floor(Math.random() *100)},${Math.floor(Math.random() *100)},${Math.floor(Math.random() *100)})`;
 
-    const newTask = new Task({text, startDate, deadline, important, finishDate})
+    const newTask = new Task({text, startDate, deadline, important, finishDate, color})
     newTask.save()
         .then(() => res.json('Task added successfully'))
         .catch(err => res.status(400).json('Error: '+err));
