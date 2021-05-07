@@ -28,7 +28,7 @@ router.route('/update/:id').post((req, res) => {
             todo.deadline = Date.parse(req.body.deadline);
             todo.important = req.body.important;
             todo.finishDate = Date.parse(req.body.finishDate);
-            todo.color = Date.parse(req.body.color);
+            todo.color = req.body.color;
 
             todo.save()
                 .then(() => res.json('Task updated successfully'))
