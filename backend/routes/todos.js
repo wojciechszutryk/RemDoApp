@@ -20,7 +20,6 @@ router.route('/:id').delete((req, res) => {
 });
 
 router.route('/update/:id').post((req, res) => {
-    console.log(req.params.id)
     Task.findById(req.params.id)
         .then(todo => {
             todo.text = req.body.text;
@@ -47,7 +46,7 @@ router.route('/add').post((req, res) => {
 
     const newTask = new Task({text, startDate, deadline, important, finishDate, color})
     newTask.save()
-        .then(() => res.json('Task added successfully'))
+        .then(() => res.json(newTask._id))
         .catch(err => res.status(400).json('Error: '+err));
 });
 

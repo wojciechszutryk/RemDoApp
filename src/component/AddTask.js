@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import '../stylesheets/AddTask.sass'
+import {TransactionButton} from "./styledComponents";
 
 class AddTask extends Component {
     state = {
@@ -61,7 +62,7 @@ class AddTask extends Component {
                     </div>
 
                     <div className='col-8 offset-2 mt-4 col-md-2 offset-md-5 mt-md-1'>
-                        <button>Add</button>
+                        <TransactionButton>ADD</TransactionButton>
                     </div>
                 </form>
             </div>

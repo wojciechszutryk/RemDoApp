@@ -2,6 +2,8 @@ import React from 'react';
 import Task from './Task.js'
 import '../stylesheets/TaskList.sass'
 import FinishedTask from './FinishedTask.js'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCheckSquare} from "@fortawesome/free-solid-svg-icons";
 
 class TaskList extends React.Component {
     state = {
@@ -88,7 +90,7 @@ class TaskList extends React.Component {
                         {unfinishedTasks.length > 0 ? unfinishedTasks : <p className='message'>Currently you have no task to do with this search criteria, you can add one by filling in the form above</p>}
                 </section>
                 <section className='finished mt-3'>
-                    <h3>Finished Tasks:</h3>
+                    <h3><FontAwesomeIcon icon={faCheckSquare} style={{color: 'gray', fontSize: '20px'}}/> Finished Tasks: <FontAwesomeIcon icon={faCheckSquare} style={{color: 'gray', fontSize: '20px'}}/></h3>
                     <label htmlFor="sort" className='mb-3'>Sort by
                         <select name="sort" id="sort" onChange={this.handleSortChange}>
                             <option value="dateDesc">Finish date descending</option>

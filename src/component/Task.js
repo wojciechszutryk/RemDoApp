@@ -1,6 +1,9 @@
 import React from 'react';
 import '../stylesheets/Task.sass'
 import {useState} from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrashAlt, faCheckSquare} from "@fortawesome/free-solid-svg-icons";
+import {DeleteButton, StyledColorInput, SubmitButton} from "./styledComponents";
 
 const Task = (props) => {
     const [col, setCol] = useState(props.task.color);
@@ -30,9 +33,13 @@ const Task = (props) => {
             </p>
             <p>- started: <em>{startDate.slice(0,10)}</em></p>
             <p>- deadline: <em className={daysLeft < 0 ? 'importantColor' : ''}>{daysLeftCommunicate}</em></p>
-            <button onClick={() => props.finish(_id)}>Finish</button>
-            <input type="color" onChange={(e) => handleChange(_id, e)}/>
-            <button onClick={() => props.delete(_id)}>Delete</button>
+            <SubmitButton buttonType={'delete'} onClick={() => props.finish(_id)}>
+                <FontAwesomeIcon icon={faCheckSquare} />
+            </SubmitButton>
+            <StyledColorInput type="color" onChange={(e) => handleChange(_id, e)}/>
+            <DeleteButton buttonType={'delete'} onClick={() => props.delete(_id)}>
+                <FontAwesomeIcon icon={faTrashAlt} />
+            </DeleteButton>
         </div>
     );
 };
