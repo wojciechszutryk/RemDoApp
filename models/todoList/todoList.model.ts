@@ -1,33 +1,23 @@
-export interface ITask {
-  /** Text of task */
-  text: string;
+import { IBaseModelAttached } from "../abstraction/base.interface";
 
-  /** Date when task should be started */
-  whenShouldBeStarted?: Date;
+export interface ITodoList {
+  /** Name of tasks list */
+  name: string;
 
-  /** Date when task should be finished */
-  whenShouldBeFinished?: Date;
-
-  /** Date when task was started */
-  startDate?: string;
-
-  /** Date when task was finished */
-  finishDate?: Date;
-
-  /** Boolean to determine if task is important */
-  important?: false;
-
-  /** Task's background color in hex */
-  color?: string;
+  /** Optional password token to access task list */
+  token?: string;
 }
 
-export interface ITaskWithReadonlyProperties extends ITask {
+export interface ITodoListWithReadonlyProperties extends ITodoList {
   /** Readonly creator id. */
   readonly creator?: string;
 
-  /** Date when task was created. */
+  /** Date when tasks list was created. */
   readonly whenCreated: Date;
 
-  /** Date when task was updated. */
+  /** Date when tasks list was updated. */
   readonly whenUpdated: Date;
 }
+
+export type ITodoListAttached = ITodoListWithReadonlyProperties &
+  IBaseModelAttached;

@@ -6,7 +6,7 @@ Built with React, JavaScript, Express, NodeJS, CSS, Bootstrap
 
 ## Project Status
 
-Finished
+In progress
 
 ## Project Screen Shot(s)
 
@@ -28,19 +28,35 @@ Finished
 
 ## Installation and Setup Instructions
 
-Clone down this repository. You will need `node` and `npm` installed globally on your machine.  
+Clone down this repository. You will need `node` and `npm` installed globally on your machine.
 
 Installation:
 
-`npm install`  
+`npm install`
+
+To setup shared models e.g.:
+
+    Windows:
+
+    ```bash
+    mklink /D "D:\...\frontend\src\linked-models" "D:\...\models"
+    mklink /D "D:\...\backend\src\linked-models" "D:\...\models"
+    ```
+
+    Mac OS and Linux:
+
+    ```bash
+    ln -s /Users/wojciechszutryk/Desktop/todoReact/models /Users/wojciechszutryk/Desktop/todoReact/frontend/src/linked-models
+    ln -s /Users/wojciechszutryk/Desktop/todoReact/models /Users/wojciechszutryk/Desktop/todoReact/backend/src/linked-models
+    ```
 
 To Start Server:
 
-`npm start`  
+`npm start`
 
 To Visit App:
 
-`localhost:3000`  
+`localhost:3000`
 
 ## Reflection
 
