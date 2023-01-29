@@ -1,7 +1,8 @@
-const router = require("express").Router();
-const Task = require("../models/task.model");
+const express = import("express");
+const Task = import("../dbSchemas/task.schema");
+const router = express.Router();
 
-router.route("/").get((req, res) => {
+router.route("/").get((req: { a: string }, res) => {
   Task.find()
     .then((todos) => res.json(todos))
     .catch((err) => res.status(400).json("Error: " + err));
@@ -62,5 +63,3 @@ router.route("/add").post((req, res) => {
     .then(() => res.json(newTask._id))
     .catch((err) => res.status(400).json("Error: " + err));
 });
-
-module.exports = router;
