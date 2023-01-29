@@ -1,6 +1,4 @@
-const express = import("express");
-const Task = import("../dbSchemas/task.schema");
-const router = express.Router();
+
 
 router.route("/").get((req: { a: string }, res) => {
   Task.find()

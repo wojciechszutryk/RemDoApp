@@ -1,7 +1,3 @@
-const router = require("express").Router();
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const User = require("../models/user.model");
 import {
   BaseHttpController,
   controller,
@@ -9,6 +5,7 @@ import {
   requestBody,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import { IRegisterUserDTO } from "linked-models/user/user.dto";
 
 @controller("")
 export class DefaultController extends BaseHttpController {
@@ -18,14 +15,13 @@ export class DefaultController extends BaseHttpController {
 
   @httpPost("/register")
   async getDefaultRoute(
-    @requestBody() body: AddGroupMemberToDefaultGroupDTO
+    @requestBody() body: IRegisterUserDTO
   ): Promise<OkResult> {
     try {
-      const { userName, email, password } = req.body;
-      console.log(userName, email, password);
+      const { displayName, email, password } = body;
 
-      if (!(email && password && userName)) {
-        return res.status(400).send("All input is required");
+      if (!(email && password && displayName)) {
+        return this.json("No email or password or displayname provided", 400);
       }
 
       const oldUser = await User.findOne({ email });
