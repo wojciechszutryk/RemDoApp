@@ -8,13 +8,13 @@ import { OkResult } from "inversify-express-utils/lib/results";
 import { IRegisterUserDTO } from "linked-models/user/user.dto";
 
 @controller("")
-export class DefaultController extends BaseHttpController {
+export class UserController extends BaseHttpController {
   constructor() {
     super();
   }
 
   @httpPost("/register")
-  async getDefaultRoute(
+  async getRegisterUser(
     @requestBody() body: IRegisterUserDTO
   ): Promise<OkResult> {
     try {
@@ -51,37 +51,37 @@ export class DefaultController extends BaseHttpController {
     } catch (err) {
       console.log(err);
     }
-    return this.ok("Welcome to Swarmcheck API: ");
+    return this.ok("ok");
+  }
+
+  @httpPost("/login")
+  async getDefaultRoute(
+    @requestBody() body: IRegisterUserDTO
+  ): Promise<OkResult> {
+    try {
+      const { email, password } = req.body;
+
+      if (!(email && password)) {
+        return res.status(400).send("All input is required");
+      }
+      const user = await User.findOne({ email });
+
+      if (user && bcrypt.compare(password, user.password)) {
+        const token = jwt.sign(
+          { user_id: user._id, email },
+          process.env.TOKEN_KEY,
+          {
+            expiresIn: "2h",
+          }
+        );
+
+        user.token = token;
+
+        return res.status(200).json(user);
+      }
+      res.status(400).send("Invalid Credentials");
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
-router.route("/register").post(async (req, res) => {});
-
-router.route("/login").post(async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    if (!(email && password)) {
-      return res.status(400).send("All input is required");
-    }
-    const user = await User.findOne({ email });
-
-    if (user && bcrypt.compare(password, user.password)) {
-      const token = jwt.sign(
-        { user_id: user._id, email },
-        process.env.TOKEN_KEY,
-        {
-          expiresIn: "2h",
-        }
-      );
-
-      user.token = token;
-
-      return res.status(200).json(user);
-    }
-    res.status(400).send("Invalid Credentials");
-  } catch (err) {
-    console.log(err);
-  }
-});
-
-module.exports = router;

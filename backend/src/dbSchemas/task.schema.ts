@@ -54,7 +54,7 @@ export const TaskCollection = mongoose.model<ITaskDocument>(
 );
 
 export type TaskCollectionType = mongoose.Model<ITaskDocument>;
-export const gettaskCollection = () =>
+export const getTaskCollection = () =>
   mongoose.model<ITaskDocument>(TaskCollectionName, TaskSchema);
 
 export const maptaskToAttachedtask = (task: ITaskDocument): ITaskAttached => {
