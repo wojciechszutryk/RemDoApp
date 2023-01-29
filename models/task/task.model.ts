@@ -1,3 +1,4 @@
+import { IBaseModelAttached } from "../abstraction/base.interface";
 export interface ITask {
   /** Text of task */
   text: string;
@@ -31,3 +32,5 @@ export interface ITaskWithReadonlyProperties extends ITask {
   /** Date when task was updated. */
   readonly whenUpdated: Date;
 }
+
+export type ITaskAttached = ITaskWithReadonlyProperties & IBaseModelAttached;
