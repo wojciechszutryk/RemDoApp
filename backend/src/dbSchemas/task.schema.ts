@@ -53,7 +53,7 @@ export const TaskCollection = mongoose.model<ITaskDocument>(
   TaskSchema
 );
 
-export type taskCollectionType = mongoose.Model<ITaskDocument>;
+export type TaskCollectionType = mongoose.Model<ITaskDocument>;
 export const gettaskCollection = () =>
   mongoose.model<ITaskDocument>(TaskCollectionName, TaskSchema);
 

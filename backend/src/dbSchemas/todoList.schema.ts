@@ -4,7 +4,7 @@ import {
 } from "linked-models/todoList/todoList.model";
 import mongoose, { Document } from "mongoose";
 
-export const todoListCollectionName = "todoLists";
+export const TodoListCollectionName = "todoLists";
 
 const todoListSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -28,15 +28,15 @@ export interface ITodoListDocument
     Document {}
 
 export const TodoListCollection = mongoose.model<ITodoListDocument>(
-  todoListCollectionName,
+  TodoListCollectionName,
   todoListSchema
 );
 
-export type todoListCollectionType = mongoose.Model<ITodoListDocument>;
+export type TodoListCollectionType = mongoose.Model<ITodoListDocument>;
 export const getTodoListCollection = () =>
-  mongoose.model<ITodoListDocument>(todoListCollectionName, todoListSchema);
+  mongoose.model<ITodoListDocument>(TodoListCollectionName, todoListSchema);
 
-export const maptodoListToAttachedtodoList = (
+export const mapTodoListToAttachedTodoList = (
   todoList: ITodoListDocument
 ): ITodoListAttached => {
   return {
