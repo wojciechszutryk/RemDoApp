@@ -2,7 +2,7 @@ import {
   getTodoListCollection,
   TodoListCollectionName,
 } from "dbSchemas/TodoList.schema";
-import { TodoListController } from "controllers/todoList.controller";
+import { TodoListController } from "controllers/todoList/todoList.controller";
 import { Container } from "inversify";
 import { TodoListService } from "services/TodoList.service";
 

@@ -1,3 +1,9 @@
-import { IUser } from "./user.model";
+import { IUser, IUserAttached } from "./user.model";
 
-export type IRegisterUserDTO = Omit<IUser, "token">;
+export type IRegisterUserDTO = {
+  email: string;
+  password: string;
+  displayName: string;
+};
+
+export type ILoginUserDTO = Omit<IRegisterUserDTO, "displayName">;
