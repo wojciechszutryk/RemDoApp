@@ -1,5 +1,3 @@
-import { IUser, IUserAttached } from "./user.model";
-
 export type IRegisterUserDTO = {
   email: string;
   password: string;
