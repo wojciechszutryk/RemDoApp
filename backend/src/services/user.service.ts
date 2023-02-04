@@ -6,6 +6,8 @@ import {
 import { inject, injectable } from "inversify";
 import { IUserAttached } from "linked-models/user/user.model";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { IToken } from "models/authentication.model";
 
 @injectable()
 export class UserService {
@@ -38,7 +40,7 @@ export class UserService {
 
     const token = jwt.sign(
       { user_id: user._id, email },
-      process.env.TOKEN_KEY,
+      process.env.TOKEN_KEY!,
       {
         expiresIn: "2h",
       }
@@ -55,8 +57,8 @@ export class UserService {
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (user && isPasswordCorrect) {
       const token = jwt.sign(
-        { user_id: user.id, email: user.email },
-        process.env.TOKEN_KEY,
+        { userId: user.id, email: user.email } as IToken,
+        process.env.TOKEN_KEY!,
         {
           expiresIn: "2h",
         }

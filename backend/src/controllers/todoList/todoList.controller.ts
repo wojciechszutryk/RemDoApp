@@ -1,5 +1,33 @@
-const router = require("express").Router();
-const Task = require("../models/task.model");
+import { inject } from "inversify";
+import {
+  BaseHttpController,
+  controller,
+  httpGet,
+  httpPost,
+  requestBody,
+} from "inversify-express-utils";
+import { OkResult } from "inversify-express-utils/lib/results";
+import { ILoginUserDTO, IRegisterUserDTO } from "linked-models/user/user.dto";
+import { URL_TASKS } from "linked-models/task/task.urls";
+import { URL_TODO_LIST } from "linked-models/todoList/todoList.urls";
+import { UserService } from "services/user.service";
+import { TaskService } from "services/task.service";
+import { TodoListService } from "services/TodoList.service";
+
+@controller(URL_TODO_LIST)
+export class UserController extends BaseHttpController {
+  constructor(
+    @inject(TodoListService) private readonly todoListService: TodoListService
+  ) {
+    super();
+  }
+
+  @httpGet("")
+  async getTodoListsForUser(): Promise<OkResult> {
+    const tasks = await this.todoListService.getAllTasks();
+    return this.ok(tasks);
+  }
+}
 
 router.route("/").get((req, res) => {
   Task.find()
