@@ -7,9 +7,6 @@ export interface IUser {
   /** User's email */
   email: string;
 
-  /** User's password */
-  password: string;
-
   /** Token passed to authenticate user */
   token: string;
 }
@@ -17,6 +14,9 @@ export interface IUser {
 export interface IUserWithReadonlyProperties extends IUser {
   /** Date when user created his account. */
   readonly whenCreated: Date;
+
+  /** User's password */
+  readonly password: string;
 }
 
 export type IUserAttached = IUserWithReadonlyProperties & IBaseModelAttached;

@@ -1,3 +1,4 @@
+import { inject } from "inversify";
 import {
   BaseHttpController,
   controller,
@@ -5,83 +6,56 @@ import {
   requestBody,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
-import { IRegisterUserDTO } from "linked-models/user/user.dto";
+import { ILoginUserDTO, IRegisterUserDTO } from "linked-models/user/user.dto";
+import {
+  URL_LOGIN,
+  URL_REGISTER,
+  URL_USERS,
+} from "linked-models/user/user.urls";
+import { UserService } from "services/user.service";
 
-@controller("")
+@controller(URL_USERS)
 export class UserController extends BaseHttpController {
-  constructor() {
+  constructor(@inject(UserService) private readonly userService: UserService) {
     super();
   }
 
-  @httpPost("/register")
-  async getRegisterUser(
-    @requestBody() body: IRegisterUserDTO
-  ): Promise<OkResult> {
-    try {
-      const { displayName, email, password } = body;
+  @httpPost(URL_REGISTER)
+  async registerUser(@requestBody() body: IRegisterUserDTO): Promise<OkResult> {
+    const { displayName, email, password } = body;
 
-      if (!(email && password && displayName)) {
-        return this.json("No email or password or displayname provided", 400);
-      }
-
-      const oldUser = await User.findOne({ email });
-
-      if (oldUser) {
-        return res.status(409).send("User Already Exist. Please Login");
-      }
-
-      encryptedPassword = await bcrypt.hash(password, 10);
-
-      const user = await User.create({
-        userName,
-        email: email.toLowerCase(),
-        password: encryptedPassword,
-      });
-
-      const token = jwt.sign(
-        { user_id: user._id, email },
-        process.env.TOKEN_KEY,
-        {
-          expiresIn: "2h",
-        }
-      );
-      user.token = token;
-
-      res.status(201).json(user);
-    } catch (err) {
-      console.log(err);
+    if (!(email && password && displayName)) {
+      return this.json("No email or password or displayname provided", 400);
     }
-    return this.ok("ok");
+    const existingUser = await this.userService.getUserByEmail(email);
+
+    if (existingUser) {
+      return this.json("User Already Exist. Please Login", 400);
+    }
+    const user = this.userService.registerUser(email, displayName, password);
+    return this.ok(user);
   }
 
-  @httpPost("/login")
-  async getDefaultRoute(
-    @requestBody() body: IRegisterUserDTO
-  ): Promise<OkResult> {
-    try {
-      const { email, password } = req.body;
+  @httpPost(URL_LOGIN)
+  async loginUser(@requestBody() body: ILoginUserDTO): Promise<OkResult> {
+    const { email, password } = body;
 
-      if (!(email && password)) {
-        return res.status(400).send("All input is required");
-      }
-      const user = await User.findOne({ email });
-
-      if (user && bcrypt.compare(password, user.password)) {
-        const token = jwt.sign(
-          { user_id: user._id, email },
-          process.env.TOKEN_KEY,
-          {
-            expiresIn: "2h",
-          }
-        );
-
-        user.token = token;
-
-        return res.status(200).json(user);
-      }
-      res.status(400).send("Invalid Credentials");
-    } catch (err) {
-      console.log(err);
+    if (!(email && password)) {
+      return this.json("All input is required", 400);
     }
+
+    const user = await this.userService.getUserByEmail(email);
+
+    if (!user) {
+      return this.json(`User with email: ${email} don't exist.`, 400);
+    }
+
+    const signedUser = await this.userService.signTokenToUser(user, password);
+
+    if (!signedUser) {
+      return this.json("Invalid Credentials", 400);
+    }
+
+    return this.ok(user);
   }
 }
