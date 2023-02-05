@@ -1,21 +1,27 @@
+import { currentUser } from "decorators/currentUser.decorator";
 import { inject } from "inversify";
 import {
   BaseHttpController,
   controller,
+  httpDelete,
   httpGet,
   httpPost,
+  httpPut,
   requestBody,
+  requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
-import { ILoginUserDTO, IRegisterUserDTO } from "linked-models/user/user.dto";
-import { URL_TASKS } from "linked-models/task/task.urls";
-import { URL_TODO_LIST } from "linked-models/todoList/todoList.urls";
-import { UserService } from "services/user.service";
-import { TaskService } from "services/task.service";
+import { ITodoList } from "linked-models/todoList/todoList.model";
+import {
+  TODO_LIST_PARAM,
+  URL_TODO_LIST,
+  URL_TODO_LISTS,
+} from "linked-models/todoList/todoList.urls";
+import { IUserAttached } from "linked-models/User/User.model";
 import { TodoListService } from "services/TodoList.service";
 
-@controller(URL_TODO_LIST)
-export class UserController extends BaseHttpController {
+@controller(URL_TODO_LISTS)
+export class TodoListController extends BaseHttpController {
   constructor(
     @inject(TodoListService) private readonly todoListService: TodoListService
   ) {
@@ -23,72 +29,48 @@ export class UserController extends BaseHttpController {
   }
 
   @httpGet("")
-  async getTodoListsForUser(): Promise<OkResult> {
-    const tasks = await this.todoListService.getAllTasks();
+  async getTodoListsForUser(
+    @currentUser() currentUser: IUserAttached
+  ): Promise<OkResult> {
+    const todoLists = await this.todoListService.getTodoListsForUser(
+      currentUser.id
+    );
+
+    return this.ok(todoLists);
+  }
+
+  @httpPost("")
+  async createTodoList(
+    @currentUser() currentUser: IUserAttached,
+    @requestBody() body: ITodoList
+  ): Promise<OkResult> {
+    const tasks = await this.todoListService.createTodoList(currentUser.id);
+    return this.ok(tasks);
+  }
+
+  @httpPut(URL_TODO_LIST())
+  async updateTodoList(
+    @currentUser() currentUser: IUserAttached,
+    @requestParam(TODO_LIST_PARAM) todoListId: string,
+    @requestBody() body: Partial<ITodoList>
+  ): Promise<OkResult> {
+    const tasks = await this.todoListService.updateTodoList(
+      todoListId,
+      body,
+      currentUser.id
+    );
+    return this.ok(tasks);
+  }
+
+  @httpDelete(URL_TODO_LIST())
+  async deleteTodoList(
+    @currentUser() currentUser: IUserAttached,
+    @requestParam(TODO_LIST_PARAM) todoListId: string
+  ): Promise<OkResult> {
+    const tasks = await this.todoListService.deleteTodoList(
+      todoListId,
+      currentUser.id
+    );
     return this.ok(tasks);
   }
 }
-
-router.route("/").get((req, res) => {
-  Task.find()
-    .then((todos) => res.json(todos))
-    .catch((err) => res.status(400).json("Error: " + err));
-});
-
-router.route("/:id").get((req, res) => {
-  Task.findById(req.params.id)
-    .then((todo) => res.json(todo))
-    .catch((err) => res.status(400).json("Error: " + err));
-});
-
-router.route("/:id").delete((req, res) => {
-  Task.findByIdAndDelete(req.params.id)
-    .then(() => res.json("task deleted"))
-    .catch((err) => res.status(400).json("Error: " + err));
-});
-
-router.route("/update/:id").post((req, res) => {
-  Task.findById(req.params.id)
-    .then((todo) => {
-      todo.text = req.body.text;
-      todo.startDate = Date.parse(req.body.startDate);
-      todo.deadline = Date.parse(req.body.deadline);
-      todo.important = req.body.important;
-      todo.finishDate = Date.parse(req.body.finishDate);
-      todo.color = req.body.color;
-
-      todo
-        .save()
-        .then(() => res.json("Task updated successfully"))
-        .catch((err) => res.status(400).json("Error: " + err));
-    })
-    .catch((err) => res.status(400).json("Error: " + err));
-});
-
-router.route("/add").post((req, res) => {
-  const text = req.body.text;
-  const startDate = Date.parse(req.body.startDate);
-  const deadline = Date.parse(req.body.deadline);
-  const important = req.body.important ? req.body.important : false;
-  const finishDate = req.body.finishDate ? req.body.finishDate : false;
-  const color = req.body.color
-    ? req.body.color
-    : `rgb(${Math.floor(Math.random() * 100)},${Math.floor(
-        Math.random() * 100
-      )},${Math.floor(Math.random() * 100)})`;
-
-  const newTask = new Task({
-    text,
-    startDate,
-    deadline,
-    important,
-    finishDate,
-    color,
-  });
-  newTask
-    .save()
-    .then(() => res.json(newTask._id))
-    .catch((err) => res.status(400).json("Error: " + err));
-});
-
-module.exports = router;

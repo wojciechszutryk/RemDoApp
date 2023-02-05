@@ -13,7 +13,7 @@ import { UserService } from "services/user.service";
 import { TaskService } from "services/task.service";
 
 @controller(URL_TASKS)
-export class UserController extends BaseHttpController {
+export class TaskController extends BaseHttpController {
   constructor(@inject(TaskService) private readonly taskService: TaskService) {
     super();
   }
