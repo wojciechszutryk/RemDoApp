@@ -44,7 +44,10 @@ export class TodoListController extends BaseHttpController {
     @currentUser() currentUser: IUserAttached,
     @requestBody() body: ITodoList
   ): Promise<OkResult> {
-    const tasks = await this.todoListService.createTodoList(currentUser.id);
+    const tasks = await this.todoListService.createTodoList(
+      body,
+      currentUser.id
+    );
     return this.ok(tasks);
   }
 
@@ -54,6 +57,15 @@ export class TodoListController extends BaseHttpController {
     @requestParam(TODO_LIST_PARAM) todoListId: string,
     @requestBody() body: Partial<ITodoList>
   ): Promise<OkResult> {
+    const canEdit = await this.todoListService.checkCanModify(
+      todoListId,
+      currentUser.id
+    );
+    if (!canEdit)
+      return this.json(
+        `You cannot edit todoList: ${todoListId} because you are not it's creator`,
+        403
+      );
     const tasks = await this.todoListService.updateTodoList(
       todoListId,
       body,
@@ -67,10 +79,16 @@ export class TodoListController extends BaseHttpController {
     @currentUser() currentUser: IUserAttached,
     @requestParam(TODO_LIST_PARAM) todoListId: string
   ): Promise<OkResult> {
-    const tasks = await this.todoListService.deleteTodoList(
+    const canDelete = await this.todoListService.checkCanModify(
       todoListId,
       currentUser.id
     );
+    if (!canDelete)
+      return this.json(
+        `You cannot delete todoList: ${todoListId} because you are not it's creator`,
+        403
+      );
+    const tasks = await this.todoListService.deleteTodoList(todoListId);
     return this.ok(tasks);
   }
 }

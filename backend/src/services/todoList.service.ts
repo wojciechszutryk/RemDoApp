@@ -1,24 +1,105 @@
 import {
-  TodoListCollectionName,
   mapTodoListToAttachedTodoList,
+  TodoListCollectionName,
   TodoListCollectionType,
 } from "dbSchemas/todoList.schema";
 import { inject, injectable } from "inversify";
-import { ITodoListAttached } from "linked-models/TodoList/TodoList.model";
+import {
+  ITodoList,
+  ITodoListAttached,
+  ITodoListWithReadonlyProperties,
+} from "linked-models/TodoList/TodoList.model";
+import { TaskService } from "./task.service";
 
 @injectable()
 export class TodoListService {
   constructor(
     @inject(TodoListCollectionName)
-    private readonly todoListCollection: TodoListCollectionType
+    private readonly todoListCollection: TodoListCollectionType,
+    @inject(TaskService)
+    private readonly taskService: TaskService
   ) {}
 
   public async getTodoListsForUser(
     userId: string
-  ): Promise<ITodoListAttached | undefined> {
-    const foundTodoList = await this.todoListCollection.find({ _id: id });
-    if (!foundTodoList) return undefined;
+  ): Promise<ITodoListAttached[]> {
+    const todoLists = await this.todoListCollection.find({
+      $or: [
+        {
+          assignedUsers: userId,
+        },
+        { creator: userId },
+      ],
+    });
 
-    return mapTodoListToAttachedTodoList(foundTodoList);
+    return todoLists.map((td) => mapTodoListToAttachedTodoList(td));
+  }
+
+  public async createTodoList(
+    todoListData: ITodoList,
+    creator: string
+  ): Promise<ITodoListAttached> {
+    const newTodoList: ITodoListWithReadonlyProperties = {
+      name: todoListData.name,
+      creator,
+      whenCreated: new Date(),
+      whenUpdated: new Date(),
+    };
+
+    const createdTodoList = await this.todoListCollection.create(newTodoList);
+
+    return mapTodoListToAttachedTodoList(createdTodoList);
+  }
+
+  public async checkCanModify(
+    userId: string,
+    todoListId: string
+  ): Promise<boolean> {
+    const todoList = await this.todoListCollection.find({
+      id: todoListId,
+      creator: userId,
+    });
+
+    return !!todoList;
+  }
+
+  public async updateTodoList(
+    todoListId: string,
+    todoListData: Partial<ITodoList>,
+    userId: string
+  ): Promise<ITodoListAttached> {
+    const update = {
+      ...todoListData,
+      creator: userId,
+      whenUpdated: new Date(),
+    };
+
+    const updatedTodoList = await this.todoListCollection.findByIdAndUpdate(
+      todoListId,
+      update,
+      { new: true }
+    );
+
+    if (!updatedTodoList)
+      throw new Error(
+        `Cannot update todoList: ${todoListId}, because it does not exist.`
+      );
+
+    return mapTodoListToAttachedTodoList(updatedTodoList);
+  }
+
+  /**
+   * deletes todoList and all it's tasks
+   */
+  public async deleteTodoList(todoListId: string): Promise<void> {
+    const [deletedTodoList] = await Promise.all([
+      this.todoListCollection.findByIdAndDelete(todoListId),
+      this.taskService.deleteTasksByTodoListId(todoListId),
+    ]);
+
+    if (!deletedTodoList)
+      throw new Error(
+        `Cannot delete todoList: ${todoListId}, because it does not exist.`
+      );
   }
 }

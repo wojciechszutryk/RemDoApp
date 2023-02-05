@@ -25,4 +25,10 @@ export class TaskService {
 
     return maptaskToAttachedtask(foundTask);
   }
+
+  public async deleteTasksByTodoListId(todoListId: string): Promise<void> {
+    await this.taskCollection.deleteMany({
+      todoListId,
+    });
+  }
 }
