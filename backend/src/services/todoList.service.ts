@@ -39,6 +39,8 @@ export class TodoListService {
     todoListData: ITodoList,
     creator: string
   ): Promise<ITodoListAttached> {
+    console.log(todoListData);
+
     const newTodoList: ITodoListWithReadonlyProperties = {
       name: todoListData.name,
       creator,

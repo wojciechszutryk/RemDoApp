@@ -48,11 +48,6 @@ const TaskSchema = new mongoose.Schema({
 
 export interface ITaskDocument extends ITaskWithReadonlyProperties, Document {}
 
-export const TaskCollection = mongoose.model<ITaskDocument>(
-  TaskCollectionName,
-  TaskSchema
-);
-
 export type TaskCollectionType = mongoose.Model<ITaskDocument>;
 export const getTaskCollection = () =>
   mongoose.model<ITaskDocument>(TaskCollectionName, TaskSchema);

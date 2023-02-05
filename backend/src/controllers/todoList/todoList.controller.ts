@@ -18,9 +18,10 @@ import {
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
 import { IUserAttached } from "linked-models/User/User.model";
+import { SetCurrentUser } from "middlewares/setCurrentUser.middleware";
 import { TodoListService } from "services/TodoList.service";
 
-@controller(URL_TODO_LISTS)
+@controller(URL_TODO_LISTS, SetCurrentUser)
 export class TodoListController extends BaseHttpController {
   constructor(
     @inject(TodoListService) private readonly todoListService: TodoListService
@@ -44,6 +45,8 @@ export class TodoListController extends BaseHttpController {
     @currentUser() currentUser: IUserAttached,
     @requestBody() body: ITodoList
   ): Promise<OkResult> {
+    if (!body.name) return this.json("Invalid data", 400);
+
     const tasks = await this.todoListService.createTodoList(
       body,
       currentUser.id

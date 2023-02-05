@@ -15,11 +15,6 @@ const UserSchema = new mongoose.Schema({
 
 export interface IUserDocument extends IUserWithReadonlyProperties, Document {}
 
-export const UserCollection = mongoose.model<IUserDocument>(
-  UserCollectionName,
-  UserSchema
-);
-
 export type UserCollectionType = mongoose.Model<IUserDocument>;
 export const getUserCollection = () =>
   mongoose.model<IUserDocument>(UserCollectionName, UserSchema);
