@@ -8,7 +8,6 @@ export const TodoListCollectionName = "todoLists";
 
 const todoListSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  token: { type: String, required: false },
   creator: {
     type: String,
     required: true,
@@ -30,11 +29,6 @@ const todoListSchema = new mongoose.Schema({
 export interface ITodoListDocument
   extends ITodoListWithReadonlyProperties,
     Document {}
-
-export const TodoListCollection = mongoose.model<ITodoListDocument>(
-  TodoListCollectionName,
-  todoListSchema
-);
 
 export type TodoListCollectionType = mongoose.Model<ITodoListDocument>;
 export const getTodoListCollection = () =>
