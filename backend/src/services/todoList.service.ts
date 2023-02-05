@@ -13,10 +13,10 @@ export class TodoListService {
     private readonly todoListCollection: TodoListCollectionType
   ) {}
 
-  public async getTodoListById(
-    id: string
+  public async getTodoListsForUser(
+    userId: string
   ): Promise<ITodoListAttached | undefined> {
-    const foundTodoList = await this.todoListCollection.findOne({ _id: id });
+    const foundTodoList = await this.todoListCollection.find({ _id: id });
     if (!foundTodoList) return undefined;
 
     return mapTodoListToAttachedTodoList(foundTodoList);
