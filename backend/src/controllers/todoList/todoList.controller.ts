@@ -18,7 +18,7 @@ import {
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
 import { IUserAttached } from "linked-models/User/User.model";
-import { SetCurrentUser } from "middlewares/setCurrentUser.middleware";
+import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { TodoListService } from "services/TodoList.service";
 
 @controller(URL_TODO_LISTS, SetCurrentUser)
@@ -47,11 +47,12 @@ export class TodoListController extends BaseHttpController {
   ): Promise<OkResult> {
     if (!body.name) return this.json("Invalid data", 400);
 
-    const tasks = await this.todoListService.createTodoList(
+    const todoList = await this.todoListService.createTodoList(
       body,
       currentUser.id
     );
-    return this.ok(tasks);
+
+    return this.ok(todoList);
   }
 
   @httpPut(URL_TODO_LIST())
@@ -64,17 +65,18 @@ export class TodoListController extends BaseHttpController {
       todoListId,
       currentUser.id
     );
+
     if (!canEdit)
       return this.json(
         `You cannot edit todoList: ${todoListId} because you are not it's creator`,
         403
       );
-    const tasks = await this.todoListService.updateTodoList(
+
+    const todoList = await this.todoListService.updateTodoList(
       todoListId,
-      body,
-      currentUser.id
+      body
     );
-    return this.ok(tasks);
+    return this.ok(todoList);
   }
 
   @httpDelete(URL_TODO_LIST())
@@ -86,12 +88,15 @@ export class TodoListController extends BaseHttpController {
       todoListId,
       currentUser.id
     );
+
     if (!canDelete)
       return this.json(
         `You cannot delete todoList: ${todoListId} because you are not it's creator`,
         403
       );
-    const tasks = await this.todoListService.deleteTodoList(todoListId);
-    return this.ok(tasks);
+
+    await this.todoListService.deleteTodoList(todoListId);
+
+    return this.ok();
   }
 }

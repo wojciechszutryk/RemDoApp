@@ -1,8 +1,8 @@
-import { getUserCollection, UserCollectionName } from "dbSchemas/user.schema";
 import { UserController } from "controllers/user.controller";
+import { getUserCollection, UserCollectionName } from "dbSchemas/user.schema";
 import { Container } from "inversify";
+import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { UserService } from "services/user.service";
-import { SetCurrentUser } from "middlewares/setCurrentUser.middleware";
 
 export const registerUserBindings = (container: Container) => {
   container.bind(UserCollectionName).toDynamicValue(() => getUserCollection());
