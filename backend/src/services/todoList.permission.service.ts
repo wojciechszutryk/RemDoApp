@@ -1,17 +1,21 @@
 import { inject, injectable } from "inversify";
 import { TodoListPermissions } from "models/authorization.model";
+import { TaskService } from "./task.service";
 import { TodoListService } from "./TodoList.service";
 
 @injectable()
 export class TodoListPermissionsService {
   constructor(
     @inject(TodoListService)
-    private readonly todoListService: TodoListService
+    private readonly todoListService: TodoListService,
+    @inject(TaskService)
+    private readonly taskService: TaskService
   ) {}
 
   public async checkTodoListPermissions(
     userId: string,
-    todoListId: string
+    todoListId: string,
+    taskId?: string
   ): Promise<TodoListPermissions[]> {
     const todoList = await this.todoListService.getTodoListById(todoListId);
     const assignedUsers = todoList?.assignedUsers;
@@ -20,11 +24,17 @@ export class TodoListPermissionsService {
     if (assignedOwners?.includes(userId) || todoList?.creator === userId) {
       return Object.values(TodoListPermissions);
     } else if (assignedUsers?.includes(userId)) {
-      return [
-        TodoListPermissions.CanCreateTask,
-        TodoListPermissions.CanEditOwnTask,
-        TodoListPermissions.CanDeleteOwnTask,
-      ];
+      if (taskId) {
+        const task = await this.taskService.getTaskById(taskId);
+        if (task?.creator === userId) {
+          return [
+            TodoListPermissions.CanCreateTask,
+            TodoListPermissions.CanEditTask,
+            TodoListPermissions.CanDeleteTask,
+          ];
+        }
+      }
+      return [TodoListPermissions.CanCreateTask];
     }
 
     return [];

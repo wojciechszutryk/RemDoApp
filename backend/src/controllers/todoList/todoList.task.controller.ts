@@ -1,47 +1,54 @@
-import { currentUser } from "decorators/currentUser.decorator";
 import { inject } from "inversify";
 import {
   BaseHttpController,
   controller,
-  httpGet,
-  httpPost,
+  httpDelete,
+  httpPut,
   requestBody,
+  requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { ITask } from "linked-models/task/task.model";
-import { URL_TODO_LIST_TASKS } from "linked-models/task/task.urls";
-import { IUserAttached } from "linked-models/User/User.model";
+import { TASK_PARAM, URL_TODO_LIST_TASK } from "linked-models/task/task.urls";
+import { CheckTodoListPermission } from "middlewares/todoList/checkTodoListPermission.middleware";
+import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
+import { TodoListPermissions } from "models/authorization.model";
 import { TaskService } from "services/task.service";
 
-@controller(URL_TODO_LIST_TASKS(), SetCurrentUser)
+@controller(URL_TODO_LIST_TASK(), SetCurrentUser)
 export class TodoListTaskController extends BaseHttpController {
   constructor(@inject(TaskService) private readonly taskServce: TaskService) {
     super();
   }
 
-  @httpGet("")
-  async createTaskInTodoList(
-    @currentUser() currentUser: IUserAttached
+  @httpPut(
+    "",
+    SetTodoListPermissions,
+    CheckTodoListPermission(TodoListPermissions.CanEditTask)
+  )
+  async editTaskInTodoList(
+    @requestParam(TASK_PARAM) taskId: string,
+    @requestBody() body: Partial<ITask>
   ): Promise<OkResult> {
-    const todoLists = await this.taskServce.getTasksByTodoListId(
-      currentUser.id
-    );
+    if (Object.values(body).length === 0) return this.json("Invalid data", 400);
 
-    return this.ok(todoLists);
+    const task = await this.taskServce.updateTask(taskId, body);
+
+    return this.ok(task);
   }
 
-  @httpPost("")
-  async getTasksInTodoList(
-    @currentUser() currentUser: IUserAttached,
-    @requestBody() body: ITask
+  @httpDelete(
+    "",
+    SetTodoListPermissions,
+    CheckTodoListPermission(TodoListPermissions.CanDeleteTask)
+  )
+  async deleteTaskInTodoList(
+    @requestParam(TASK_PARAM) taskId: string
   ): Promise<OkResult> {
-    if (!body.text) return this.json("Invalid data", 400);
+    console.log("delete");
 
-    const task = await this.taskServce.createTaskInTodoList(
-      body,
-      currentUser.id
-    );
+    const task = await this.taskServce.deleteTask(taskId);
 
     return this.ok(task);
   }
