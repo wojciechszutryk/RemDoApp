@@ -18,7 +18,10 @@ import {
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
 import { IUserAttached } from "linked-models/User/User.model";
+import { CheckTodoListPermission } from "middlewares/todoList/checkTodoListPermission.middleware";
+import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
+import { TodoListPermissions } from "models/authorization.model";
 import { TodoListService } from "services/TodoList.service";
 
 @controller(URL_TODO_LISTS, SetCurrentUser)
@@ -55,23 +58,15 @@ export class TodoListController extends BaseHttpController {
     return this.ok(todoList);
   }
 
-  @httpPut(URL_TODO_LIST())
+  @httpPut(
+    URL_TODO_LIST(),
+    SetTodoListPermissions,
+    CheckTodoListPermission(TodoListPermissions.CanEditTodoList)
+  )
   async updateTodoList(
-    @currentUser() currentUser: IUserAttached,
     @requestParam(TODO_LIST_PARAM) todoListId: string,
     @requestBody() body: Partial<ITodoList>
   ): Promise<OkResult> {
-    const canEdit = await this.todoListService.checkCanModify(
-      todoListId,
-      currentUser.id
-    );
-
-    if (!canEdit)
-      return this.json(
-        `You cannot edit todoList: ${todoListId} because you are not it's creator`,
-        403
-      );
-
     const todoList = await this.todoListService.updateTodoList(
       todoListId,
       body
@@ -79,22 +74,14 @@ export class TodoListController extends BaseHttpController {
     return this.ok(todoList);
   }
 
-  @httpDelete(URL_TODO_LIST())
+  @httpDelete(
+    URL_TODO_LIST(),
+    SetTodoListPermissions,
+    CheckTodoListPermission(TodoListPermissions.CanDeleteTodoList)
+  )
   async deleteTodoList(
-    @currentUser() currentUser: IUserAttached,
     @requestParam(TODO_LIST_PARAM) todoListId: string
   ): Promise<OkResult> {
-    const canDelete = await this.todoListService.checkCanModify(
-      todoListId,
-      currentUser.id
-    );
-
-    if (!canDelete)
-      return this.json(
-        `You cannot delete todoList: ${todoListId} because you are not it's creator`,
-        403
-      );
-
     await this.todoListService.deleteTodoList(todoListId);
 
     return this.ok();

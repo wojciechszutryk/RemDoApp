@@ -23,6 +23,9 @@ export interface ITask {
 }
 
 export interface ITaskWithReadonlyProperties extends ITask {
+  /** Id of tododolist which task will be part of */
+  readonly todoListId: string;
+
   /** Readonly creator id. */
   readonly creator?: string;
 

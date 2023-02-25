@@ -1,5 +1,6 @@
 import { TodoListController } from "controllers/todoList/todoList.controller";
 import { TodoListTaskController } from "controllers/todoList/todoList.task.controller";
+import { TodoListTasksController } from "controllers/todoList/todoList.tasks.controller";
 import {
   getTodoListCollection,
   TodoListCollectionName,
@@ -15,5 +16,6 @@ export const registerTodoListBindings = (container: Container) => {
   container.bind(SetTodoListPermissions).toSelf();
   container.bind(TodoListService).toSelf();
   container.bind(TodoListController).toSelf();
+  container.bind(TodoListTasksController).toSelf();
   container.bind(TodoListTaskController).toSelf();
 };
