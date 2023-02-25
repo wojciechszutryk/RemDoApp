@@ -20,6 +20,15 @@ export class TodoListService {
     private readonly taskService: TaskService
   ) {}
 
+  public async getTodoListById(
+    todoListId: string
+  ): Promise<ITodoListAttached | undefined> {
+    const todoList = await this.todoListCollection.findById(todoListId);
+    if (!todoList) return undefined;
+
+    return mapTodoListToAttachedTodoList(todoList);
+  }
+
   public async getTodoListsForUser(
     userId: string
   ): Promise<ITodoListAttached[]> {
@@ -28,19 +37,22 @@ export class TodoListService {
         {
           assignedUsers: userId,
         },
+        {
+          assignedOwners: userId,
+        },
         { creator: userId },
       ],
     });
 
-    return todoLists.map((td) => mapTodoListToAttachedTodoList(td));
+    const uniqueTodoLists = [...new Set(todoLists)];
+
+    return uniqueTodoLists.map((td) => mapTodoListToAttachedTodoList(td));
   }
 
   public async createTodoList(
     todoListData: ITodoList,
     creator: string
   ): Promise<ITodoListAttached> {
-    console.log(todoListData);
-
     const newTodoList: ITodoListWithReadonlyProperties = {
       name: todoListData.name,
       creator,
@@ -53,26 +65,15 @@ export class TodoListService {
     return mapTodoListToAttachedTodoList(createdTodoList);
   }
 
-  public async checkCanModify(
-    userId: string,
-    todoListId: string
-  ): Promise<boolean> {
-    const todoList = await this.todoListCollection.find({
-      id: todoListId,
-      creator: userId,
-    });
-
-    return !!todoList;
-  }
-
+  /**
+   * Warning this service doesn't check if user can update TodoList. It is assumed that proper check is done before using this service
+   */
   public async updateTodoList(
     todoListId: string,
-    todoListData: Partial<ITodoList>,
-    userId: string
+    todoListData: Partial<ITodoList>
   ): Promise<ITodoListAttached> {
     const update = {
       ...todoListData,
-      creator: userId,
       whenUpdated: new Date(),
     };
 
@@ -92,6 +93,7 @@ export class TodoListService {
 
   /**
    * deletes todoList and all it's tasks
+   * Warning this service doesn't check if user can delete TodoList. It is assumed that proper check is done before using this service
    */
   public async deleteTodoList(todoListId: string): Promise<void> {
     const [deletedTodoList] = await Promise.all([
