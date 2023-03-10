@@ -19,13 +19,13 @@ import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { TodoListPermissions } from "models/authorization.model";
 import { TaskService } from "services/task.service";
 
-@controller(URL_TODO_LIST_TASKS(), SetCurrentUser)
+@controller(URL_TODO_LIST_TASKS(), SetCurrentUser, SetTodoListPermissions)
 export class TodoListTasksController extends BaseHttpController {
   constructor(@inject(TaskService) private readonly taskServce: TaskService) {
     super();
   }
 
-  @httpGet("") //TODO add permission check TodoListPermissions.ReadTodoList
+  @httpGet("", CheckTodoListPermission(TodoListPermissions.CanReadTodoList))
   async getTodoListTasks(
     @requestParam(TODO_LIST_PARAM) todoListId: string
   ): Promise<OkResult> {
@@ -34,11 +34,7 @@ export class TodoListTasksController extends BaseHttpController {
     return this.ok(todoLists);
   }
 
-  @httpPost(
-    "",
-    SetTodoListPermissions,
-    CheckTodoListPermission(TodoListPermissions.CanCreateTask)
-  )
+  @httpPost("", CheckTodoListPermission(TodoListPermissions.CanCreateTask))
   async createTaskInTodoList(
     @currentUser() currentUser: IUserAttached,
     @requestBody() body: ITask,

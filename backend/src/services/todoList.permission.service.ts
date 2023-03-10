@@ -12,7 +12,7 @@ export class TodoListPermissionsService {
     private readonly taskService: TaskService
   ) {}
 
-  public async checkTodoListPermissions(
+  public async getTodoListPermissionsForUser(
     userId: string,
     todoListId: string,
     taskId?: string
@@ -22,19 +22,25 @@ export class TodoListPermissionsService {
     const assignedOwners = todoList?.assignedOwners;
 
     if (assignedOwners?.includes(userId) || todoList?.creator === userId) {
+      /** owners have all permissions */
       return Object.values(TodoListPermissions);
     } else if (assignedUsers?.includes(userId)) {
+      /** assigned users can read todoList, modify own tasks and create new ones */
       if (taskId) {
         const task = await this.taskService.getTaskById(taskId);
         if (task?.creator === userId) {
           return [
+            TodoListPermissions.CanReadTodoList,
             TodoListPermissions.CanCreateTask,
             TodoListPermissions.CanEditTask,
             TodoListPermissions.CanDeleteTask,
           ];
         }
       }
-      return [TodoListPermissions.CanCreateTask];
+      return [
+        TodoListPermissions.CanCreateTask,
+        TodoListPermissions.CanReadTodoList,
+      ];
     }
 
     return [];
