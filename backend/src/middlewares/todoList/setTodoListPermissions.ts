@@ -22,7 +22,7 @@ export class SetTodoListPermissions extends BaseMiddleware {
     ] as unknown as IUserAttached;
     const todoListId = req.params[TODO_LIST_PARAM] as unknown as string;
     const permissions =
-      await this.todoListPermissionsService.checkTodoListPermissions(
+      await this.todoListPermissionsService.getTodoListPermissionsForUser(
         curentUser.id,
         todoListId
       );
