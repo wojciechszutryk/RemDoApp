@@ -25,20 +25,3 @@ describe(`When calling createTodoList`, () => {
     expect(response.statusCode).toEqual(400);
   });
 });
-
-describe("insert", () => {
-  let connection;
-  let db;
-
-  beforeAll(async () => {
-    connection = await MongoClient.connect(process.env.DB_URI as string, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    db = await connection.db();
-  });
-
-  afterAll(async () => {
-    await connection.close();
-  });
-});

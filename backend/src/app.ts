@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { container } from "di/container.init";
 import { registerBindings } from "di/di.config";
 import { json, Router, urlencoded } from "express";
@@ -5,7 +6,6 @@ import { createServer } from "http";
 import { buildProviderModule } from "inversify-binding-decorators";
 import { InversifyExpressServer } from "inversify-express-utils";
 import mongoose from "mongoose";
-import "reflect-metadata";
 
 import cors from "cors";
 
@@ -14,8 +14,6 @@ require("dotenv").config();
 
 const customRouter = Router({ mergeParams: true });
 const server = new InversifyExpressServer(container, customRouter);
-
-const port = process.env.PORT || 3001;
 
 server.setConfig((app) => {
   app.use(json({ limit: "100mb" }));

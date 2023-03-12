@@ -17,12 +17,6 @@ export class TaskService {
     private readonly taskCollection: TaskCollectionType
   ) {}
 
-  public async getAllTasks(): Promise<ITaskAttached[]> {
-    const allTasks = await this.taskCollection.find();
-
-    return allTasks.map((t) => mapTaskToAttachedtask(t));
-  }
-
   public async getTaskById(id: string): Promise<ITaskAttached | undefined> {
     const foundTask = await this.taskCollection.findOne({ _id: id });
     if (!foundTask) return undefined;
