@@ -1,4 +1,5 @@
 import { IBaseModelAttached } from "../abstraction/base.interface";
+
 export interface ITask {
   /** Text of task */
   text: string;
@@ -16,7 +17,7 @@ export interface ITask {
   finishDate?: Date;
 
   /** Boolean to determine if task is important */
-  important?: false;
+  important?: boolean;
 
   /** Task's background color in hex */
   color?: string;
@@ -27,7 +28,7 @@ export interface ITaskWithReadonlyProperties extends ITask {
   readonly todoListId: string;
 
   /** Readonly creator id. */
-  readonly creator?: string;
+  readonly creator: string;
 
   /** Date when task was created. */
   readonly whenCreated: Date;

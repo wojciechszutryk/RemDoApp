@@ -1,12 +1,12 @@
+import bcrypt from "bcrypt";
 import {
   mapUserToAttachedUser,
   UserCollectionName,
   UserCollectionType,
 } from "dbSchemas/user.schema";
 import { inject, injectable } from "inversify";
-import { IUserAttached } from "linked-models/user/user.model";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { IUserAttached } from "linked-models/user/user.model";
 import { IToken } from "models/authentication.model";
 
 @injectable()
@@ -55,6 +55,7 @@ export class UserService {
     password: string
   ): Promise<IUserAttached | undefined> {
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
     if (user && isPasswordCorrect) {
       const token = jwt.sign(
         { userId: user.id, email: user.email } as IToken,

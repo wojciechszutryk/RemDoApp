@@ -36,6 +36,7 @@
     "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-plugin-import": "^2.27.5",
     "jest": "^28.1.2",
+    "mongodb-memory-server": "^8.12.0",
     "ts-jest": "^28.0.5",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.1.2",

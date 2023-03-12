@@ -46,8 +46,6 @@ export class TodoListTaskController extends BaseHttpController {
   async deleteTaskInTodoList(
     @requestParam(TASK_PARAM) taskId: string
   ): Promise<OkResult> {
-    console.log("delete");
-
     const task = await this.taskServce.deleteTask(taskId);
 
     return this.ok(task);
