@@ -1,4 +1,3 @@
-import "reflect-metadata";
 import { container } from "di/container.init";
 import { registerBindings } from "di/di.config";
 import { json, Router, urlencoded } from "express";
@@ -6,7 +5,11 @@ import { createServer } from "http";
 import { buildProviderModule } from "inversify-binding-decorators";
 import { InversifyExpressServer } from "inversify-express-utils";
 import mongoose from "mongoose";
-const cors = require("cors");
+import "reflect-metadata";
+
+import cors from "cors";
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
 const customRouter = Router({ mergeParams: true });
