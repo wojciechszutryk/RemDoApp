@@ -33,9 +33,13 @@ export class TodoListTaskController extends BaseHttpController {
   ): Promise<OkResult> {
     if (Object.values(body).length === 0) return this.json("Invalid data", 400);
 
-    const task = await this.taskServce.updateTask(taskId, body);
+    try {
+      const task = await this.taskServce.updateTask(taskId, body);
 
-    return this.ok(task);
+      return this.ok(task);
+    } catch (e) {
+      return this.json(e, 400);
+    }
   }
 
   @httpDelete(
@@ -46,8 +50,12 @@ export class TodoListTaskController extends BaseHttpController {
   async deleteTaskInTodoList(
     @requestParam(TASK_PARAM) taskId: string
   ): Promise<OkResult> {
-    const task = await this.taskServce.deleteTask(taskId);
+    try {
+      const task = await this.taskServce.deleteTask(taskId);
 
-    return this.ok(task);
+      return this.ok(task);
+    } catch (e) {
+      return this.json(e, 400);
+    }
   }
 }
