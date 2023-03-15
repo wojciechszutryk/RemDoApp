@@ -72,8 +72,9 @@ export class TodoListService {
     todoListId: string,
     todoListData: Partial<ITodoList>
   ): Promise<ITodoListAttached> {
+    //only valid properties
     const update = {
-      ...todoListData,
+      name: todoListData.name,
       whenUpdated: new Date(),
     };
 
@@ -83,10 +84,11 @@ export class TodoListService {
       { new: true }
     );
 
-    if (!updatedTodoList)
+    if (!updatedTodoList) {
       throw new Error(
         `Cannot update todoList: ${todoListId}, because it does not exist.`
       );
+    }
 
     return mapTodoListToAttachedTodoList(updatedTodoList);
   }
