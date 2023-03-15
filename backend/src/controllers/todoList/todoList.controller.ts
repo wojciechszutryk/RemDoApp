@@ -67,11 +67,15 @@ export class TodoListController extends BaseHttpController {
     @requestParam(TODO_LIST_PARAM) todoListId: string,
     @requestBody() body: Partial<ITodoList>
   ): Promise<OkResult> {
-    const todoList = await this.todoListService.updateTodoList(
-      todoListId,
-      body
-    );
-    return this.ok(todoList);
+    try {
+      const todoList = await this.todoListService.updateTodoList(
+        todoListId,
+        body
+      );
+      return this.ok(todoList);
+    } catch (e) {
+      return this.json(e, 400);
+    }
   }
 
   @httpDelete(
@@ -82,7 +86,11 @@ export class TodoListController extends BaseHttpController {
   async deleteTodoList(
     @requestParam(TODO_LIST_PARAM) todoListId: string
   ): Promise<OkResult> {
-    await this.todoListService.deleteTodoList(todoListId);
+    try {
+      await this.todoListService.deleteTodoList(todoListId);
+    } catch (e) {
+      return this.json(e, 400);
+    }
 
     return this.ok();
   }
