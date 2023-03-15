@@ -19,43 +19,23 @@ import {
   dropTestDB,
   setUpTestDB,
 } from "../db.testSetup.helpers";
+import { mockedTask } from "../mocks/task.mock";
+import { mockedTodoList, MOCKED_TODO_ID } from "../mocks/todoList.mock";
+import { mockedUser } from "../mocks/user.mock";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
-describe(`When calling createTodoList`, () => {
+describe(`When calling todoList controller`, () => {
   let todoListService = {} as TodoListService;
   let todoListController = {} as TodoListController;
-  const mockedUser = {
-    id: "000000000000",
-    displayName: "User1",
-    email: "user1@email.com",
-    token: "token",
-    whenCreated: new Date(),
-    whenUpdated: new Date(),
-    password: "hashedPassword",
-  };
 
   beforeAll(async () => {
     await setUpTestDB();
   });
 
   beforeEach(async () => {
-    await getTodoListCollection().create({
-      _id: "111111111111",
-      name: "todoList1",
-      creator: "User1",
-      whenCreated: new Date(),
-      whenUpdated: new Date(),
-    });
-    await getTaskCollection().create({
-      _id: "222222222222",
-      text: "task1",
-      important: true,
-      todoListId: "todoList1",
-      creator: "User1",
-      whenCreated: new Date(),
-      whenUpdated: new Date(),
-    });
+    await getTodoListCollection().create(mockedTodoList);
+    await getTaskCollection().create(mockedTask);
 
     const taskService = new TaskService(getTaskCollection());
     todoListService = new TodoListService(getTodoListCollection(), taskService);
@@ -105,7 +85,7 @@ describe(`When calling createTodoList`, () => {
     expect(response.statusCode).toEqual(200);
   });
 
-  it(`should return HTTP 400 status code when trying to upadate todoList that doesn't exist`, async () => {
+  it(`should return HTTP 400 status code when trying to update todoList that doesn't exist`, async () => {
     const update = {
       name: "correct name",
     } as unknown as Partial<ITodoList>;
@@ -119,13 +99,13 @@ describe(`When calling createTodoList`, () => {
     expect(response.statusCode).toEqual(400);
   });
 
-  it(`should return HTTP 200 status code when trying to upadate correct todoList`, async () => {
+  it(`should return HTTP 200 status code when trying to update correct todoList`, async () => {
     const update = {
       name: "correct name",
     } as unknown as Partial<ITodoList>;
 
     const result = await todoListController.updateTodoList(
-      "111111111111",
+      MOCKED_TODO_ID,
       update
     );
     const response = await result.executeAsync();
@@ -141,7 +121,7 @@ describe(`When calling createTodoList`, () => {
   });
 
   it(`should return HTTP 200 status code when trying to delete correct todoList`, async () => {
-    const result = await todoListController.deleteTodoList("111111111111");
+    const result = await todoListController.deleteTodoList(MOCKED_TODO_ID);
     const response = await result.executeAsync();
 
     expect(response.statusCode).toEqual(200);
