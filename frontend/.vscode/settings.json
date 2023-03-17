@@ -1,0 +1,12 @@
+{
+  "eslint.lintTask.enable": true,
+  "eslint.lintTask.options": "src/** -c .eslintrc.json --ignore-pattern src/images/** --ignore-pattern *.scss --ignore-pattern *.svg --ignore-pattern serviceWorker.ts",
+  "eslint.workingDirectories": ["src", "frontend-app/src"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true
+  },
+  "eslint.validate": ["typescript", "typescriptreact"]
+}
