@@ -1,11 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { ThemeProvider } from "@mui/material";
+import App from "App";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { muiTheme } from "./theme/muiTheme";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <div></div>
+    <ThemeProvider theme={muiTheme}>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>
 );
