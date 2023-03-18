@@ -10,11 +10,15 @@ export enum TranslationKeys {
   LoginPanelHeader = "LoginPanelHeader",
   LoginPanelHeaderDescription = "LoginPanelHeaderDescription",
   LoginPanelInputEmailLabel = "LoginPanelInputEmailLabel",
+  LoginPanelInputDisplayNameLabel = "LoginPanelInputDisplayNameLabel",
   LoginPanelInputPasswordLabel = "LoginPanelInputPasswordLabel",
   LoginPanelInputPasswordRepeatLabel = "LoginPanelInputPasswordRepeatLabel",
   LoginButtonText = "LoginButtonText",
   RegisterButtonText = "RegisterButtonText",
   GoogleSignIn = "GoogleSignIn",
+  EmailRequired = "EmailRequired",
+  PasswordRequired = "PasswordRequired",
+  PasswordsNoMatch = "PasswordsNoMatch",
 
   PageTitleFeatures = "PageTitleFeatures",
 }

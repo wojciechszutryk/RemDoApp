@@ -2,7 +2,7 @@ import { LoginPanel } from "./LoginPanel";
 import { WelcomePanel } from "./WelcomePanel";
 import { StyledLoginSection } from "./styles";
 
-const LoginSection = (): JSX.Element => {
+const TopSection = (): JSX.Element => {
   return (
     <StyledLoginSection>
       <WelcomePanel />
@@ -11,4 +11,4 @@ const LoginSection = (): JSX.Element => {
   );
 };
 
-export default LoginSection;
+export default TopSection;
