@@ -1,10 +1,17 @@
+import { StyledWave } from "atomicComponents/atoms/AnimatedWave";
+import { Header } from "atomicComponents/organisms/Header";
 import { memo } from "react";
-import { StyledBlur, StyledWave } from "./styles";
+import { Outlet } from "react-router-dom";
+import { StyledPageContentWrapper } from "./styles";
 
 const PageTemplate = (): JSX.Element => {
   return (
     <StyledWave>
-      <StyledBlur />
+      {/* <StyledBlur /> */}
+      <Header />
+      <StyledPageContentWrapper>
+        <Outlet />
+      </StyledPageContentWrapper>
     </StyledWave>
   );
 };
