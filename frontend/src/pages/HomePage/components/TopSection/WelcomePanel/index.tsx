@@ -1,7 +1,12 @@
 import { TranslationKeys } from "framework/translations/translationKeys";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { StyledButton, StyledHeader, StyledParagraph, Wrapper } from "./Styles";
+import {
+  StyledButton,
+  StyledDescription,
+  StyledHeader,
+  Wrapper,
+} from "./styles";
 
 export const WelcomePanel = (): JSX.Element => {
   const { t } = useTranslation();
@@ -10,9 +15,9 @@ export const WelcomePanel = (): JSX.Element => {
   return (
     <Wrapper>
       <StyledHeader>{t(TranslationKeys.WelcomeTextHeader)}</StyledHeader>
-      <StyledParagraph>
+      <StyledDescription>
         {t(TranslationKeys.WelcomeTextDescription)}
-      </StyledParagraph>
+      </StyledDescription>
       <StyledButton onClick={() => navigate("features")}>
         {t(TranslationKeys.GoToFeaturesButtonText)}
       </StyledButton>

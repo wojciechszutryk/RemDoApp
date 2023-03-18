@@ -4,6 +4,7 @@ import { TextField } from "atomicComponents/atoms/InputText";
 import { apiGet } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import { TranslationKeys } from "framework/translations/translationKeys";
+import { IUserAttached } from "linked-models/user/user.model";
 import {
   URL_LOGIN,
   URL_REGISTER,
@@ -28,24 +29,34 @@ export const LoginPanel = (): JSX.Element => {
   const [isRegistering, setIsRegistering] = useState<boolean>(false);
   const {
     control,
+    setError,
     formState: { errors },
     handleSubmit,
-  } = useForm<IFormValues>({
-    defaultValues: {
-      email: "",
-    },
-  });
+  } = useForm<IFormValues>({});
 
   const onSubmit = async ({ email, password, passwordRepeat }: IFormValues) => {
     if (!email) {
+      setError("email", { message: t(TranslationKeys.EmailRequired) });
       return;
     }
 
-    if (isRegistering && !password && !passwordRepeat) {
+    if (isRegistering) {
+      if (!password)
+        setError("password", { message: t(TranslationKeys.PasswordRequired) });
+      if (!passwordRepeat)
+        setError("passwordRepeat", {
+          message: t(TranslationKeys.PasswordRequired),
+        });
+
+      if (password !== passwordRepeat) {
+        setError("passwordRepeat", {
+          message: t(TranslationKeys.PasswordsNoMatch),
+        });
+      }
     }
 
     setIsLoading(true);
-    const response = await apiGet<string | undefined>(
+    const response = await apiGet<IUserAttached>(
       FRONTIFY_URL(URL_USERS, isRegistering ? URL_REGISTER : URL_LOGIN)
     );
 

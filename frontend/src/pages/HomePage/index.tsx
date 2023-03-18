@@ -1,7 +1,8 @@
 import { TranslationKeys } from "framework/translations/translationKeys";
 import { memo, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { LoginPanel } from "./components/LoginSection/LoginPanel";
+import FeaturesSection from "./components/FeaturesSection";
+import TopSection from "./components/TopSection";
 
 const HomePage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -13,9 +14,10 @@ const HomePage = (): JSX.Element => {
   });
 
   return (
-    <div>
-      <LoginPanel></LoginPanel>
-    </div>
+    <>
+      <TopSection />
+      <FeaturesSection />
+    </>
   );
 };
 

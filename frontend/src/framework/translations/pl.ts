@@ -13,11 +13,15 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.LoginPanelHeaderDescription]:
     "Zaloguj się za pomocą google:",
   [TranslationKeys.LoginPanelInputEmailLabel]: "email",
+  [TranslationKeys.LoginPanelInputDisplayNameLabel]: "nazwa użytkownika",
   [TranslationKeys.LoginPanelInputPasswordLabel]: "hasło",
   [TranslationKeys.LoginPanelInputPasswordRepeatLabel]: "powtórzenie hasła",
   [TranslationKeys.LoginButtonText]: "zaloguj się",
   [TranslationKeys.RegisterButtonText]: "zarejestruj się",
   [TranslationKeys.GoogleSignIn]: "google",
+  [TranslationKeys.EmailRequired]: "email wymagany",
+  [TranslationKeys.PasswordRequired]: "hasło wymagane",
+  [TranslationKeys.PasswordsNoMatch]: "hasła nie są identyczne",
 
   [TranslationKeys.PageTitleFeatures]: " - funkcje",
 };

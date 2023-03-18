@@ -10,14 +10,17 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.LoginPanelSeparatorText]: "or",
   [TranslationKeys.GoToFeaturesButtonText]: "Explore features",
   [TranslationKeys.LoginPanelHeader]: "Sign in or Sign up",
-  [TranslationKeys.LoginPanelHeaderDescription]:
-    "Sign in with google:",
+  [TranslationKeys.LoginPanelHeaderDescription]: "Sign in with google:",
   [TranslationKeys.LoginPanelInputEmailLabel]: "email",
+  [TranslationKeys.LoginPanelInputDisplayNameLabel]: "nick name",
   [TranslationKeys.LoginPanelInputPasswordLabel]: "password",
   [TranslationKeys.LoginPanelInputPasswordRepeatLabel]: "password repeat",
   [TranslationKeys.LoginButtonText]: "sign in",
   [TranslationKeys.RegisterButtonText]: "sign up",
   [TranslationKeys.GoogleSignIn]: "google",
+  [TranslationKeys.EmailRequired]: "email required",
+  [TranslationKeys.PasswordRequired]: "password required",
+  [TranslationKeys.PasswordsNoMatch]: "passwords don't match",
 
   [TranslationKeys.PageTitleFeatures]: " - funkcje",
 };

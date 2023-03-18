@@ -1,9 +1,9 @@
-import { styled } from "@mui/system";
+import { styled } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
 
 export const Wrapper = styled("div")(({ theme }) => ({
   zIndex: 3,
-  color: theme.palette.textColor.main,
+  color: theme.palette.primary.contrastText,
 }));
 
 export const StyledHeader = styled("h1")(({ theme }) => ({
@@ -24,7 +24,7 @@ export const StyledHeader = styled("h1")(({ theme }) => ({
   },
 }));
 
-export const StyledParagraph = styled("p")(({ theme }) => ({
+export const StyledDescription = styled("p")(({ theme }) => ({
   fontSize: 16,
   marginTop: 32,
   lineHeight: 1.5,
