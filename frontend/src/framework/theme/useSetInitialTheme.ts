@@ -1,5 +1,5 @@
 import { useLayoutEffect } from "react";
-import { TodoListThemes } from "./theme.model";
+import { TodoListThemes } from "./models/theme.model";
 
 const useSetInitialTheme = () => {
   useLayoutEffect(() => {
