@@ -1,5 +1,6 @@
 import { ThemeProvider } from "@mui/material";
 import App from "App";
+import { CurrentUserProvider } from "framework/authentication/useCurrentUser";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { muiTheme } from "./framework/theme/muiTheme";
@@ -10,7 +11,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={muiTheme}>
-      <App />
+      <CurrentUserProvider>
+        <App />
+      </CurrentUserProvider>
     </ThemeProvider>
   </React.StrictMode>
 );
