@@ -8,8 +8,9 @@ let mongo: MongoMemoryServer | undefined = undefined;
 
 export const setUpTestDB = async () => {
   mongo = await MongoMemoryServer.create();
+  const uri = mongo.getUri();
 
-  await mongoose.connect(process.env.DB_URI as string, {});
+  await mongoose.connect(uri, {});
 };
 
 export const dropTestDB = async () => {
@@ -27,6 +28,7 @@ export const dropTestCollections = async () => {
     for (const key in collections) {
       const collection = collections[key];
       await collection.deleteMany({});
+      await collection.dropIndexes();
     }
   }
 };
