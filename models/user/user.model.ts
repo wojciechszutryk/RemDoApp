@@ -6,9 +6,6 @@ export interface IUser {
 
   /** User's email */
   email: string;
-
-  /** Token passed to authenticate user */
-  token: string;
 }
 
 export interface IUserWithReadonlyProperties extends IUser {
