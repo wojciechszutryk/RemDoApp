@@ -28,6 +28,7 @@ export class TodoListPermissionsService {
       /** assigned users can read todoList, modify own tasks and create new ones */
       if (taskId) {
         const task = await this.taskService.getTaskById(taskId);
+
         if (task?.creator === userId) {
           return [
             TodoListPermissions.CanReadTodoList,
@@ -37,6 +38,7 @@ export class TodoListPermissionsService {
           ];
         }
       }
+
       return [
         TodoListPermissions.CanCreateTask,
         TodoListPermissions.CanReadTodoList,

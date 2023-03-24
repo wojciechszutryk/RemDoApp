@@ -9,7 +9,6 @@ import {
 } from "@jest/globals";
 import { TodoListTaskController } from "controllers/todoList/todoList.task.controller";
 import { getTaskCollection } from "dbSchemas/task.schema";
-import { getTodoListCollection } from "dbSchemas/todoList.schema";
 import { ITask } from "linked-models/task/task.model";
 import { TaskService } from "services/task.service";
 import {
@@ -29,7 +28,6 @@ describe(`When calling todoListTask controller`, () => {
   });
 
   beforeEach(async () => {
-    await getTodoListCollection().create();
     await getTaskCollection().create(mockedTask);
 
     const taskService = new TaskService(getTaskCollection());

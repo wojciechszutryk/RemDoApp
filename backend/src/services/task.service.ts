@@ -32,6 +32,23 @@ export class TaskService {
     return foundTasks.map((t) => mapTaskToAttachedtask(t));
   }
 
+  public async createTaskInTodoList(
+    todoListId: string,
+    task: ITask,
+    creator: string
+  ): Promise<ITaskAttached> {
+    const newTask: ITaskWithReadonlyProperties = {
+      ...task,
+      todoListId,
+      creator,
+      whenCreated: new Date(),
+      whenUpdated: new Date(),
+    };
+
+    const createdTask = await this.taskCollection.create(newTask);
+
+    return mapTaskToAttachedtask(createdTask);
+  }
   /**
    * Warning this service doesn't check if user can update Task. It is assumed that proper check is done before using this service
    */
@@ -52,7 +69,7 @@ export class TaskService {
 
     if (!updatedTask)
       throw new Error(
-        `Cannot update todoList: ${taskId}, because it does not exist.`
+        `Cannot update task: ${taskId}, because it does not exist.`
       );
 
     return mapTaskToAttachedtask(updatedTask);
@@ -68,24 +85,6 @@ export class TaskService {
       throw new Error(
         `Cannot delete task: ${taskId}, because it does not exist.`
       );
-  }
-
-  public async createTaskInTodoList(
-    todoListId: string,
-    task: ITask,
-    creator: string
-  ): Promise<ITaskAttached> {
-    const newTask: ITaskWithReadonlyProperties = {
-      ...task,
-      todoListId,
-      creator,
-      whenCreated: new Date(),
-      whenUpdated: new Date(),
-    };
-
-    const createdTask = await this.taskCollection.create(newTask);
-
-    return mapTaskToAttachedtask(createdTask);
   }
 
   public async deleteTasksByTodoListId(todoListId: string): Promise<void> {
