@@ -9,6 +9,7 @@ import {
   requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { ITask } from "linked-models/task/task.model";
 import { URL_TODO_LIST_TASKS } from "linked-models/task/task.urls";
 import { TODO_LIST_PARAM } from "linked-models/todoList/todoList.urls";
@@ -16,7 +17,6 @@ import { IUserAttached } from "linked-models/User/User.model";
 import { CheckTodoListPermission } from "middlewares/todoList/checkTodoListPermission.middleware";
 import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
-import { TodoListPermissions } from "models/authorization.model";
 import { TaskService } from "services/task.service";
 
 @controller(URL_TODO_LIST_TASKS(), SetCurrentUser, SetTodoListPermissions)

@@ -8,12 +8,12 @@ import {
   requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { ITask } from "linked-models/task/task.model";
 import { TASK_PARAM, URL_TODO_LIST_TASK } from "linked-models/task/task.urls";
 import { CheckTodoListPermission } from "middlewares/todoList/checkTodoListPermission.middleware";
 import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
-import { TodoListPermissions } from "models/authorization.model";
 import { TaskService } from "services/task.service";
 
 @controller(URL_TODO_LIST_TASK(), SetCurrentUser)
