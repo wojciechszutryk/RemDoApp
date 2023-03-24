@@ -6,6 +6,7 @@ import {
 } from "dbSchemas/user.schema";
 import { inject, injectable } from "inversify";
 import jwt from "jsonwebtoken";
+import { ILoginUserResponseDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
 import { IToken } from "models/authentication.model";
 
@@ -20,6 +21,7 @@ export class UserService {
     email: string
   ): Promise<IUserAttached | undefined> {
     const foundUser = await this.userCollection.findOne({ email });
+
     if (!foundUser) return undefined;
 
     return mapUserToAttachedUser(foundUser);
@@ -29,14 +31,16 @@ export class UserService {
     email: string,
     displayName: string,
     password: string
-  ): Promise<IUserAttached> {
+  ): Promise<ILoginUserResponseDTO> {
     const encryptedPassword = await bcrypt.hash(password, 10);
 
     const user = await this.userCollection.create({
       displayName,
       email: email.toLowerCase(),
       password: encryptedPassword,
+      whenCreated: new Date(),
     });
+    const attachedUser = mapUserToAttachedUser(user);
 
     const token = jwt.sign(
       { user_id: user._id, email },
@@ -45,15 +49,14 @@ export class UserService {
         expiresIn: "2h",
       }
     );
-    user.token = token;
 
-    return mapUserToAttachedUser(user);
+    return { ...attachedUser, token };
   }
 
   public async signTokenToUser(
     user: IUserAttached,
     password: string
-  ): Promise<IUserAttached | undefined> {
+  ): Promise<ILoginUserResponseDTO | undefined> {
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (user && isPasswordCorrect) {
@@ -65,9 +68,7 @@ export class UserService {
         }
       );
 
-      user.token = token;
-
-      return user;
+      return { ...user, token };
     }
   }
 }

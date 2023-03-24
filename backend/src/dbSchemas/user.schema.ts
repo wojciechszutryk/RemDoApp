@@ -7,10 +7,13 @@ import mongoose, { Document } from "mongoose";
 export const UserCollectionName = "Users";
 
 const UserSchema = new mongoose.Schema({
-  userName: { type: String, default: null },
+  displayName: { type: String, default: null },
   email: { type: String, unique: true },
   password: { type: String },
-  token: { type: String },
+  whenCreated: {
+    type: Date,
+    required: true,
+  },
 });
 
 export interface IUserDocument extends IUserWithReadonlyProperties, Document {}
@@ -25,7 +28,6 @@ export const mapUserToAttachedUser = (user: IUserDocument): IUserAttached => {
     displayName: user.displayName,
     email: user.email,
     password: user.password,
-    token: user.token,
     whenCreated: user.whenCreated,
   };
 };
