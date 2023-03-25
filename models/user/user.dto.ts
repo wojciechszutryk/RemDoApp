@@ -1,4 +1,4 @@
-import { IUserAttached } from "./User.model";
+import { IUserAttached } from "./user.model";
 
 export type IRegisterUserDTO = {
   email: string;
