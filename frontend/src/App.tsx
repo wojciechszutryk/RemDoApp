@@ -1,3 +1,6 @@
+import { Box } from "@mui/material";
+import { Button } from "atomicComponents/atoms/Button";
+import { TextField } from "atomicComponents/atoms/InputText";
 import PageTemplate from "atomicComponents/templates/PageTemplate";
 import useSetInitialTheme from "framework/theme/useSetInitialTheme";
 import "framework/translations/config";
@@ -27,6 +30,27 @@ const App = (): JSX.Element => {
               element={
                 <Suspense fallback={false}>
                   <HomePage />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route path="/tests" element={<PageTemplate />}>
+            <Route
+              index
+              element={
+                <Suspense fallback={false}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "100vh",
+                      width: "100vw",
+                    }}
+                  >
+                    <Button>Jakis tekst</Button>
+                    <TextField />
+                  </Box>
                 </Suspense>
               }
             />
