@@ -6,7 +6,10 @@ export const TextField = (props: TextFieldProps): JSX.Element => {
   return (
     <StyledTextField
       {...props}
-      InputProps={{ ...props.InputProps, endAdornment: <AnimatedWaveAlt /> }}
+      InputProps={{
+        ...props.InputProps,
+        endAdornment: <AnimatedWaveAlt />,
+      }}
     />
   );
 };
