@@ -49,7 +49,7 @@ const App = (): JSX.Element => {
                     }}
                   >
                     <Button>Jakis tekst</Button>
-                    <TextField />
+                    <TextField multiline />
                   </Box>
                 </Suspense>
               }

@@ -4,7 +4,6 @@ export const AnimatedWaveAltStyles = {
   zIndex: 1,
   position: "relative",
   padding: "20px 46px",
-  marginBottom: "30px",
   textAlign: "center",
   textTransform: "uppercase",
   fontWeight: "bold",
@@ -35,7 +34,7 @@ export const AnimatedWaveAltStyles = {
   },
   "&:hover": {
     color: "var(--colors-primary-light)",
-    borderRadius: "30px",
+    // borderRadius: "30px",
     "& > div:last-of-type > div > span": {
       transform: "translateZ(0) scale(1.7)",
       "@supports (filter: url('#goo'))": {
@@ -46,7 +45,7 @@ export const AnimatedWaveAltStyles = {
       transition: "all 0.3s",
       left: 0,
       top: 0,
-      borderRadius: "30px",
+      //   borderRadius: "30px",
     },
   },
   "& > div:last-of-type": {
