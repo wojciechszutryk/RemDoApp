@@ -6,7 +6,7 @@ import {
   TodoListCollectionName,
 } from "dbSchemas/TodoList.schema";
 import { Container } from "inversify";
-import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions";
+import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions.middleware";
 import { TodoListService } from "services/TodoList.service";
 
 export const registerTodoListBindings = (container: Container) => {
