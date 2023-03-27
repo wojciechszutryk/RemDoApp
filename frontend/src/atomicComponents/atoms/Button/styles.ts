@@ -3,8 +3,8 @@ import { styled } from "@mui/material";
 import { AnimatedWaveAltStyles } from "../AnimatedWaveAlt/styles";
 
 export const StyledButton = styled(ButtonUnstyled, {
-  shouldForwardProp: (prop) => prop !== "variant",
-})<{ variant?: "outlined" | "filled" | "danger" }>(({ theme, variant }) => ({
+  shouldForwardProp: (prop) => prop !== "",
+})<{ variant?: "outlined" | "filled" | "danger" }>(({ theme }) => ({
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
@@ -16,6 +16,7 @@ export const StyledButton = styled(ButtonUnstyled, {
   lineHeight: "24px",
   minWidth: "148px",
   maxHeight: "46px",
+  padding: "20px 46px",
   color: theme.palette.primary.contrastText,
 
   ...(AnimatedWaveAltStyles as {}),
@@ -31,20 +32,5 @@ export const StyledButton = styled(ButtonUnstyled, {
   ":disabled": {
     opacity: 0.7,
     cursor: "default",
-    backgroundColor: theme.palette.primary.light,
   },
-
-  ...(variant === "outlined" && {
-    border: `2px solid ${theme.palette.secondary.main}`,
-    backgroundColor: "transparent",
-
-    ":hover": {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.primary.contrastText,
-    },
-    ":active": {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.primary.contrastText,
-    },
-  }),
 }));

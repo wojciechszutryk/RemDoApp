@@ -1,5 +1,5 @@
 import { StandardTextFieldProps } from "@mui/material";
-import { TextField } from "atomicComponents/atoms/InputText";
+import { TextField } from "atomicComponents/atoms/TextField";
 import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
 import { Control, Controller, FieldErrors, FieldValues } from "react-hook-form";
 

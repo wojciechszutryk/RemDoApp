@@ -1,5 +1,6 @@
-import { CircularProgress, TextField } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
+import { TextField } from "atomicComponents/atoms/TextField";
 import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
 import { useRegisterUserMutation } from "framework/authentication/mutations/useRegisterUser.mutation";
 import { TranslationKeys } from "framework/translations/translationKeys";
@@ -7,17 +8,21 @@ import { IRegisterUserDTO } from "linked-models/user/user.dto";
 import { Dispatch, memo, SetStateAction } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { LoginPanelProps } from "..";
 import { StyledForm } from "../styles";
 
 interface IRegisterFormValues extends IRegisterUserDTO {
   passwordRepeat: string;
 }
 
-interface Props {
+interface Props extends LoginPanelProps {
   setIsRegistering: Dispatch<SetStateAction<boolean>>;
 }
 
-const RegisterContent = ({ setIsRegistering }: Props): JSX.Element => {
+const RegisterContent = ({
+  setIsRegistering,
+  defaultEmail,
+}: Props): JSX.Element => {
   const { t } = useTranslation();
   const RegisterUserMutation = useRegisterUserMutation();
   const {
@@ -25,7 +30,7 @@ const RegisterContent = ({ setIsRegistering }: Props): JSX.Element => {
     setError,
     formState: { errors },
     handleSubmit,
-  } = useForm<IRegisterFormValues>({});
+  } = useForm<IRegisterFormValues>({ defaultValues: { email: defaultEmail } });
 
   const onSubmit = (data: IRegisterFormValues) => {
     if (!data.email) {
@@ -67,7 +72,7 @@ const RegisterContent = ({ setIsRegistering }: Props): JSX.Element => {
           <TextField
             onChange={onChange}
             value={value}
-            label={t(TranslationKeys.LoginPanelInputEmailLabel)}
+            placeholder={t(TranslationKeys.LoginPanelInputEmailLabel)}
           />
         )}
       />
@@ -83,7 +88,7 @@ const RegisterContent = ({ setIsRegistering }: Props): JSX.Element => {
             onChange={onChange}
             value={value}
             type="email"
-            label={t(TranslationKeys.LoginPanelInputEmailLabel)}
+            placeholder={t(TranslationKeys.LoginPanelInputEmailLabel)}
           />
         )}
       />
@@ -97,7 +102,7 @@ const RegisterContent = ({ setIsRegistering }: Props): JSX.Element => {
             onChange={onChange}
             value={value}
             type="password"
-            label={t(TranslationKeys.LoginPanelInputPasswordLabel)}
+            placeholder={t(TranslationKeys.LoginPanelInputPasswordLabel)}
           />
         )}
       />
@@ -113,7 +118,7 @@ const RegisterContent = ({ setIsRegistering }: Props): JSX.Element => {
             onChange={onChange}
             value={value}
             type="password"
-            label={t(TranslationKeys.LoginPanelInputPasswordRepeatLabel)}
+            placeholder={t(TranslationKeys.LoginPanelInputPasswordRepeatLabel)}
           />
         )}
       />
