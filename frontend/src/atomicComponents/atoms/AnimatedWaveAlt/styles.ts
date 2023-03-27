@@ -3,7 +3,6 @@ const numOfBlobs = 4;
 export const AnimatedWaveAltStyles = {
   zIndex: 1,
   position: "relative",
-  padding: "20px 46px",
   textAlign: "center",
   textTransform: "uppercase",
   fontWeight: "bold",
@@ -34,7 +33,6 @@ export const AnimatedWaveAltStyles = {
   },
   "&:hover": {
     color: "var(--colors-primary-light)",
-    // borderRadius: "30px",
     "& > div:last-of-type > div > span": {
       transform: "translateZ(0) scale(1.7)",
       "@supports (filter: url('#goo'))": {
@@ -45,7 +43,6 @@ export const AnimatedWaveAltStyles = {
       transition: "all 0.3s",
       left: 0,
       top: 0,
-      //   borderRadius: "30px",
     },
   },
   "& > div:last-of-type": {
@@ -57,7 +54,7 @@ export const AnimatedWaveAltStyles = {
     width: "100%",
     height: "100%",
     borderRadius: "30px",
-    background: "var(--colors-primary-main)",
+    background: "var(--colors-primary-light)",
     "& > div": {
       position: "relative",
       display: "block",

@@ -4,27 +4,35 @@ import { AnimatedWaveAltStyles } from "../AnimatedWaveAlt/styles";
 export const StyledTextField = styled(TextField)(({ theme }) => ({
   width: "100%",
   height: "54px",
-  backgroundColor: theme.palette.secondary.main,
+  // backgroundColor: theme.palette.secondary.main,
   boxShadow: `inset 0px 3px 4px ${theme.palette.primary.light}`,
   borderRadius: theme.spacing(3),
-  color: theme.palette.secondary.contrastText,
+  color: theme.palette.primary.contrastText,
+
   "& fieldset": {
     border: "none",
   },
 
-  ":hover": {
-    backgroundColor: theme.palette.secondary.light,
-    boxShadow: `inset 0px 3px 4px ${theme.palette.primary.main}`,
+  "& input, & textarea": {
+    textTransform: "uppercase",
+    color: theme.palette.primary.contrastText,
+    // "&::placeholder": { color: "red", opacity: 1 },
+    // "&:-ms-input-placeholder": { color: "red" },
+    // "&::-ms-input-placeholder": { color: "red" },
+  },
+
+  "&:hover input, &:hover textarea": {
+    color: theme.palette.primary.light,
+  },
+
+  "& .Mui-focused input, & .Mui-focused textarea": {
+    color: theme.palette.primary.light,
   },
 
   "& > div": {
     width: "100%",
     height: "100%",
     ...(AnimatedWaveAltStyles as {}),
-  },
-
-  "& .Mui-focused": {
-    color: theme.palette.primary.light,
   },
 
   "& .Mui-focused div:last-of-type > div > span": {

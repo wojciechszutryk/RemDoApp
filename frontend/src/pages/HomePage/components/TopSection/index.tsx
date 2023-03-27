@@ -1,13 +1,13 @@
-import { LoginPanel } from "./LoginPanel";
+import { StyledTopSection } from "./styles";
+import { UserPanel } from "./UserPanel";
 import { WelcomePanel } from "./WelcomePanel";
-import { StyledLoginSection } from "./styles";
 
 const TopSection = (): JSX.Element => {
   return (
-    <StyledLoginSection>
+    <StyledTopSection>
       <WelcomePanel />
-      <LoginPanel />
-    </StyledLoginSection>
+      <UserPanel />
+    </StyledTopSection>
   );
 };
 

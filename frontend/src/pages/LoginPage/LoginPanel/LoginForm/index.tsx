@@ -1,11 +1,13 @@
-import { CircularProgress, TextField } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
+import { TextField } from "atomicComponents/atoms/TextField";
 import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
 import { useLoginUserMutation } from "framework/authentication/mutations/useLoginUser.mutation";
 import { TranslationKeys } from "framework/translations/translationKeys";
 import { Dispatch, memo, SetStateAction } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { LoginPanelProps } from "..";
 import { StyledForm } from "../styles";
 
 interface ILoginFormValues {
@@ -13,11 +15,11 @@ interface ILoginFormValues {
   password: string;
 }
 
-interface Props {
+interface Props extends LoginPanelProps {
   setIsRegistering: Dispatch<SetStateAction<boolean>>;
 }
 
-const LoginForm = ({ setIsRegistering }: Props): JSX.Element => {
+const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
   const { t } = useTranslation();
   const loginUserMutation = useLoginUserMutation();
   const {
@@ -25,9 +27,11 @@ const LoginForm = ({ setIsRegistering }: Props): JSX.Element => {
     setError,
     formState: { errors },
     handleSubmit,
-  } = useForm<ILoginFormValues>({});
+  } = useForm<ILoginFormValues>({ defaultValues: { email: defaultEmail } });
 
   const onSubmit = (data: ILoginFormValues) => {
+    console.log(data);
+
     if (!data.email) {
       setError("email", { message: t(TranslationKeys.EmailRequired) });
       return;
@@ -52,7 +56,7 @@ const LoginForm = ({ setIsRegistering }: Props): JSX.Element => {
             onChange={onChange}
             value={value}
             type="email"
-            label={t(TranslationKeys.LoginPanelInputEmailLabel)}
+            placeholder={t(TranslationKeys.LoginPanelInputEmailLabel)}
           />
         )}
       />
@@ -66,7 +70,7 @@ const LoginForm = ({ setIsRegistering }: Props): JSX.Element => {
             onChange={onChange}
             value={value}
             type="password"
-            label={t(TranslationKeys.LoginPanelInputPasswordLabel)}
+            placeholder={t(TranslationKeys.LoginPanelInputPasswordLabel)}
           />
         )}
       />

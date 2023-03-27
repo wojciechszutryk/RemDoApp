@@ -1,6 +1,6 @@
 import { styled } from "@mui/material";
 
-export const StyledLoginSection = styled("section")(({ theme }) => ({
+export const StyledTopSection = styled("section")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
