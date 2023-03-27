@@ -20,7 +20,7 @@ import {
 } from "linked-models/todoList/todoList.urls";
 import { IUserAttached } from "linked-models/User/User.model";
 import { CheckTodoListPermission } from "middlewares/todoList/checkTodoListPermission.middleware";
-import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions";
+import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 
 import { TodoListService } from "services/TodoList.service";

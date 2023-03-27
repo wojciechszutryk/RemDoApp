@@ -12,7 +12,7 @@ import { TodoListPermissions } from "linked-models/permissions/todoList.permissi
 import { ITask } from "linked-models/task/task.model";
 import { TASK_PARAM, URL_TODO_LIST_TASK } from "linked-models/task/task.urls";
 import { CheckTodoListPermission } from "middlewares/todoList/checkTodoListPermission.middleware";
-import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions";
+import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { TaskService } from "services/task.service";
 
