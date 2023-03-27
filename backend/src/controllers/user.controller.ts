@@ -25,13 +25,13 @@ export class UserController extends BaseHttpController {
     const { displayName, email, password } = body;
 
     if (!(email && password && displayName)) {
-      return this.json("No email or password or displayname provided", 400);
+      return this.json("No email or password or displayName provided", 400);
     }
 
     const existingUser = await this.userService.getUserByEmail(email);
 
     if (existingUser) {
-      return this.json("User Already Exist. Please Login", 400);
+      return this.json("User Already Exist. Please Log in", 400);
     }
 
     const user = this.userService.registerUser(email, displayName, password);

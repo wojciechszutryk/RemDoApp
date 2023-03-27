@@ -16,8 +16,7 @@ import {
 
 import { UserController } from "controllers/user.controller";
 import { getUserCollection } from "dbSchemas/user.schema";
-import { ILoginUserDTO } from "linked-models/user/user.dto";
-import { IUserAttached } from "linked-models/User/User.model";
+import { ILoginUserDTO, IRegisterUserDTO } from "linked-models/user/user.dto";
 import { UserService } from "services/user.service";
 import { mockedUser } from "../mocks/user.mock";
 
@@ -43,45 +42,88 @@ describe(`User service`, () => {
     await dropTestDB();
   });
 
-  it(`should return user by email`, async () => {
-    const loginData: ILoginUserDTO = { email: "email", password: "password" };
-    const user = await userController.loginUser();
-
-    expect(user?.displayName).toEqual(mockedUser.displayName);
-  });
-
-  it(`should register new user`, async () => {
-    const newUser = {
-      email: "newEmail.com",
-      displayName: "displayName",
+  it(`should return stactus code 200 when trying to sign user up with correct data`, async () => {
+    const correctData: IRegisterUserDTO = {
+      email: "email",
       password: "password",
-    };
-    const registeredUser = await userService.registerUser(
-      newUser.email,
-      newUser.displayName,
-      newUser.password
-    );
-
-    expect(registeredUser?.displayName).toEqual(newUser.displayName);
-  });
-
-  it(`should sign user in`, async () => {
-    const newUser = {
-      email: "newEmail.com",
       displayName: "displayName",
-      password: "password",
     };
-    const registeredUser = await userService.registerUser(
-      newUser.email,
-      newUser.displayName,
-      newUser.password
-    );
+    const result = await userController.registerUser(correctData);
+    const response = await result.executeAsync();
 
-    const signedUser = await userService.signTokenToUser(
-      registeredUser as unknown as IUserAttached,
-      newUser.password
-    );
-
-    expect(signedUser?.displayName).toEqual(registeredUser.displayName);
+    expect(response.statusCode).toEqual(200);
   });
+
+  it(`should return stactus code 400 and proper message when trying to sign user up with no email or password or displayName in request body`, async () => {
+    const incorrectData = { password: "password" };
+    const result = await userController.registerUser(
+      incorrectData as IRegisterUserDTO
+    );
+    const response = await result.executeAsync();
+
+    expect(response.statusCode).toEqual(400);
+    expect(response.content).toEqual({
+      _headers: { "content-type": "application/json" },
+      content: '"No email or password or displayName provided"',
+    });
+  });
+
+  it(`should return stactus code 400 and proper message when trying to sign user up with email was already registered`, async () => {
+    const incorrectEmailData = {
+      email: mockedUser.email,
+      password: "password",
+      displayName: "displayName",
+    };
+    const result = await userController.registerUser(incorrectEmailData);
+    const response = await result.executeAsync();
+
+    expect(response.statusCode).toEqual(400);
+    expect(response.content).toEqual({
+      _headers: { "content-type": "application/json" },
+      content: '"User Already Exist. Please Log in"',
+    });
+  });
+
+  it(`should return stactus code 200 when trying to sign user in with correct data`, async () => {
+    const correctData: ILoginUserDTO = {
+      email: mockedUser.email,
+      password: mockedUser.password,
+    };
+    const result = await userController.loginUser(correctData);
+    const response = result.executeAsync();
+
+    expect((await response).statusCode).toEqual(200);
+  });
+
+  // it(`should return stactus code 400 and proper message when trying to sign user in with no email or password in request body`, async () => {
+  //   const incorrectData = { password: "password" };
+  //   const result = await userController.loginUser(
+  //     incorrectData as ILoginUserDTO
+  //   );
+  //   const response = result.executeAsync();
+
+  //   expect((await response).statusCode).toEqual(200);
+  // });
+
+  // it(`should return stactus code 400 and proper message when trying to sign user in with email that does not exist`, async () => {
+  //   const incorrectEmailData = { email: "emailThatDoesNotExist" };
+  //   const result = await userController.loginUser(
+  //     incorrectEmailData as ILoginUserDTO
+  //   );
+  //   const response = await result.executeAsync();
+
+  //   expect(response.statusCode).toEqual(400);
+  //   expect(response.content).toEqual(
+  //     "User with email: emailThatDoesNotExist don't exist."
+  //   );
+  // });
+
+  // it(`should return stactus code 400 and proper message when trying to sign user in with invalid credentials`, async () => {
+  //   const invalidCredentialsData = { email: "email111", password: "password" };
+  //   const result = await userController.loginUser(invalidCredentialsData);
+  //   const response = await result.executeAsync();
+
+  //   expect(response.statusCode).toEqual(400);
+  //   expect(response.content).toEqual("Invalid Credentials");
+  // });
 });
