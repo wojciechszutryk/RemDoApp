@@ -72,19 +72,19 @@ export const AnimatedWaveAltStyles = {
         "@supports (filter: url('#goo'))": {
           transform: "translate3d(0,150%,0) scale(1.4)",
         },
-        "&:nth-child(1)": {
+        "&:nth-of-type(1)": {
           left: `calc((${1} - 1) * (120% / ${numOfBlobs}))`,
           transitionDelay: `calc((${1} - 1) * 0.08s)`,
         },
-        "&:nth-child(2)": {
+        "&:nth-of-type(2)": {
           left: `calc((${2} - 1) * (120% / ${numOfBlobs}))`,
           transitionDelay: `calc((${2} - 1) * 0.08s)`,
         },
-        "&:nth-child(3)": {
+        "&:nth-of-type(3)": {
           left: `calc((${3} - 1) * (120% / ${numOfBlobs}))`,
           transitionDelay: `calc((${3} - 1) * 0.08s)`,
         },
-        "&:nth-child(4)": {
+        "&:nth-of-type(4)": {
           left: `calc((${4} - 1) * (120% / ${numOfBlobs}))`,
           transitionDelay: `calc((${4} - 1) * 0.08s)`,
         },

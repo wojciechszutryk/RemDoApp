@@ -8,7 +8,7 @@ import {
 import { useSnackbar } from "..";
 import { StyledSnackbar } from "./styles";
 
-export const InfoSnackbar = (): JSX.Element => {
+export const Snackbar = (): JSX.Element => {
   const { setSnackbar, snackbar } = useSnackbar();
   const scrollTrigger = useScrollTrigger();
 
