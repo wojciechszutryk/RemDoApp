@@ -4,10 +4,12 @@ import { TextField } from "atomicComponents/atoms/TextField";
 import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
 import { useLoginUserMutation } from "framework/authentication/mutations/useLoginUser.mutation";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
+import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translationKeys";
 import { Dispatch, memo, SetStateAction } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { LoginPanelProps } from "..";
 import { StyledForm } from "../styles";
 
@@ -22,8 +24,10 @@ interface Props extends LoginPanelProps {
 
 const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const loginUserMutation = useLoginUserMutation();
+  const { setSnackbar } = useSnackbar();
   const { setCurrentUser } = useCurrentUser();
+  const loginUserMutation = useLoginUserMutation();
+  const navigate = useNavigate();
   const {
     control,
     setError,
@@ -45,10 +49,13 @@ const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
     loginUserMutation.mutate(data, {
       onSuccess: (data) => {
         setCurrentUser(data);
+        navigate("/reminders");
+        setSnackbar({ message: t(TranslationKeys.LoginSuccess) });
       },
-      onError: () => {
-        setError("password", {
-          message: t(TranslationKeys.InvalidCredentials),
+      onError: (error) => {
+        setSnackbar({
+          message: error.response?.data || error.message,
+          severity: "error",
         });
 
         setCurrentUser(undefined);
@@ -95,7 +102,7 @@ const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
           setIsRegistering(true);
         }}
       >
-        {t(TranslationKeys.LoginButtonText)}
+        {t(TranslationKeys.RegisterButtonText)}
       </Button>
     </StyledForm>
   );

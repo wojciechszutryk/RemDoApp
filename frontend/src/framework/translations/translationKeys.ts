@@ -19,6 +19,7 @@ export enum TranslationKeys {
   EmailRequired = "EmailRequired",
   PasswordRequired = "PasswordRequired",
   PasswordsNoMatch = "PasswordsNoMatch",
+  LoginSuccess = "LoginSuccess",
   InvalidCredentials = "InvalidCredentials",
 
   PageTitleFeatures = "PageTitleFeatures",

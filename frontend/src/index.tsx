@@ -1,6 +1,10 @@
 import { ThemeProvider } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import App from "App";
 import { CurrentUserProvider } from "framework/authentication/useCurrentUser";
+import { SnackbarProvider } from "framework/snackBar";
+import { Snackbar } from "framework/snackBar/components/Snackbar";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -14,11 +18,16 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={muiTheme}>
-      <QueryClientProvider client={queryClient}>
-        <CurrentUserProvider>
-          <App />
-        </CurrentUserProvider>
-      </QueryClientProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <QueryClientProvider client={queryClient}>
+          <SnackbarProvider>
+            <CurrentUserProvider>
+              <App />
+              <Snackbar />
+            </CurrentUserProvider>
+          </SnackbarProvider>
+        </QueryClientProvider>
+      </LocalizationProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

@@ -3,11 +3,14 @@ import { Button } from "atomicComponents/atoms/Button";
 import { TextField } from "atomicComponents/atoms/TextField";
 import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
 import { useRegisterUserMutation } from "framework/authentication/mutations/useRegisterUser.mutation";
+import { useCurrentUser } from "framework/authentication/useCurrentUser";
+import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translationKeys";
 import { IRegisterUserDTO } from "linked-models/user/user.dto";
 import { Dispatch, memo, SetStateAction } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { LoginPanelProps } from "..";
 import { StyledForm } from "../styles";
 
@@ -24,7 +27,10 @@ const RegisterContent = ({
   defaultEmail,
 }: Props): JSX.Element => {
   const { t } = useTranslation();
+  const { setSnackbar } = useSnackbar();
+  const { setCurrentUser } = useCurrentUser();
   const RegisterUserMutation = useRegisterUserMutation();
+  const navigate = useNavigate();
   const {
     control,
     setError,
@@ -59,7 +65,21 @@ const RegisterContent = ({
       });
     }
 
-    RegisterUserMutation.mutate(data);
+    RegisterUserMutation.mutate(data, {
+      onSuccess: (data) => {
+        setCurrentUser(data);
+        navigate("/reminders");
+        setSnackbar({ message: t(TranslationKeys.LoginSuccess) });
+      },
+      onError: (error) => {
+        setSnackbar({
+          message: error.response?.data || error.message,
+          severity: "error",
+        });
+
+        setCurrentUser(undefined);
+      },
+    });
   };
 
   return (
@@ -134,7 +154,7 @@ const RegisterContent = ({
           setIsRegistering(false);
         }}
       >
-        {t(TranslationKeys.RegisterButtonText)}
+        {t(TranslationKeys.LoginButtonText)}
       </Button>
     </StyledForm>
   );
