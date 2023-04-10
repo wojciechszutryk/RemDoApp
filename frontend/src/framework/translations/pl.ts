@@ -22,6 +22,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.EmailRequired]: "email wymagany",
   [TranslationKeys.PasswordRequired]: "hasło wymagane",
   [TranslationKeys.PasswordsNoMatch]: "hasła nie są identyczne",
+  [TranslationKeys.InvalidCredentials]: "niepoprawne dane, spróbuj ponownie",
 
   [TranslationKeys.PageTitleFeatures]: " - funkcje",
 };

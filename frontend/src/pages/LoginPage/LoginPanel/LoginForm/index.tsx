@@ -3,6 +3,7 @@ import { Button } from "atomicComponents/atoms/Button";
 import { TextField } from "atomicComponents/atoms/TextField";
 import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
 import { useLoginUserMutation } from "framework/authentication/mutations/useLoginUser.mutation";
+import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { TranslationKeys } from "framework/translations/translationKeys";
 import { Dispatch, memo, SetStateAction } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -22,6 +23,7 @@ interface Props extends LoginPanelProps {
 const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
   const { t } = useTranslation();
   const loginUserMutation = useLoginUserMutation();
+  const { setCurrentUser } = useCurrentUser();
   const {
     control,
     setError,
@@ -30,8 +32,6 @@ const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
   } = useForm<ILoginFormValues>({ defaultValues: { email: defaultEmail } });
 
   const onSubmit = (data: ILoginFormValues) => {
-    console.log(data);
-
     if (!data.email) {
       setError("email", { message: t(TranslationKeys.EmailRequired) });
       return;
@@ -42,7 +42,18 @@ const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
       return;
     }
 
-    loginUserMutation.mutate(data);
+    loginUserMutation.mutate(data, {
+      onSuccess: (data) => {
+        setCurrentUser(data);
+      },
+      onError: () => {
+        setError("password", {
+          message: t(TranslationKeys.InvalidCredentials),
+        });
+
+        setCurrentUser(undefined);
+      },
+    });
   };
 
   return (
@@ -50,7 +61,6 @@ const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
       <Controller
         name={"email"}
         control={control}
-        rules={{ required: true }}
         render={({ field: { onChange, value } }) => (
           <TextField
             onChange={onChange}
@@ -64,7 +74,6 @@ const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
       <Controller
         name={"password"}
         control={control}
-        rules={{ required: true }}
         render={({ field: { onChange, value } }) => (
           <TextField
             onChange={onChange}
