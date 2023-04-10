@@ -49,7 +49,7 @@ export class UserController extends BaseHttpController {
     const user = await this.userService.getUserByEmail(email);
 
     if (!user) {
-      return this.json(`User with email: ${email} don't exist.`, 400);
+      return this.json(`User with email: ${email} doesn't exist.`, 400);
     }
 
     const signedUser = await this.userService.signTokenToUser(user, password);
