@@ -23,4 +23,8 @@ export enum TranslationKeys {
   InvalidCredentials = "InvalidCredentials",
 
   PageTitleFeatures = "PageTitleFeatures",
+
+  PageTitleReminders = "PageTitleReminders",
+
+  PageTitleTodoLists = "PageTitleTodoLists",
 }

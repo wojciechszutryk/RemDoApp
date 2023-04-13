@@ -1,18 +1,27 @@
-import { StyledWave } from "atomicComponents/atoms/AnimatedWave";
 import { Header } from "atomicComponents/organisms/Header";
-import { memo } from "react";
-import { Outlet } from "react-router-dom";
-import { StyledPageContentWrapper } from "./styles";
+import { memo, useEffect, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import { StyledPageBackground, StyledPageContentWrapper } from "./styles";
 
 const PageTemplate = (): JSX.Element => {
+  const location = useLocation();
+  const [contentVisible, setContentVisible] = useState(true);
+
+  useEffect(() => {
+    setContentVisible(false);
+    setTimeout(() => {
+      setContentVisible(true);
+    }, 300);
+  }, [location.pathname]);
+
   return (
-    <StyledWave>
+    <StyledPageBackground contentVisible={contentVisible}>
       {/* <StyledBlur /> */}
       <Header />
-      <StyledPageContentWrapper>
+      <StyledPageContentWrapper contentHidden={!contentVisible}>
         <Outlet />
       </StyledPageContentWrapper>
-    </StyledWave>
+    </StyledPageBackground>
   );
 };
 
