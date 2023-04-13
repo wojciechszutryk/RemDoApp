@@ -32,6 +32,16 @@ export class TaskService {
     return foundTasks.map((t) => mapTaskToAttachedtask(t));
   }
 
+  public async getTasksByTodoListIDs(
+    todoListIDs: string[]
+  ): Promise<ITaskAttached[]> {
+    const foundTasks = await this.taskCollection.find({
+      todoListId: { $in: todoListIDs },
+    });
+
+    return foundTasks.map((t) => mapTaskToAttachedtask(t));
+  }
+
   public async createTaskInTodoList(
     todoListId: string,
     task: ITask,

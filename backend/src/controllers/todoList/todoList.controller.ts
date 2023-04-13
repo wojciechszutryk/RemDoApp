@@ -7,6 +7,7 @@ import {
   httpGet,
   httpPost,
   httpPut,
+  queryParam,
   requestBody,
   requestParam,
 } from "inversify-express-utils";
@@ -14,6 +15,7 @@ import { OkResult } from "inversify-express-utils/lib/results";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import {
+  PARAM_WITH_TASKS,
   TODO_LIST_PARAM,
   URL_TODO_LIST,
   URL_TODO_LISTS,
@@ -35,8 +37,17 @@ export class TodoListController extends BaseHttpController {
 
   @httpGet("")
   async getTodoListsForUser(
-    @currentUser() currentUser: IUserAttached
+    @currentUser() currentUser: IUserAttached,
+    @queryParam(PARAM_WITH_TASKS) withTasks = false
   ): Promise<OkResult> {
+    if (withTasks) {
+      const todoLists = await this.todoListService.getTodoListsWithTasksForUser(
+        currentUser.id
+      );
+
+      return this.ok(todoLists);
+    }
+
     const todoLists = await this.todoListService.getTodoListsForUser(
       currentUser.id
     );

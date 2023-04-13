@@ -4,6 +4,7 @@ import {
   TodoListCollectionType,
 } from "dbSchemas/todoList.schema";
 import { inject, injectable } from "inversify";
+import { TodoListsWithTasksDto } from "linked-models/todoList/todoList.dto";
 import {
   ITodoList,
   ITodoListAttached,
@@ -47,6 +48,20 @@ export class TodoListService {
     const uniqueTodoLists = [...new Set(todoLists)];
 
     return uniqueTodoLists.map((td) => mapTodoListToAttachedTodoList(td));
+  }
+
+  public async getTodoListsWithTasksForUser(
+    userId: string
+  ): Promise<TodoListsWithTasksDto[]> {
+    const todoLists = await this.getTodoListsForUser(userId);
+    const todoListIDs = todoLists.map((td) => td.id);
+
+    const tasks = await this.taskService.getTasksByTodoListIDs(todoListIDs);
+
+    return todoLists.map((td) => ({
+      ...td,
+      tasks: tasks.filter((t) => t.todoListId === td.id),
+    }));
   }
 
   public async createTodoList(
