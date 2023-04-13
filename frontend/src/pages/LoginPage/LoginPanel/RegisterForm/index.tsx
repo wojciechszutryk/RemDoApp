@@ -3,7 +3,6 @@ import { Button } from "atomicComponents/atoms/Button";
 import { TextField } from "atomicComponents/atoms/TextField";
 import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
 import { useRegisterUserMutation } from "framework/authentication/mutations/useRegisterUser.mutation";
-import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translationKeys";
 import { IRegisterUserDTO } from "linked-models/user/user.dto";
@@ -28,7 +27,6 @@ const RegisterContent = ({
 }: Props): JSX.Element => {
   const { t } = useTranslation();
   const { setSnackbar } = useSnackbar();
-  const { setCurrentUser } = useCurrentUser();
   const RegisterUserMutation = useRegisterUserMutation();
   const navigate = useNavigate();
   const {
@@ -66,8 +64,7 @@ const RegisterContent = ({
     }
 
     RegisterUserMutation.mutate(data, {
-      onSuccess: (data) => {
-        setCurrentUser(data);
+      onSuccess: () => {
         navigate("/reminders");
         setSnackbar({ message: t(TranslationKeys.LoginSuccess) });
       },
@@ -76,8 +73,6 @@ const RegisterContent = ({
           message: error.response?.data || error.message,
           severity: "error",
         });
-
-        setCurrentUser(undefined);
       },
     });
   };

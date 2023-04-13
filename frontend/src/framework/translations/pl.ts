@@ -26,4 +26,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.InvalidCredentials]: "niepoprawne dane, spróbuj ponownie",
 
   [TranslationKeys.PageTitleFeatures]: " - funkcje",
+
+  [TranslationKeys.PageTitleReminders]: "Reminders",
+
+  [TranslationKeys.PageTitleTodoLists]: "TodoLists",
 };

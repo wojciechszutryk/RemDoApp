@@ -3,10 +3,11 @@ import { StyledWave } from "atomicComponents/atoms/AnimatedWave";
 
 export const StyledHeaderBottomAnimation = styled(StyledWave)(({ theme }) => ({
   opacity: 1,
-  transform: "rotate(180deg) scaleY(0.1)",
-  backgroundColor: theme.palette.secondary.dark,
-  bottom: "45vh",
+  transform: "scaleY(0.15)",
+  bottom: "54vh",
+  backgroundColor: "transparent",
   "&::before": {
+    backgroundColor: theme.palette.secondary.dark,
     animationDuration: "15s",
   },
   "&::after": {
@@ -21,11 +22,10 @@ export const StyledHeaderWrapper = styled("div")({
   width: "100%",
 });
 
-export const StyledHeaderContentWrapper = styled("div")(({ theme }) => ({
-  backgroundColor: theme.palette.secondary.dark,
+export const StyledHeaderContentWrapper = styled("div")({
   height: "60px",
   display: "flex",
-  justifyContent: "space-between",
+  justifyContent: "center",
   alignContent: "center",
   alignItems: "center",
-}));
+});

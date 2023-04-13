@@ -3,7 +3,6 @@ import { Button } from "atomicComponents/atoms/Button";
 import { TextField } from "atomicComponents/atoms/TextField";
 import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
 import { useLoginUserMutation } from "framework/authentication/mutations/useLoginUser.mutation";
-import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translationKeys";
 import { Dispatch, memo, SetStateAction } from "react";
@@ -25,7 +24,6 @@ interface Props extends LoginPanelProps {
 const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
   const { t } = useTranslation();
   const { setSnackbar } = useSnackbar();
-  const { setCurrentUser } = useCurrentUser();
   const loginUserMutation = useLoginUserMutation();
   const navigate = useNavigate();
   const {
@@ -47,8 +45,7 @@ const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
     }
 
     loginUserMutation.mutate(data, {
-      onSuccess: (data) => {
-        setCurrentUser(data);
+      onSuccess: () => {
         navigate("/reminders");
         setSnackbar({ message: t(TranslationKeys.LoginSuccess) });
       },
@@ -57,8 +54,6 @@ const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
           message: error.response?.data || error.message,
           severity: "error",
         });
-
-        setCurrentUser(undefined);
       },
     });
   };

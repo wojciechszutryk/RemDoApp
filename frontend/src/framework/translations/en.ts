@@ -25,4 +25,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.InvalidCredentials]: "Invalid credentials, try again",
 
   [TranslationKeys.PageTitleFeatures]: " - funkcje",
+
+  [TranslationKeys.PageTitleReminders]: "Przypomnienia",
+
+  [TranslationKeys.PageTitleTodoLists]: "Listy zadań",
 };
