@@ -1,14 +1,16 @@
 import { AxiosError } from "axios";
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
-import { IRegisterUserDTO } from "linked-models/user/user.dto";
-import { IUserAttached } from "linked-models/user/user.model";
+import {
+  ILoginUserResponseDTO,
+  IRegisterUserDTO,
+} from "linked-models/user/user.dto";
 import { URL_REGISTER, URL_USERS } from "linked-models/user/user.urls";
 import { useMutation, UseMutationResult } from "react-query";
 import { useCurrentUser } from "../useCurrentUser";
 
 export const useRegisterUserMutation = (): UseMutationResult<
-  IUserAttached,
+  ILoginUserResponseDTO,
   AxiosError<string>,
   IRegisterUserDTO,
   unknown
@@ -19,14 +21,15 @@ export const useRegisterUserMutation = (): UseMutationResult<
 
   const registerUser = async (
     userData: IRegisterUserDTO
-  ): Promise<IUserAttached> => {
-    return await apiPost<IRegisterUserDTO, IUserAttached>(url, userData).then(
-      (res) => res.data
-    );
+  ): Promise<ILoginUserResponseDTO> => {
+    return await apiPost<IRegisterUserDTO, ILoginUserResponseDTO>(
+      url,
+      userData
+    ).then((res) => res.data);
   };
 
   return useMutation((userData: IRegisterUserDTO) => registerUser(userData), {
-    onSuccess: (user: IUserAttached) => {
+    onSuccess: (user: ILoginUserResponseDTO) => {
       setCurrentUser(user);
     },
   });
