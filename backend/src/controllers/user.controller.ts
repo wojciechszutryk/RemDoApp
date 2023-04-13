@@ -58,6 +58,6 @@ export class UserController extends BaseHttpController {
       return this.json("Invalid Credentials", 400);
     }
 
-    return this.ok(user);
+    return this.ok(signedUser);
   }
 }
