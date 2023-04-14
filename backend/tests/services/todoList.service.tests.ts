@@ -65,9 +65,10 @@ describe(`TodoList service`, () => {
   it(`should return todoLists that are owned by user or user is assigned to`, async () => {
     const todoLists = await todoListService.getTodoListsForUser(testUserId);
 
+    const todoListNames = todoLists.map((todoList) => todoList.name);
     expect(todoLists.length).toEqual(2);
-    expect(todoLists[0]?.name).toEqual(mockedTodoList.name);
-    expect(todoLists[1]?.name).toEqual("todoList2");
+    expect(todoListNames).toContain(mockedTodoList.name);
+    expect(todoListNames).toContain("todoList2");
   });
 
   it(`should create and return new todoList`, async () => {
