@@ -6,7 +6,6 @@
 }
 
 body {
-  color: var(--colors-text-main);
   overflow-y: overlay;
 }
 
@@ -159,7 +158,7 @@ a {
 /* Track */
 ::-webkit-scrollbar-track {
   border-radius: 0;
-  background: var(--colors-primary-light);
+  background: #ebeff0;
   box-shadow: inset 0px 0px 11px -7px rgba(0, 0, 0, 0.4);
 }
 
@@ -167,20 +166,20 @@ a {
 ::-webkit-scrollbar-thumb {
   border-radius: 3px;
   transition: all 0.1s;
-  background: var(--colors-primary-main);
+  background: #95a7b0;
   opacity: 0.7;
   cursor: grab;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--colors-primary-strong);
+  background: #88959b;
   opacity: 0.9;
 }
 
 /* Handle on click */
 ::-webkit-scrollbar-thumb:active {
-  background: var(--colors-primary-strong);
+  background: #88959b;
 }
 
 body[data-theme="todoListLight"] {
