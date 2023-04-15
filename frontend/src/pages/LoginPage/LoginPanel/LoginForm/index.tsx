@@ -3,6 +3,7 @@ import { Button } from "atomicComponents/atoms/Button";
 import { TextField } from "atomicComponents/atoms/TextField";
 import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
 import { useLoginUserMutation } from "framework/authentication/mutations/useLoginUser.mutation";
+import { Pages } from "framework/routing/pages";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translationKeys";
 import { Dispatch, memo, SetStateAction } from "react";
@@ -46,7 +47,7 @@ const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
 
     loginUserMutation.mutate(data, {
       onSuccess: () => {
-        navigate("/reminders");
+        navigate(Pages.RemindersPage.path);
         setSnackbar({ message: t(TranslationKeys.LoginSuccess) });
       },
       onError: (error) => {
