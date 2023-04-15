@@ -1,23 +1,19 @@
-import { Dialog } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
+import { Dialog } from "atomicComponents/atoms/Dialog";
 import { TextField } from "atomicComponents/atoms/TextField";
+import { useDialogs } from "framework/dialogs";
 import { memo, useState } from "react";
 import { useCreateTaskMutation } from "./mutations/createTask.mutation";
-import { useCreateTodoListMutation } from "./mutations/createTodoList.mutation";
 import { useGetUserTodoListsWithTasksQuery } from "./queries/getUserTodoListsWithTasks.query";
 
 const TodoListsPage = (): JSX.Element => {
+  const { dialogsActions } = useDialogs();
   const getUserTodoListsWithTasksQuery = useGetUserTodoListsWithTasksQuery();
   const createTaskMutation = useCreateTaskMutation();
-  const createTodoListMutation = useCreateTodoListMutation();
-
-  const [creatingTodoList, setCreatingTodoList] = useState(false);
   const [creatingTask, setCreatingTask] = useState(false);
 
   const [currentTodoListId, setCurrentTodoListId] = useState("");
   const [newTaskText, setNewTaskText] = useState("");
-
-  const [newTodoListName, setNewTodoListName] = useState("");
 
   const handleOpenCreateTaskDialog = (todoListId: string) => {
     setCurrentTodoListId(todoListId);
@@ -34,15 +30,7 @@ const TodoListsPage = (): JSX.Element => {
   };
 
   const handleOpenCreateTodoListDialog = () => {
-    setNewTodoListName("");
-    setCreatingTodoList(true);
-  };
-
-  const handleSubmitTodoList = async () => {
-    await createTodoListMutation.mutateAsync({
-      name: newTodoListName,
-    });
-    setCreatingTodoList(false);
+    dialogsActions.updateTodoListDialog({ visible: true });
   };
 
   return (
@@ -67,12 +55,6 @@ const TodoListsPage = (): JSX.Element => {
       <Dialog open={creatingTask}>
         <TextField onChange={(e) => setNewTaskText(e.target.value)} />
         <Button onClick={handleSubmitTask}>Create Task</Button>
-      </Dialog>
-      <Dialog open={creatingTodoList}>
-        <TextField
-          onChange={(e) => setNewTodoListName(e.target.value)}
-        ></TextField>
-        <Button onClick={handleSubmitTodoList}>Create TodoList</Button>
       </Dialog>
     </div>
   );

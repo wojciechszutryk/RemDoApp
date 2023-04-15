@@ -1,4 +1,5 @@
 import { Header } from "atomicComponents/organisms/Header";
+import Dialogs from "framework/dialogs/components";
 import { memo, useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { StyledPageBackground, StyledPageContentWrapper } from "./styles";
@@ -21,6 +22,7 @@ const PageTemplate = (): JSX.Element => {
       <StyledPageContentWrapper contentHidden={!contentVisible}>
         <Outlet />
       </StyledPageContentWrapper>
+      <Dialogs />
     </StyledPageBackground>
   );
 };
