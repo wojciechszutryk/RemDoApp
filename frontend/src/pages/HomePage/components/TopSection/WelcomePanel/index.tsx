@@ -1,3 +1,4 @@
+import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translationKeys";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +19,7 @@ export const WelcomePanel = (): JSX.Element => {
       <StyledDescription>
         {t(TranslationKeys.WelcomeTextDescription)}
       </StyledDescription>
-      <StyledButton onClick={() => navigate("features")}>
+      <StyledButton onClick={() => navigate(Pages.FeaturesPage.path)}>
         {t(TranslationKeys.GoToFeaturesButtonText)}
       </StyledButton>
     </Wrapper>

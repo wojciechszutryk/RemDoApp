@@ -1,5 +1,5 @@
 import PageTemplate from "atomicComponents/templates/PageTemplate";
-import useSetInitialTheme from "framework/theme/useSetInitialTheme";
+import { Pages } from "framework/routing/pages";
 import "framework/translations/config";
 import { TranslationKeys } from "framework/translations/translationKeys";
 import { lazy, Suspense, useLayoutEffect } from "react";
@@ -12,8 +12,6 @@ const RemindersPage = lazy(() => import("pages/RemindersPage"));
 const TodoListsPage = lazy(() => import("pages/TodoListsPage"));
 
 const App = (): JSX.Element => {
-  useSetInitialTheme();
-
   const { t } = useTranslation();
 
   useLayoutEffect(() => {
@@ -25,7 +23,7 @@ const App = (): JSX.Element => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/home" element={<PageTemplate />}>
+          <Route path={Pages.HomePage.path} element={<PageTemplate />}>
             <Route
               index
               element={
@@ -35,7 +33,7 @@ const App = (): JSX.Element => {
               }
             />
           </Route>
-          <Route path="/login" element={<PageTemplate />}>
+          <Route path={Pages.LoginPage.path} element={<PageTemplate />}>
             <Route
               index
               element={
@@ -45,7 +43,7 @@ const App = (): JSX.Element => {
               }
             />
           </Route>
-          <Route path="/register" element={<PageTemplate />}>
+          <Route path={Pages.RegisterPage.path} element={<PageTemplate />}>
             <Route
               index
               element={
@@ -55,7 +53,7 @@ const App = (): JSX.Element => {
               }
             />
           </Route>
-          <Route path="/reminders" element={<PageTemplate />}>
+          <Route path={Pages.RemindersPage.path} element={<PageTemplate />}>
             <Route
               index
               element={
@@ -65,7 +63,7 @@ const App = (): JSX.Element => {
               }
             />
           </Route>
-          <Route path="/todoLists" element={<PageTemplate />}>
+          <Route path={Pages.TodoListsPage.path} element={<PageTemplate />}>
             <Route
               index
               element={

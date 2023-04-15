@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
 import { TextField } from "atomicComponents/atoms/TextField";
+import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translationKeys";
 import { ButtonsSocial } from "pages/HomePage/components/TopSection/UserPanel/ButtonsSocial";
 import { Separator } from "pages/HomePage/components/TopSection/UserPanel/Separator";
@@ -29,13 +30,23 @@ export const UserPanel = (): JSX.Element => {
         type="email"
       />
       <Button
-        onClick={() => navigate(email ? "/login?email=" + email : "/login")}
+        onClick={() =>
+          navigate(
+            email
+              ? Pages.LoginPage.path + "?email=" + email
+              : Pages.LoginPage.path
+          )
+        }
       >
         {t(TranslationKeys.LoginButtonText)}
       </Button>
       <Button
         onClick={() =>
-          navigate(email ? "/reister?email=" + email : "/register")
+          navigate(
+            email
+              ? Pages.RegisterPage.path + "?email=" + email
+              : Pages.RegisterPage.path
+          )
         }
       >
         {t(TranslationKeys.RegisterButtonText)}

@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
+import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translationKeys";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,7 +20,7 @@ export const LoginPanel = ({ defaultEmail }: LoginPanelProps): JSX.Element => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentUser) navigate("/reminders");
+    if (currentUser) navigate(Pages.RemindersPage.path);
   }, [currentUser, navigate]);
 
   return (
