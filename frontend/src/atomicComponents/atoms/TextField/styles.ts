@@ -32,7 +32,7 @@ export const StyledTextField = styled(TextField)(({ theme }) => ({
   "& > div": {
     width: "100%",
     height: "100%",
-    ...(AnimatedWaveAltStyles as {}),
+    ...(AnimatedWaveAltStyles(theme) as {}),
   },
 
   "& .Mui-focused div:last-of-type > div > span": {

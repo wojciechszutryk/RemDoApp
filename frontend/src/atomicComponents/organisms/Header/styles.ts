@@ -28,4 +28,7 @@ export const StyledHeaderContentWrapper = styled("div")({
   justifyContent: "center",
   alignContent: "center",
   alignItems: "center",
+  "& > button": {
+    zIndex: 1,
+  },
 });

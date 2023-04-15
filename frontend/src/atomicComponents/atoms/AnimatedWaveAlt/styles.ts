@@ -1,6 +1,8 @@
+import { Theme } from "@mui/material";
+
 const numOfBlobs = 4;
 
-export const AnimatedWaveAltStyles = {
+export const AnimatedWaveAltStyles = (theme: Theme) => ({
   zIndex: 1,
   position: "relative",
   textAlign: "center",
@@ -17,7 +19,7 @@ export const AnimatedWaveAltStyles = {
     top: 0,
     width: "100%",
     height: "100%",
-    border: `2px solid var(--colors-primary-text)`,
+    border: `2px solid ${theme.palette.primary.contrastText}`,
     borderRadius: "30px",
   },
   "&:after": {
@@ -32,7 +34,7 @@ export const AnimatedWaveAltStyles = {
     borderRadius: "30px",
   },
   "&:hover": {
-    color: "var(--colors-primary-light)",
+    color: theme.palette.primary.light,
     "& > div:last-of-type > div > span": {
       transform: "translateZ(0) scale(1.7)",
       "@supports (filter: url('#goo'))": {
@@ -54,7 +56,7 @@ export const AnimatedWaveAltStyles = {
     width: "100%",
     height: "100%",
     borderRadius: "30px",
-    background: "var(--colors-primary-light)",
+    background: theme.palette.primary.light,
     "& > div": {
       position: "relative",
       display: "block",
@@ -65,7 +67,7 @@ export const AnimatedWaveAltStyles = {
         top: "2px",
         width: `calc(100% / ${numOfBlobs})`,
         height: "100%",
-        background: "var(--colors-primary-text)",
+        background: theme.palette.primary.contrastText,
         borderRadius: "100%",
         transform: "translate3d(0,150%,0) scale(1.7)",
         transition: "transform 0.45s",
@@ -91,4 +93,4 @@ export const AnimatedWaveAltStyles = {
       },
     },
   },
-};
+});

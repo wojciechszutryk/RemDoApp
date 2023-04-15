@@ -19,7 +19,7 @@ export const StyledButton = styled(ButtonUnstyled, {
   padding: "20px 46px",
   color: theme.palette.primary.contrastText,
 
-  ...(AnimatedWaveAltStyles as {}),
+  ...(AnimatedWaveAltStyles(theme) as {}),
 
   ":hover": {
     backgroundColor: theme.palette.primary.light,
