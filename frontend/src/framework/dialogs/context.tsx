@@ -11,7 +11,6 @@ export const initialState = {
 
 export const Context = createContext<BaseContextProps & ContextProps>({
   dialogsState: initialState,
-  dialogsDispatch: () => null,
   dialogsActions: {
     updateTodoListDialog: () => null,
   },

@@ -19,7 +19,6 @@ function DialogsProvider({ children }: Props): JSX.Element {
 
   const value = {
     dialogsState,
-    dialogsDispatch,
     dialogsActions,
     initialized: true,
   };
