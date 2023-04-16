@@ -24,9 +24,12 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.LoginSuccess]: "Logged in successfully.",
   [TranslationKeys.InvalidCredentials]: "Invalid credentials, try again",
 
-  [TranslationKeys.PageTitleFeatures]: " - funkcje",
+  [TranslationKeys.PageTitleFeatures]: " - features",
 
-  [TranslationKeys.PageTitleReminders]: "Przypomnienia",
+  [TranslationKeys.PageTitleReminders]: "Reminders",
 
-  [TranslationKeys.PageTitleTodoLists]: "Listy zadań",
+  [TranslationKeys.PageTitleTodoLists]: "TodoLists",
+  [TranslationKeys.TodoListDialogHeader]: "Create new todo list",
+  [TranslationKeys.TodoListDialogInputTitle]: "List title",
+  [TranslationKeys.TodoListDialogButton]: "Save",
 };

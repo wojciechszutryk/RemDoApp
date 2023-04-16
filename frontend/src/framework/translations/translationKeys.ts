@@ -27,4 +27,7 @@ export enum TranslationKeys {
   PageTitleReminders = "PageTitleReminders",
 
   PageTitleTodoLists = "PageTitleTodoLists",
+  TodoListDialogHeader = "TodoListDialogHeader",
+  TodoListDialogInputTitle = "TodoListDialogInputTitle",
+  TodoListDialogButton = "TodoListDialogButton",
 }

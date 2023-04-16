@@ -1,5 +1,5 @@
 import { Button } from "atomicComponents/atoms/Button";
-import { Dialog } from "atomicComponents/atoms/Dialog";
+import Dialog from "atomicComponents/atoms/Dialog";
 import { TextField } from "atomicComponents/atoms/TextField";
 import { useDialogs } from "framework/dialogs";
 import { memo, useState } from "react";

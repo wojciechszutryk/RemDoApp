@@ -30,4 +30,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PageTitleReminders]: "Reminders",
 
   [TranslationKeys.PageTitleTodoLists]: "TodoLists",
+  [TranslationKeys.TodoListDialogHeader]: "Utwórz nową listę zadań",
+  [TranslationKeys.TodoListDialogInputTitle]: "Tytuł listy",
+  [TranslationKeys.TodoListDialogButton]: "Zapisz",
 };
