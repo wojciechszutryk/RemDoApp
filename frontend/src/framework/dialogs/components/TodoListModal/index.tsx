@@ -18,28 +18,31 @@ import { useTranslation } from "react-i18next";
 import { StyledForm } from "./styles";
 
 const TodoListModal = (): JSX.Element => {
-  const { t } = useTranslation();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<ITodoList>();
   const {
     dialogsState: {
       todoListDialog: {
         visible,
-        editTodoListData: { name, assignedOwners, assignedusers },
+        editTodoListData: { name, assignedOwners, assignedUsers } = {},
       },
     },
     dialogsActions: { updateTodoListDialog },
   } = useDialogs();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ITodoList>({
+    defaultValues: { name, assignedOwners, assignedUsers },
+  });
   const createTodoListMutation = useCreateTodoListMutation();
+  const editTodoListMutation = editTodoListMutation();
+  const { t } = useTranslation();
 
-  const handleSubmitTodoList = (data) => {
+  const onSubmit = (data: ITodoList) => {
     createTodoListMutation.mutate({
       name: newTodoListName,
     });
+
     updateTodoListDialog({ visible: false });
   };
 
@@ -48,7 +51,7 @@ const TodoListModal = (): JSX.Element => {
       open={visible}
       onClose={() => updateTodoListDialog({ visible: false })}
     >
-      <StyledForm onSubmit={handleSubmit(handleSubmitTodoList)}>
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <Typography variant="h4">
           {t(TranslationKeys.TodoListDialogHeader)}
         </Typography>
