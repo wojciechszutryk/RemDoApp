@@ -1,20 +1,32 @@
 import { StandardTextFieldProps } from "@mui/material";
 import { TextField } from "atomicComponents/atoms/TextField";
 import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
-import { Control, Controller, FieldErrors, FieldValues } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  FieldPath,
+  FieldValues,
+} from "react-hook-form";
 
-interface Props<T extends FieldValues> extends StandardTextFieldProps {
-  control?: Control<FieldValues, any> | undefined;
-  errors: FieldErrors<T>;
-  name: string;
+interface Props<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
+> extends Omit<StandardTextFieldProps, "name"> {
+  control?: Control<TFieldValues, any> | undefined;
+  errors?: FieldErrors<TFieldValues>;
+  name: TName;
 }
 
-export const ControlledTextField = <T extends FieldValues>({
+export const ControlledTextField = <
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>
+>({
   control,
   name,
   errors,
   ...otherProps
-}: Props<T>): JSX.Element => {
+}: Props<TFieldValues, TName>): JSX.Element => {
   return (
     <>
       <Controller
@@ -25,7 +37,7 @@ export const ControlledTextField = <T extends FieldValues>({
           <TextField onChange={onChange} value={value} {...otherProps} />
         )}
       />
-      {errors[name]?.message && (
+      {errors?.[name]?.message && (
         <ErrorText>{errors[name]?.message as string}</ErrorText>
       )}
     </>
