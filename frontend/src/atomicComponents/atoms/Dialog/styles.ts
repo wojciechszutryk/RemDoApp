@@ -1,13 +1,5 @@
 import { Dialog as MuiDialog, IconButton, styled } from "@mui/material";
 
-export const dialogWidths = {
-  xs: 320,
-  sm: 518,
-  md: 573,
-  lg: 618,
-  xl: 750,
-};
-
 export const StyledInnerWrapper = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.primary.light,
   padding: 10,
@@ -16,17 +8,8 @@ export const StyledInnerWrapper = styled("div")(({ theme }) => ({
 
   [theme.breakpoints.up("sm")]: {
     height: "auto",
-    padding: "32px 32px 40px 32px",
+    padding: "55px",
     borderRadius: "200px",
-  },
-  [theme.breakpoints.up("md")]: {
-    padding: "32px 44px 40px 44px",
-  },
-  [theme.breakpoints.up("lg")]: {
-    padding: "32px 56px 40px 56px",
-  },
-  [theme.breakpoints.up("xl")]: {
-    padding: "32px 64px 40px 64px",
   },
 }));
 
@@ -71,7 +54,7 @@ export const StyledDialog = styled(MuiDialog)(({ theme }) => ({
 
     [theme.breakpoints.up("sm")]: {
       top: "50%",
-      width: `${dialogWidths["sm"]}px`,
+      width: `518px`,
       minHeight: "fit-content",
       borderRadius: "200px 210px 200px 155px",
       transform: "rotate(5deg) translateY(-50%)",
@@ -81,14 +64,14 @@ export const StyledDialog = styled(MuiDialog)(({ theme }) => ({
     },
     [theme.breakpoints.up("md")]: {
       height: "auto",
-      width: `${dialogWidths["md"]}px`,
+      width: `573px`,
     },
     [theme.breakpoints.up("lg")]: {
-      width: `${dialogWidths["lg"]}px`,
+      width: `618px`,
     },
     [theme.breakpoints.up("xl")]: {
       height: "fit-content",
-      width: `${dialogWidths["xl"]}px`,
+      width: `750px`,
     },
   },
 }));

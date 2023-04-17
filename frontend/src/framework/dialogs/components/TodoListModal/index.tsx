@@ -1,47 +1,47 @@
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Typography,
-} from "@mui/material";
+import { AccordionDetails, AccordionSummary, Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
 import { TextField } from "atomicComponents/atoms/TextField";
+import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { useDialogs } from "framework/dialogs";
 import { TranslationKeys } from "framework/translations/translationKeys";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import { useCreateTodoListMutation } from "pages/TodoListsPage/mutations/createTodoList.mutation";
+import { useEditTodoListMutation } from "pages/TodoListsPage/mutations/editTodoList.mutation";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { StyledForm } from "./styles";
+import {
+  StyledAccordion,
+  StyledAutocomplete,
+  StyledExpandMoreIcon,
+  StyledForm,
+} from "./styles";
 
 const TodoListModal = (): JSX.Element => {
   const {
     dialogsState: {
-      todoListDialog: {
-        visible,
-        editTodoListData: { name, assignedOwners, assignedUsers } = {},
-      },
+      todoListDialog: { visible, editTodoListData },
     },
     dialogsActions: { updateTodoListDialog },
   } = useDialogs();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ITodoList>({
-    defaultValues: { name, assignedOwners, assignedUsers },
+  const { control, handleSubmit, setValue } = useForm<ITodoList>({
+    defaultValues: {
+      name: editTodoListData?.name || "",
+      assignedOwners: editTodoListData?.assignedOwners || [],
+      assignedUsers: editTodoListData?.assignedUsers || [],
+    },
   });
   const createTodoListMutation = useCreateTodoListMutation();
-  const editTodoListMutation = editTodoListMutation();
+  const editTodoListMutation = useEditTodoListMutation();
   const { t } = useTranslation();
 
   const onSubmit = (data: ITodoList) => {
-    createTodoListMutation.mutate({
-      name: newTodoListName,
-    });
+    console.log(data);
+
+    if (editTodoListData)
+      editTodoListMutation.mutate({ todoListId: editTodoListData.id, data });
+    else createTodoListMutation.mutate(data);
 
     updateTodoListDialog({ visible: false });
   };
@@ -55,28 +55,41 @@ const TodoListModal = (): JSX.Element => {
         <Typography variant="h4">
           {t(TranslationKeys.TodoListDialogHeader)}
         </Typography>
-        <TextField
+        <ControlledTextField
+          name={"name"}
+          control={control}
           placeholder={t(TranslationKeys.TodoListDialogInputTitle)}
-        ></TextField>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography>Accordion 1</Typography>
+        />
+        <StyledAccordion>
+          <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
+            <Typography>Accordion 1- add translation</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-            </Typography>
+            <Typography>Current owners - add translation</Typography>
+            <StyledAutocomplete
+              multiple
+              options={[]}
+              onChange={(_, value) => {
+                setValue("assignedOwners", value);
+              }}
+              defaultValue={editTodoListData?.assignedOwners || []}
+              freeSolo
+              renderInput={(params) => <TextField {...params} />}
+            />
+            <Typography>Current users - add translation</Typography>
+            <StyledAutocomplete
+              multiple
+              options={[]}
+              onChange={(_, value) => {
+                setValue("assignedUsers", value);
+              }}
+              defaultValue={editTodoListData?.assignedOwners || []}
+              freeSolo
+              renderInput={(params) => <TextField {...params} />}
+            />
           </AccordionDetails>
-        </Accordion>
-        <Button onClick={handleSubmitTodoList}>
-          {t(TranslationKeys.TodoListDialogHeader)}
-        </Button>
+        </StyledAccordion>
+        <Button type="submit">{t(TranslationKeys.TodoListDialogHeader)}</Button>
       </StyledForm>
     </Dialog>
   );
