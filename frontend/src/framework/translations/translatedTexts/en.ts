@@ -26,7 +26,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
 
   [TranslationKeys.PageTitleFeatures]: " - features",
 
-  [TranslationKeys.PageTitleReminders]: "Reminders",
+  [TranslationKeys.PageTitleReminders]: " - reminders",
 
   [TranslationKeys.PageTitleTodoLists]: "TodoLists",
   [TranslationKeys.TodoListDialogHeader]: "Create new todo list",
