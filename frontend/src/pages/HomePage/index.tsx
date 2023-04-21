@@ -1,4 +1,4 @@
-import { TranslationKeys } from "framework/translations/translationKeys";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { memo, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 import FeaturesSection from "./components/FeaturesSection";

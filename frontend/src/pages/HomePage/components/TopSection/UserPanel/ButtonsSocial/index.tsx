@@ -1,6 +1,6 @@
 import GoogleIcon from "@mui/icons-material/Google";
 import { Button } from "atomicComponents/atoms/Button";
-import { TranslationKeys } from "framework/translations/translationKeys";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { useTranslation } from "react-i18next";
 import { Wrapper } from "./styles";
 

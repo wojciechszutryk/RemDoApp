@@ -14,7 +14,8 @@ function CurrentUserProvider({ children }: Props): JSX.Element {
 
   const setCurrentUser = (user: ILoginUserResponseDTO | undefined) => {
     setCurrentUserState(user);
-    if (user) localStorage.setItem("token", user.token);
+    if (user) localStorage.setItem("todoListToken", user.token);
+    else localStorage.removeItem("todoListToken");
   };
 
   const value = {

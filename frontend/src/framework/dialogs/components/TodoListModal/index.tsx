@@ -4,7 +4,7 @@ import Dialog from "atomicComponents/atoms/Dialog";
 import { TextField } from "atomicComponents/atoms/TextField";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { useDialogs } from "framework/dialogs";
-import { TranslationKeys } from "framework/translations/translationKeys";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import { useCreateTodoListMutation } from "pages/TodoListsPage/mutations/createTodoList.mutation";
 import { useEditTodoListMutation } from "pages/TodoListsPage/mutations/editTodoList.mutation";
