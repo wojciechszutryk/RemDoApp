@@ -5,9 +5,6 @@ const numOfBlobs = 4;
 export const AnimatedWaveAltStyles = (theme: Theme) => ({
   zIndex: 1,
   position: "relative",
-  textAlign: "center",
-  textTransform: "uppercase",
-  fontWeight: "bold",
   backgroundColor: "transparent",
   outline: "none",
   transition: "color 0.5s",
