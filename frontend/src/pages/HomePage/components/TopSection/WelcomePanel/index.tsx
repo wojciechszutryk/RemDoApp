@@ -1,5 +1,5 @@
 import { Pages } from "framework/routing/pages";
-import { TranslationKeys } from "framework/translations/translationKeys";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import {

@@ -5,7 +5,7 @@ import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
 import { useLoginUserMutation } from "framework/authentication/mutations/useLoginUser.mutation";
 import { Pages } from "framework/routing/pages";
 import { useSnackbar } from "framework/snackBar";
-import { TranslationKeys } from "framework/translations/translationKeys";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { Dispatch, memo, SetStateAction } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
