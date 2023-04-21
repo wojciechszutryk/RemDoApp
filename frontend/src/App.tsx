@@ -1,7 +1,7 @@
 import PageTemplate from "atomicComponents/templates/PageTemplate";
 import { Pages } from "framework/routing/pages";
-import "framework/translations/config";
-import { TranslationKeys } from "framework/translations/translationKeys";
+import "framework/translations/i18.config/resources";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { lazy, Suspense, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Route, Routes } from "react-router-dom";

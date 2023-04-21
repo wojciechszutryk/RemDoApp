@@ -8,7 +8,7 @@ import { TodoListTheme } from "../models/theme.const";
 import { darkTheme } from "../palletes/dark";
 import { lightTheme } from "../palletes/light";
 import { Context } from "./context";
-import { ContextProps } from "./useCurrentUser.models";
+import { ContextProps } from "./models";
 
 interface Props {
   children: ReactNode;

@@ -6,6 +6,7 @@ import { DialogsProvider } from "framework/dialogs";
 import { SnackbarProvider } from "framework/snackBar";
 import { Snackbar } from "framework/snackBar/components/Snackbar";
 import { ThemeProvider } from "framework/theme/useTheme";
+import { LocalisationProvider } from "framework/translations/useLocalisation.context";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -17,19 +18,21 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <SnackbarProvider>
-            <DialogsProvider>
-              <CurrentUserProvider>
-                <App />
-                <Snackbar />
-              </CurrentUserProvider>
-            </DialogsProvider>
-          </SnackbarProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </LocalizationProvider>
+    <LocalisationProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <SnackbarProvider>
+              <DialogsProvider>
+                <CurrentUserProvider>
+                  <App />
+                  <Snackbar />
+                </CurrentUserProvider>
+              </DialogsProvider>
+            </SnackbarProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </LocalizationProvider>
+    </LocalisationProvider>
   </React.StrictMode>
 );
