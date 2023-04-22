@@ -69,7 +69,7 @@ const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
             onChange={onChange}
             value={value}
             type="email"
-            placeholder={t(TranslationKeys.LoginPanelInputEmailLabel)}
+            placeholder={t(TranslationKeys.Email)}
           />
         )}
       />
@@ -82,7 +82,7 @@ const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
             onChange={onChange}
             value={value}
             type="password"
-            placeholder={t(TranslationKeys.LoginPanelInputPasswordLabel)}
+            placeholder={t(TranslationKeys.Password)}
           />
         )}
       />
