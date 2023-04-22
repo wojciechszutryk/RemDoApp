@@ -1,4 +1,4 @@
-import { Menu, styled, Switch } from "@mui/material";
+import { FormControlLabel, Menu, styled, Switch } from "@mui/material";
 
 export const MenuPaperStyles = {};
 
@@ -15,6 +15,10 @@ export const StyledUserMenu = styled(Menu)(({ theme }) => ({
     },
   },
 }));
+
+export const StyledFormControlLabel = styled(FormControlLabel)({
+  width: "100%",
+});
 
 export const StyledThemeSwitch = styled(Switch)(({ theme }) => ({
   width: 62,

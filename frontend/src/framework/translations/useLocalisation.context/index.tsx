@@ -2,6 +2,7 @@ import i18next from "i18next";
 import { ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { initReactI18next, useTranslation } from "react-i18next";
 import { resources } from "../i18.config/resources";
+import { TodoListPrefferedLanguageLSKey } from "../models/translations.const";
 import { TodoListLanguages } from "../models/translations.model";
 import { Context } from "./context";
 import { ContextProps } from "./models";
@@ -18,8 +19,9 @@ i18next.use(initReactI18next).init({
 
 function LocalisationProvider({ children }: Props): JSX.Element {
   const [language, setLanguage] = useState<TodoListLanguages>(
-    (localStorage.getItem("todoListLanguage") as TodoListLanguages) ||
-      TodoListLanguages.en
+    (localStorage.getItem(
+      TodoListPrefferedLanguageLSKey
+    ) as TodoListLanguages) || TodoListLanguages.en
   );
   const { i18n } = useTranslation();
 
@@ -29,7 +31,7 @@ function LocalisationProvider({ children }: Props): JSX.Element {
         ? TodoListLanguages.pl
         : TodoListLanguages.en;
     setLanguage(newLanguage);
-    localStorage.setItem("todoListLanguage", newLanguage);
+    localStorage.setItem(TodoListPrefferedLanguageLSKey, newLanguage);
     i18n.changeLanguage(newLanguage);
   }, [i18n, language]);
 

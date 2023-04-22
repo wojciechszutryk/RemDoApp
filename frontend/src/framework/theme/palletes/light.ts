@@ -1,14 +1,14 @@
 export const lightTheme = {
   primary: {
-    light: "#395561",
-    main: "#263941",
-    dark: "#203843",
-    contrastText: "#ffffff",
+    light: "#ebeff0",
+    main: "#95a7b0",
+    dark: "#88959b",
+    contrastText: "#3f606e",
   },
   secondary: {
-    light: "#b3804e",
-    main: "#ce8338",
-    dark: "#a25f1d",
-    contrastText: "#203843",
+    light: "#517a8c",
+    main: "#3f606f",
+    dark: "#2c4c5b",
+    contrastText: "#ffffff",
   },
 };

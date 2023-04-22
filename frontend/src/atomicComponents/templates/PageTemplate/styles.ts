@@ -2,18 +2,22 @@ import { styled } from "@mui/material";
 import { StyledWave } from "atomicComponents/atoms/AnimatedWave";
 
 export const StyledPageBackground = styled(StyledWave, {
-  shouldForwardProp: (prop) => prop !== "contentVisible",
-})<{ contentVisible?: boolean }>(({ contentVisible }) => ({
-  "&:before": {
-    transition: "bottom 0.5s ease-in-out",
-    bottom: contentVisible ? "15%" : "150%",
-  },
+  shouldForwardProp: (prop) => prop !== "contentVisible" && prop !== "imageUrl",
+})<{ contentVisible?: boolean; imageUrl?: string }>(
+  ({ contentVisible, imageUrl }) => ({
+    backgroundImage: `url(${imageUrl})`,
+    zIndex: 1,
+    "&:before": {
+      transition: "bottom 0.5s ease-in-out",
+      bottom: contentVisible ? "15%" : "150%",
+    },
 
-  "&:after": {
-    transition: "bottom 0.5s ease-in-out",
-    bottom: contentVisible ? "12%" : "150%",
-  },
-}));
+    "&:after": {
+      transition: "bottom 0.5s ease-in-out",
+      bottom: contentVisible ? "12%" : "150%",
+    },
+  })
+);
 
 export const StyledPageContentWrapper = styled("div", {
   shouldForwardProp: (prop) => prop !== "contentHidden",

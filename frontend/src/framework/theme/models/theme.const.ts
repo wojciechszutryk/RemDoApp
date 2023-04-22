@@ -1,1 +1,1 @@
-export const TodoListTheme = "TodoListTheme";
+export const TodoListThemeLSKey = "TodoListTheme";
