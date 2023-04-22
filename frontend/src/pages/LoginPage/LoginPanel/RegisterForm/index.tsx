@@ -28,7 +28,7 @@ const RegisterContent = ({
 }: Props): JSX.Element => {
   const { t } = useTranslation();
   const { setSnackbar } = useSnackbar();
-  const RegisterUserMutation = useRegisterUserMutation();
+  const registerUserMutation = useRegisterUserMutation();
   const navigate = useNavigate();
   const {
     control,
@@ -44,7 +44,9 @@ const RegisterContent = ({
     }
 
     if (!data.displayName) {
-      setError("email", { message: t(TranslationKeys.EmailRequired) });
+      setError("displayName", {
+        message: t(TranslationKeys.DisplayNameRequired),
+      });
       return;
     }
 
@@ -64,7 +66,7 @@ const RegisterContent = ({
       });
     }
 
-    RegisterUserMutation.mutate(data, {
+    registerUserMutation.mutate(data, {
       onSuccess: () => {
         navigate(Pages.RemindersPage.path);
         setSnackbar({ message: t(TranslationKeys.LoginSuccess) });
@@ -88,7 +90,7 @@ const RegisterContent = ({
           <TextField
             onChange={onChange}
             value={value}
-            placeholder={t(TranslationKeys.LoginPanelInputEmailLabel)}
+            placeholder={t(TranslationKeys.Email)}
           />
         )}
       />
@@ -104,7 +106,7 @@ const RegisterContent = ({
             onChange={onChange}
             value={value}
             type="email"
-            placeholder={t(TranslationKeys.LoginPanelInputEmailLabel)}
+            placeholder={t(TranslationKeys.Email)}
           />
         )}
       />
@@ -118,7 +120,7 @@ const RegisterContent = ({
             onChange={onChange}
             value={value}
             type="password"
-            placeholder={t(TranslationKeys.LoginPanelInputPasswordLabel)}
+            placeholder={t(TranslationKeys.Password)}
           />
         )}
       />
@@ -134,7 +136,7 @@ const RegisterContent = ({
             onChange={onChange}
             value={value}
             type="password"
-            placeholder={t(TranslationKeys.LoginPanelInputPasswordRepeatLabel)}
+            placeholder={t(TranslationKeys.PasswordRepeat)}
           />
         )}
       />
@@ -142,7 +144,7 @@ const RegisterContent = ({
         <ErrorText>{errors.passwordRepeat.message}</ErrorText>
       )}
       <Button type="submit">
-        {RegisterUserMutation.isLoading && <CircularProgress size={"20px"} />}
+        {registerUserMutation.isLoading && <CircularProgress size={"20px"} />}
         {t(TranslationKeys.RegisterButtonText)}
       </Button>
       <Button

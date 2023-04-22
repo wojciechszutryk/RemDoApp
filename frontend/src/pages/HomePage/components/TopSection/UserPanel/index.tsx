@@ -22,7 +22,7 @@ export const UserPanel = (): JSX.Element => {
       <ButtonsSocial />
       <Separator />
       <TextField
-        placeholder={t(TranslationKeys.LoginPanelInputEmailLabel)}
+        placeholder={t(TranslationKeys.Email)}
         onChange={(e) => {
           setEmail(e.target.value);
         }}
