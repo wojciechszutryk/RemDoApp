@@ -4,7 +4,7 @@ import {
   ThemeProvider as MuiThemeProvider,
 } from "@mui/material";
 import { ReactNode, useContext, useMemo, useState } from "react";
-import { TodoListTheme } from "../models/theme.const";
+import { TodoListThemeLSKey } from "../models/theme.const";
 import { darkTheme } from "../palletes/dark";
 import { lightTheme } from "../palletes/light";
 import { Context } from "./context";
@@ -16,8 +16,8 @@ interface Props {
 
 function ThemeProvider({ children }: Props): JSX.Element {
   const [mode, setMode] = useState<PaletteMode>(
-    localStorage.getItem(TodoListTheme)
-      ? (localStorage.getItem(TodoListTheme) as PaletteMode)
+    localStorage.getItem(TodoListThemeLSKey)
+      ? (localStorage.getItem(TodoListThemeLSKey) as PaletteMode)
       : "light"
   );
   const muiTheme = useMemo(
@@ -34,11 +34,12 @@ function ThemeProvider({ children }: Props): JSX.Element {
   const changeTheme = () => {
     const newTheme = mode === "light" ? "dark" : "light";
     setMode(newTheme);
-    localStorage.setItem(TodoListTheme, newTheme);
+    localStorage.setItem(TodoListThemeLSKey, newTheme);
   };
 
   const value = {
     changeTheme,
+    theme: mode,
     initialized: true,
   };
 

@@ -24,7 +24,7 @@ export const StyledButton = styled(ButtonUnstyled, {
 
   ...(disabled
     ? {
-        opacity: 0.7,
+        // opacity: 0.7,
         cursor: "default",
       }
     : {

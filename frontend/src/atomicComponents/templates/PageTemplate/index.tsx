@@ -16,7 +16,10 @@ const PageTemplate = (): JSX.Element => {
   }, [location.pathname]);
 
   return (
-    <StyledPageBackground contentVisible={contentVisible}>
+    <StyledPageBackground
+      contentVisible={contentVisible}
+      imageUrl={`${process.env.PUBLIC_URL}/images/wave-doodles.png`}
+    >
       {/* <StyledBlur /> */}
       <Header />
       <StyledPageContentWrapper contentHidden={!contentVisible}>

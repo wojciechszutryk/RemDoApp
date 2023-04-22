@@ -1,7 +1,6 @@
 import { styled } from "@mui/material";
 
 export const StyledWave = styled("div")(({ theme }) => ({
-  opacity: "0.7",
   width: "100vw",
   height: "100vh",
   position: "relative",
