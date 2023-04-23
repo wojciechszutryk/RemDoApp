@@ -25,72 +25,72 @@ const App = (): JSX.Element => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path={Pages.HomePage.path} element={<PageTemplate />}>
-            <Route
-              index
-              element={
-                <Suspense fallback={false}>
+          <Route
+            path={Pages.HomePage.path}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
                   <HomePage />
-                </Suspense>
-              }
-            />
-          </Route>
-          <Route path={Pages.LoginPage.path} element={<PageTemplate />}>
-            <Route
-              index
-              element={
-                <Suspense fallback={false}>
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
+            path={Pages.LoginPage.path}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
                   <LoginPage />
-                </Suspense>
-              }
-            />
-          </Route>
-          <Route path={Pages.RegisterPage.path} element={<PageTemplate />}>
-            <Route
-              index
-              element={
-                <Suspense fallback={false}>
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
+            path={Pages.RegisterPage.path}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
                   <LoginPage />
-                </Suspense>
-              }
-            />
-          </Route>
-          <Route path={Pages.UserPage.path} element={<PageTemplate />}>
-            <Route
-              index
-              element={
-                <Suspense fallback={false}>
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
+            path={Pages.UserPage.path}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
                   <ProtectedPageWrapper>
                     <UserPage />
                   </ProtectedPageWrapper>
-                </Suspense>
-              }
-            />
-          </Route>
-          <Route path={Pages.RemindersPage.path} element={<PageTemplate />}>
-            <Route
-              index
-              element={
-                <Suspense fallback={false}>
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
+            path={Pages.RemindersPage.path}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
                   <ProtectedPageWrapper>
                     <RemindersPage />
                   </ProtectedPageWrapper>
-                </Suspense>
-              }
-            />
-          </Route>
-          <Route path={Pages.TodoListsPage.path} element={<PageTemplate />}>
-            <Route
-              index
-              element={
-                <Suspense fallback={false}>
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
+            path={Pages.TodoListsPage.path}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
                   <ProtectedPageWrapper>
                     <TodoListsPage />
                   </ProtectedPageWrapper>
-                </Suspense>
-              }
-            />
-          </Route>
+                </PageTemplate>
+              </Suspense>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>

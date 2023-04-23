@@ -43,6 +43,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.NewPasswordRepeatLabel]: "powtórz nowe hasło",
   [TranslationKeys.PasswordChanged]: "Ustawiono nowe hasło.",
   [TranslationKeys.ChangeDisplayName]: "Zmień nazwę użytkownika",
+  [TranslationKeys.ChangeAvatar]: "Zmień zdjęcie profilowe",
   [TranslationKeys.DispalyNameChanged]: "Zmieniono nazwę użytkownika.",
   [TranslationKeys.Save]: "Zapisz",
   [TranslationKeys.Logout]: "Wyloguj",

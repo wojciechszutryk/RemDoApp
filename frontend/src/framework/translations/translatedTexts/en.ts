@@ -42,6 +42,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.NewPasswordRepeatLabel]: "new password repeat",
   [TranslationKeys.PasswordChanged]: "New password set.",
   [TranslationKeys.ChangePassword]: "Change password",
+  [TranslationKeys.ChangeAvatar]: "Change avatar",
   [TranslationKeys.DispalyNameChanged]: "New display name set.",
   [TranslationKeys.ChangeDisplayName]: "Change display name",
   [TranslationKeys.Save]: "Save",
