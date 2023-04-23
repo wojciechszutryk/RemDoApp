@@ -8,6 +8,9 @@ export const Pages = {
   RegisterPage: {
     path: "/register",
   },
+  UserPage: {
+    path: "/user",
+  },
   LoginPage: {
     path: "/login",
   },

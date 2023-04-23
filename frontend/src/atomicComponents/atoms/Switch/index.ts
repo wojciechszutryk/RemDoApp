@@ -1,50 +1,49 @@
 import { styled, Switch as MuiSwitch } from "@mui/material";
 
-export const Switch = styled(MuiSwitch)(({ theme }) => ({
-  width: 42,
-  height: 26,
-  padding: 0,
-  "& .MuiSwitch-switchBase": {
-    padding: 0,
-    margin: 2,
-    transitionDuration: "300ms",
-    "&.Mui-checked": {
-      transform: "translateX(16px)",
-      color: "#fff",
-      "& + .MuiSwitch-track": {
-        backgroundColor: theme.palette.mode === "dark" ? "#2ECA45" : "#65C466",
-        opacity: 1,
-        border: 0,
+export const Switch = styled(MuiSwitch, {
+  shouldForwardProp: (prop) =>
+    prop !== "checkedBackgroundImage" && prop !== "uncheckedBackgroundImage",
+})<{ checkedBackgroundImage?: string; uncheckedBackgroundImage?: string }>(
+  ({ theme, checkedBackgroundImage, uncheckedBackgroundImage }) => ({
+    width: 62,
+    height: 34,
+    padding: 7,
+    "& .MuiSwitch-switchBase": {
+      margin: 1,
+      padding: 0,
+      transform: "translateX(6px)",
+      "&.Mui-checked": {
+        color: "#fff",
+        transform: "translateX(22px)",
+        "& .MuiSwitch-thumb:before": {
+          backgroundImage: checkedBackgroundImage,
+        },
+        "& + .MuiSwitch-track": {
+          opacity: 1,
+          backgroundColor: theme.palette.primary.main,
+        },
       },
-      "&.Mui-disabled + .MuiSwitch-track": {
-        opacity: 0.5,
+    },
+    "& .MuiSwitch-thumb": {
+      backgroundColor: theme.palette.secondary.main,
+      width: 32,
+      height: 32,
+      "&:before": {
+        content: "''",
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        left: 0,
+        top: 0,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundImage: uncheckedBackgroundImage,
       },
     },
-    "&.Mui-focusVisible .MuiSwitch-thumb": {
-      color: "#33cf4d",
-      border: "6px solid #fff",
+    "& .MuiSwitch-track": {
+      opacity: 1,
+      backgroundColor: theme.palette.primary.light,
+      borderRadius: 20 / 2,
     },
-    "&.Mui-disabled .MuiSwitch-thumb": {
-      color:
-        theme.palette.mode === "light"
-          ? theme.palette.grey[100]
-          : theme.palette.grey[600],
-    },
-    "&.Mui-disabled + .MuiSwitch-track": {
-      opacity: theme.palette.mode === "light" ? 0.7 : 0.3,
-    },
-  },
-  "& .MuiSwitch-thumb": {
-    boxSizing: "border-box",
-    width: 22,
-    height: 22,
-  },
-  "& .MuiSwitch-track": {
-    borderRadius: 26 / 2,
-    backgroundColor: theme.palette.mode === "light" ? "#E9E9EA" : "#39393D",
-    opacity: 1,
-    transition: theme.transitions.create(["background-color"], {
-      duration: 500,
-    }),
-  },
-}));
+  })
+);
