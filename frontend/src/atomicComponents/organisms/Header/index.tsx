@@ -5,7 +5,7 @@ import { TranslationKeys } from "framework/translations/translatedTexts/translat
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import HideOnScroll from "./components/HideOnScroll";
-import UserMenu from "./components/UserMenu";
+import SettingsMenu from "./components/SettingsMenu";
 import {
   StyledHeaderBottomAnimation,
   StyledHeaderContentWrapper,
@@ -47,7 +47,6 @@ export const Header = (): JSX.Element => {
               >
                 {t(TranslationKeys.PageTitleTodoLists)}
               </Button>
-              <UserMenu />
             </>
           ) : (
             <Button
@@ -59,6 +58,8 @@ export const Header = (): JSX.Element => {
                 t(TranslationKeys.RegisterButtonText)}
             </Button>
           )}
+
+          <SettingsMenu />
         </StyledHeaderContentWrapper>
         <StyledHeaderBottomAnimation />
       </StyledHeaderWrapper>

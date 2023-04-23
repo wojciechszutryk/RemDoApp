@@ -1,7 +1,9 @@
-import PageTemplate from "atomicComponents/templates/PageTemplate";
+import PageTemplate from "atomicComponents/molecules/PageTemplate";
+import { ProtectedPageWrapper } from "atomicComponents/organisms/ProtectedPageWrapper";
 import { Pages } from "framework/routing/pages";
 import "framework/translations/i18.config/resources";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
+import UserPage from "pages/UserPage";
 import { lazy, Suspense, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -53,12 +55,26 @@ const App = (): JSX.Element => {
               }
             />
           </Route>
+          <Route path={Pages.UserPage.path} element={<PageTemplate />}>
+            <Route
+              index
+              element={
+                <Suspense fallback={false}>
+                  <ProtectedPageWrapper>
+                    <UserPage />
+                  </ProtectedPageWrapper>
+                </Suspense>
+              }
+            />
+          </Route>
           <Route path={Pages.RemindersPage.path} element={<PageTemplate />}>
             <Route
               index
               element={
                 <Suspense fallback={false}>
-                  <RemindersPage />
+                  <ProtectedPageWrapper>
+                    <RemindersPage />
+                  </ProtectedPageWrapper>
                 </Suspense>
               }
             />
@@ -68,7 +84,9 @@ const App = (): JSX.Element => {
               index
               element={
                 <Suspense fallback={false}>
-                  <TodoListsPage />
+                  <ProtectedPageWrapper>
+                    <TodoListsPage />
+                  </ProtectedPageWrapper>
                 </Suspense>
               }
             />
