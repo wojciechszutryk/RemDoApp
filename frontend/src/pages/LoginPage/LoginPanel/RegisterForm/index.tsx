@@ -1,14 +1,14 @@
 import { CircularProgress } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
-import { TextField } from "atomicComponents/atoms/TextField";
 import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
+import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { useRegisterUserMutation } from "framework/authentication/mutations/useRegisterUser.mutation";
 import { Pages } from "framework/routing/pages";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IRegisterUserDTO } from "linked-models/user/user.dto";
 import { Dispatch, memo, SetStateAction } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { LoginPanelProps } from "..";
@@ -82,63 +82,35 @@ const RegisterContent = ({
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
-      <Controller
+      <ControlledTextField
         name={"displayName"}
         control={control}
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <TextField
-            onChange={onChange}
-            value={value}
-            placeholder={t(TranslationKeys.Email)}
-          />
-        )}
+        placeholder={t(TranslationKeys.DisplayName)}
       />
       {errors.displayName?.message && (
         <ErrorText>{errors.displayName.message}</ErrorText>
       )}
-      <Controller
+      <ControlledTextField
         name={"email"}
         control={control}
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <TextField
-            onChange={onChange}
-            value={value}
-            type="email"
-            placeholder={t(TranslationKeys.Email)}
-          />
-        )}
+        type="email"
+        placeholder={t(TranslationKeys.Email)}
       />
       {errors.email?.message && <ErrorText>{errors.email.message}</ErrorText>}
-      <Controller
+      <ControlledTextField
         name={"password"}
         control={control}
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <TextField
-            onChange={onChange}
-            value={value}
-            type="password"
-            placeholder={t(TranslationKeys.Password)}
-          />
-        )}
+        type="password"
+        placeholder={t(TranslationKeys.Password)}
       />
       {errors.password?.message && (
         <ErrorText>{errors.password.message}</ErrorText>
       )}
-      <Controller
+      <ControlledTextField
         name={"passwordRepeat"}
         control={control}
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <TextField
-            onChange={onChange}
-            value={value}
-            type="password"
-            placeholder={t(TranslationKeys.PasswordRepeat)}
-          />
-        )}
+        type="password"
+        placeholder={t(TranslationKeys.PasswordRepeat)}
       />
       {errors.passwordRepeat?.message && (
         <ErrorText>{errors.passwordRepeat.message}</ErrorText>

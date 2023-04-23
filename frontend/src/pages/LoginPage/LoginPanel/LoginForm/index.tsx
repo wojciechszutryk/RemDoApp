@@ -1,13 +1,13 @@
 import { CircularProgress } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
-import { TextField } from "atomicComponents/atoms/TextField";
 import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
+import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { useLoginUserMutation } from "framework/authentication/mutations/useLoginUser.mutation";
 import { Pages } from "framework/routing/pages";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { Dispatch, memo, SetStateAction } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { LoginPanelProps } from "..";
@@ -61,30 +61,18 @@ const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
-      <Controller
+      <ControlledTextField
         name={"email"}
         control={control}
-        render={({ field: { onChange, value } }) => (
-          <TextField
-            onChange={onChange}
-            value={value}
-            type="email"
-            placeholder={t(TranslationKeys.Email)}
-          />
-        )}
+        type="email"
+        placeholder={t(TranslationKeys.Email)}
       />
       {errors.email?.message && <ErrorText>{errors.email.message}</ErrorText>}
-      <Controller
+      <ControlledTextField
         name={"password"}
         control={control}
-        render={({ field: { onChange, value } }) => (
-          <TextField
-            onChange={onChange}
-            value={value}
-            type="password"
-            placeholder={t(TranslationKeys.Password)}
-          />
-        )}
+        type="password"
+        placeholder={t(TranslationKeys.Password)}
       />
       {errors.password?.message && (
         <ErrorText>{errors.password.message}</ErrorText>
