@@ -38,6 +38,11 @@ export enum TranslationKeys {
   NewPasswordLabel = "NewPasswordLabel",
   NewPasswordRepeatLabel = "NewPasswordLabel",
   PasswordChanged = "PasswordChanged",
+  ChangeDisplayName = "ChangeDisplayName",
   DispalyNameChanged = "DisplayNameChanged",
   Save = "Save",
+  Logout = "Logout",
+  Theme = "Theme",
+  LanguageEnglish = "LanguageEnglish",
+  LanguagePolish = "LanguagePolish",
 }

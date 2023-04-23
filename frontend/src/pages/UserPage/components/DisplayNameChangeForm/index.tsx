@@ -1,93 +1,56 @@
 import { Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
+import { TextField } from "atomicComponents/atoms/TextField";
 import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
-import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
+import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { useChangePasswordMutation } from "pages/UserPage/mutations/useChangePassword.mutation";
+import { useChangeDisplayNameMutation } from "pages/UserPage/mutations/useChangeDisplayName.mutation";
 import { memo, useState } from "react";
-import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 const DisplayNameChangeForm = (): JSX.Element => {
   const { t } = useTranslation();
-  const [displayName, setDisplayName] = useState<string>("");
+  const { currentUser } = useCurrentUser();
+  const [displayName, setDisplayName] = useState<string>(
+    currentUser?.displayName || ""
+  );
+  const [error, setError] = useState<string | undefined>(undefined);
   const { setSnackbar } = useSnackbar();
-  const changePasswordMutation = useChangePasswordMutation();
-  const {
-    control,
-    setError,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<IChangePasswordFormValues>();
+  const changeDisplayNameMutation = useChangeDisplayNameMutation();
 
-  const onSubmit = (data: IChangePasswordFormValues) => {
-    if (!data.currentPassword) {
-      setError("currentPassword", {
-        message: t(TranslationKeys.PasswordRequired),
-      });
+  const onSubmit = () => {
+    if (displayName?.length === 0 || !displayName) {
+      setError(t(TranslationKeys.DisplayNameRequired));
       return;
     }
 
-    if (!data.newPassword) {
-      setError("newPassword", { message: t(TranslationKeys.PasswordRequired) });
-      return;
-    }
-
-    if (
-      !data.newPasswordRepeat ||
-      data.newPassword !== data.newPasswordRepeat
-    ) {
-      setError("newPasswordRepeat", {
-        message: t(TranslationKeys.PasswordsNoMatch),
-      });
-      return;
-    }
-
-    changePasswordMutation.mutate(data, {
-      onSuccess: () => {
-        setSnackbar({ message: t(TranslationKeys.LoginSuccess) });
-      },
-      onError: (error) => {
-        setSnackbar({
-          message: error.response?.data || error.message,
-          severity: "error",
-        });
-      },
-    });
+    changeDisplayNameMutation.mutate(
+      { newDisplayName: displayName },
+      {
+        onSuccess: () => {
+          setSnackbar({ message: t(TranslationKeys.DispalyNameChanged) });
+        },
+        onError: (error) => {
+          setSnackbar({
+            message: error.response?.data || error.message,
+            severity: "error",
+          });
+        },
+      }
+    );
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="h3">{t(TranslationKeys.ChangePassword)}</Typography>
-      <ControlledTextField
-        name={"currentPassword"}
-        control={control}
-        placeholder={t(TranslationKeys.CurrentPasswordLabel)}
-        type="password"
-      />
-      {errors.currentPassword?.message && (
-        <ErrorText>{errors.currentPassword.message}</ErrorText>
-      )}
-      <ControlledTextField
-        name={"newPassword"}
-        control={control}
-        placeholder={t(TranslationKeys.NewPasswordLabel)}
-        type="password"
-      />
-      {errors.newPassword?.message && (
-        <ErrorText>{errors.newPassword.message}</ErrorText>
-      )}
-      <ControlledTextField
-        name={"newPasswordRepeat"}
-        control={control}
-        placeholder={t(TranslationKeys.NewPasswordRepeatLabel)}
-        type="password"
-      />
-      {errors.newPasswordRepeat?.message && (
-        <ErrorText>{errors.newPasswordRepeat.message}</ErrorText>
-      )}
-      <Button type="submit">{t(TranslationKeys.Save)}</Button>
+    <form>
+      <Typography variant="h3">
+        {t(TranslationKeys.ChangeDisplayName)}
+      </Typography>
+      <TextField onChange={(e) => setDisplayName(e.target.value)} />
+      {!displayName && <ErrorText>{error}</ErrorText>}
+      <Button type="submit" onClick={onSubmit}>
+        {t(TranslationKeys.Save)}
+      </Button>
     </form>
   );
 };

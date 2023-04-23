@@ -51,7 +51,7 @@ const PasswordChangeForm = (): JSX.Element => {
 
     changePasswordMutation.mutate(data, {
       onSuccess: () => {
-        setSnackbar({ message: t(TranslationKeys.LoginSuccess) });
+        setSnackbar({ message: t(TranslationKeys.PasswordChanged) });
       },
       onError: (error) => {
         setSnackbar({

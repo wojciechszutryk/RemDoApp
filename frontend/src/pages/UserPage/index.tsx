@@ -1,12 +1,13 @@
-import { Avatar, Typography } from "@mui/material";
-import { useCurrentUser } from "framework/authentication/useCurrentUser";
+import { Typography } from "@mui/material";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { memo, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
+import AvatarChangeForm from "./components/AvatarChangeForm";
+import DisplayNameChangeForm from "./components/DisplayNameChangeForm";
+import PasswordChangeForm from "./components/PasswordChangeForm";
 
 const UserPage = (): JSX.Element => {
   const { t } = useTranslation();
-  const { currentUser } = useCurrentUser();
 
   useLayoutEffect(() => {
     const title =
@@ -18,7 +19,9 @@ const UserPage = (): JSX.Element => {
   return (
     <>
       <Typography>{t(TranslationKeys.PageTitleUserSettings)}</Typography>
-      <Avatar>{currentUser?.displayName.substring(1)}</Avatar>
+      <AvatarChangeForm />
+      <DisplayNameChangeForm />
+      <PasswordChangeForm />
     </>
   );
 };
