@@ -1,4 +1,8 @@
-import { Typography } from "@mui/material";
+import { AccordionDetails, AccordionSummary, Typography } from "@mui/material";
+import {
+  StyledAccordion,
+  StyledExpandMoreIcon,
+} from "atomicComponents/atoms/Accordion";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { memo, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,9 +23,30 @@ const UserPage = (): JSX.Element => {
   return (
     <>
       <Typography>{t(TranslationKeys.PageTitleUserSettings)}</Typography>
-      <AvatarChangeForm />
-      <DisplayNameChangeForm />
-      <PasswordChangeForm />
+      <StyledAccordion>
+        <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
+          <Typography>{t(TranslationKeys.ChangeAvatar)}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <AvatarChangeForm />
+        </AccordionDetails>
+      </StyledAccordion>
+      <StyledAccordion>
+        <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
+          <Typography> {t(TranslationKeys.ChangeDisplayName)}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <DisplayNameChangeForm />
+        </AccordionDetails>
+      </StyledAccordion>
+      <StyledAccordion>
+        <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
+          <Typography>{t(TranslationKeys.ChangePassword)}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <PasswordChangeForm />
+        </AccordionDetails>
+      </StyledAccordion>
     </>
   );
 };

@@ -4,7 +4,11 @@ import { memo, useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { StyledPageBackground, StyledPageContentWrapper } from "./styles";
 
-const PageTemplate = (): JSX.Element => {
+const PageTemplate = ({
+  children,
+}: {
+  children?: JSX.Element;
+}): JSX.Element => {
   const location = useLocation();
   const [contentVisible, setContentVisible] = useState(true);
 
@@ -20,10 +24,10 @@ const PageTemplate = (): JSX.Element => {
       contentVisible={contentVisible}
       imageUrl={`${process.env.PUBLIC_URL}/images/wave-doodles.png`}
     >
-      {/* <StyledBlur /> */}
       <Header />
       <StyledPageContentWrapper contentHidden={!contentVisible}>
         <Outlet />
+        {children}
       </StyledPageContentWrapper>
       <Dialogs />
     </StyledPageBackground>

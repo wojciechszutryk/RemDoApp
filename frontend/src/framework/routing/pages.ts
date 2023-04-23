@@ -10,6 +10,15 @@ export const Pages = {
   },
   UserPage: {
     path: "/user",
+    ChangePassword: {
+      path: "/changePassword",
+    },
+    ChangeDisplayName: {
+      path: "/changePassword",
+    },
+    ChangeAvatar: {
+      path: "/changePassword",
+    },
   },
   LoginPage: {
     path: "/login",
