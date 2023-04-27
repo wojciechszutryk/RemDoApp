@@ -10,6 +10,7 @@ export const StyledWrapper = styled("div")(({ theme }) => ({
   background: theme.palette.primary.main,
   width: "100%",
   maxWidth: 524,
+  gap: "20px",
   padding: "30px 5% 10px 5%",
   [theme.breakpoints.up("sm")]: {
     boxSizing: "border-box",
