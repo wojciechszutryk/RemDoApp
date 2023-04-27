@@ -3,7 +3,6 @@ import { styled } from "@mui/material";
 export const StyledWrapper = styled("div")({
   position: "relative",
   width: "100%",
-  marginTop: "30px",
   height: "20px",
 });
 

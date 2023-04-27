@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { styled, Typography } from "@mui/material";
 
 export const StyledTopSection = styled("section")(({ theme }) => ({
   display: "flex",
@@ -24,4 +24,8 @@ export const StyledTopSection = styled("section")(({ theme }) => ({
     padding: "180px 190px 60px 190px",
     gap: "200px",
   },
+}));
+
+export const StyledHeader = styled(Typography)(({ theme }) => ({
+  color: theme.palette.primary.dark,
 }));

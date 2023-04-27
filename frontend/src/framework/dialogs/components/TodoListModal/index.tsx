@@ -1,4 +1,8 @@
 import { AccordionDetails, AccordionSummary, Typography } from "@mui/material";
+import {
+  StyledAccordion,
+  StyledExpandMoreIcon,
+} from "atomicComponents/atoms/Accordion";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
 import { TextField } from "atomicComponents/atoms/TextField";
@@ -11,12 +15,7 @@ import { useEditTodoListMutation } from "pages/TodoListsPage/mutations/editTodoL
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import {
-  StyledAccordion,
-  StyledAutocomplete,
-  StyledExpandMoreIcon,
-  StyledForm,
-} from "./styles";
+import { StyledAutocomplete, StyledForm } from "./styles";
 
 const TodoListModal = (): JSX.Element => {
   const {
@@ -37,8 +36,6 @@ const TodoListModal = (): JSX.Element => {
   const { t } = useTranslation();
 
   const onSubmit = (data: ITodoList) => {
-    console.log(data);
-
     if (editTodoListData)
       editTodoListMutation.mutate({ todoListId: editTodoListData.id, data });
     else createTodoListMutation.mutate(data);
@@ -62,7 +59,7 @@ const TodoListModal = (): JSX.Element => {
         />
         <StyledAccordion>
           <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
-            <Typography>Accordion 1- add translation</Typography>
+            <Typography>{t(TranslationKeys.TodoListDialogHeader)}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Typography>Current owners - add translation</Typography>

@@ -3,12 +3,12 @@ import { Button } from "atomicComponents/atoms/Button";
 import { TextField } from "atomicComponents/atoms/TextField";
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { ButtonsSocial } from "pages/HomePage/components/TopSection/UserPanel/ButtonsSocial";
 import { Separator } from "pages/HomePage/components/TopSection/UserPanel/Separator";
 import { StyledWrapper } from "pages/LoginPage/LoginPanel/styles";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { StyledHeader } from "../styles";
 
 export const UserPanel = (): JSX.Element => {
   const { t } = useTranslation();
@@ -17,10 +17,11 @@ export const UserPanel = (): JSX.Element => {
 
   return (
     <StyledWrapper>
-      <Typography>{t(TranslationKeys.LoginPanelHeader)}</Typography>
-      <Typography>{t(TranslationKeys.LoginPanelHeaderDescription)}</Typography>
-      <ButtonsSocial />
-      <Separator />
+      <StyledHeader variant={"h5"}>
+        {t(TranslationKeys.LoginPanelHeader)}
+      </StyledHeader>
+      {/* <Typography>{t(TranslationKeys.LoginPanelHeaderDescription)}</Typography>
+      <ButtonsSocial /> */}
       <TextField
         placeholder={t(TranslationKeys.Email)}
         onChange={(e) => {
@@ -40,6 +41,7 @@ export const UserPanel = (): JSX.Element => {
       >
         {t(TranslationKeys.LoginButtonText)}
       </Button>
+      <Separator />
       <Button
         onClick={() =>
           navigate(

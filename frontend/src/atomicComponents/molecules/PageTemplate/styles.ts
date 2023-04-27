@@ -23,6 +23,10 @@ export const StyledPageContentWrapper = styled("div", {
   shouldForwardProp: (prop) => prop !== "contentHidden",
 })<{ contentHidden?: boolean }>(({ contentHidden }) => ({
   width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
   marginTop: 60,
   height: "calc(100% - 60px)",
   overflow: "auto",
