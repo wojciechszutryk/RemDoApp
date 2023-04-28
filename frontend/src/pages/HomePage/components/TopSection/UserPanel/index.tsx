@@ -1,4 +1,3 @@
-import { Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
 import { TextField } from "atomicComponents/atoms/TextField";
 import { Pages } from "framework/routing/pages";
@@ -8,7 +7,7 @@ import { StyledWrapper } from "pages/LoginPage/LoginPanel/styles";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { StyledHeader } from "../styles";
+import { StyledLoginHeader } from "../styles";
 
 export const UserPanel = (): JSX.Element => {
   const { t } = useTranslation();
@@ -17,9 +16,9 @@ export const UserPanel = (): JSX.Element => {
 
   return (
     <StyledWrapper>
-      <StyledHeader variant={"h5"}>
+      <StyledLoginHeader variant={"h5"}>
         {t(TranslationKeys.LoginPanelHeader)}
-      </StyledHeader>
+      </StyledLoginHeader>
       {/* <Typography>{t(TranslationKeys.LoginPanelHeaderDescription)}</Typography>
       <ButtonsSocial /> */}
       <TextField

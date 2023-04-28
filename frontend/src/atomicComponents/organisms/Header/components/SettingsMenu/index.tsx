@@ -1,10 +1,7 @@
 import Logout from "@mui/icons-material/Logout";
 import Settings from "@mui/icons-material/Settings";
-import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import MenuItem from "@mui/material/MenuItem";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
@@ -13,7 +10,12 @@ import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import PrefferedSettingsMenuOptions from "./components/PrefferedSettingsMenuOptions";
-import { StyledMenu } from "./styles";
+import {
+  StyledAvatar,
+  StyledIconButton,
+  StyledMenu,
+  StyledMenuItem,
+} from "./styles";
 
 const SettingsMenu = (): JSX.Element => {
   const { currentUser, setCurrentUser } = useCurrentUser();
@@ -33,16 +35,17 @@ const SettingsMenu = (): JSX.Element => {
 
   return (
     <>
-      <IconButton onClick={handleClickAvatar} size="small">
-        <Avatar>
+      <StyledIconButton onClick={handleClickAvatar} size="small">
+        <StyledAvatar>
           {currentUser ? (
             currentUser.displayName[0].toUpperCase()
           ) : (
             <Settings />
           )}
-        </Avatar>
-      </IconButton>
+        </StyledAvatar>
+      </StyledIconButton>
       <StyledMenu
+        elevation={1}
         anchorEl={anchorEl}
         open={menuOpen}
         onClose={handleClose}
@@ -51,25 +54,26 @@ const SettingsMenu = (): JSX.Element => {
       >
         {currentUser && (
           <>
-            (
-            <MenuItem onClick={() => navigate(Pages.UserPage.path)}>
+            <StyledMenuItem onClick={() => navigate(Pages.UserPage.path)}>
               <ListItemIcon>
                 <Settings fontSize="small" />
               </ListItemIcon>
               {t(TranslationKeys.PageTitleUserSettings)}
-            </MenuItem>
-            <Divider />)
+            </StyledMenuItem>
+            <Divider />
           </>
         )}
         <PrefferedSettingsMenuOptions />
-        <Divider />
         {currentUser && (
-          <MenuItem onClick={() => setCurrentUser(undefined)}>
-            <ListItemIcon>
-              <Logout fontSize="small" />
-            </ListItemIcon>
-            {t(TranslationKeys.Logout)}
-          </MenuItem>
+          <>
+            <Divider />
+            <StyledMenuItem onClick={() => setCurrentUser(undefined)}>
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
+              {t(TranslationKeys.Logout)}
+            </StyledMenuItem>
+          </>
         )}
       </StyledMenu>
     </>
