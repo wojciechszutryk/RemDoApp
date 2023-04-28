@@ -1,7 +1,7 @@
-import { Typography } from "@mui/material";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
+import { StyledLoginHeader } from "pages/HomePage/components/TopSection/styles";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +25,9 @@ export const LoginPanel = ({ defaultEmail }: LoginPanelProps): JSX.Element => {
 
   return (
     <StyledWrapper>
-      <Typography>{t(TranslationKeys.LoginPanelHeader)}</Typography>
+      <StyledLoginHeader>
+        {t(TranslationKeys.LoginPanelHeader)}
+      </StyledLoginHeader>
       {isRegistering ? (
         <RegisterForm
           setIsRegistering={setIsRegistering}

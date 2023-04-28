@@ -20,6 +20,7 @@ export const StyledButton = styled(ButtonUnstyled, {
   minWidth: "148px",
   maxHeight: "46px",
   padding: "20px 46px",
+  backgroundColor: theme.palette.primary.main,
   color: theme.palette.primary.contrastText,
 
   ...(disabled
@@ -29,11 +30,10 @@ export const StyledButton = styled(ButtonUnstyled, {
       }
     : {
         ...(AnimatedWaveAltStyles(theme) as {}),
+        ":hover": {
+          backgroundColor: theme.palette.primary.light,
+        },
       }),
-
-  ":hover": {
-    backgroundColor: theme.palette.primary.light,
-  },
 
   ":active": {
     backgroundColor: theme.palette.primary.light,

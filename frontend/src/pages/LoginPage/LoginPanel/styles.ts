@@ -6,7 +6,7 @@ export const StyledWrapper = styled("div")(({ theme }) => ({
   alignItems: "center",
   boxShadow:
     "-1px -1px 15px rgba(0, 0, 0, 0.05), 1px 1px 15px rgba(0, 0, 0, 0.05)",
-  borderRadius: "16px",
+  borderRadius: "30px",
   background: theme.palette.primary.main,
   width: "100%",
   maxWidth: 524,

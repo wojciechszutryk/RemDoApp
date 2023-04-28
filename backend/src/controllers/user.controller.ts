@@ -1,3 +1,4 @@
+import { currentUser } from "decorators/currentUser.decorator";
 import { inject } from "inversify";
 import {
   BaseHttpController,
@@ -7,6 +8,7 @@ import {
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { ILoginUserDTO, IRegisterUserDTO } from "linked-models/user/user.dto";
+import { IUserAttached } from "linked-models/User/User.model";
 import {
   URL_LOGIN,
   URL_REGISTER,
@@ -59,5 +61,12 @@ export class UserController extends BaseHttpController {
     }
 
     return this.ok(signedUser);
+  }
+
+  @httpPost(URL_LOGIN)
+  async loginUserWithToken(
+    @currentUser() currentUser: IUserAttached
+  ): Promise<OkResult> {
+    return this.ok(currentUser);
   }
 }

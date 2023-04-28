@@ -10,22 +10,22 @@ export const StyledTopSection = styled("section")(({ theme }) => ({
   padding: "128px 16px 60px 16px",
 
   [theme.breakpoints.up("sm")]: {
-    padding: "128px 121px 60px 121px",
+    padding: "128px 42px 60px 42px",
   },
 
   [theme.breakpoints.up("md")]: {
-    padding: "128px 190px 60px 190px",
+    padding: "128px 64px 60px 64px",
     flexDirection: "row",
     alignItems: "flex-start",
     gap: "100px",
   },
 
   [theme.breakpoints.up("lg")]: {
-    padding: "180px 190px 60px 190px",
+    padding: "180px 128px 60px 128px",
     gap: "200px",
   },
 }));
 
-export const StyledHeader = styled(Typography)(({ theme }) => ({
-  color: theme.palette.primary.dark,
+export const StyledLoginHeader = styled(Typography)(({ theme }) => ({
+  color: theme.palette.primary.contrastText,
 }));
