@@ -1,5 +1,6 @@
 import PageTemplate from "atomicComponents/molecules/PageTemplate";
 import { ProtectedPageWrapper } from "atomicComponents/organisms/ProtectedPageWrapper";
+import useAutoLogin from "framework/authentication/useAutoLogin";
 import { Pages } from "framework/routing/pages";
 import "framework/translations/i18.config/resources";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
@@ -20,6 +21,8 @@ const App = (): JSX.Element => {
     const title = t(TranslationKeys.PageTitleMain);
     document.title = title;
   });
+
+  useAutoLogin();
 
   return (
     <>

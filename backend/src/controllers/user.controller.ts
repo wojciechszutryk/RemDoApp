@@ -13,7 +13,9 @@ import {
   URL_LOGIN,
   URL_REGISTER,
   URL_USERS,
+  URL_WITH_TOKEN,
 } from "linked-models/user/user.urls";
+import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { UserService } from "services/user.service";
 
 @controller(URL_USERS)
@@ -63,10 +65,14 @@ export class UserController extends BaseHttpController {
     return this.ok(signedUser);
   }
 
-  @httpPost(URL_LOGIN)
+  @httpPost(URL_LOGIN + URL_WITH_TOKEN, SetCurrentUser)
   async loginUserWithToken(
     @currentUser() currentUser: IUserAttached
   ): Promise<OkResult> {
-    return this.ok(currentUser);
+    const userWithRefreshedToken = await this.userService.refreshUserToken(
+      currentUser
+    );
+
+    return this.ok(userWithRefreshedToken);
   }
 }

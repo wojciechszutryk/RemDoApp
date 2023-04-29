@@ -7,7 +7,7 @@ import axios, {
 const getHeaders = (
   additionalHeaders?: Partial<AxiosRequestHeaders>
 ): Partial<AxiosRequestHeaders> => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("todoListToken");
   const headers = {
     Authorization: `Bearer ${token}` || "",
     ...additionalHeaders,
