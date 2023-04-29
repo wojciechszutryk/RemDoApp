@@ -37,7 +37,7 @@ const SettingsMenu = (): JSX.Element => {
     <>
       <StyledIconButton onClick={handleClickAvatar} size="small">
         <StyledAvatar>
-          {currentUser ? (
+          {!!currentUser ? (
             currentUser.displayName[0].toUpperCase()
           ) : (
             <Settings />

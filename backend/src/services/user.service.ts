@@ -64,7 +64,23 @@ export class UserService {
         { userId: user.id, email: user.email } as IToken,
         process.env.TOKEN_KEY!,
         {
-          expiresIn: "2h",
+          expiresIn: "2days",
+        }
+      );
+
+      return { ...user, token };
+    }
+  }
+
+  public async refreshUserToken(
+    user: IUserAttached
+  ): Promise<ILoginUserResponseDTO | undefined> {
+    if (user) {
+      const token = jwt.sign(
+        { userId: user.id, email: user.email } as IToken,
+        process.env.TOKEN_KEY!,
+        {
+          expiresIn: "2days",
         }
       );
 
