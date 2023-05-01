@@ -14,7 +14,7 @@ import {
   setUpTestDB,
 } from "../db.testSetup.helpers";
 
-import { UserController } from "controllers/user.controller";
+import { UsersController } from "controllers/user/users.controller";
 import { getUserCollection } from "dbSchemas/user.schema";
 import { ILoginUserDTO, IRegisterUserDTO } from "linked-models/user/user.dto";
 import { UserService } from "services/user.service";
@@ -22,7 +22,7 @@ import { mockedUser } from "../mocks/user.mock";
 
 describe(`User service`, () => {
   let userService: UserService;
-  let userController: UserController;
+  let userController: UsersController;
 
   beforeAll(async () => {
     await setUpTestDB();
@@ -31,7 +31,7 @@ describe(`User service`, () => {
   beforeEach(async () => {
     await getUserCollection().create(mockedUser);
     userService = new UserService(getUserCollection());
-    userController = new UserController(userService);
+    userController = new UsersController(userService);
   });
 
   afterEach(async () => {
