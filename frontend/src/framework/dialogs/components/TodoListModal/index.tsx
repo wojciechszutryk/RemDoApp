@@ -1,8 +1,5 @@
-import { AccordionDetails, AccordionSummary, Typography } from "@mui/material";
-import {
-  StyledAccordion,
-  StyledExpandMoreIcon,
-} from "atomicComponents/atoms/Accordion";
+import { Typography } from "@mui/material";
+import Accordion from "atomicComponents/atoms/Accordion";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
 import { TextField } from "atomicComponents/atoms/TextField";
@@ -57,35 +54,30 @@ const TodoListModal = (): JSX.Element => {
           control={control}
           placeholder={t(TranslationKeys.TodoListDialogInputTitle)}
         />
-        <StyledAccordion>
-          <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
-            <Typography>{t(TranslationKeys.TodoListDialogHeader)}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>Current owners - add translation</Typography>
-            <StyledAutocomplete
-              multiple
-              options={[]}
-              onChange={(_, value) => {
-                setValue("assignedOwners", value);
-              }}
-              defaultValue={editTodoListData?.assignedOwners || []}
-              freeSolo
-              renderInput={(params) => <TextField {...params} />}
-            />
-            <Typography>Current users - add translation</Typography>
-            <StyledAutocomplete
-              multiple
-              options={[]}
-              onChange={(_, value) => {
-                setValue("assignedUsers", value);
-              }}
-              defaultValue={editTodoListData?.assignedOwners || []}
-              freeSolo
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </AccordionDetails>
-        </StyledAccordion>
+        <Accordion summaryText={t(TranslationKeys.TodoListDialogHeader)}>
+          <Typography>Current owners - add translation</Typography>
+          <StyledAutocomplete
+            multiple
+            options={[]}
+            onChange={(_, value) => {
+              setValue("assignedOwners", value);
+            }}
+            defaultValue={editTodoListData?.assignedOwners || []}
+            freeSolo
+            renderInput={(params) => <TextField {...params} />}
+          />
+          <Typography>Current users - add translation</Typography>
+          <StyledAutocomplete
+            multiple
+            options={[]}
+            onChange={(_, value) => {
+              setValue("assignedUsers", value);
+            }}
+            defaultValue={editTodoListData?.assignedOwners || []}
+            freeSolo
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </Accordion>
         <Button type="submit">{t(TranslationKeys.TodoListDialogHeader)}</Button>
       </StyledForm>
     </Dialog>

@@ -1,6 +1,5 @@
-import { Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
-import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
+import CollapsableAlert from "atomicComponents/molecules/CollapsableAlert";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
@@ -8,6 +7,7 @@ import { useChangePasswordMutation } from "pages/UserPage/mutations/useChangePas
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { StyledForm } from "./styles";
 
 interface IChangePasswordFormValues {
   currentPassword: string;
@@ -21,34 +21,11 @@ const PasswordChangeForm = (): JSX.Element => {
   const changePasswordMutation = useChangePasswordMutation();
   const {
     control,
-    setError,
     formState: { errors },
     handleSubmit,
   } = useForm<IChangePasswordFormValues>();
 
   const onSubmit = (data: IChangePasswordFormValues) => {
-    if (!data.currentPassword) {
-      setError("currentPassword", {
-        message: t(TranslationKeys.PasswordRequired),
-      });
-      return;
-    }
-
-    if (!data.newPassword) {
-      setError("newPassword", { message: t(TranslationKeys.PasswordRequired) });
-      return;
-    }
-
-    if (
-      !data.newPasswordRepeat ||
-      data.newPassword !== data.newPasswordRepeat
-    ) {
-      setError("newPasswordRepeat", {
-        message: t(TranslationKeys.PasswordsNoMatch),
-      });
-      return;
-    }
-
     changePasswordMutation.mutate(data, {
       onSuccess: () => {
         setSnackbar({ message: t(TranslationKeys.PasswordChanged) });
@@ -63,37 +40,47 @@ const PasswordChangeForm = (): JSX.Element => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Typography variant="h3">{t(TranslationKeys.ChangePassword)}</Typography>
+    <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <ControlledTextField
         name={"currentPassword"}
         control={control}
         placeholder={t(TranslationKeys.CurrentPasswordLabel)}
         type="password"
       />
-      {errors.currentPassword?.message && (
-        <ErrorText>{errors.currentPassword.message}</ErrorText>
-      )}
+      <CollapsableAlert
+        collapseProps={{ in: !!errors.currentPassword }}
+        alertProps={{ severity: "warning" }}
+      >
+        {t(TranslationKeys.WrongPassword)}
+      </CollapsableAlert>
       <ControlledTextField
         name={"newPassword"}
         control={control}
         placeholder={t(TranslationKeys.NewPasswordLabel)}
         type="password"
       />
-      {errors.newPassword?.message && (
-        <ErrorText>{errors.newPassword.message}</ErrorText>
-      )}
+      <CollapsableAlert
+        collapseProps={{ in: !!errors.newPassword }}
+        alertProps={{ severity: "warning" }}
+      >
+        {t(TranslationKeys.PasswordRequired)}
+      </CollapsableAlert>
       <ControlledTextField
         name={"newPasswordRepeat"}
         control={control}
         placeholder={t(TranslationKeys.NewPasswordRepeatLabel)}
         type="password"
       />
-      {errors.newPasswordRepeat?.message && (
-        <ErrorText>{errors.newPasswordRepeat.message}</ErrorText>
-      )}
-      <Button type="submit">{t(TranslationKeys.Save)}</Button>
-    </form>
+      <CollapsableAlert
+        collapseProps={{ in: !!errors.newPasswordRepeat }}
+        alertProps={{ severity: "warning" }}
+      >
+        {t(TranslationKeys.PasswordsNoMatch)}
+      </CollapsableAlert>
+      <Button disabled={Object.values(errors).length > 0} type="submit">
+        {t(TranslationKeys.Save)}
+      </Button>
+    </StyledForm>
   );
 };
 

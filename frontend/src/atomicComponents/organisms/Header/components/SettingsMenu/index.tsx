@@ -1,5 +1,6 @@
 import Logout from "@mui/icons-material/Logout";
 import Settings from "@mui/icons-material/Settings";
+import { Avatar, IconButton } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
@@ -10,12 +11,7 @@ import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import PrefferedSettingsMenuOptions from "./components/PrefferedSettingsMenuOptions";
-import {
-  StyledAvatar,
-  StyledIconButton,
-  StyledMenu,
-  StyledMenuItem,
-} from "./styles";
+import { StyledMenu, StyledMenuItem } from "./styles";
 
 const SettingsMenu = (): JSX.Element => {
   const { currentUser, setCurrentUser } = useCurrentUser();
@@ -35,15 +31,15 @@ const SettingsMenu = (): JSX.Element => {
 
   return (
     <>
-      <StyledIconButton onClick={handleClickAvatar} size="small">
-        <StyledAvatar>
+      <IconButton onClick={handleClickAvatar} size="small">
+        <Avatar>
           {!!currentUser ? (
             currentUser.displayName[0].toUpperCase()
           ) : (
             <Settings />
           )}
-        </StyledAvatar>
-      </StyledIconButton>
+        </Avatar>
+      </IconButton>
       <StyledMenu
         elevation={1}
         anchorEl={anchorEl}
