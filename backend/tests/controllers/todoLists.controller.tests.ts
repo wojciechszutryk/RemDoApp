@@ -7,7 +7,7 @@ import {
   expect,
   it,
 } from "@jest/globals";
-import { TodoListController } from "controllers/todoList/todoList.controller";
+import { TodoListsController } from "controllers/todoList/todoLists.controller";
 import { getTaskCollection } from "dbSchemas/task.schema";
 import { getTodoListCollection } from "dbSchemas/todoList.schema";
 import { ITodoList } from "linked-models/todoList/todoList.model";
@@ -27,7 +27,7 @@ require("dotenv").config();
 
 describe(`When calling todoList controller`, () => {
   let todoListService = {} as TodoListService;
-  let todoListController = {} as TodoListController;
+  let todoListController = {} as TodoListsController;
 
   beforeAll(async () => {
     await setUpTestDB();
@@ -39,7 +39,7 @@ describe(`When calling todoList controller`, () => {
 
     const taskService = new TaskService(getTaskCollection());
     todoListService = new TodoListService(getTodoListCollection(), taskService);
-    todoListController = new TodoListController(todoListService);
+    todoListController = new TodoListsController(todoListService);
   });
 
   afterEach(async () => {
