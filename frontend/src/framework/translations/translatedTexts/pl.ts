@@ -2,6 +2,7 @@ import { TranslationKeys } from "./translationKeys";
 
 export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PageTitleMain]: "TodoList",
+  [TranslationKeys.FieldRequired]: "* Wymagane",
 
   [TranslationKeys.PageTitleHome]: "Główna",
   [TranslationKeys.WelcomeTextHeader]: "TodoList",
@@ -22,6 +23,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.EmailRequired]: "email wymagany",
   [TranslationKeys.DisplayNameRequired]: "nazwa użytkownika wymagana",
   [TranslationKeys.PasswordRequired]: "hasło wymagane",
+  [TranslationKeys.WrongPassword]: "hasło nieprawidłowe",
   [TranslationKeys.PasswordsNoMatch]: "hasła nie są identyczne",
   [TranslationKeys.LoginSuccess]: "Zalogowano pomyślnie.",
   [TranslationKeys.InvalidCredentials]: "niepoprawne dane, spróbuj ponownie",

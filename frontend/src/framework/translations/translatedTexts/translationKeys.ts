@@ -1,5 +1,6 @@
 export enum TranslationKeys {
   PageTitleMain = "PageTitle",
+  FieldRequired = "FieldRequired",
 
   PageTitleHome = "PageTitleHome",
 
@@ -19,6 +20,7 @@ export enum TranslationKeys {
   EmailRequired = "EmailRequired",
   DisplayNameRequired = "DisplayNameRequired",
   PasswordRequired = "PasswordRequired",
+  WrongPassword = "WrongPassword",
   PasswordsNoMatch = "PasswordsNoMatch",
   LoginSuccess = "LoginSuccess",
   InvalidCredentials = "InvalidCredentials",

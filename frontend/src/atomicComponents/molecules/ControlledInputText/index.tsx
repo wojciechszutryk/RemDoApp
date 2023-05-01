@@ -1,6 +1,5 @@
 import { StandardTextFieldProps } from "@mui/material";
 import { TextField } from "atomicComponents/atoms/TextField";
-import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
 import {
   Control,
   Controller,
@@ -37,9 +36,6 @@ export const ControlledTextField = <
           <TextField onChange={onChange} value={value} {...otherProps} />
         )}
       />
-      {errors?.[name]?.message && (
-        <ErrorText>{errors[name]?.message as string}</ErrorText>
-      )}
     </>
   );
 };

@@ -1,14 +1,12 @@
-import { AccordionDetails, AccordionSummary, Typography } from "@mui/material";
-import {
-  StyledAccordion,
-  StyledExpandMoreIcon,
-} from "atomicComponents/atoms/Accordion";
+import { Typography } from "@mui/material";
+import Accordion from "atomicComponents/atoms/Accordion";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { memo, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 import AvatarChangeForm from "./components/AvatarChangeForm";
 import DisplayNameChangeForm from "./components/DisplayNameChangeForm";
 import PasswordChangeForm from "./components/PasswordChangeForm";
+import { StyledWrapper } from "./styles";
 
 const UserPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -21,33 +19,18 @@ const UserPage = (): JSX.Element => {
   });
 
   return (
-    <>
+    <StyledWrapper>
       <Typography>{t(TranslationKeys.PageTitleUserSettings)}</Typography>
-      <StyledAccordion>
-        <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
-          <Typography>{t(TranslationKeys.ChangeAvatar)}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <AvatarChangeForm />
-        </AccordionDetails>
-      </StyledAccordion>
-      <StyledAccordion>
-        <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
-          <Typography> {t(TranslationKeys.ChangeDisplayName)}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <DisplayNameChangeForm />
-        </AccordionDetails>
-      </StyledAccordion>
-      <StyledAccordion>
-        <AccordionSummary expandIcon={<StyledExpandMoreIcon />}>
-          <Typography>{t(TranslationKeys.ChangePassword)}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <PasswordChangeForm />
-        </AccordionDetails>
-      </StyledAccordion>
-    </>
+      <Accordion summaryText={t(TranslationKeys.ChangeAvatar)}>
+        <AvatarChangeForm />
+      </Accordion>
+      <Accordion summaryText={t(TranslationKeys.ChangeDisplayName)}>
+        <DisplayNameChangeForm />
+      </Accordion>
+      <Accordion summaryText={t(TranslationKeys.ChangePassword)}>
+        <PasswordChangeForm />
+      </Accordion>
+    </StyledWrapper>
   );
 };
 
