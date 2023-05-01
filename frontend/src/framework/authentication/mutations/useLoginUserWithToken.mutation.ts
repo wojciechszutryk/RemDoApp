@@ -1,6 +1,6 @@
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
-import { IUserAttached } from "linked-models/user/user.model";
+import { ILoginUserResponseDTO } from "linked-models/user/user.dto";
 import {
   URL_LOGIN,
   URL_USERS,
@@ -14,8 +14,8 @@ export const useLoginUserWithTokenMutation = () => {
 
   const url = FRONTIFY_URL(URL_USERS, `${URL_LOGIN}${URL_WITH_TOKEN}`);
 
-  const loginUserWithToken = async (): Promise<IUserAttached> => {
-    return await apiPost<undefined, IUserAttached>(url, undefined).then(
+  const loginUserWithToken = async (): Promise<ILoginUserResponseDTO> => {
+    return await apiPost<undefined, ILoginUserResponseDTO>(url, undefined).then(
       (res) => res.data
     );
   };
