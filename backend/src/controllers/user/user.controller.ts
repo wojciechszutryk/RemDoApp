@@ -5,34 +5,31 @@ import {
   controller,
   httpPost,
   httpPut,
+  requestBody,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import {
+  IChangeDisplayNameDTO,
+  IChangePasswordDTO,
+} from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/User/User.model";
 import {
   URL_AVATAR,
   URL_DISPLAYNAME,
-  URL_LOGIN,
+  URL_PASSWORD,
   URL_USERS,
-  URL_WITH_TOKEN,
 } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
+import { UserAuthService } from "services/user.auth.service";
 import { UserService } from "services/user.service";
 
 @controller(URL_USERS)
 export class UserController extends BaseHttpController {
-  constructor(@inject(UserService) private readonly userService: UserService) {
+  constructor(
+    @inject(UserService) private readonly userService: UserService,
+    @inject(UserAuthService) private readonly userAuthService: UserAuthService
+  ) {
     super();
-  }
-
-  @httpPost(URL_LOGIN + URL_WITH_TOKEN, SetCurrentUser)
-  async loginUserWithToken(
-    @currentUser() currentUser: IUserAttached
-  ): Promise<OkResult> {
-    const userWithRefreshedToken = await this.userService.refreshUserToken(
-      currentUser
-    );
-
-    return this.ok(userWithRefreshedToken);
   }
 
   @httpPost(URL_AVATAR, SetCurrentUser)
@@ -44,15 +41,38 @@ export class UserController extends BaseHttpController {
 
   @httpPut(URL_DISPLAYNAME, SetCurrentUser)
   async changeDisplayName(
-    @currentUser() currentUser: IUserAttached
+    @currentUser() currentUser: IUserAttached,
+    @requestBody() body: IChangeDisplayNameDTO
   ): Promise<OkResult> {
-    return this.ok();
+    try {
+      const todoList = await this.userService.updateDisplayName(
+        currentUser.id,
+        body.newDisplayName
+      );
+      return this.ok(todoList);
+    } catch (e) {
+      return this.json(e, 400);
+    }
   }
 
-  @httpPut(URL_DISPLAYNAME, SetCurrentUser)
+  @httpPut(URL_PASSWORD, SetCurrentUser)
   async changePassword(
-    @currentUser() currentUser: IUserAttached
+    @currentUser() currentUser: IUserAttached,
+    @requestBody() body: IChangePasswordDTO
   ): Promise<OkResult> {
-    return this.ok();
+    if (!body.newPassword || !body.currentPassword) {
+      return this.json("invalid data", 400);
+    }
+
+    try {
+      const todoList = await this.userAuthService.changePassword(
+        currentUser,
+        body.currentPassword,
+        body.newPassword
+      );
+      return this.ok(todoList);
+    } catch (e) {
+      return this.json((e as Error).message, 400);
+    }
   }
 }

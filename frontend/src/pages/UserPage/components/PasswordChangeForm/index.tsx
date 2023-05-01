@@ -31,8 +31,10 @@ const PasswordChangeForm = (): JSX.Element => {
         setSnackbar({ message: t(TranslationKeys.PasswordChanged) });
       },
       onError: (error) => {
+        console.log(error);
+
         setSnackbar({
-          message: error.response?.data || error.message,
+          message: error?.response?.data || error?.message,
           severity: "error",
         });
       },

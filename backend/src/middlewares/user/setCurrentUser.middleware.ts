@@ -4,13 +4,15 @@ import { inject, injectable } from "inversify";
 import { BaseMiddleware } from "inversify-express-utils";
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { IToken } from "models/authentication.model";
-import { UserService } from "services/user.service";
+import { UserAuthService } from "services/user.auth.service";
 
 const config = process.env;
 
 @injectable()
 export class SetCurrentUser extends BaseMiddleware {
-  constructor(@inject(UserService) private readonly userService: UserService) {
+  constructor(
+    @inject(UserAuthService) private readonly userService: UserAuthService
+  ) {
     super();
   }
 
