@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { apiPost } from "framework/asyncInteractions";
+import { apiPut } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { IChangeDisplayNameDTO } from "linked-models/user/user.dto";
@@ -18,10 +18,9 @@ export const useChangeDisplayNameMutation = (): UseMutationResult<
   const changeDisplayName = async (
     displayNameData: IChangeDisplayNameDTO
   ): Promise<void> => {
-    return await apiPost<IChangeDisplayNameDTO, void>(
-      url,
-      displayNameData
-    ).then((res) => res.data);
+    return await apiPut<IChangeDisplayNameDTO, void>(url, displayNameData).then(
+      (res) => res.data
+    );
   };
 
   return useMutation(

@@ -1,3 +1,4 @@
+import { currentUser } from "decorators/currentUser.decorator";
 import { inject } from "inversify";
 import {
   BaseHttpController,
@@ -7,16 +8,21 @@ import {
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { ILoginUserDTO, IRegisterUserDTO } from "linked-models/user/user.dto";
+import { IUserAttached } from "linked-models/User/User.model";
 import {
   URL_LOGIN,
   URL_REGISTER,
   URL_USERS,
+  URL_WITH_TOKEN,
 } from "linked-models/user/user.urls";
-import { UserService } from "services/user.service";
+import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
+import { UserAuthService } from "services/user.auth.service";
 
 @controller(URL_USERS)
-export class UsersController extends BaseHttpController {
-  constructor(@inject(UserService) private readonly userService: UserService) {
+export class UserAuthController extends BaseHttpController {
+  constructor(
+    @inject(UserAuthService) private readonly userService: UserAuthService
+  ) {
     super();
   }
 
@@ -59,5 +65,16 @@ export class UsersController extends BaseHttpController {
     }
 
     return this.ok(signedUser);
+  }
+
+  @httpPost(URL_LOGIN + URL_WITH_TOKEN, SetCurrentUser)
+  async loginUserWithToken(
+    @currentUser() currentUser: IUserAttached
+  ): Promise<OkResult> {
+    const userWithRefreshedToken = await this.userService.refreshUserToken(
+      currentUser
+    );
+
+    return this.ok(userWithRefreshedToken);
   }
 }

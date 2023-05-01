@@ -16,11 +16,11 @@ import {
 
 import { getUserCollection } from "dbSchemas/user.schema";
 import { IUserAttached } from "linked-models/User/User.model";
-import { UserService } from "services/user.service";
+import { UserAuthService } from "services/user.auth.service";
 import { mockedUser } from "../mocks/user.mock";
 
 describe(`User service`, () => {
-  let userService: UserService;
+  let userService: UserAuthService;
 
   beforeAll(async () => {
     await setUpTestDB();
@@ -28,7 +28,7 @@ describe(`User service`, () => {
 
   beforeEach(async () => {
     await getUserCollection().create(mockedUser);
-    userService = new UserService(getUserCollection());
+    userService = new UserAuthService(getUserCollection());
   });
 
   afterEach(async () => {

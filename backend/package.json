@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "build": "tsc -p ./tsconfig.build.json",
     "test": "jest --config ./tests/jest.unit.config.json",
     "start": "cross-env ts-node-dev -r tsconfig-paths/register --respawn --transpile-only ./src/app.ts"
   },
