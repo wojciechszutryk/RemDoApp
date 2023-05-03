@@ -31,9 +31,7 @@ export class SetCurrentUser extends BaseMiddleware {
       )) as unknown as string;
     } catch (err) {
       if (err instanceof TokenExpiredError) {
-        return res
-          .status(401)
-          .send({ message: "Unauthorized! Access Token was expired!" });
+        return res.status(401).send({ message: "Access Token was expired!" });
       }
 
       return res.status(401).send("Invalid Token");
