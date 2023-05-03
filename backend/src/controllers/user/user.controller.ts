@@ -1,13 +1,19 @@
+import { multerConfig } from "config/multer.config";
 import { currentUser } from "decorators/currentUser.decorator";
+import * as express from "express";
 import { inject } from "inversify";
 import {
   BaseHttpController,
   controller,
-  httpPost,
+  httpGet,
   httpPut,
+  request,
   requestBody,
+  requestParam,
+  response,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import { AVATAR_FILENAME } from "linked-models/images/avatar";
 import {
   IChangeDisplayNameDTO,
   IChangePasswordDTO,
@@ -17,11 +23,20 @@ import {
   URL_AVATAR,
   URL_DISPLAYNAME,
   URL_PASSWORD,
+  URL_USER,
   URL_USERS,
+  USER_PARAM,
 } from "linked-models/user/user.urls";
+import { DeleteUserAvatar } from "middlewares/user/deleteUserAvatar.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
+import { AVATARS_BULK_NAME } from "models/storage.const";
+import { GridFSBucket } from "mongodb";
+import mongoose from "mongoose";
+import multer from "multer";
 import { UserAuthService } from "services/user.auth.service";
 import { UserService } from "services/user.service";
+
+const upload = multer(multerConfig);
 
 @controller(URL_USERS)
 export class UserController extends BaseHttpController {
@@ -32,11 +47,57 @@ export class UserController extends BaseHttpController {
     super();
   }
 
-  @httpPost(URL_AVATAR, SetCurrentUser)
-  async changeAvatar(
-    @currentUser() currentUser: IUserAttached
-  ): Promise<OkResult> {
-    return this.ok();
+  @httpGet(URL_USER() + URL_AVATAR, SetCurrentUser)
+  async getUserAvatar(
+    @response() res: express.Response,
+    @requestParam(USER_PARAM) userId: string
+  ) {
+    try {
+      const { db } = mongoose.connection;
+
+      const imageBucket = new GridFSBucket(db, {
+        bucketName: AVATARS_BULK_NAME,
+      });
+
+      const downloadStream = imageBucket.openDownloadStreamByName(
+        `${userId}.png`
+      );
+
+      res.writeHead(200, { "Content-type": "image/png" });
+
+      downloadStream.on("data", function (data) {
+        return res.write(data);
+      });
+
+      downloadStream.on("error", function () {
+        return res.status(404).send({ error: "Image not found" });
+      });
+
+      downloadStream.on("end", () => {
+        return res.end();
+      });
+    } catch (error) {
+      res.status(500).send({
+        message: "Error Something went wrong",
+        error,
+      });
+    }
+  }
+
+  @httpPut(
+    URL_USER() + URL_AVATAR,
+    SetCurrentUser,
+    DeleteUserAvatar,
+    upload.single(AVATAR_FILENAME)
+  )
+  async uploadUserAvatar(@request() req: express.Request): Promise<OkResult> {
+    const file = req.file;
+
+    if (!file) {
+      return this.badRequest();
+    }
+
+    return this.ok(file);
   }
 
   @httpPut(URL_DISPLAYNAME, SetCurrentUser)
@@ -45,11 +106,11 @@ export class UserController extends BaseHttpController {
     @requestBody() body: IChangeDisplayNameDTO
   ): Promise<OkResult> {
     try {
-      const todoList = await this.userService.updateDisplayName(
+      await this.userService.updateDisplayName(
         currentUser.id,
         body.newDisplayName
       );
-      return this.ok(todoList);
+      return this.ok();
     } catch (e) {
       return this.json(e, 400);
     }
