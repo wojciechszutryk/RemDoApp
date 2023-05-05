@@ -68,8 +68,12 @@ export class TodoListService {
     todoListData: ITodoList,
     creator: string
   ): Promise<ITodoListAttached> {
+    console.log(todoListData);
+
     const newTodoList: ITodoListWithReadonlyProperties = {
       name: todoListData.name,
+      assignedOwners: todoListData.assignedOwners,
+      assignedUsers: todoListData.assignedUsers,
       creator,
       whenCreated: new Date(),
       whenUpdated: new Date(),

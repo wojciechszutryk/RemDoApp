@@ -35,6 +35,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
 
   [TranslationKeys.PageTitleTodoLists]: "TodoLists",
   [TranslationKeys.TodoListDialogHeader]: "Create new todo list",
+  [TranslationKeys.ShareTodoList]: "Share todo list",
   [TranslationKeys.TodoListDialogInputTitle]: "List title",
   [TranslationKeys.TodoListDialogButton]: "Save",
   [TranslationKeys.ManageOwners]: "Manage owners",
