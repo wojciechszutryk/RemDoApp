@@ -32,6 +32,7 @@ export enum TranslationKeys {
 
   PageTitleTodoLists = "PageTitleTodoLists",
   TodoListDialogHeader = "TodoListDialogHeader",
+  ShareTodoList = "ShareTodoList",
   TodoListDialogInputTitle = "TodoListDialogInputTitle",
   ManageOwners = "ManageOwners",
   ManageUsers = "ManageOwners",
