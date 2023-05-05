@@ -13,11 +13,8 @@ const NoPermissionTemplate = (): JSX.Element => {
   const { t } = useTranslation();
   return (
     <StyledWrapper>
-      <StyledHeader>{t(TranslationKeys.ChangeDisplayName)}</StyledHeader>
-      <StyledImage
-        src={`${process.env.REACT_APP_URL}/images/key.svg`}
-        alt={"no access"}
-      />
+      <StyledHeader>{t(TranslationKeys.NoAccess)}</StyledHeader>
+      <StyledImage />
       <StyledNavLink to={Pages.HomePage.path}>
         <Button>{t(TranslationKeys.PageTitleHome)}</Button>
       </StyledNavLink>

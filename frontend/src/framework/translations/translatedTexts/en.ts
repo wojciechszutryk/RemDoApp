@@ -4,6 +4,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PageTitleMain]: "TodoList",
   [TranslationKeys.FieldRequired]: "* Required",
 
+  [TranslationKeys.NoAccess]: "You are not allowed to access this resources.",
+
   [TranslationKeys.PageTitleHome]: "Home",
   [TranslationKeys.WelcomeTextHeader]: "TodoList",
   [TranslationKeys.WelcomeTextDescription]:
@@ -49,6 +51,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PasswordChanged]: "New password set.",
   [TranslationKeys.ChangePassword]: "Change password",
   [TranslationKeys.ChangeAvatar]: "Change avatar",
+  [TranslationKeys.AvatarChanged]: "Avatar saved",
   [TranslationKeys.DispalyNameChanged]: "New display name set.",
   [TranslationKeys.ChangeDisplayName]: "Change display name",
   [TranslationKeys.Save]: "Save",

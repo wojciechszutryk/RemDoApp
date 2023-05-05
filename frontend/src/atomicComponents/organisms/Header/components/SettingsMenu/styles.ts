@@ -27,3 +27,7 @@ export const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
     fill: theme.palette.primary.contrastText,
   },
 }));
+
+export const StyledUserAvatarImage = styled("img")({
+  height: "100%",
+});

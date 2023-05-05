@@ -4,6 +4,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PageTitleMain]: "TodoList",
   [TranslationKeys.FieldRequired]: "* Wymagane",
 
+  [TranslationKeys.NoAccess]: "Nie posiadasz wymaganych uprawnień.",
+
   [TranslationKeys.PageTitleHome]: "Główna",
   [TranslationKeys.WelcomeTextHeader]: "TodoList",
   [TranslationKeys.WelcomeTextDescription]:
@@ -50,6 +52,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PasswordChanged]: "Ustawiono nowe hasło.",
   [TranslationKeys.ChangeDisplayName]: "Zmień nazwę użytkownika",
   [TranslationKeys.ChangeAvatar]: "Zmień zdjęcie profilowe",
+  [TranslationKeys.AvatarChanged]: "Zdjęcie zapisane",
   [TranslationKeys.DispalyNameChanged]: "Zmieniono nazwę użytkownika.",
   [TranslationKeys.Save]: "Zapisz",
   [TranslationKeys.Logout]: "Wyloguj",

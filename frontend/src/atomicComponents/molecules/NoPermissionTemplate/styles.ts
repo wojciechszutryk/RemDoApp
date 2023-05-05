@@ -1,3 +1,4 @@
+import LockPersonIcon from "@mui/icons-material/LockPerson";
 import { styled } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
@@ -8,7 +9,7 @@ export const StyledWrapper = styled("div")({
 });
 
 export const StyledHeader = styled("h1")(({ theme }) => ({
-  color: theme.palette.secondary.contrastText,
+  color: theme.palette.primary.contrastText,
   fontSize: 18,
   textAlign: "center",
   width: "95%",
@@ -25,15 +26,17 @@ export const StyledHeader = styled("h1")(({ theme }) => ({
   },
 }));
 
-export const StyledImage = styled("img")(({ theme }) => ({
+export const StyledImage = styled(LockPersonIcon)(({ theme }) => ({
   display: "block",
   margin: "8px auto 0",
-  width: 107,
-  height: 112,
+  width: 77,
+  height: 72,
+  color: theme.palette.secondary.main,
+  path: theme.palette.secondary.main,
   [theme.breakpoints.up("md")]: {
     margin: "20px auto 0",
-    width: 222,
-    height: 233,
+    width: 122,
+    height: 133,
   },
   [theme.breakpoints.up("xl")]: {
     margin: "40px auto 0",
