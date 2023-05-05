@@ -47,7 +47,7 @@ export class UserController extends BaseHttpController {
     super();
   }
 
-  @httpGet(URL_USER() + URL_AVATAR, SetCurrentUser)
+  @httpGet(URL_USER() + URL_AVATAR)
   async getUserAvatar(
     @response() res: express.Response,
     @requestParam(USER_PARAM) userId: string

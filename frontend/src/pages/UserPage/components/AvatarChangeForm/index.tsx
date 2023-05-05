@@ -1,27 +1,52 @@
-import { Settings } from "@mui/icons-material";
-import { Avatar, IconButton } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
-import { useCurrentUser } from "framework/authentication/useCurrentUser";
+import UserAvatar from "atomicComponents/organisms/Header/components/SettingsMenu/components/UserAvatar";
+import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { memo } from "react";
+import { AVATAR_FILENAME } from "linked-models/images/avatar";
+import { useChangeAvatarMutation } from "pages/UserPage/mutations/useChangeAvatar.mutation";
+import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledWrapper } from "./styles";
 
 const AvatarChangeForm = (): JSX.Element => {
-  const { currentUser } = useCurrentUser();
   const { t } = useTranslation();
+  const { setSnackbar } = useSnackbar();
+
+  const [selectedImage, setSelectedImage] = useState<File | undefined>(
+    undefined
+  );
+  const changeAvatarMutation = useChangeAvatarMutation();
+
+  const saveAvatar = () => {
+    if (selectedImage) {
+      const formData = new FormData();
+      formData.append(AVATAR_FILENAME, selectedImage);
+      changeAvatarMutation.mutate(formData, {
+        onSuccess: () => {
+          setSnackbar({ message: t(TranslationKeys.AvatarChanged) });
+        },
+      });
+    }
+  };
+
   return (
     <StyledWrapper>
-      <IconButton size="small">
-        <Avatar>
-          {!!currentUser ? (
-            currentUser.displayName[0].toUpperCase()
-          ) : (
-            <Settings />
-          )}
-        </Avatar>
-      </IconButton>
-      <Button>{t(TranslationKeys.ChangeAvatar)}</Button>
+      <input
+        accept="image/png"
+        style={{ display: "none" }}
+        id="inputFile"
+        type="file"
+        onChange={(event) => {
+          setSelectedImage(event.target.files?.[0]);
+        }}
+      />
+      <label htmlFor="inputFile">
+        <UserAvatar />
+      </label>
+
+      <Button disabled={!selectedImage} onClick={saveAvatar}>
+        {t(TranslationKeys.Save)}
+      </Button>
     </StyledWrapper>
   );
 };

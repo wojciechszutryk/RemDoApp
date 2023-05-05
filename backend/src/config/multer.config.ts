@@ -12,7 +12,7 @@ const storage = new GridFsStorage({
   url: url as string,
   file: (req, file) => {
     //If it is an avatar, save to avatar bucket
-    if (file.mimetype === "image/png" && file.fieldname === AVATAR_FILENAME) {
+    if (file.fieldname === AVATAR_FILENAME && file.mimetype === "image/png") {
       return {
         bucketName: AVATARS_BULK_NAME,
         filename: req.params[USER_PARAM] + ".png",

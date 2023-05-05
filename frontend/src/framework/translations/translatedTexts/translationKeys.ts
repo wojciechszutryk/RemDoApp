@@ -3,6 +3,7 @@ export enum TranslationKeys {
   FieldRequired = "FieldRequired",
 
   PageTitleHome = "PageTitleHome",
+  NoAccess = "NoAccess",
 
   WelcomeTextHeader = "WelcomeTextHeader",
   WelcomeTextDescription = "WelcomeTextDescription",
@@ -46,6 +47,7 @@ export enum TranslationKeys {
   PasswordChanged = "PasswordChanged",
   ChangeDisplayName = "ChangeDisplayName",
   ChangeAvatar = "ChangeAvatar",
+  AvatarChanged = "AvatarChanged",
   DispalyNameChanged = "DisplayNameChanged",
   Save = "Save",
   Logout = "Logout",
