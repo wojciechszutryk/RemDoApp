@@ -14,7 +14,7 @@ export const StyledSnackbar = styled(Snackbar, {
       transition: "0.3s transform",
     },
   },
-  "& *": {
+  "& div": {
     backgroundColor: theme.palette.secondary.light,
     color: theme.palette.secondary.contrastText,
   },

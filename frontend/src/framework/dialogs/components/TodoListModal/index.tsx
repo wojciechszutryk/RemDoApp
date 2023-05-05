@@ -7,8 +7,8 @@ import { ControlledTextField } from "atomicComponents/molecules/ControlledInputT
 import { useDialogs } from "framework/dialogs";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { ITodoList } from "linked-models/todoList/todoList.model";
+import { useEditTodoListMutation } from "pages/TodoListPage/mutations/editTodoList.mutation";
 import { useCreateTodoListMutation } from "pages/TodoListsPage/mutations/createTodoList.mutation";
-import { useEditTodoListMutation } from "pages/TodoListsPage/mutations/editTodoList.mutation";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

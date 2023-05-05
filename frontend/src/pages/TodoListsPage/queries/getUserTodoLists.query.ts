@@ -5,11 +5,11 @@ import { URL_TODO_LISTS } from "linked-models/todoList/todoList.urls";
 import { useQuery } from "react-query";
 
 export const useGetUserTodoListsQuery = () => {
-  const getArguments = async () => {
+  const getTodoLists = async () => {
     return await apiGet<ITodoListAttached[]>(FRONTIFY_URL(URL_TODO_LISTS)).then(
       (res) => res.data
     );
   };
 
-  return useQuery([URL_TODO_LISTS], getArguments);
+  return useQuery([URL_TODO_LISTS], getTodoLists);
 };

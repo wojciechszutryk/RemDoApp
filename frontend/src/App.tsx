@@ -1,5 +1,5 @@
 import PageTemplate from "atomicComponents/molecules/PageTemplate";
-import { ProtectedPageWrapper } from "atomicComponents/organisms/ProtectedPageWrapper";
+import { RequireAuthPageWrapper } from "atomicComponents/organisms/RequireAuthPageWrapper";
 import useAutoLogin from "framework/authentication/useAutoLogin";
 import { Pages } from "framework/routing/pages";
 import "framework/translations/i18.config/resources";
@@ -63,9 +63,9 @@ const App = (): JSX.Element => {
             element={
               <Suspense fallback={false}>
                 <PageTemplate>
-                  <ProtectedPageWrapper>
+                  <RequireAuthPageWrapper>
                     <UserPage />
-                  </ProtectedPageWrapper>
+                  </RequireAuthPageWrapper>
                 </PageTemplate>
               </Suspense>
             }
@@ -75,9 +75,9 @@ const App = (): JSX.Element => {
             element={
               <Suspense fallback={false}>
                 <PageTemplate>
-                  <ProtectedPageWrapper>
+                  <RequireAuthPageWrapper>
                     <RemindersPage />
-                  </ProtectedPageWrapper>
+                  </RequireAuthPageWrapper>
                 </PageTemplate>
               </Suspense>
             }
@@ -87,9 +87,21 @@ const App = (): JSX.Element => {
             element={
               <Suspense fallback={false}>
                 <PageTemplate>
-                  <ProtectedPageWrapper>
+                  <RequireAuthPageWrapper>
                     <TodoListsPage />
-                  </ProtectedPageWrapper>
+                  </RequireAuthPageWrapper>
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
+            path={Pages.TodoListPage.path}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
+                  <RequireAuthPageWrapper>
+                    <TodoListsPage />
+                  </RequireAuthPageWrapper>
                 </PageTemplate>
               </Suspense>
             }
