@@ -29,4 +29,7 @@ export const Pages = {
   TodoListsPage: {
     path: "/todoLists",
   },
+  TodoListPage: {
+    path: "/todoLists/:todoListId",
+  },
 };

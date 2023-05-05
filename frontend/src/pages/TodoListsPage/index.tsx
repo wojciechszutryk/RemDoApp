@@ -2,8 +2,8 @@ import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
 import { TextField } from "atomicComponents/atoms/TextField";
 import { useDialogs } from "framework/dialogs";
+import { useCreateTaskMutation } from "pages/TodoListPage/mutations/createTask.mutation";
 import { memo, useState } from "react";
-import { useCreateTaskMutation } from "./mutations/createTask.mutation";
 import { useGetUserTodoListsWithTasksQuery } from "./queries/getUserTodoListsWithTasks.query";
 
 const TodoListsPage = (): JSX.Element => {

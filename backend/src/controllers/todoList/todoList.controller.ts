@@ -3,6 +3,7 @@ import {
   BaseHttpController,
   controller,
   httpDelete,
+  httpGet,
   httpPut,
   requestBody,
   requestParam,
@@ -29,6 +30,22 @@ export class TodoListController extends BaseHttpController {
     super();
   }
 
+  @httpGet(
+    "",
+    SetTodoListPermissions,
+    CheckTodoListPermission(TodoListPermissions.CanReadTodoList)
+  )
+  async getTodoList(
+    @requestParam(TODO_LIST_PARAM) todoListId: string
+  ): Promise<OkResult> {
+    try {
+      const todoList = await this.todoListService.getTodoListById(todoListId);
+      return this.ok(todoList);
+    } catch (e) {
+      return this.json(e, 400);
+    }
+  }
+
   @httpPut(
     "",
     SetTodoListPermissions,
@@ -50,7 +67,7 @@ export class TodoListController extends BaseHttpController {
   }
 
   @httpDelete(
-    '',
+    "",
     SetTodoListPermissions,
     CheckTodoListPermission(TodoListPermissions.CanDeleteTodoList)
   )

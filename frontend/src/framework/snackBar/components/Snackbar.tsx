@@ -28,7 +28,7 @@ export const Snackbar = (): JSX.Element => {
               horizontal: "right",
             }}
             transformOnScroll={scrollTrigger}
-            autoHideDuration={6000}
+            // autoHideDuration={6000}
             onClose={handleClose}
           >
             <Alert
