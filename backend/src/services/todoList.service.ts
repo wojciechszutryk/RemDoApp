@@ -4,13 +4,17 @@ import {
   TodoListCollectionType,
 } from "dbSchemas/todoList.schema";
 import { inject, injectable } from "inversify";
-import { TodoListsWithTasksDto } from "linked-models/todoList/todoList.dto";
+import {
+  IExtendedTodoListDto,
+  ITodoListWithMembersDto,
+} from "linked-models/todoList/todoList.dto";
 import {
   ITodoList,
   ITodoListAttached,
   ITodoListWithReadonlyProperties,
 } from "linked-models/TodoList/TodoList.model";
 import { TaskService } from "./task.service";
+import { UserService } from "./user.service";
 
 @injectable()
 export class TodoListService {
@@ -18,7 +22,9 @@ export class TodoListService {
     @inject(TodoListCollectionName)
     private readonly todoListCollection: TodoListCollectionType,
     @inject(TaskService)
-    private readonly taskService: TaskService
+    private readonly taskService: TaskService,
+    @inject(UserService)
+    private readonly userService: UserService
   ) {}
 
   public async getTodoListById(
@@ -50,10 +56,38 @@ export class TodoListService {
     return uniqueTodoLists.map((td) => mapTodoListToAttachedTodoList(td));
   }
 
-  public async getTodoListsWithTasksForUser(
+  public async getTodoListsWithMembersForUser(
     userId: string
-  ): Promise<TodoListsWithTasksDto[]> {
+  ): Promise<ITodoListWithMembersDto[]> {
     const todoLists = await this.getTodoListsForUser(userId);
+
+    const memberEmails = new Set<string>();
+    todoLists.forEach((t) => {
+      t.assignedOwners?.forEach(memberEmails.add, memberEmails);
+      t.assignedUsers?.forEach(memberEmails.add, memberEmails);
+    });
+
+    const members = await this.userService.getUsersByEmails(
+      Array.from(memberEmails)
+    );
+
+    const todoListsWithMembers = todoLists.map((td) => ({
+      ...td,
+      assignedOwners: members.filter((member) =>
+        td.assignedOwners?.includes(member.email)
+      ),
+      assignedUsers: members.filter((member) =>
+        td.assignedUsers?.includes(member.email)
+      ),
+    }));
+
+    return todoListsWithMembers;
+  }
+
+  public async getExtendedTodoListsForUser(
+    userId: string
+  ): Promise<IExtendedTodoListDto[]> {
+    const todoLists = await this.getTodoListsWithMembersForUser(userId);
     const todoListIDs = todoLists.map((td) => td.id);
 
     const tasks = await this.taskService.getTasksByTodoListIDs(todoListIDs);

@@ -1,5 +1,5 @@
 import { Button } from "atomicComponents/atoms/Button";
-import UserAvatar from "atomicComponents/organisms/Header/components/SettingsMenu/components/UserAvatar";
+import CurrentUserSettingsAvatar from "atomicComponents/organisms/Header/components/SettingsMenu/components/UserAvatar";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { AVATAR_FILENAME } from "linked-models/images/avatar";
@@ -41,7 +41,7 @@ const AvatarChangeForm = (): JSX.Element => {
         }}
       />
       <label htmlFor="inputFile">
-        <UserAvatar />
+        <CurrentUserSettingsAvatar />
       </label>
 
       <Button disabled={!selectedImage} onClick={saveAvatar}>

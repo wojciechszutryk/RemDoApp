@@ -3,52 +3,55 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ShareIcon from "@mui/icons-material/Share";
 import { AvatarGroup } from "@mui/material";
-import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
 import Collapse from "@mui/material/Collapse";
-import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import { styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { Button } from "atomicComponents/atoms/Button";
+import UserAvatar from "atomicComponents/molecules/UserAvatar";
+import { TodoListsWithTasksDto } from "linked-models/todoList/todoList.dto";
 import * as React from "react";
 import { memo } from "react";
+import { StyledExpandMore } from "./styles";
 
-const TodoListCard = (): JSX.Element => {
-  interface ExpandMoreProps extends IconButtonProps {
-    expand: boolean;
-  }
+interface Props {
+  todoList: TodoListsWithTasksDto;
+}
 
-  const ExpandMore = styled((props: ExpandMoreProps) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-  })(({ theme, expand }) => ({
-    transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-    marginLeft: "auto",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest,
-    }),
-  }));
-
+const TodoListCard = ({
+  todoList: {
+    tasks,
+    name,
+    id,
+    icon,
+    whenCreated,
+    whenUpdated,
+    assignedOwners,
+    assignedUsers,
+  },
+}: Props): JSX.Element => {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  const allMembers = [];
+  if (assignedOwners) allMembers.push(...assignedOwners);
+  if (assignedUsers) allMembers.push(...assignedUsers);
+  console.log(allMembers);
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         avatar={
-          <AvatarGroup max={4}>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-            <Avatar alt="Agnes Walker" src="/static/images/avatar/4.jpg" />
-            <Avatar alt="Trevor Henderson" src="/static/images/avatar/5.jpg" />
+          <AvatarGroup max={3}>
+            {Array.from(new Set(allMembers)).map((userId) => (
+              <UserAvatar key={userId} userId={userId} />
+            ))}
           </AvatarGroup>
         }
         action={
@@ -58,12 +61,6 @@ const TodoListCard = (): JSX.Element => {
         }
         title="Shrimp and Chorizo Paella"
         subheader="September 14, 2016"
-      />
-      <CardMedia
-        component="img"
-        height="194"
-        image="/static/images/cards/paella.jpg"
-        alt="Paella dish"
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
@@ -80,14 +77,14 @@ const TodoListCard = (): JSX.Element => {
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
-        <ExpandMore
+        <StyledExpandMore
           expand={expanded}
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="show more"
         >
           <ExpandMoreIcon />
-        </ExpandMore>
+        </StyledExpandMore>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>

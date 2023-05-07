@@ -11,6 +11,7 @@ import {
 import { OkResult } from "inversify-express-utils/lib/results";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import {
+  PARAM_WITH_MEMBERS,
   PARAM_WITH_TASKS,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
@@ -30,10 +31,17 @@ export class TodoListsController extends BaseHttpController {
   @httpGet("")
   async getTodoListsForUser(
     @currentUser() currentUser: IUserAttached,
-    @queryParam(PARAM_WITH_TASKS) withTasks = false
+    @queryParam(PARAM_WITH_TASKS) withTasks = false,
+    @queryParam(PARAM_WITH_MEMBERS) withMembers = false
   ): Promise<OkResult> {
     if (withTasks) {
-      const todoLists = await this.todoListService.getTodoListsWithTasksForUser(
+      const todoLists = await this.todoListService.getExtendedTodoListsForUser(
+        currentUser.id
+      );
+
+      return this.ok(todoLists);
+    } else if (withMembers) {
+      const todoLists = await this.todoListService.getExtendedTodoListsForUser(
         currentUser.id
       );
 

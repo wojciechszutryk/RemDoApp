@@ -58,19 +58,14 @@ export class UserController extends BaseHttpController {
       const imageBucket = new GridFSBucket(db, {
         bucketName: AVATARS_BULK_NAME,
       });
+      res.writeHead(200, { "Content-type": "image/png" });
 
       const downloadStream = imageBucket.openDownloadStreamByName(
         `${userId}.png`
       );
 
-      res.writeHead(200, { "Content-type": "image/png" });
-
       downloadStream.on("data", function (data) {
         return res.write(data);
-      });
-
-      downloadStream.on("error", function () {
-        return res.status(404).send({ error: "Image not found" });
       });
 
       downloadStream.on("end", () => {

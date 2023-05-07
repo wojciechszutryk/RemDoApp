@@ -1,5 +1,6 @@
-import { UserCollectionName, UserCollectionType } from "dbSchemas/user.schema";
+import { mapUserToAttachedUser, UserCollectionName, UserCollectionType } from "dbSchemas/user.schema";
 import { inject, injectable } from "inversify";
+import { IUserAttached } from "linked-models/User/User.model";
 
 @injectable()
 export class UserService {
@@ -7,6 +8,14 @@ export class UserService {
     @inject(UserCollectionName)
     private readonly userCollection: UserCollectionType
   ) {}
+
+  public async getUsersByEmails(emails: string[]): Promise<IUserAttached[]> {
+    const foundUsers = await this.userCollection.find({
+      email: { $in: emails },
+    });
+
+    return foundUsers.map((u) => mapUserToAttachedUser(u));
+  }
 
   /**
    * Warning this service doesn't check if user can update displayName. It is assumed that proper check is done before using this service
