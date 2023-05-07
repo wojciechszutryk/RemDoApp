@@ -10,6 +10,12 @@ export const StyledAutocompleteLabel = styled(Typography)({
   marginBottom: 10,
 });
 
+export const StyledInlineInputs = styled("div")({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
 export const StyledAutocompleteChip = styled(Chip)(({ theme }) => ({
   zIndex: 1,
   backgroundColor: theme.palette.primary.main,

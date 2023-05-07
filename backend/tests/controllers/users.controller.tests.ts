@@ -95,35 +95,35 @@ describe(`User service`, () => {
     expect((await response).statusCode).toEqual(200);
   });
 
-  // it(`should return stactus code 400 and proper message when trying to sign user in with no email or password in request body`, async () => {
-  //   const incorrectData = { password: "password" };
-  //   const result = await userController.loginUser(
-  //     incorrectData as ILoginUserDTO
-  //   );
-  //   const response = result.executeAsync();
+  it(`should return stactus code 400 and proper message when trying to sign user in with no email or password in request body`, async () => {
+    const incorrectData = { password: "password" };
+    const result = await userController.loginUser(
+      incorrectData as ILoginUserDTO
+    );
+    const response = result.executeAsync();
 
-  //   expect((await response).statusCode).toEqual(200);
-  // });
+    expect((await response).statusCode).toEqual(200);
+  });
 
-  // it(`should return stactus code 400 and proper message when trying to sign user in with email that does not exist`, async () => {
-  //   const incorrectEmailData = { email: "emailThatDoesNotExist" };
-  //   const result = await userController.loginUser(
-  //     incorrectEmailData as ILoginUserDTO
-  //   );
-  //   const response = await result.executeAsync();
+  it(`should return stactus code 400 and proper message when trying to sign user in with email that does not exist`, async () => {
+    const incorrectEmailData = { email: "emailThatDoesNotExist" };
+    const result = await userController.loginUser(
+      incorrectEmailData as ILoginUserDTO
+    );
+    const response = await result.executeAsync();
 
-  //   expect(response.statusCode).toEqual(400);
-  //   expect(response.content).toEqual(
-  //     "User with email: emailThatDoesNotExist don't exist."
-  //   );
-  // });
+    expect(response.statusCode).toEqual(400);
+    expect(response.content).toEqual(
+      "User with email: emailThatDoesNotExist don't exist."
+    );
+  });
 
-  // it(`should return stactus code 400 and proper message when trying to sign user in with invalid credentials`, async () => {
-  //   const invalidCredentialsData = { email: "email111", password: "password" };
-  //   const result = await userController.loginUser(invalidCredentialsData);
-  //   const response = await result.executeAsync();
+  it(`should return stactus code 400 and proper message when trying to sign user in with invalid credentials`, async () => {
+    const invalidCredentialsData = { email: "email111", password: "password" };
+    const result = await userController.loginUser(invalidCredentialsData);
+    const response = await result.executeAsync();
 
-  //   expect(response.statusCode).toEqual(400);
-  //   expect(response.content).toEqual("Invalid Credentials");
-  // });
+    expect(response.statusCode).toEqual(400);
+    expect(response.content).toEqual("Invalid Credentials");
+  });
 });
