@@ -6,6 +6,7 @@ import { ControlledTextField } from "atomicComponents/molecules/ControlledInputT
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useDialogs } from "framework/dialogs";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
+import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import { useEditTodoListMutation } from "pages/TodoListPage/mutations/editTodoList.mutation";
 import { useCreateTodoListMutation } from "pages/TodoListsPage/mutations/createTodoList.mutation";
@@ -13,7 +14,12 @@ import { memo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import EmailAutocomplete from "./components/EmailAutocomplete";
-import { StyledAutocompleteLabel, StyledForm } from "./styles";
+import IconPicker from "./components/IconPicker";
+import {
+  StyledAutocompleteLabel,
+  StyledForm,
+  StyledInlineInputs,
+} from "./styles";
 
 const TodoListModal = (): JSX.Element => {
   const {
@@ -22,11 +28,12 @@ const TodoListModal = (): JSX.Element => {
     },
     dialogsActions: { updateTodoListDialog },
   } = useDialogs();
-  
+
   const { currentUser } = useCurrentUser();
 
   const defaultFormValues = {
     name: editTodoListData?.name || "",
+    icon: editTodoListData?.icon || TodoListIconEnum.TodoList,
     assignedOwners: editTodoListData?.assignedOwners || [
       currentUser?.email || "",
     ],
@@ -58,11 +65,14 @@ const TodoListModal = (): JSX.Element => {
           <Typography variant="h4">
             {t(TranslationKeys.TodoListDialogHeader)}
           </Typography>
-          <ControlledTextField
-            name={"name"}
-            control={methods.control}
-            placeholder={t(TranslationKeys.TodoListDialogInputTitle)}
-          />
+          <StyledInlineInputs>
+            <IconPicker />
+            <ControlledTextField
+              name={"name"}
+              control={methods.control}
+              placeholder={t(TranslationKeys.TodoListDialogInputTitle)}
+            />
+          </StyledInlineInputs>
           <Accordion summaryText={t(TranslationKeys.ShareTodoList)}>
             <StyledAutocompleteLabel>
               {t(TranslationKeys.CurrentOwners)}

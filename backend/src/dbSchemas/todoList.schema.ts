@@ -20,6 +20,7 @@ const todoListSchema = new mongoose.Schema({
     type: Date,
     required: false,
   },
+  icon: { type: String, required: false },
   assignedUsers: {
     type: [String],
     required: false,
@@ -45,6 +46,7 @@ export const mapTodoListToAttachedTodoList = (
     id: todoList.id,
     name: todoList.name,
     creator: todoList.creator,
+    icon: todoList.icon,
     assignedUsers: todoList.assignedUsers,
     assignedOwners: todoList.assignedOwners,
     whenCreated: todoList.whenCreated,

@@ -1,4 +1,5 @@
 import { IBaseModelAttached } from "../abstraction/base.interface";
+import { TodoListIconEnum } from "./todoList.enum";
 
 export interface ITodoList {
   /** Name of tasks list */
@@ -9,6 +10,9 @@ export interface ITodoList {
 
   /** Ids of owner users. Owners can modify everything in todoList scope inc. deleting other users' tasks or deleting whole todoList */
   assignedOwners?: string[];
+
+  /** Ids of owner users. Owners can modify everything in todoList scope inc. deleting other users' tasks or deleting whole todoList */
+  icon?: TodoListIconEnum;
 }
 
 export interface ITodoListWithReadonlyProperties extends ITodoList {
