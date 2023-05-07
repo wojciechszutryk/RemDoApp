@@ -11,7 +11,7 @@ import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import PrefferedSettingsMenuOptions from "./components/PrefferedSettingsMenuOptions";
-import UserAvatar from "./components/UserAvatar";
+import CurrentUserSettingsAvatar from "./components/UserAvatar";
 import { StyledMenu, StyledMenuItem } from "./styles";
 
 const SettingsMenu = (): JSX.Element => {
@@ -33,7 +33,7 @@ const SettingsMenu = (): JSX.Element => {
   return (
     <>
       <IconButton onClick={handleClickAvatar} size="small">
-        <UserAvatar />
+        <CurrentUserSettingsAvatar />
       </IconButton>
       <StyledMenu
         elevation={1}

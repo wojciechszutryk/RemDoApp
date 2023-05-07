@@ -19,7 +19,7 @@ const TodoListsPage = (): JSX.Element => {
       <Button onClick={handleOpenCreateTodoListDialog}>Dodaj todoliste</Button>
       <StyledTodoListsWrapper>
         {getUserTodoListsWithTasksQuery.data?.map((todoList) => (
-          <TodoListCard key={todoList.id} />
+          <TodoListCard key={todoList.id} todoList={todoList} />
         ))}
       </StyledTodoListsWrapper>
     </StyledTodoListsPageWrapper>
