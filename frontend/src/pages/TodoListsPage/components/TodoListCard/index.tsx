@@ -12,13 +12,13 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { Button } from "atomicComponents/atoms/Button";
 import UserAvatar from "atomicComponents/molecules/UserAvatar";
-import { TodoListsWithTasksDto } from "linked-models/todoList/todoList.dto";
+import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import * as React from "react";
 import { memo } from "react";
 import { StyledExpandMore } from "./styles";
 
 interface Props {
-  todoList: TodoListsWithTasksDto;
+  todoList: IExtendedTodoListDto;
 }
 
 const TodoListCard = ({
@@ -42,15 +42,14 @@ const TodoListCard = ({
   const allMembers = [];
   if (assignedOwners) allMembers.push(...assignedOwners);
   if (assignedUsers) allMembers.push(...assignedUsers);
-  console.log(allMembers);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         avatar={
           <AvatarGroup max={3}>
-            {Array.from(new Set(allMembers)).map((userId) => (
-              <UserAvatar key={userId} userId={userId} />
+            {Array.from(new Set(allMembers)).map((user) => (
+              <UserAvatar key={user.id} userId={user.id} />
             ))}
           </AvatarGroup>
         }
