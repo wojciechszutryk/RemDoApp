@@ -101,7 +101,7 @@ export class TodoListService {
   public async createTodoList(
     todoListData: ITodoList,
     creator: string
-  ): Promise<ITodoListAttached> {
+  ): Promise<ITodoListWithMembersDto> {
     const newTodoList: ITodoListWithReadonlyProperties = {
       name: todoListData.name,
       assignedOwners: todoListData.assignedOwners,
@@ -113,8 +113,21 @@ export class TodoListService {
     };
 
     const createdTodoList = await this.todoListCollection.create(newTodoList);
+    const mappedCreatedTodoList =
+      mapTodoListToAttachedTodoList(createdTodoList);
 
-    return mapTodoListToAttachedTodoList(createdTodoList);
+    const [assignedOwners, assignedUsers] = await Promise.all([
+      mappedCreatedTodoList.assignedOwners &&
+        this.userService.getUsersByEmails(mappedCreatedTodoList.assignedOwners),
+      mappedCreatedTodoList.assignedUsers &&
+        this.userService.getUsersByEmails(mappedCreatedTodoList.assignedUsers),
+    ]);
+
+    return {
+      ...mappedCreatedTodoList,
+      assignedOwners: assignedOwners || [],
+      assignedUsers: assignedUsers || [],
+    };
   }
 
   /**
@@ -123,12 +136,13 @@ export class TodoListService {
   public async updateTodoList(
     todoListId: string,
     todoListData: Partial<ITodoList>
-  ): Promise<ITodoListAttached> {
+  ): Promise<ITodoListWithMembersDto> {
     //only valid properties
-    const update = {
-      name: todoListData.name,
+    const update: Partial<ITodoListAttached> = {
       whenUpdated: new Date(),
     };
+    if (todoListData.name) update.name = todoListData.name;
+    if (todoListData.icon) update.icon = todoListData.icon;
 
     const updatedTodoList = await this.todoListCollection.findByIdAndUpdate(
       todoListId,
@@ -142,7 +156,21 @@ export class TodoListService {
       );
     }
 
-    return mapTodoListToAttachedTodoList(updatedTodoList);
+    const mappedUpdatedTodoList =
+      mapTodoListToAttachedTodoList(updatedTodoList);
+
+    const [assignedOwners, assignedUsers] = await Promise.all([
+      mappedUpdatedTodoList.assignedOwners &&
+        this.userService.getUsersByEmails(mappedUpdatedTodoList.assignedOwners),
+      mappedUpdatedTodoList.assignedUsers &&
+        this.userService.getUsersByEmails(mappedUpdatedTodoList.assignedUsers),
+    ]);
+
+    return {
+      ...mappedUpdatedTodoList,
+      assignedOwners: assignedOwners || [],
+      assignedUsers: assignedUsers || [],
+    };
   }
 
   /**

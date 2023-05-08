@@ -1,10 +1,10 @@
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
-import { TodoListsWithTasksDto } from "linked-models/todoList/todoList.dto";
 import {
-  ITodoList,
-  ITodoListAttached,
-} from "linked-models/todoList/todoList.model";
+  IExtendedTodoListDto,
+  ITodoListWithMembersDto,
+} from "linked-models/todoList/todoList.dto";
+import { ITodoList } from "linked-models/todoList/todoList.model";
 import {
   PARAM_WITH_TASKS,
   URL_TODO_LISTS,
@@ -16,7 +16,7 @@ export const useCreateTodoListMutation = () => {
   const url = FRONTIFY_URL(URL_TODO_LISTS);
 
   const createTodoList = async (data: ITodoList) => {
-    return apiPost<ITodoList, ITodoListAttached>(url, data).then(
+    return apiPost<ITodoList, ITodoListWithMembersDto>(url, data).then(
       (res) => res.data
     );
   };
@@ -26,7 +26,7 @@ export const useCreateTodoListMutation = () => {
       const queryKey = [URL_TODO_LISTS, PARAM_WITH_TASKS];
       queryClient.setQueryData(
         queryKey,
-        (prev?: TodoListsWithTasksDto[]): TodoListsWithTasksDto[] => {
+        (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {
           const todoListWithTasks = {
             ...createdTodoList,
             tasks: [],
