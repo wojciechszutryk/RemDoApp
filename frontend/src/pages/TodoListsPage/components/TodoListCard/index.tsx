@@ -1,5 +1,4 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ShareIcon from "@mui/icons-material/Share";
 import { AvatarGroup } from "@mui/material";
@@ -12,13 +11,13 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { Button } from "atomicComponents/atoms/Button";
 import UserAvatar from "atomicComponents/molecules/UserAvatar";
-import { TodoListsWithTasksDto } from "linked-models/todoList/todoList.dto";
+import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import * as React from "react";
 import { memo } from "react";
 import { StyledExpandMore } from "./styles";
 
 interface Props {
-  todoList: TodoListsWithTasksDto;
+  todoList: IExtendedTodoListDto;
 }
 
 const TodoListCard = ({
@@ -28,7 +27,6 @@ const TodoListCard = ({
     id,
     icon,
     whenCreated,
-    whenUpdated,
     assignedOwners,
     assignedUsers,
   },
@@ -42,38 +40,29 @@ const TodoListCard = ({
   const allMembers = [];
   if (assignedOwners) allMembers.push(...assignedOwners);
   if (assignedUsers) allMembers.push(...assignedUsers);
-  console.log(allMembers);
 
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         avatar={
-          <AvatarGroup max={3}>
-            {Array.from(new Set(allMembers)).map((userId) => (
-              <UserAvatar key={userId} userId={userId} />
-            ))}
-          </AvatarGroup>
+          allMembers.length > 1 && (
+            <AvatarGroup max={3}>
+              {Array.from(new Set(allMembers)).map((member) => (
+                <UserAvatar key={member.id} userId={member.id} />
+              ))}
+            </AvatarGroup>
+          )
         }
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title={name}
       />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
-        </Typography>
-      </CardContent>
+      <CardContent></CardContent>
       <CardActions disableSpacing>
         <Button>Dodaj task</Button>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>

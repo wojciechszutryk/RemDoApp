@@ -1,10 +1,10 @@
 import { apiPut } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
-import { TodoListsWithTasksDto } from "linked-models/todoList/todoList.dto";
 import {
-  ITodoList,
-  ITodoListAttached,
-} from "linked-models/todoList/todoList.model";
+  IExtendedTodoListDto,
+  ITodoListWithMembersDto,
+} from "linked-models/todoList/todoList.dto";
+import { ITodoList } from "linked-models/todoList/todoList.model";
 import {
   PARAM_WITH_TASKS,
   URL_TODO_LIST,
@@ -23,7 +23,7 @@ export const useEditTodoListMutation = () => {
     data: ITodoList;
   }) => {
     const url = FRONTIFY_URL(URL_TODO_LISTS, URL_TODO_LIST(todoListId));
-    return apiPut<ITodoList, ITodoListAttached>(url, data).then(
+    return apiPut<ITodoList, ITodoListWithMembersDto>(url, data).then(
       (res) => res.data
     );
   };
@@ -33,7 +33,7 @@ export const useEditTodoListMutation = () => {
       //update all todoLists query
       queryClient.setQueryData(
         [URL_TODO_LISTS, PARAM_WITH_TASKS],
-        (prev?: TodoListsWithTasksDto[]): TodoListsWithTasksDto[] => {
+        (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {
           return (
             prev?.map((td) => {
               if (td.id === updatedTodoList.id) {
