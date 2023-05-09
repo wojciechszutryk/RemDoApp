@@ -43,34 +43,31 @@ const SettingsMenu = (): JSX.Element => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {currentUser && (
-          <>
-            <StyledMenuItem onClick={() => navigate(Pages.UserPage.path)}>
-              <ListItemIcon>
-                <Settings fontSize="small" />
-              </ListItemIcon>
-              {t(TranslationKeys.PageTitleUserSettings)}
-            </StyledMenuItem>
-            <Divider />
-          </>
-        )}
         <PrefferedSettingsMenuOptions />
-        {currentUser && (
-          <>
-            <Divider />
-            <StyledMenuItem
-              onClick={() => {
-                setCurrentUser(undefined);
-                navigate(Pages.HomePage.path);
-              }}
-            >
-              <ListItemIcon>
-                <Logout fontSize="small" />
-              </ListItemIcon>
-              {t(TranslationKeys.Logout)}
-            </StyledMenuItem>
-          </>
-        )}
+        {currentUser && [
+          <Divider key={"divider"} />,
+          <StyledMenuItem
+            key={"userSettings"}
+            onClick={() => navigate(Pages.UserPage.path)}
+          >
+            <ListItemIcon>
+              <Settings fontSize="small" />
+            </ListItemIcon>
+            {t(TranslationKeys.PageTitleUserSettings)}
+          </StyledMenuItem>,
+          <StyledMenuItem
+            key={"logout"}
+            onClick={() => {
+              setCurrentUser(undefined);
+              navigate(Pages.HomePage.path);
+            }}
+          >
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            {t(TranslationKeys.Logout)}
+          </StyledMenuItem>,
+        ]}
       </StyledMenu>
     </>
   );
