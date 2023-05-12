@@ -1,7 +1,7 @@
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { Card, styled } from "@mui/material";
 
-export const StyledSortableItem = styled("div", {
+export const StyledTodoListCardWrapper = styled("div", {
   shouldForwardProp: (prop) =>
     prop !== "isDragging" && prop !== "transform" && prop !== "transition",
 })<{
@@ -9,6 +9,7 @@ export const StyledSortableItem = styled("div", {
   transform: string | undefined;
   transition: string | undefined;
 }>(({ isDragging, transform, transition }) => ({
+  position: "relative",
   opacity: isDragging ? "0.5" : "1",
   transformOrigin: "50% 50%",
   boxShadow: isDragging
