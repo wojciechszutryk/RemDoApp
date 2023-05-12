@@ -34,6 +34,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PageTitleReminders]: "Reminders",
 
   [TranslationKeys.PageTitleTodoLists]: "TodoLists",
+  [TranslationKeys.EmptyTodoLists]: "There are no todo lists. Create one!",
+  [TranslationKeys.CreateNewTodoList]: "Create new todo list",
   [TranslationKeys.TodoListDialogHeader]: "Create new todo list",
   [TranslationKeys.ShareTodoList]: "Share todo list",
   [TranslationKeys.TodoListDialogInputTitle]: "List title",
@@ -43,8 +45,9 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.CurrentOwners]: "Owners",
   [TranslationKeys.CurrentUsers]: "Users",
 
-  [TranslationKeys.PageTitleUserSettings]: "User settings",
+  [TranslationKeys.EmptyTasksList]: "No tasks in this list.",
 
+  [TranslationKeys.PageTitleUserSettings]: "User settings",
   [TranslationKeys.CurrentPasswordLabel]: "current password",
   [TranslationKeys.ChangePassword]: "Change password",
   [TranslationKeys.NewPasswordLabel]: "new password",
