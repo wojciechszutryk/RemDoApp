@@ -1,7 +1,19 @@
 import { useContext, useReducer } from "react";
-import { updateTodoListDialogAction } from "./actions";
+import {
+  updateDeleteTaskDialogAction,
+  updateDeleteTodoListDialogAction,
+  updateShareTodoListDialogAction,
+  updateTaskDialogAction,
+  updateTodoListDialogAction,
+} from "./actions";
 import { Context, initialState } from "./context";
-import { ITodoListDialog } from "./models/state.model";
+import {
+  IDeleteTaskDialog,
+  IDeleteTodoListDialog,
+  IShareTodoListDialog,
+  ITaskDialog,
+  ITodoListDialog,
+} from "./models/state.model";
 import { ContextProps } from "./models/useInterface.models";
 import Reducer from "./reducer";
 
@@ -15,6 +27,14 @@ function DialogsProvider({ children }: Props): JSX.Element {
   const dialogsActions = {
     updateTodoListDialog: (actionPayload: ITodoListDialog) =>
       dialogsDispatch(updateTodoListDialogAction(actionPayload)),
+    updateShareTodoListDialog: (actionPayload: IShareTodoListDialog) =>
+      dialogsDispatch(updateShareTodoListDialogAction(actionPayload)),
+    updateDeleteTodoListDialog: (actionPayload: IDeleteTodoListDialog) =>
+      dialogsDispatch(updateDeleteTodoListDialogAction(actionPayload)),
+    updateTaskDialog: (actionPayload: ITaskDialog) =>
+      dialogsDispatch(updateTaskDialogAction(actionPayload)),
+    updateDeleteTaskDialog: (actionPayload: IDeleteTaskDialog) =>
+      dialogsDispatch(updateDeleteTaskDialogAction(actionPayload)),
   };
 
   const value = {
