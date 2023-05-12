@@ -17,6 +17,30 @@ function Reducer(
       return newState;
     }
 
+    case DialogsActionTypes.updateShareTodoListDialog: {
+      newState.shareTodoListDialog = action.payload;
+
+      return newState;
+    }
+
+    case DialogsActionTypes.updateDeleteTodoListDialog: {
+      newState.deleteTodoListDialog = action.payload;
+
+      return newState;
+    }
+
+    case DialogsActionTypes.updateTaskDialog: {
+      newState.taskDialog = action.payload;
+
+      return newState;
+    }
+
+    case DialogsActionTypes.updateDeleteTaskDialog: {
+      newState.deleteTaskDialog = action.payload;
+
+      return newState;
+    }
+
     default:
       throw new Error();
   }
