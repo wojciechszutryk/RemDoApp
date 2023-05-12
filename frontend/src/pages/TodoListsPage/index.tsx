@@ -1,31 +1,43 @@
-import { Skeleton } from "@mui/material";
-import { Button } from "atomicComponents/atoms/Button";
-import { useDialogs } from "framework/dialogs";
-import { memo } from "react";
+import { memo, useMemo } from "react";
+import EmptyTodoLists from "./components/EmptyTodoLists";
 import TodoListsContainer from "./components/TodoListsContainer";
+import { TodoListsLoader } from "./components/TodoListsLoader";
+import TopPanel from "./components/TopPanel";
 import { useGetUserTodoListsWithTasksQuery } from "./queries/getUserTodoListsWithTasks.query";
 import { StyledTodoListsPageWrapper } from "./styles";
 
 const TodoListsPage = (): JSX.Element => {
-  const { dialogsActions } = useDialogs();
   const getUserTodoListsWithTasksQuery = useGetUserTodoListsWithTasksQuery();
 
-  const handleOpenCreateTodoListDialog = () => {
-    dialogsActions.updateTodoListDialog({ visible: true });
-  };
+  const pageContent = useMemo(() => {
+    let pageContent = null;
 
-  return (
-    <StyledTodoListsPageWrapper>
-      <h1>Todo Lists</h1>
-      <Button onClick={handleOpenCreateTodoListDialog}>Dodaj todoliste</Button>
-      {!getUserTodoListsWithTasksQuery.data ||
-      getUserTodoListsWithTasksQuery.isLoading ? (
-        <Skeleton />
-      ) : (
+    if (getUserTodoListsWithTasksQuery.isLoading)
+      pageContent = <TodoListsLoader />;
+    else if (
+      getUserTodoListsWithTasksQuery.isFetched &&
+      !!getUserTodoListsWithTasksQuery.data?.length
+    ) {
+      pageContent = (
         <TodoListsContainer
           todoLists={getUserTodoListsWithTasksQuery.data || []}
         />
-      )}
+      );
+    } else {
+      pageContent = <EmptyTodoLists />;
+    }
+
+    return pageContent;
+  }, [
+    getUserTodoListsWithTasksQuery.data,
+    getUserTodoListsWithTasksQuery.isFetched,
+    getUserTodoListsWithTasksQuery.isLoading,
+  ]);
+
+  return (
+    <StyledTodoListsPageWrapper>
+      <TopPanel />
+      {pageContent}
     </StyledTodoListsPageWrapper>
   );
 };

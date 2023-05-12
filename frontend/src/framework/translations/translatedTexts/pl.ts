@@ -35,6 +35,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PageTitleReminders]: "Przypomnienia",
 
   [TranslationKeys.PageTitleTodoLists]: "Listy zadań",
+  [TranslationKeys.EmptyTodoLists]: "Brak list zadań. Utwórz nową listę!.",
+  [TranslationKeys.CreateNewTodoList]: "Utwórz nową listę zadań",
   [TranslationKeys.TodoListDialogHeader]: "Utwórz nową listę zadań",
   [TranslationKeys.ShareTodoList]: "Udostępnij listę zadań",
   [TranslationKeys.TodoListDialogInputTitle]: "Tytuł listy",
@@ -43,6 +45,9 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.ManageUsers]: "Zarządzaj użytkownikami",
   [TranslationKeys.CurrentOwners]: "Właściciele",
   [TranslationKeys.CurrentUsers]: "Użytkownicy",
+
+  [TranslationKeys.EmptyTasksList]:
+    "Brak zadań na liście. Dodaj nowe zadanie!.",
 
   [TranslationKeys.PageTitleUserSettings]: "Ustawienia użytkownika",
   [TranslationKeys.ChangePassword]: "Zmień hasło",

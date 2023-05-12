@@ -1,18 +1,18 @@
+import { AvatarProps } from "@mui/material";
 import { Avatar } from "atomicComponents/atoms/Avatar";
 import { memo, useState } from "react";
 import { StyledUserAvatarImage } from "./styles";
 
 interface Props {
   userId: string;
+  avatarProps?: AvatarProps;
 }
 
-const UserAvatar = ({ userId }: Props): JSX.Element => {
+const UserAvatar = ({ userId, avatarProps }: Props): JSX.Element => {
   const [showUserAvatar, setShowUserAvatar] = useState(true);
 
-  console.log(showUserAvatar);
-
   return (
-    <Avatar>
+    <Avatar {...avatarProps}>
       {showUserAvatar ? (
         <StyledUserAvatarImage
           src={`http://localhost:3001/users/${userId}/avatar`}
