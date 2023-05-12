@@ -43,6 +43,10 @@ export const StyledDragIcon = styled(DragIndicatorIcon, {
   cursor: isDragging ? "grabbing" : "grab",
 }));
 
+export const StyledCardHeaderActions = styled("div")({
+  display: "flex",
+});
+
 export const StyledExpandMore = styled("div", {
   shouldForwardProp: (prop) => prop !== "expand",
 })<{ expand: boolean }>(({ theme, expand }) => ({
