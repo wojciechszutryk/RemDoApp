@@ -68,6 +68,10 @@ export class UserController extends BaseHttpController {
         return res.write(data);
       });
 
+      downloadStream.on("error", () => {
+        return;
+      });
+
       downloadStream.on("end", () => {
         return res.end();
       });
