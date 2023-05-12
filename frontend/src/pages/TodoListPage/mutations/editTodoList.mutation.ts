@@ -20,10 +20,10 @@ export const useEditTodoListMutation = () => {
     data,
   }: {
     todoListId: string;
-    data: ITodoList;
+    data: Partial<ITodoList>;
   }) => {
     const url = FRONTIFY_URL(URL_TODO_LISTS, URL_TODO_LIST(todoListId));
-    return apiPut<ITodoList, ITodoListWithMembersDto>(url, data).then(
+    return apiPut<Partial<ITodoList>, ITodoListWithMembersDto>(url, data).then(
       (res) => res.data
     );
   };
