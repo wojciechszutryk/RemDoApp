@@ -41,6 +41,8 @@ export enum TranslationKeys {
   CurrentOwners = "CurrentOwners",
   CurrentUsers = "CurrentUsers",
   TodoListDialogButton = "TodoListDialogButton",
+  DelteTodoList = "DelteTodoList",
+  DelteTodoListWarning = "DelteTodoListWarning",
 
   EmptyTasksList = "EmptyTasksList",
 

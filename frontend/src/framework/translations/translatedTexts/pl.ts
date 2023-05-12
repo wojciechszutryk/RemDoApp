@@ -45,6 +45,9 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.ManageUsers]: "Zarządzaj użytkownikami",
   [TranslationKeys.CurrentOwners]: "Właściciele",
   [TranslationKeys.CurrentUsers]: "Użytkownicy",
+  [TranslationKeys.DelteTodoList]: "Usuń listę zadań",
+  [TranslationKeys.DelteTodoListWarning]:
+    "Czy na pewno chcesz usunąć tę listę zadań? Ta operacja jest nieodwracalna. Wszystkie zadania powiązane z tą listą zostaną usunięte.",
 
   [TranslationKeys.EmptyTasksList]:
     "Brak zadań na liście. Dodaj nowe zadanie!.",
