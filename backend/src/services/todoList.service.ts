@@ -56,6 +56,24 @@ export class TodoListService {
     return uniqueTodoLists.map((td) => mapTodoListToAttachedTodoList(td));
   }
 
+  public async getTodoListWithMembersById(
+    todoListId: string
+  ): Promise<ITodoListWithMembersDto | undefined> {
+    const todoList = await this.getTodoListById(todoListId);
+    if (!todoList) return undefined;
+
+    const [users, owners] = await Promise.all([
+      todoList.assignedUsers
+        ? this.userService.getUsersByEmails(todoList.assignedUsers)
+        : [],
+      todoList.assignedOwners
+        ? this.userService.getUsersByEmails(todoList.assignedOwners)
+        : [],
+    ]);
+
+    return { ...todoList, assignedUsers: users, assignedOwners: owners };
+  }
+
   public async getTodoListsWithMembersForUser(
     userId: string
   ): Promise<ITodoListWithMembersDto[]> {
@@ -82,6 +100,18 @@ export class TodoListService {
     }));
 
     return todoListsWithMembers;
+  }
+
+  public async getExtendedTodoListById(
+    todoListId: string
+  ): Promise<IExtendedTodoListDto | undefined> {
+    const [todoList, tasks] = await Promise.all([
+      this.getTodoListWithMembersById(todoListId),
+      this.taskService.getTasksByTodoListId(todoListId),
+    ]);
+    if (!todoList) return undefined;
+
+    return { ...todoList, tasks };
   }
 
   public async getExtendedTodoListsForUser(
@@ -177,7 +207,7 @@ export class TodoListService {
    * deletes todoList and all it's tasks
    * Warning this service doesn't check if user can delete TodoList. It is assumed that proper check is done before using this service
    */
-  public async deleteTodoList(todoListId: string): Promise<void> {
+  public async deleteTodoList(todoListId: string): Promise<ITodoListAttached> {
     const [deletedTodoList] = await Promise.all([
       this.todoListCollection.findByIdAndDelete(todoListId),
       this.taskService.deleteTasksByTodoListId(todoListId),
@@ -187,5 +217,7 @@ export class TodoListService {
       throw new Error(
         `Cannot delete todoList: ${todoListId}, because it does not exist.`
       );
+
+    return mapTodoListToAttachedTodoList(deletedTodoList);
   }
 }

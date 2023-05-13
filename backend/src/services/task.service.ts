@@ -88,13 +88,15 @@ export class TaskService {
   /**
    * Warning this service doesn't check if user can delete Task. It is assumed that proper check is done before using this service
    */
-  public async deleteTask(taskId: string): Promise<void> {
+  public async deleteTask(taskId: string): Promise<ITaskAttached> {
     const deletedTask = await this.taskCollection.findByIdAndDelete(taskId);
 
     if (!deletedTask)
       throw new Error(
         `Cannot delete task: ${taskId}, because it does not exist.`
       );
+
+    return mapTaskToAttachedtask(deletedTask);
   }
 
   public async deleteTasksByTodoListId(todoListId: string): Promise<void> {

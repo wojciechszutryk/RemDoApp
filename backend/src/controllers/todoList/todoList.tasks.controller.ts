@@ -29,9 +29,9 @@ export class TodoListTasksController extends BaseHttpController {
   async getTodoListTasks(
     @requestParam(TODO_LIST_PARAM) todoListId: string
   ): Promise<OkResult> {
-    const todoLists = await this.taskServce.getTasksByTodoListId(todoListId);
+    const tasks = await this.taskServce.getTasksByTodoListId(todoListId);
 
-    return this.ok(todoLists);
+    return this.ok(tasks);
   }
 
   @httpPost("", CheckTodoListPermission(TodoListPermissions.CanCreateTask))
