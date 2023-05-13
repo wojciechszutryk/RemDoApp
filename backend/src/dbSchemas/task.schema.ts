@@ -30,7 +30,7 @@ const TaskSchema = new mongoose.Schema({
   },
   todoListId: {
     type: String,
-    required: true,
+    required: false,
   },
   creator: {
     type: String,

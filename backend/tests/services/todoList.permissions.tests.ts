@@ -21,8 +21,8 @@ import {
   AssignedToTodoListPermissions,
 } from "linked-models/permissions/todoList.permissions.constants";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
+import { PermissionsService } from "services/permission.service";
 import { TaskService } from "services/task.service";
-import { TodoListPermissionsService } from "services/todoList.permission.service";
 import { TodoListService } from "services/TodoList.service";
 import { MOCKED_TASK_ID } from "../mocks/task.mock";
 import { MOCKED_TODO_ID } from "../mocks/todoList.mock";
@@ -33,7 +33,7 @@ describe(`TodoList permissions service`, () => {
   const assignedOwnerId = "assignedOwnerId";
   let taskService: TaskService;
   let todoListService: TodoListService;
-  let todoListPermissionsService: TodoListPermissionsService;
+  let todoListPermissionsService: PermissionsService;
 
   beforeAll(async () => {
     await setUpTestDB();
@@ -70,7 +70,7 @@ describe(`TodoList permissions service`, () => {
     ]);
     taskService = new TaskService(getTaskCollection());
     todoListService = new TodoListService(getTodoListCollection(), taskService);
-    todoListPermissionsService = new TodoListPermissionsService(
+    todoListPermissionsService = new PermissionsService(
       todoListService,
       taskService
     );
@@ -85,65 +85,59 @@ describe(`TodoList permissions service`, () => {
   });
 
   it(`should return all permissions when user is owner of todoList`, async () => {
-    const permissions =
-      await todoListPermissionsService.getTodoListPermissionsForUser(
-        todoListOwnerId,
-        MOCKED_TODO_ID
-      );
+    const permissions = await todoListPermissionsService.getPermissionsForUser(
+      todoListOwnerId,
+      MOCKED_TODO_ID
+    );
 
     expect(permissions).toEqual(Object.values(TodoListPermissions));
   });
 
   it(`should return all permissions when user is one of assignedOwners of todoList`, async () => {
-    const permissions =
-      await todoListPermissionsService.getTodoListPermissionsForUser(
-        assignedOwnerId,
-        MOCKED_TODO_ID
-      );
+    const permissions = await todoListPermissionsService.getPermissionsForUser(
+      assignedOwnerId,
+      MOCKED_TODO_ID
+    );
 
     expect(permissions).toEqual(Object.values(TodoListPermissions));
   });
 
   it(`should return AssignedToTodoListAndTaskCreatorPermissions when user is one of assignedUsers of todoList and is creator of task`, async () => {
-    const permissions =
-      await todoListPermissionsService.getTodoListPermissionsForUser(
-        assignedUserId,
-        MOCKED_TODO_ID,
-        MOCKED_TASK_ID
-      );
+    const permissions = await todoListPermissionsService.getPermissionsForUser(
+      assignedUserId,
+      MOCKED_TODO_ID,
+      MOCKED_TASK_ID
+    );
 
     expect(permissions).toEqual(AssignedToTodoListAndTaskCreatorPermissions);
   });
 
   it(`should return AssignedToTodoListAndTaskCreatorPermissions when user is one of assignedUsers of todoList and is creator of task`, async () => {
-    const permissions =
-      await todoListPermissionsService.getTodoListPermissionsForUser(
-        assignedUserId,
-        MOCKED_TODO_ID,
-        MOCKED_TASK_ID
-      );
+    const permissions = await todoListPermissionsService.getPermissionsForUser(
+      assignedUserId,
+      MOCKED_TODO_ID,
+      MOCKED_TASK_ID
+    );
 
     expect(permissions).toEqual(AssignedToTodoListAndTaskCreatorPermissions);
   });
 
   it(`should return AssignedToTodoListPermissions when user is one of assignedUsers of todoList and is not creator of task`, async () => {
-    const permissions =
-      await todoListPermissionsService.getTodoListPermissionsForUser(
-        assignedUserId,
-        MOCKED_TODO_ID,
-        "othertaskId_"
-      );
+    const permissions = await todoListPermissionsService.getPermissionsForUser(
+      assignedUserId,
+      MOCKED_TODO_ID,
+      "othertaskId_"
+    );
 
     expect(permissions).toEqual(AssignedToTodoListPermissions);
   });
 
   it(`should return empty array when user neither owner nor assigned user of todoList`, async () => {
-    const permissions =
-      await todoListPermissionsService.getTodoListPermissionsForUser(
-        "some user",
-        MOCKED_TODO_ID,
-        "othertaskId_"
-      );
+    const permissions = await todoListPermissionsService.getPermissionsForUser(
+      "some user",
+      MOCKED_TODO_ID,
+      "othertaskId_"
+    );
 
     expect(permissions).toEqual([]);
   });

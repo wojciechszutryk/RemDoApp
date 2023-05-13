@@ -5,13 +5,13 @@ import { inject, injectable } from "inversify";
 import { BaseMiddleware } from "inversify-express-utils";
 import { TODO_LIST_PARAM } from "linked-models/todoList/todoList.urls";
 import { IUserAttached } from "linked-models/User/User.model";
-import { TodoListPermissionsService } from "services/todoList.permission.service";
+import { PermissionsService } from "services/permission.service";
 
 @injectable()
-export class SetTodoListPermissions extends BaseMiddleware {
+export class SetPermissions extends BaseMiddleware {
   constructor(
-    @inject(TodoListPermissionsService)
-    private readonly todoListPermissionsService: TodoListPermissionsService
+    @inject(PermissionsService)
+    private readonly permissionsService: PermissionsService
   ) {
     super();
   }
@@ -21,11 +21,10 @@ export class SetTodoListPermissions extends BaseMiddleware {
       PARAM_CURRENT_USER
     ] as unknown as IUserAttached;
     const todoListId = req.params[TODO_LIST_PARAM] as unknown as string;
-    const permissions =
-      await this.todoListPermissionsService.getTodoListPermissionsForUser(
-        curentUser.id,
-        todoListId
-      );
+    const permissions = await this.permissionsService.getPermissionsForUser(
+      curentUser.id,
+      todoListId
+    );
 
     req.params[TODO_LIST_PERMISSIONS_PARAM] = permissions as unknown as string;
     next();
