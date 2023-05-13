@@ -17,6 +17,11 @@ export const initialDeleteTodoListDialog: IDeleteTodoListDialog = {
   todoListId: "",
 };
 
+export const initialTaskDialog: IDeleteTodoListDialog = {
+  visible: false,
+  todoListId: "",
+};
+
 export const initialDeleteTaskDialog: IDeleteTaskDialog = {
   visible: false,
   taskId: "",
