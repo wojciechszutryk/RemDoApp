@@ -1,13 +1,13 @@
 import { Typography } from "@mui/material";
-import Accordion from "atomicComponents/atoms/Accordion";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
-import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useDialogs } from "framework/dialogs";
+import { initialTaskDialog } from "framework/dialogs/models/initialState.const";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { ITask } from "linked-models/task/task.model";
-import { useCreateTaskMutation } from "pages/TodoListPage/mutations/createTask.mutation";
+import { useCreateTaskInTodoListMutation } from "pages/TodoListPage/mutations/createTaskInTodoList.mutation";
+import { useEditTaskInTodoListMutation } from "pages/TodoListPage/mutations/editTaskInTodoList.mutation";
 import { memo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -16,12 +16,10 @@ import { StyledForm } from "../TodoListModal/styles";
 const TaskModal = (): JSX.Element => {
   const {
     dialogsState: {
-      taskDialog: { visible, editTaskData },
+      taskDialog: { visible, editTaskData, todoListId },
     },
     dialogsActions: { updateTaskDialog },
   } = useDialogs();
-
-  const { currentUser } = useCurrentUser();
 
   const defaultFormValues = {
     text: editTaskData?.text || "",
@@ -35,20 +33,20 @@ const TaskModal = (): JSX.Element => {
     defaultValues: defaultFormValues,
   });
 
-  const createTaskMutation = useCreateTaskMutation();
-  const editTaskMutation = useEditTaskMutation();
+  const createTaskMutation = useCreateTaskInTodoListMutation();
+  const editTaskMutation = useEditTaskInTodoListMutation();
   const { t } = useTranslation();
 
   const onSubmit = (data: ITask) => {
     if (editTaskData)
-      editTaskMutation.mutate({ todoListId: editTaskData.id, data });
-    else createTaskMutation.mutate(data);
+      editTaskMutation.mutate({ todoListId, taskId: editTaskData.id, data });
+    else createTaskMutation.mutate({ todoListId, data });
 
-    updateTaskDialog({ visible: false });
+    updateTaskDialog(initialTaskDialog);
   };
 
   return (
-    <Dialog open={visible} onClose={() => updateTaskDialog({ visible: false })}>
+    <Dialog open={visible} onClose={() => updateTaskDialog(initialTaskDialog)}>
       <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
         <FormProvider {...methods}>
           <Typography variant="h4">

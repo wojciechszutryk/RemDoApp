@@ -4,6 +4,7 @@ import {
   initialDeleteTaskDialog,
   initialDeleteTodoListDialog,
   initialShareTodoListDialog,
+  initialTaskDialog,
 } from "./models/initialState.const";
 import { ContextProps } from "./models/useInterface.models";
 
@@ -20,10 +21,7 @@ export const initialState = {
     ...initialDeleteTodoListDialog,
     onClose: () => {},
   },
-  taskDialog: {
-    visible: false,
-    onClose: () => {},
-  },
+  taskDialog: { ...initialTaskDialog, onClose: () => {} },
   deleteTaskDialog: { ...initialDeleteTaskDialog, onClose: () => {} },
 };
 

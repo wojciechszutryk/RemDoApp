@@ -9,21 +9,21 @@ import {
 } from "linked-models/todoList/todoList.urls";
 import { useMutation, useQueryClient } from "react-query";
 
-interface ICreateTaskMutation {
+interface ICreateTaskInTodoListMutation {
   todoListId: string;
   data: ITask;
 }
 
-export const useCreateTaskMutation = () => {
+export const useCreateTaskInTodoListMutation = () => {
   const queryClient = useQueryClient();
 
-  const createTask = async (todoListId: string, data: ITask) => {
+  const createTaskInTodoList = async (todoListId: string, data: ITask) => {
     const url = FRONTIFY_URL(URL_TODO_LIST_TASKS(todoListId));
     return apiPost<ITask, ITaskAttached>(url, data).then((res) => res.data);
   };
 
   return useMutation(
-    ({ todoListId, data }: ICreateTaskMutation) => createTask(todoListId, data),
+    ({ todoListId, data }: ICreateTaskInTodoListMutation) => createTaskInTodoList(todoListId, data),
     {
       onSuccess: (createdTask) => {
         const queryKey = [URL_TODO_LISTS, PARAM_WITH_TASKS];
