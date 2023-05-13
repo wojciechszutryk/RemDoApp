@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import {
@@ -9,7 +10,6 @@ import {
   PARAM_WITH_TASKS,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
-import { useMutation, useQueryClient } from "react-query";
 
 export const useCreateTodoListMutation = () => {
   const queryClient = useQueryClient();

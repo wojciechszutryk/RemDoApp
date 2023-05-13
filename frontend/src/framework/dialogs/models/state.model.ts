@@ -1,10 +1,10 @@
-import { ITaskAttached } from "linked-models/task/task.model";
-import { ITodoListAttached } from "linked-models/todoList/todoList.model";
+import { ITask } from "linked-models/task/task.model";
+import { ITodoList } from "linked-models/todoList/todoList.model";
 import { IBaseDialogProps } from "./baseModalProps.model";
 
 export interface ITodoListDialog extends IBaseDialogProps {
   visible: boolean;
-  editTodoListData?: ITodoListAttached;
+  editTodoListData?: ITodoList & { id: string };
 }
 export interface IShareTodoListDialog extends IBaseDialogProps {
   visible: boolean;
@@ -20,7 +20,7 @@ export interface IDeleteTodoListDialog extends IBaseDialogProps {
 
 export interface ITaskDialog {
   visible: boolean;
-  editTaskData?: ITaskAttached;
+  editTaskData?: ITask & { id: string };
   todoListId: string;
 }
 

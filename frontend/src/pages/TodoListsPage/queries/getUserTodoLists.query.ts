@@ -1,8 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
 import { apiGet } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import { ITodoListAttached } from "linked-models/todoList/todoList.model";
 import { URL_TODO_LISTS } from "linked-models/todoList/todoList.urls";
-import { useQuery } from "react-query";
 
 export const useGetUserTodoListsQuery = () => {
   const getTodoLists = async () => {

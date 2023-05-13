@@ -67,7 +67,7 @@ const ShareTodoListModal = (): JSX.Element => {
             defaultValues={defaultFormValues.assignedUsers}
           />
           <Button type="submit">
-            {t(TranslationKeys.TodoListDialogHeader)}
+            {t(TranslationKeys.CreateTodoListDialogHeader)}
           </Button>
         </FormProvider>
       </StyledForm>

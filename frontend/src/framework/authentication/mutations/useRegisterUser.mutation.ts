@@ -1,3 +1,4 @@
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
@@ -6,7 +7,6 @@ import {
   IRegisterUserDTO,
 } from "linked-models/user/user.dto";
 import { URL_REGISTER, URL_USERS } from "linked-models/user/user.urls";
-import { useMutation, UseMutationResult } from "react-query";
 import { useCurrentUser } from "../useCurrentUser";
 
 export const useRegisterUserMutation = (): UseMutationResult<
