@@ -24,8 +24,8 @@ export interface ITask {
 }
 
 export interface ITaskWithReadonlyProperties extends ITask {
-  /** Id of tododolist which task will be part of */
-  readonly todoListId: string;
+  /** Id of tododolist which task will be part of. Undefined means that taski is reminder, not connected to todoList */
+  readonly todoListId?: string;
 
   /** Readonly creator id. */
   readonly creator: string;

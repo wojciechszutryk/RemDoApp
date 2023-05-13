@@ -14,18 +14,18 @@ import { ITask } from "linked-models/task/task.model";
 import { URL_TODO_LIST_TASKS } from "linked-models/task/task.urls";
 import { TODO_LIST_PARAM } from "linked-models/todoList/todoList.urls";
 import { IUserAttached } from "linked-models/User/User.model";
-import { CheckTodoListPermission } from "middlewares/todoList/checkTodoListPermission.middleware";
-import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions.middleware";
+import { CheckPermission } from "middlewares/permissions/checkPermission.middleware";
+import { SetPermissions } from "middlewares/permissions/setPermissions.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { TaskService } from "services/task.service";
 
-@controller(URL_TODO_LIST_TASKS(), SetCurrentUser, SetTodoListPermissions)
+@controller(URL_TODO_LIST_TASKS(), SetCurrentUser, SetPermissions)
 export class TodoListTasksController extends BaseHttpController {
   constructor(@inject(TaskService) private readonly taskServce: TaskService) {
     super();
   }
 
-  @httpGet("", CheckTodoListPermission(TodoListPermissions.CanReadTodoList))
+  @httpGet("", CheckPermission(TodoListPermissions.CanReadTodoList))
   async getTodoListTasks(
     @requestParam(TODO_LIST_PARAM) todoListId: string
   ): Promise<OkResult> {
@@ -34,7 +34,7 @@ export class TodoListTasksController extends BaseHttpController {
     return this.ok(tasks);
   }
 
-  @httpPost("", CheckTodoListPermission(TodoListPermissions.CanCreateTask))
+  @httpPost("", CheckPermission(TodoListPermissions.CanCreateTask))
   async createTaskInTodoList(
     @currentUser() currentUser: IUserAttached,
     @requestBody() body: ITask,

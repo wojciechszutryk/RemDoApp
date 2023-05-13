@@ -4,11 +4,12 @@ import {
   AssignedToTodoListPermissions,
 } from "linked-models/permissions/todoList.permissions.constants";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
+import { ITodoListAttached } from "linked-models/todoList/todoList.model";
 import { TaskService } from "./task.service";
 import { TodoListService } from "./TodoList.service";
 
 @injectable()
-export class TodoListPermissionsService {
+export class PermissionsService {
   constructor(
     @inject(TodoListService)
     private readonly todoListService: TodoListService,
@@ -16,12 +17,23 @@ export class TodoListPermissionsService {
     private readonly taskService: TaskService
   ) {}
 
-  public async getTodoListPermissionsForUser(
+  public async getPermissionsForUser(
     userId: string,
-    todoListId: string,
+    todoListId?: string,
     taskId?: string
   ): Promise<TodoListPermissions[]> {
-    const todoList = await this.todoListService.getTodoListById(todoListId);
+    let todoList: ITodoListAttached | undefined = undefined;
+
+    if (todoListId)
+      todoList = await this.todoListService.getTodoListById(todoListId);
+    else if (taskId) {
+      const task = await this.taskService.getTaskById(taskId);
+      if (task?.todoListId)
+        todoList = await this.todoListService.getTodoListById(task.todoListId);
+    }
+
+    if (!todoList) return [];
+
     const assignedUsers = todoList?.assignedUsers;
     const assignedOwners = todoList?.assignedOwners;
 

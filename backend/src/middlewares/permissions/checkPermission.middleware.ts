@@ -2,7 +2,7 @@ import { TODO_LIST_PERMISSIONS_PARAM } from "decorators/currentPermissions.decor
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 
-export const CheckTodoListPermission =
+export const CheckPermission =
   (permission: TodoListPermissions): RequestHandler =>
   (req: Request, res: Response, next: NextFunction) => {
     const currentPermissions = req.params[

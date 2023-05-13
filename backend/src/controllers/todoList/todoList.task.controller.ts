@@ -11,8 +11,8 @@ import { OkResult } from "inversify-express-utils/lib/results";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { ITask } from "linked-models/task/task.model";
 import { TASK_PARAM, URL_TODO_LIST_TASK } from "linked-models/task/task.urls";
-import { CheckTodoListPermission } from "middlewares/todoList/checkTodoListPermission.middleware";
-import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions.middleware";
+import { CheckPermission } from "middlewares/permissions/checkPermission.middleware";
+import { SetPermissions } from "middlewares/permissions/setPermissions.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { TaskService } from "services/task.service";
 
@@ -22,11 +22,7 @@ export class TodoListTaskController extends BaseHttpController {
     super();
   }
 
-  @httpPut(
-    "",
-    SetTodoListPermissions,
-    CheckTodoListPermission(TodoListPermissions.CanEditTask)
-  )
+  @httpPut("", SetPermissions, CheckPermission(TodoListPermissions.CanEditTask))
   async editTaskInTodoList(
     @requestParam(TASK_PARAM) taskId: string,
     @requestBody() body: Partial<ITask>
@@ -44,8 +40,8 @@ export class TodoListTaskController extends BaseHttpController {
 
   @httpDelete(
     "",
-    SetTodoListPermissions,
-    CheckTodoListPermission(TodoListPermissions.CanDeleteTask)
+    SetPermissions,
+    CheckPermission(TodoListPermissions.CanDeleteTask)
   )
   async deleteTaskInTodoList(
     @requestParam(TASK_PARAM) taskId: string

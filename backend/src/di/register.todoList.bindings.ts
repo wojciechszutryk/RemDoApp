@@ -7,14 +7,14 @@ import {
   TodoListCollectionName,
 } from "dbSchemas/TodoList.schema";
 import { Container } from "inversify";
-import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions.middleware";
+import { SetPermissions } from "middlewares/permissions/setPermissions.middleware";
 import { TodoListService } from "services/TodoList.service";
 
 export const registerTodoListBindings = (container: Container) => {
   container
     .bind(TodoListCollectionName)
     .toDynamicValue(() => getTodoListCollection());
-  container.bind(SetTodoListPermissions).toSelf();
+  container.bind(SetPermissions).toSelf();
   container.bind(TodoListService).toSelf();
   container.bind(TodoListsController).toSelf();
   container.bind(TodoListController).toSelf();
