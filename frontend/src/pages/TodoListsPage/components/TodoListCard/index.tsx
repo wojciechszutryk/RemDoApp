@@ -27,10 +27,7 @@ interface Props {
   withShakeAnimation?: boolean;
 }
 
-const TodoListCard = ({
-  todoList: { tasks, name, id, icon, assignedOwners, assignedUsers },
-  withShakeAnimation,
-}: Props): JSX.Element => {
+const TodoListCard = ({ todoList, withShakeAnimation }: Props): JSX.Element => {
   const [expanded, setExpanded] = React.useState(false);
   const {
     isDragging,
@@ -39,7 +36,7 @@ const TodoListCard = ({
     setNodeRef,
     transform,
     transition,
-  } = useSortable({ id, animateLayoutChanges });
+  } = useSortable({ id: todoList.id, animateLayoutChanges });
 
   return (
     <StyledTodoListCardWrapper
@@ -50,16 +47,17 @@ const TodoListCard = ({
     >
       <StyledTodoListCard withShakeAnimation={withShakeAnimation}>
         <CardHeader
-          assignedOwners={assignedOwners}
-          assignedUsers={assignedUsers}
+          todoList={todoList}
           listeners={listeners}
           attributes={attributes}
-          name={name}
-          icon={icon}
           isDragging={isDragging}
         />
-        <CardContent tasks={tasks} expanded={expanded} />
-        <CardActions setExpanded={setExpanded} expanded={expanded} />
+        <CardContent tasks={todoList.tasks} expanded={expanded} />
+        <CardActions
+          setExpanded={setExpanded}
+          expanded={expanded}
+          todoList={todoList}
+        />
       </StyledTodoListCard>
     </StyledTodoListCardWrapper>
   );

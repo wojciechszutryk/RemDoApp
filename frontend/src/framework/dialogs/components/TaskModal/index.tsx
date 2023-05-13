@@ -50,7 +50,11 @@ const TaskModal = (): JSX.Element => {
       <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
         <FormProvider {...methods}>
           <Typography variant="h4">
-            {t(TranslationKeys.TodoListDialogHeader)}
+            {editTaskData
+              ? `${t(TranslationKeys.EditTodoListDialogHeader)}: ${
+                  editTaskData.text
+                }`
+              : t(TranslationKeys.CreateTodoListDialogHeader)}
           </Typography>
           <ControlledTextField
             name={"text"}
@@ -58,7 +62,9 @@ const TaskModal = (): JSX.Element => {
             placeholder={t(TranslationKeys.TodoListDialogInputTitle)}
           />
           <Button type="submit">
-            {t(TranslationKeys.TodoListDialogHeader)}
+            {editTaskData
+              ? t(TranslationKeys.Save)
+              : t(TranslationKeys.CreateTodoListDialogHeader)}
           </Button>
         </FormProvider>
       </StyledForm>

@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiPut } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import {
@@ -10,7 +11,6 @@ import {
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
-import { useMutation, useQueryClient } from "react-query";
 
 export const useEditTodoListMutation = () => {
   const queryClient = useQueryClient();
@@ -37,7 +37,7 @@ export const useEditTodoListMutation = () => {
           return (
             prev?.map((td) => {
               if (td.id === updatedTodoList.id) {
-                return { ...td, ...updatedTodoList };
+                return { ...updatedTodoList, tasks: td.tasks };
               }
 
               return td;

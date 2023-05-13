@@ -6,30 +6,23 @@ import {
   Tooltip,
 } from "@mui/material";
 import UserAvatar from "atomicComponents/molecules/UserAvatar";
-import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
-import { IUserAttached } from "linked-models/user/user.model";
+import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import { memo } from "react";
-import TodoListIcon from "../../TodoListIcon";
-import { StyledCardHeaderActions, StyledDragIcon } from "../styles";
+import TodoListIcon from "../../../TodoListIcon";
+import { StyledCardHeaderActions, StyledDragIcon } from "../../styles";
 
 interface Props {
-  assignedOwners: IUserAttached[];
-  assignedUsers: IUserAttached[];
+  todoList: IExtendedTodoListDto;
   listeners: SyntheticListenerMap | undefined;
   attributes: DraggableAttributes;
-  name: string;
   isDragging: boolean;
-  icon: TodoListIconEnum | undefined;
 }
 
 const CardHeader = ({
-  assignedOwners,
-  assignedUsers,
+  todoList: { name, icon, assignedOwners, assignedUsers },
   listeners,
   attributes,
-  name,
   isDragging,
-  icon,
 }: Props): JSX.Element => {
   const allMembers = [];
   if (assignedOwners) allMembers.push(...assignedOwners);

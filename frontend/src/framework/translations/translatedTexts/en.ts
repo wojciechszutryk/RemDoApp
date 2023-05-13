@@ -36,7 +36,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PageTitleTodoLists]: "TodoLists",
   [TranslationKeys.EmptyTodoLists]: "There are no todo lists. Create one!",
   [TranslationKeys.CreateNewTodoList]: "Create new todo list",
-  [TranslationKeys.TodoListDialogHeader]: "Create new todo list",
+  [TranslationKeys.CreateTodoListDialogHeader]: "Create new todo list",
+  [TranslationKeys.EditTodoListDialogHeader]: "Edit todo list",
   [TranslationKeys.ShareTodoList]: "Share todo list",
   [TranslationKeys.TodoListDialogInputTitle]: "List title",
   [TranslationKeys.TodoListDialogButton]: "Save",
@@ -50,6 +51,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
 
   [TranslationKeys.EmptyTasksList]: "No tasks in this list.",
   [TranslationKeys.DelteTask]: "Delete task",
+  [TranslationKeys.AddTask]: "Add task",
   [TranslationKeys.DelteTaskWarning]:
     "Are you sure you want to delete this task? This action cannot be undone.",
 

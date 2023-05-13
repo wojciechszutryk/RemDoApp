@@ -1,5 +1,7 @@
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import App from "App";
 import { CurrentUserProvider } from "framework/authentication/useCurrentUser";
 import { DialogsProvider } from "framework/dialogs";
@@ -9,7 +11,6 @@ import { ThemeProvider } from "framework/theme/useTheme.context";
 import { LocalisationProvider } from "framework/translations/useLocalisation.context";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ root.render(
               </DialogsProvider>
             </SnackbarProvider>
           </ThemeProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </LocalizationProvider>
     </LocalisationProvider>

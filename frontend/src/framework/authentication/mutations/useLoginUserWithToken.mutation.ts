@@ -1,3 +1,4 @@
+import { useMutation } from "@tanstack/react-query";
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import { ILoginUserResponseDTO } from "linked-models/user/user.dto";
@@ -6,7 +7,6 @@ import {
   URL_USERS,
   URL_WITH_TOKEN,
 } from "linked-models/user/user.urls";
-import { useMutation } from "react-query";
 import { useCurrentUser } from "../useCurrentUser";
 
 export const useLoginUserWithTokenMutation = () => {

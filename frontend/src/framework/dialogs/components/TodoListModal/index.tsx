@@ -63,7 +63,11 @@ const TodoListModal = (): JSX.Element => {
       <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
         <FormProvider {...methods}>
           <Typography variant="h4">
-            {t(TranslationKeys.TodoListDialogHeader)}
+            {editTodoListData
+              ? `${t(TranslationKeys.EditTodoListDialogHeader)}: ${
+                  editTodoListData.name
+                }`
+              : t(TranslationKeys.CreateTodoListDialogHeader)}
           </Typography>
           <StyledInlineInputs>
             <IconPicker />
@@ -90,7 +94,9 @@ const TodoListModal = (): JSX.Element => {
             />
           </Accordion>
           <Button type="submit">
-            {t(TranslationKeys.TodoListDialogHeader)}
+            {editTodoListData
+              ? t(TranslationKeys.Save)
+              : t(TranslationKeys.CreateTodoListDialogHeader)}
           </Button>
         </FormProvider>
       </StyledForm>

@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiDelete } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
@@ -7,7 +8,6 @@ import {
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
-import { useMutation, useQueryClient } from "react-query";
 
 export const useDeleteTodoListMutation = () => {
   const queryClient = useQueryClient();

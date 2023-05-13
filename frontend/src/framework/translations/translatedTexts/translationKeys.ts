@@ -33,7 +33,8 @@ export enum TranslationKeys {
   PageTitleTodoLists = "PageTitleTodoLists",
   EmptyTodoLists = "EmptyTodoLists",
   CreateNewTodoList = "CreateNewTodoList",
-  TodoListDialogHeader = "TodoListDialogHeader",
+  CreateTodoListDialogHeader = "CreateTodoListDialogHeader",
+  EditTodoListDialogHeader = "EditTodoListDialogHeader",
   ShareTodoList = "ShareTodoList",
   TodoListDialogInputTitle = "TodoListDialogInputTitle",
   ManageOwners = "ManageOwners",
@@ -46,6 +47,7 @@ export enum TranslationKeys {
 
   EmptyTasksList = "EmptyTasksList",
   DelteTask = "DelteTask",
+  AddTask = "AddTask",
   DelteTaskWarning = "DelteTaskWarning",
 
   PageTitleUserSettings = "PageTitleUserSettings",

@@ -1,9 +1,9 @@
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { apiPut } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { URL_AVATAR, URL_USER, URL_USERS } from "linked-models/user/user.urls";
-import { useMutation, UseMutationResult } from "react-query";
 
 export const useChangeAvatarMutation = (): UseMutationResult<
   void,

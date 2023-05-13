@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import { ITask, ITaskAttached } from "linked-models/task/task.model";
@@ -7,7 +8,6 @@ import {
   PARAM_WITH_TASKS,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
-import { useMutation, useQueryClient } from "react-query";
 
 interface ICreateTaskInTodoListMutation {
   todoListId: string;
@@ -23,7 +23,8 @@ export const useCreateTaskInTodoListMutation = () => {
   };
 
   return useMutation(
-    ({ todoListId, data }: ICreateTaskInTodoListMutation) => createTaskInTodoList(todoListId, data),
+    ({ todoListId, data }: ICreateTaskInTodoListMutation) =>
+      createTaskInTodoList(todoListId, data),
     {
       onSuccess: (createdTask) => {
         const queryKey = [URL_TODO_LISTS, PARAM_WITH_TASKS];

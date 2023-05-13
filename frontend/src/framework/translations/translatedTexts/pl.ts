@@ -37,7 +37,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PageTitleTodoLists]: "Listy zadań",
   [TranslationKeys.EmptyTodoLists]: "Brak list zadań. Utwórz nową listę!.",
   [TranslationKeys.CreateNewTodoList]: "Utwórz nową listę zadań",
-  [TranslationKeys.TodoListDialogHeader]: "Utwórz nową listę zadań",
+  [TranslationKeys.EditTodoListDialogHeader]: "Edytuj listę zadań",
+  [TranslationKeys.CreateTodoListDialogHeader]: "Utwórz nową listę zadań",
   [TranslationKeys.ShareTodoList]: "Udostępnij listę zadań",
   [TranslationKeys.TodoListDialogInputTitle]: "Tytuł listy",
   [TranslationKeys.TodoListDialogButton]: "Zapisz",
@@ -52,6 +53,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.EmptyTasksList]:
     "Brak zadań na liście. Dodaj nowe zadanie!.",
   [TranslationKeys.DelteTask]: "Usuń zadanie",
+  [TranslationKeys.AddTask]: "Dodaj zadanie",
   [TranslationKeys.DelteTaskWarning]:
     "Czy na pewno chcesz usunąć to zadanie? Ta operacja jest nieodwracalna.",
 

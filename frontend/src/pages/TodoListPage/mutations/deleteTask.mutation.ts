@@ -1,14 +1,13 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiDelete } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import { ITaskAttached } from "linked-models/task/task.model";
 import { URL_TODO_LIST_TASK } from "linked-models/task/task.urls";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
-import { ITodoListAttached } from "linked-models/todoList/todoList.model";
 import {
   PARAM_WITH_TASKS,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
-import { useMutation, useQueryClient } from "react-query";
 
 export const useDeleteTaskMutation = () => {
   const queryClient = useQueryClient();
