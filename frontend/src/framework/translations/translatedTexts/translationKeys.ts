@@ -45,6 +45,8 @@ export enum TranslationKeys {
   DelteTodoListWarning = "DelteTodoListWarning",
 
   EmptyTasksList = "EmptyTasksList",
+  DelteTask = "DelteTask",
+  DelteTaskWarning = "DelteTaskWarning",
 
   PageTitleUserSettings = "PageTitleUserSettings",
   ChangePassword = "ChangePassword",
