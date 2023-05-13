@@ -20,6 +20,7 @@ import {
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
+import { IUserAttached } from "linked-models/User/User.model";
 import { CheckTodoListPermission } from "middlewares/todoList/checkTodoListPermission.middleware";
 import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
@@ -38,6 +39,7 @@ export class TodoListController extends BaseHttpController {
 
   @httpGet("")
   async getTodoListsForUser(
+    @currentUser() currentUser: IUserAttached,
     @queryParam(PARAM_WITH_TASKS) withTasks = false,
     @queryParam(PARAM_WITH_MEMBERS) withMembers = false
   ): Promise<OkResult> {
