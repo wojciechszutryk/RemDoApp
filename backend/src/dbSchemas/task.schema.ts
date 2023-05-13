@@ -28,10 +28,6 @@ const TaskSchema = new mongoose.Schema({
     type: Boolean,
     required: false,
   },
-  color: {
-    type: String,
-    required: false,
-  },
   todoListId: {
     type: String,
     required: true,
@@ -56,7 +52,7 @@ export type TaskCollectionType = mongoose.Model<ITaskDocument>;
 export const getTaskCollection = () =>
   mongoose.model<ITaskDocument>(TaskCollectionName, TaskSchema);
 
-export const mapTaskToAttachedtask = (task: ITaskDocument): ITaskAttached => {
+export const mapTaskToAttachedTask = (task: ITaskDocument): ITaskAttached => {
   return {
     id: task.id,
     text: task.text,
@@ -65,7 +61,6 @@ export const mapTaskToAttachedtask = (task: ITaskDocument): ITaskAttached => {
     startDate: task.startDate,
     finishDate: task.finishDate,
     important: task.important,
-    color: task.color,
     creator: task.creator,
     todoListId: task.todoListId,
     whenCreated: task.whenCreated,

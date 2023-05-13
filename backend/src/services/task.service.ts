@@ -1,5 +1,5 @@
 import {
-  mapTaskToAttachedtask,
+  mapTaskToAttachedTask,
   TaskCollectionName,
   TaskCollectionType,
 } from "dbSchemas/task.schema";
@@ -21,7 +21,7 @@ export class TaskService {
     const foundTask = await this.taskCollection.findOne({ _id: id });
     if (!foundTask) return undefined;
 
-    return mapTaskToAttachedtask(foundTask);
+    return mapTaskToAttachedTask(foundTask);
   }
 
   public async getTasksByTodoListId(
@@ -29,7 +29,7 @@ export class TaskService {
   ): Promise<ITaskAttached[]> {
     const foundTasks = await this.taskCollection.find({ todoListId });
 
-    return foundTasks.map((t) => mapTaskToAttachedtask(t));
+    return foundTasks.map((t) => mapTaskToAttachedTask(t));
   }
 
   public async getTasksByTodoListIDs(
@@ -39,7 +39,7 @@ export class TaskService {
       todoListId: { $in: todoListIDs },
     });
 
-    return foundTasks.map((t) => mapTaskToAttachedtask(t));
+    return foundTasks.map((t) => mapTaskToAttachedTask(t));
   }
 
   public async createTaskInTodoList(
@@ -57,7 +57,7 @@ export class TaskService {
 
     const createdTask = await this.taskCollection.create(newTask);
 
-    return mapTaskToAttachedtask(createdTask);
+    return mapTaskToAttachedTask(createdTask);
   }
   /**
    * Warning this service doesn't check if user can update Task. It is assumed that proper check is done before using this service
@@ -82,7 +82,7 @@ export class TaskService {
         `Cannot update task: ${taskId}, because it does not exist.`
       );
 
-    return mapTaskToAttachedtask(updatedTask);
+    return mapTaskToAttachedTask(updatedTask);
   }
 
   /**
@@ -96,7 +96,7 @@ export class TaskService {
         `Cannot delete task: ${taskId}, because it does not exist.`
       );
 
-    return mapTaskToAttachedtask(deletedTask);
+    return mapTaskToAttachedTask(deletedTask);
   }
 
   public async deleteTasksByTodoListId(todoListId: string): Promise<void> {
