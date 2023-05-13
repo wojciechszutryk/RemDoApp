@@ -1,3 +1,4 @@
+import { currentUser } from "decorators/currentUser.decorator";
 import { inject } from "inversify";
 import {
   BaseHttpController,
@@ -5,6 +6,7 @@ import {
   httpDelete,
   httpGet,
   httpPut,
+  queryParam,
   requestBody,
   requestParam,
 } from "inversify-express-utils";
@@ -12,6 +14,8 @@ import { OkResult } from "inversify-express-utils/lib/results";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import {
+  PARAM_WITH_MEMBERS,
+  PARAM_WITH_TASKS,
   TODO_LIST_PARAM,
   URL_TODO_LIST,
   URL_TODO_LISTS,
@@ -19,15 +23,43 @@ import {
 import { CheckTodoListPermission } from "middlewares/todoList/checkTodoListPermission.middleware";
 import { SetTodoListPermissions } from "middlewares/todoList/setTodoListPermissions.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
+import { TaskService } from "services/task.service";
 
 import { TodoListService } from "services/TodoList.service";
 
 @controller(URL_TODO_LISTS + URL_TODO_LIST(), SetCurrentUser)
 export class TodoListController extends BaseHttpController {
   constructor(
-    @inject(TodoListService) private readonly todoListService: TodoListService
+    @inject(TodoListService) private readonly todoListService: TodoListService,
+    @inject(TaskService) private readonly taskService: TaskService
   ) {
     super();
+  }
+
+  @httpGet("")
+  async getTodoListsForUser(
+    @queryParam(PARAM_WITH_TASKS) withTasks = false,
+    @queryParam(PARAM_WITH_MEMBERS) withMembers = false
+  ): Promise<OkResult> {
+    if (withTasks) {
+      const todoLists = await this.todoListService.getTodoListById(
+        currentUser.id
+      );
+
+      return this.ok(todoLists);
+    } else if (withMembers) {
+      const todoLists = await this.todoListService.getExtendedTodoListsForUser(
+        currentUser.id
+      );
+
+      return this.ok(todoLists);
+    }
+
+    const todoLists = await this.todoListService.getTodoListById(
+      currentUser.id
+    );
+
+    return this.ok(todoLists);
   }
 
   @httpGet(
@@ -36,10 +68,25 @@ export class TodoListController extends BaseHttpController {
     CheckTodoListPermission(TodoListPermissions.CanReadTodoList)
   )
   async getTodoList(
-    @requestParam(TODO_LIST_PARAM) todoListId: string
+    @requestParam(TODO_LIST_PARAM) todoListId: string,
+    @queryParam(PARAM_WITH_TASKS) withTasks = false,
+    @queryParam(PARAM_WITH_MEMBERS) withMembers = false
   ): Promise<OkResult> {
     try {
-      const todoList = await this.todoListService.getTodoListById(todoListId);
+      let todoList;
+
+      if (withTasks) {
+        todoList = await this.todoListService.getExtendedTodoListById(
+          todoListId
+        );
+      } else if (withMembers) {
+        todoList = await this.todoListService.getTodoListWithMembersById(
+          todoListId
+        );
+      } else {
+        todoList = await this.todoListService.getTodoListById(todoListId);
+      }
+
       return this.ok(todoList);
     } catch (e) {
       return this.json(e, 400);
@@ -75,11 +122,12 @@ export class TodoListController extends BaseHttpController {
     @requestParam(TODO_LIST_PARAM) todoListId: string
   ): Promise<OkResult> {
     try {
-      await this.todoListService.deleteTodoList(todoListId);
+      const deletedTodoList = await this.todoListService.deleteTodoList(
+        todoListId
+      );
+      return this.ok(deletedTodoList);
     } catch (e) {
       return this.json(e, 400);
     }
-
-    return this.ok();
   }
 }
