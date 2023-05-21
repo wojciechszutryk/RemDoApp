@@ -8,8 +8,6 @@ export const StyledWrapper = styled("div", {
   flexDirection: "column",
   alignItems: "center",
   gap: "20px",
-  minHeight: "calc(100vh - 80px)",
-  paddingTop: "80px",
   "& > h1": {
     order: reversed ? 1 : 0,
   },

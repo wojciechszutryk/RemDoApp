@@ -19,7 +19,7 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import { StyledTodoListsWrapper } from "pages/TodoListsPage/styles";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import TodoListCard from "../TodoListCard";
 
 interface Props {
@@ -73,6 +73,10 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
   const [orderedTodoLists, setOrderedTodoLists] = useState<
     IExtendedTodoListDto[]
   >(getOrderedTodoLists(todoLists, currentUser?.id));
+
+  useEffect(() => {
+    setOrderedTodoLists(getOrderedTodoLists(todoLists, currentUser?.id));
+  }, [todoLists, currentUser?.id]);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
@@ -132,13 +136,15 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
     >
       <SortableContext items={orderedTodoLists} strategy={rectSortingStrategy}>
         <StyledTodoListsWrapper columns={columns}>
-          {orderedTodoLists.map((td) => (
-            <TodoListCard
-              key={td.id}
-              todoList={td}
-              withShakeAnimation={!!activeId && activeId !== td.id}
-            />
-          ))}
+          {orderedTodoLists.map((td) => {
+            return (
+              <TodoListCard
+                key={td.id}
+                todoList={td}
+                withShakeAnimation={!!activeId && activeId !== td.id}
+              />
+            );
+          })}
         </StyledTodoListsWrapper>
       </SortableContext>
       <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>

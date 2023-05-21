@@ -52,6 +52,9 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.EmptyTasksList]: "No tasks in this list.",
   [TranslationKeys.DelteTask]: "Delete task",
   [TranslationKeys.AddTask]: "Add task",
+  [TranslationKeys.EditTask]: "Edit task",
+  [TranslationKeys.TaskName]: "Task name",
+  [TranslationKeys.TaskImportant]: "Important",
   [TranslationKeys.DelteTaskWarning]:
     "Are you sure you want to delete this task? This action cannot be undone.",
 

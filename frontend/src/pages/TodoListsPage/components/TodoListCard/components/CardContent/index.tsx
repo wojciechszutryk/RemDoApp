@@ -1,17 +1,9 @@
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import {
-  CardContent as MuiCardContent,
-  Checkbox,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { CardContent as MuiCardContent } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
 import { ITaskAttached } from "linked-models/task/task.model";
+import EmptyTasksList from "pages/TodoListPage/components/EmptyTasksList";
 import { memo, useMemo } from "react";
+import TasksList from "./TasksList";
 
 interface Props {
   tasks: ITaskAttached[];
@@ -34,68 +26,24 @@ const CardContent = ({ tasks, expanded }: Props): JSX.Element => {
 
   return (
     <MuiCardContent>
-      <List>
-        {activeTasks.map((task) => {
-          const labelId = `task-label-${task.id}`;
-
-          return (
-            <ListItem
-              key={labelId}
-              secondaryAction={
-                <IconButton edge="end">
-                  <MoreVertIcon />
-                </IconButton>
-              }
-              disablePadding
-            >
-              <ListItemButton role={undefined} dense>
-                <ListItemIcon>
-                  <Checkbox
-                    edge="start"
-                    checked={true}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ "aria-labelledby": labelId }}
-                  />
-                </ListItemIcon>
-                <ListItemText id={labelId} primary={task.text} />
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
-      </List>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <List>
-          {finishedTasks.map((task) => {
-            const labelId = `checkbox-list-label-${task.id}`;
-
-            return (
-              <ListItem
-                key={labelId}
-                secondaryAction={
-                  <IconButton edge="end" aria-label="comments">
-                    <MoreVertIcon />
-                  </IconButton>
-                }
-                disablePadding
-              >
-                <ListItemButton role={undefined} dense>
-                  <ListItemIcon>
-                    <Checkbox
-                      edge="start"
-                      checked={true}
-                      tabIndex={-1}
-                      disableRipple
-                      inputProps={{ "aria-labelledby": labelId }}
-                    />
-                  </ListItemIcon>
-                  <ListItemText id={labelId} primary={task.text} />
-                </ListItemButton>
-              </ListItem>
-            );
-          })}
-        </List>
-      </Collapse>
+      {tasks.length === 0 ? (
+        <EmptyTasksList />
+      ) : (
+        <>
+          {activeTasks.length === 0 ? (
+            <EmptyTasksList />
+          ) : (
+            <TasksList tasks={activeTasks} />
+          )}
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            {activeTasks.length === 0 ? (
+              <EmptyTasksList />
+            ) : (
+              <TasksList tasks={finishedTasks} />
+            )}
+          </Collapse>
+        </>
+      )}
     </MuiCardContent>
   );
 };

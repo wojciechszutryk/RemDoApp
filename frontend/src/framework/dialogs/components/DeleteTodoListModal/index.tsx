@@ -42,7 +42,7 @@ const DeleteTodoListModal = (): JSX.Element => {
           width: { xs: 186, md: 295, xl: 397 },
           height: { xs: 185, md: 295, xl: 397 },
         }}
-        imageSrc={`${process.env.REACT_APP_URL}/images/ship.svg`}
+        imageSrc={`${process.env.REACT_APP_URL}/images/boat.svg`}
         imageAlt={"delete"}
         headerText={t(TranslationKeys.DelteTodoListWarning)}
         actionButton={{

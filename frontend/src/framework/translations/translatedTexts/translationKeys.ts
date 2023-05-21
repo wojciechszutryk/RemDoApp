@@ -49,6 +49,9 @@ export enum TranslationKeys {
   DelteTask = "DelteTask",
   AddTask = "AddTask",
   DelteTaskWarning = "DelteTaskWarning",
+  EditTask = "EditTask",
+  TaskName = "TaskName",
+  TaskImportant = "TaskImportant",
 
   PageTitleUserSettings = "PageTitleUserSettings",
   ChangePassword = "ChangePassword",

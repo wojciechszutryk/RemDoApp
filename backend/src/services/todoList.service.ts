@@ -173,6 +173,11 @@ export class TodoListService {
     };
     if (todoListData.name) update.name = todoListData.name;
     if (todoListData.icon) update.icon = todoListData.icon;
+    //todo: check users
+    if (todoListData.assignedOwners)
+      update.assignedOwners = todoListData.assignedOwners;
+    if (todoListData.assignedOwners)
+      update.assignedOwners = todoListData.assignedOwners;
 
     const updatedTodoList = await this.todoListCollection.findByIdAndUpdate(
       todoListId,
