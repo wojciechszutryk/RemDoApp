@@ -54,6 +54,9 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "Brak zadań na liście. Dodaj nowe zadanie!.",
   [TranslationKeys.DelteTask]: "Usuń zadanie",
   [TranslationKeys.AddTask]: "Dodaj zadanie",
+  [TranslationKeys.EditTask]: "Edytuj zadanie",
+  [TranslationKeys.TaskName]: "Nazwa zadania",
+  [TranslationKeys.TaskImportant]: "Ważne",
   [TranslationKeys.DelteTaskWarning]:
     "Czy na pewno chcesz usunąć to zadanie? Ta operacja jest nieodwracalna.",
 

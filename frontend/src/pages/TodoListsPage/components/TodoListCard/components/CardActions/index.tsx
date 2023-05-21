@@ -25,8 +25,8 @@ const CardActions = ({
 }: Props): JSX.Element => {
   const { dialogsActions } = useDialogs();
   const { t } = useTranslation();
-  const assignedOwnersIds = assignedOwners.map((owner) => owner.id);
-  const assignedUsersIds = assignedUsers.map((user) => user.id);
+  const assignedOwnersEmials = assignedOwners.map((owner) => owner.email);
+  const assignedUsersEmails = assignedUsers.map((user) => user.email);
 
   return (
     <MUICardActions disableSpacing>
@@ -43,8 +43,8 @@ const CardActions = ({
             dialogsActions.updateShareTodoListDialog({
               visible: true,
               todoListId: id,
-              assignedOwners: assignedOwnersIds,
-              assignedUsers: assignedUsersIds,
+              assignedOwners: assignedOwnersEmials,
+              assignedUsers: assignedUsersEmails,
               todoListName: name,
             })
           }
@@ -69,8 +69,8 @@ const CardActions = ({
                 id,
                 name,
                 icon,
-                assignedOwners: assignedOwnersIds,
-                assignedUsers: assignedUsersIds,
+                assignedOwners: assignedOwnersEmials,
+                assignedUsers: assignedUsersEmails,
               },
             })
           }

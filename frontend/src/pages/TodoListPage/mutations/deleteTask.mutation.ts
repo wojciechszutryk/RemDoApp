@@ -22,11 +22,17 @@ export const useDeleteTaskMutation = () => {
       queryClient.setQueryData(
         [URL_TODO_LISTS, PARAM_WITH_TASKS],
         (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {
-          return (
-            prev?.filter((td) => {
-              return td.id !== deletedTodoList.id;
-            }) || []
-          );
+          if (!prev) return [];
+          const updatedTodoLists = prev.map((todoList) => {
+            const updatedTasks = todoList.tasks.filter(
+              (task) => task.id !== deletedTask.id
+            );
+            return {
+              ...todoList,
+              tasks: updatedTasks,
+            };
+          });
+          return updatedTodoLists;
         }
       );
     },
