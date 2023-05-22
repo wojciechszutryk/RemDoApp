@@ -37,6 +37,7 @@ export const Snackbar = (): JSX.Element => {
               sx={{ width: "100%" }}
             >
               {snackbar.message}
+              {snackbar.content}
             </Alert>
           </StyledSnackbar>
         </Portal>

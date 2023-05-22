@@ -1,51 +1,149 @@
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CircleIcon from "@mui/icons-material/Circle";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import UnpublishedIcon from "@mui/icons-material/Unpublished";
-import { Collapse, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import {
-  ActionAnimations,
-  SwipeableListItem,
-} from "@sandstreamdev/react-swipeable-list";
+  Collapse,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from "@mui/material";
+import { motion, useMotionValue, usePresence } from "framer-motion";
+import { useDialogs } from "framework/dialogs";
+import { useSnackbar } from "framework/snackBar";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { ITaskAttached } from "linked-models/task/task.model";
+import { useEditTaskInTodoListMutation } from "pages/TodoListPage/mutations/editTaskInTodoList.mutation";
 import { memo, useState } from "react";
-import { StyledTaskItem } from "../styles";
+import { useTranslation } from "react-i18next";
+import { StyledCancelExitTaskText, StyledTaskItem } from "../styles";
+import LeftShiftContent from "./LeftShiftContent";
+import RightShiftContent from "./RightShiftContent";
 
 interface Props {
-  index: number;
   task: ITaskAttached;
 }
 
-const TaskListItem = ({ index, task }: Props): JSX.Element => {
-  const [order, setOrder] = useState(index);
+const TaskListItem = ({ task }: Props): JSX.Element => {
+  const { setSnackbar } = useSnackbar();
+  const [isPresent, safeToRemove] = usePresence();
+  const editTaskInTodoListMutation = useEditTaskInTodoListMutation();
+  const [dragStartPosition, setDragStartPosition] = useState<null | number>(
+    null
+  );
+  const { dialogsActions } = useDialogs();
+  const x = useMotionValue(0);
+  const { t } = useTranslation();
+
+  const animations = {
+    layout: true,
+    initial: "out",
+    animate: isPresent ? "in" : "out",
+    whileTap: "tapped",
+    variants: {
+      in: { scaleY: 1, opacity: 1 },
+      out: {
+        scaleY: 0,
+        opacity: 0,
+        zIndex: -1299,
+        transition: { duration: 0 },
+      },
+      tapped: { scale: 0.98, transition: { duration: 0.1 } },
+    },
+    transition: { type: "spring", stiffness: 500, damping: 50, mass: 1 },
+  };
+
   return (
-    <SwipeableListItem
-      //   order={order}
-      key={index}
-      swipeRight={{
-        content: task.important ? <UnpublishedIcon /> : <CheckCircleIcon />,
-        actionAnimation: ActionAnimations.REMOVE,
-        action: () => {
-          if (!!task.finishDate) {
-            setOrder(0);
-            //TODO:add mutation
-          } else {
-            setOrder(99);
-            //TODO:add mutation
-          }
-        },
+    <motion.div
+      {...animations}
+      style={{
+        cursor: "grab",
+        position: isPresent ? "static" : "absolute",
       }}
     >
-      <StyledTaskItem key={index} disablePadding>
-        <ListItem role={undefined} dense>
-          <ListItemIcon>
-            {task.important ? <PriorityHighIcon /> : <CircleIcon />}
-          </ListItemIcon>
-          <ListItemText primary={task.text} />
-          <Collapse></Collapse>
-        </ListItem>
-      </StyledTaskItem>
-    </SwipeableListItem>
+      <div style={{ width: "100%", height: "100%", position: "relative" }}>
+        <RightShiftContent x={x} />
+        <LeftShiftContent x={x} />
+        <motion.div
+          drag={"x"}
+          style={{ x }}
+          dragDirectionLock
+          dragConstraints={{ right: 0, left: 0 }}
+          dragTransition={{
+            bounceStiffness: 600,
+            bounceDamping: 20,
+          }}
+          dragElastic={0.5}
+          onDragStart={(_, info) => {
+            setDragStartPosition(info.offset.x);
+          }}
+          onDragEnd={(_, info) => {
+            if (dragStartPosition && info.offset.x - dragStartPosition > 150) {
+              editTaskInTodoListMutation.mutate(
+                {
+                  todoListId: task.todoListId!,
+                  taskId: task.id,
+                  data: {
+                    finishDate: !!task.finishDate ? undefined : new Date(),
+                  },
+                },
+                {
+                  onSuccess: () => {
+                    setSnackbar({
+                      content: (
+                        <Typography>
+                          {`${t(
+                            TranslationKeys.TaskMarkedAsFinishedWithDate
+                          )}: ${new Date().toLocaleDateString()}. ${t(
+                            TranslationKeys.TaskIsOnFinishedList
+                          )}`}
+                          <StyledCancelExitTaskText
+                            onClick={() => {
+                              editTaskInTodoListMutation.mutate({
+                                todoListId: task.todoListId!,
+                                taskId: task.id,
+                                data: {
+                                  finishDate: null,
+                                },
+                              });
+                              setSnackbar(undefined);
+                            }}
+                          >
+                            {t(TranslationKeys.Cancel)}
+                          </StyledCancelExitTaskText>
+                        </Typography>
+                      ),
+                    });
+                  },
+                }
+              );
+            } else if (
+              dragStartPosition &&
+              info.offset.x - dragStartPosition < -150
+            ) {
+              dialogsActions.updateTaskDialog({
+                visible: true,
+                todoListId: task.todoListId!,
+                editTaskData: task,
+              });
+            }
+
+            setDragStartPosition(null);
+            if (!isPresent) safeToRemove();
+          }}
+          whileTap={{ cursor: "grabbing" }}
+        >
+          <StyledTaskItem>
+            <ListItem role={undefined} dense>
+              <ListItemIcon>
+                {task.important ? <PriorityHighIcon /> : <CircleIcon />}
+              </ListItemIcon>
+              <ListItemText primary={task.text} />
+              <Collapse></Collapse>
+            </ListItem>
+          </StyledTaskItem>
+        </motion.div>
+      </div>
+    </motion.div>
   );
 };
 

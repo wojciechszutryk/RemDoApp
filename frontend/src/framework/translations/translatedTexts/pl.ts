@@ -59,6 +59,10 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.TaskImportant]: "Ważne",
   [TranslationKeys.DelteTaskWarning]:
     "Czy na pewno chcesz usunąć to zadanie? Ta operacja jest nieodwracalna.",
+  [TranslationKeys.TaskMarkedAsFinishedWithDate]:
+    "Zadanie zostało zapisane jako zakończone z datą:",
+  [TranslationKeys.TaskIsOnFinishedList]:
+    "Jest ono widoczne na liście zadań zakończonych.",
 
   [TranslationKeys.PageTitleUserSettings]: "Ustawienia użytkownika",
   [TranslationKeys.ChangePassword]: "Zmień hasło",
@@ -71,9 +75,11 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.ChangeAvatar]: "Zmień zdjęcie profilowe",
   [TranslationKeys.AvatarChanged]: "Zdjęcie zapisane",
   [TranslationKeys.DispalyNameChanged]: "Zmieniono nazwę użytkownika.",
-  [TranslationKeys.Save]: "Zapisz",
   [TranslationKeys.Logout]: "Wyloguj",
   [TranslationKeys.Theme]: "Motyw",
   [TranslationKeys.LanguagePolish]: "Język Polski",
   [TranslationKeys.LanguageEnglish]: "Język Angielski",
+
+  [TranslationKeys.Save]: "Zapisz",
+  [TranslationKeys.Cancel]: "Anuluj",
 };

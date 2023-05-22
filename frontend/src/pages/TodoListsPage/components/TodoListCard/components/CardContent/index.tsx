@@ -30,11 +30,11 @@ const CardContent = ({ tasks, expanded }: Props): JSX.Element => {
         <EmptyTasksList />
       ) : (
         <>
-          {activeTasks.length === 0 ? (
+          {/* {activeTasks.length === 0 ? (
             <EmptyTasksList />
-          ) : (
-            <TasksList tasks={activeTasks} />
-          )}
+          ) : ( */}
+          <TasksList tasks={activeTasks} />
+          {/* )} */}
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             {activeTasks.length === 0 ? (
               <EmptyTasksList />
