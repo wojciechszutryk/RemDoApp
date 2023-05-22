@@ -32,7 +32,6 @@ export const StyledTodoListCard = styled(Card, {
   },
   animation: withShakeAnimation ? "shake 1s" : "unset",
   animationIterationCount: "infinite",
-  maxWidth: 345,
 }));
 
 export const StyledDragIcon = styled(DragIndicatorIcon, {

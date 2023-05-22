@@ -1,5 +1,5 @@
-import { SwipeableList } from "@sandstreamdev/react-swipeable-list";
 import "@sandstreamdev/react-swipeable-list/dist/styles.css";
+import { AnimatePresence } from "framer-motion";
 import { ITaskAttached } from "linked-models/task/task.model";
 import { memo } from "react";
 import TaskListItem from "./TaskListItem";
@@ -10,11 +10,11 @@ interface Props {
 
 const TasksList = ({ tasks }: Props): JSX.Element => {
   return (
-    <SwipeableList threshold={0.5}>
-      {tasks.map((task, index) => {
-        return <TaskListItem key={index} task={task} index={index} />;
+    <AnimatePresence>
+      {tasks.map((task) => {
+        return <TaskListItem key={task.id} task={task} />;
       })}
-    </SwipeableList>
+    </AnimatePresence>
   );
 };
 

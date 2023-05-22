@@ -57,6 +57,10 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.TaskImportant]: "Important",
   [TranslationKeys.DelteTaskWarning]:
     "Are you sure you want to delete this task? This action cannot be undone.",
+  [TranslationKeys.TaskMarkedAsFinishedWithDate]:
+    "Task was marked as finished with date",
+  [TranslationKeys.TaskIsOnFinishedList]:
+    "It is visible on finished tasks list.",
 
   [TranslationKeys.PageTitleUserSettings]: "User settings",
   [TranslationKeys.CurrentPasswordLabel]: "current password",
@@ -69,9 +73,11 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.AvatarChanged]: "Avatar saved",
   [TranslationKeys.DispalyNameChanged]: "New display name set.",
   [TranslationKeys.ChangeDisplayName]: "Change display name",
-  [TranslationKeys.Save]: "Save",
   [TranslationKeys.Logout]: "Logout",
   [TranslationKeys.Theme]: "Theme",
   [TranslationKeys.LanguagePolish]: "Polish language",
   [TranslationKeys.LanguageEnglish]: "English language",
+
+  [TranslationKeys.Save]: "Save",
+  [TranslationKeys.Cancel]: "Anuluj",
 };
