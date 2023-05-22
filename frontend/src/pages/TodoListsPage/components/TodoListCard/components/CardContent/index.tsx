@@ -3,7 +3,7 @@ import Collapse from "@mui/material/Collapse";
 import { ITaskAttached } from "linked-models/task/task.model";
 import EmptyTasksList from "pages/TodoListPage/components/EmptyTasksList";
 import { memo, useMemo } from "react";
-import TasksList from "./TasksList";
+import TasksList from "./components/TasksList";
 
 interface Props {
   tasks: ITaskAttached[];

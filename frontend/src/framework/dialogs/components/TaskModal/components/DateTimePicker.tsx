@@ -10,24 +10,15 @@ const DatePicker = () => {
 
     const newValue = new Date(dayjsVlue.valueOf());
 
-    if (isStartDate) {
-      if (+newValue > endDate) {
-        showToast("Set date later than the end date");
-      } else dispatch(setStartDate(+newValue));
-    } else if (!isStartDate) {
-      if (+newValue < startDate) {
-        showToast("Set date earlier than the start date");
-      } else dispatch(setEndDate(+newValue));
-    }
+    // if (isStartDate) {
+    //   if (+newValue > endDate) {
+    //     showToast("Set date later than the end date");
+    //   } else dispatch(setStartDate(+newValue));
+    // }
   };
 
   return (
-    <StyledDatePicker
-      label={"Start date and Time"}
-      defaultValue={dayjsDate(startDate)}
-      value={dayjsDate(startDate)}
-      onChange={handleChange}
-    />
+    <StyledDatePicker label={"Start date and Time"} onChange={handleChange} />
   );
 };
 
