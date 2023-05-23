@@ -5,16 +5,16 @@ export interface ITask {
   text: string;
 
   /** Date when task should be started */
-  whenShouldBeStarted?: Date;
+  whenShouldBeStarted?: Date | null;
 
   /** Date when task should be finished */
-  whenShouldBeFinished?: Date;
+  whenShouldBeFinished?: Date | null;
+
+  /** Date when task was finished */
+  finishDate?: Date | null;
 
   /** Date when task was started */
   startDate?: string;
-
-  /** Date when task was finished */
-  finishDate?: Date;
 
   /** Boolean to determine if task is important */
   important?: boolean;

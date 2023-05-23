@@ -12,8 +12,14 @@ import {
 export const useDeleteTaskMutation = () => {
   const queryClient = useQueryClient();
 
-  const deleteTask = async (taskId: string) => {
-    const url = FRONTIFY_URL(URL_TODO_LIST_TASK(taskId));
+  const deleteTask = async ({
+    todoListId,
+    taskId,
+  }: {
+    taskId: string;
+    todoListId?: string;
+  }) => {
+    const url = FRONTIFY_URL(URL_TODO_LIST_TASK(todoListId, taskId));
     return apiDelete<ITaskAttached>(url).then((res) => res.data);
   };
 

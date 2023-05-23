@@ -27,6 +27,7 @@ export interface ITaskDialog {
 export interface IDeleteTaskDialog {
   visible: boolean;
   taskId: string;
+  todoListId?: string;
 }
 
 export interface IDialogsState {

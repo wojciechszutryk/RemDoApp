@@ -32,7 +32,7 @@ const Dialogs = (): JSX.Element => {
           <TaskModal />
         </Suspense>
       )}
-      {dialogsState.deleteTodoListDialog.visible && (
+      {dialogsState.deleteTaskDialog.visible && (
         <Suspense fallback={<></>}>
           <DeleteTaskModal />
         </Suspense>
