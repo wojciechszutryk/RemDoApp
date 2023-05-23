@@ -16,12 +16,14 @@ interface Props {
   todoList: IExtendedTodoListDto;
   expanded: boolean;
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+  showExpandIcon?: boolean;
 }
 
 const CardActions = ({
   todoList: { name, id, icon, assignedOwners, assignedUsers },
   expanded,
   setExpanded,
+  showExpandIcon,
 }: Props): JSX.Element => {
   const { dialogsActions } = useDialogs();
   const { t } = useTranslation();
@@ -76,14 +78,16 @@ const CardActions = ({
           }
         />
       </IconButton>
-      <StyledExpandMore
-        expand={expanded}
-        onClick={() => setExpanded(!expanded)}
-        aria-expanded={expanded}
-        aria-label="show more"
-      >
-        <ExpandMoreIcon />
-      </StyledExpandMore>
+      {showExpandIcon && (
+        <StyledExpandMore
+          expand={expanded}
+          onClick={() => setExpanded(!expanded)}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </StyledExpandMore>
+      )}
     </MUICardActions>
   );
 };

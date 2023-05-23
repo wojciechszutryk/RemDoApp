@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 const DeleteTaskModal = (): JSX.Element => {
   const {
     dialogsState: {
-      deleteTaskDialog: { visible, taskId },
+      deleteTaskDialog: { visible, taskId, todoListId },
     },
     dialogsActions: { updateDeleteTaskDialog },
   } = useDialogs();
@@ -19,8 +19,7 @@ const DeleteTaskModal = (): JSX.Element => {
   const { t } = useTranslation();
 
   const onDelete = () => {
-    deleteTaskMutation.mutate(taskId);
-
+    deleteTaskMutation.mutate({ todoListId, taskId });
     updateDeleteTaskDialog(initialDeleteTaskDialog);
   };
 

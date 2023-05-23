@@ -34,6 +34,8 @@ export class TodoListsController extends BaseHttpController {
     @queryParam(PARAM_WITH_TASKS) withTasks = false,
     @queryParam(PARAM_WITH_MEMBERS) withMembers = false
   ): Promise<OkResult> {
+    if (!currentUser.id) return this.ok([]);
+
     if (withTasks) {
       const todoLists = await this.todoListService.getExtendedTodoListsForUser(
         currentUser.id

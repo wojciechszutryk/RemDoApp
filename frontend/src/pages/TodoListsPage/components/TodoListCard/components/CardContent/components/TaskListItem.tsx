@@ -34,6 +34,8 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
   const x = useMotionValue(0);
   const { t } = useTranslation();
 
+  const isTaskFinished = !!task.finishDate;
+
   const animations = {
     layout: true,
     initial: "out",
@@ -57,6 +59,7 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
       {...animations}
       style={{
         cursor: "grab",
+        borderRadius: 8,
         position: isPresent ? "static" : "absolute",
       }}
     >
@@ -83,7 +86,7 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
                   todoListId: task.todoListId!,
                   taskId: task.id,
                   data: {
-                    finishDate: !!task.finishDate ? undefined : new Date(),
+                    finishDate: isTaskFinished ? undefined : new Date(),
                   },
                 },
                 {
@@ -120,11 +123,19 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
               dragStartPosition &&
               info.offset.x - dragStartPosition < -150
             ) {
-              dialogsActions.updateTaskDialog({
-                visible: true,
-                todoListId: task.todoListId!,
-                editTaskData: task,
-              });
+              if (isTaskFinished) {
+                dialogsActions.updateDeleteTaskDialog({
+                  visible: true,
+                  taskId: task.id,
+                  todoListId: task.todoListId,
+                });
+              } else {
+                dialogsActions.updateTaskDialog({
+                  visible: true,
+                  todoListId: task.todoListId!,
+                  editTaskData: task,
+                });
+              }
             }
 
             setDragStartPosition(null);

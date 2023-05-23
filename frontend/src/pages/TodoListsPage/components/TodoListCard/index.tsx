@@ -4,6 +4,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { ITaskAttached } from "linked-models/task/task.model";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import * as React from "react";
 import { memo } from "react";
@@ -38,6 +39,19 @@ const TodoListCard = ({ todoList, withShakeAnimation }: Props): JSX.Element => {
     transition,
   } = useSortable({ id: todoList.id, animateLayoutChanges });
 
+  const { activeTasks, finishedTasks } = React.useMemo(() => {
+    const activeTasks: ITaskAttached[] = [];
+    const finishedTasks: ITaskAttached[] = [];
+    todoList.tasks.forEach((task) => {
+      if (!!task.finishDate) {
+        finishedTasks.push(task);
+      } else {
+        activeTasks.push(task);
+      }
+    });
+    return { activeTasks, finishedTasks };
+  }, [todoList.tasks]);
+
   return (
     <StyledTodoListCardWrapper
       isDragging={isDragging}
@@ -52,8 +66,13 @@ const TodoListCard = ({ todoList, withShakeAnimation }: Props): JSX.Element => {
           attributes={attributes}
           isDragging={isDragging}
         />
-        <CardContent tasks={todoList.tasks} expanded={expanded} />
+        <CardContent
+          activeTasks={activeTasks}
+          finishedTasks={finishedTasks}
+          expanded={expanded}
+        />
         <CardActions
+          showExpandIcon={finishedTasks.length > 0 && activeTasks.length !== 0}
           setExpanded={setExpanded}
           expanded={expanded}
           todoList={todoList}
