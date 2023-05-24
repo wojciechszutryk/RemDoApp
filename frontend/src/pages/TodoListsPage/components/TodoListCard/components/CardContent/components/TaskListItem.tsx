@@ -64,8 +64,8 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
       }}
     >
       <div style={{ width: "100%", height: "100%", position: "relative" }}>
-        <RightShiftContent x={x} />
-        <LeftShiftContent x={x} />
+        <RightShiftContent x={x} finished={isTaskFinished} />
+        <LeftShiftContent x={x} finished={isTaskFinished} />
         <motion.div
           drag={"x"}
           style={{ x }}
@@ -86,36 +86,37 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
                   todoListId: task.todoListId!,
                   taskId: task.id,
                   data: {
-                    finishDate: isTaskFinished ? undefined : new Date(),
+                    finishDate: isTaskFinished ? null : new Date(),
                   },
                 },
                 {
                   onSuccess: () => {
-                    setSnackbar({
-                      content: (
-                        <Typography>
-                          {`${t(
-                            TranslationKeys.TaskMarkedAsFinishedWithDate
-                          )}: ${new Date().toLocaleDateString()}. ${t(
-                            TranslationKeys.TaskIsOnFinishedList
-                          )}`}
-                          <StyledCancelExitTaskText
-                            onClick={() => {
-                              editTaskInTodoListMutation.mutate({
-                                todoListId: task.todoListId!,
-                                taskId: task.id,
-                                data: {
-                                  finishDate: null,
-                                },
-                              });
-                              setSnackbar(undefined);
-                            }}
-                          >
-                            {t(TranslationKeys.Cancel)}
-                          </StyledCancelExitTaskText>
-                        </Typography>
-                      ),
-                    });
+                    if (!isTaskFinished)
+                      setSnackbar({
+                        content: (
+                          <Typography>
+                            {`${t(
+                              TranslationKeys.TaskMarkedAsFinishedWithDate
+                            )}: ${new Date().toLocaleDateString()}. ${t(
+                              TranslationKeys.TaskIsOnFinishedList
+                            )}`}
+                            <StyledCancelExitTaskText
+                              onClick={() => {
+                                editTaskInTodoListMutation.mutate({
+                                  todoListId: task.todoListId!,
+                                  taskId: task.id,
+                                  data: {
+                                    finishDate: null,
+                                  },
+                                });
+                                setSnackbar(undefined);
+                              }}
+                            >
+                              {t(TranslationKeys.Cancel)}
+                            </StyledCancelExitTaskText>
+                          </Typography>
+                        ),
+                      });
                   },
                 }
               );
@@ -143,7 +144,7 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
           }}
           whileTap={{ cursor: "grabbing" }}
         >
-          <StyledTaskItem>
+          <StyledTaskItem isTaskFinished={isTaskFinished}>
             <ListItem role={undefined} dense>
               <ListItemIcon>
                 {task.important ? <PriorityHighIcon /> : <CircleIcon />}

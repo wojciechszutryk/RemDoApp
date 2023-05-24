@@ -3,7 +3,7 @@ import { Button } from "atomicComponents/atoms/Button";
 import { ReactNode } from "react";
 import {
   StyledHeader,
-  StyledImage,
+  StyledImageWrapper,
   StyledNavLink,
   StyledWrapper,
 } from "./styles";
@@ -14,12 +14,12 @@ export interface IActionNavButton extends ButtonProps {
 
 interface Props {
   headerText?: string | ReactNode;
-  imageSrc?: string;
-  imageAlt: string;
+  image?: JSX.Element;
   /** if true image will be displayed before header text */
   reversed?: boolean;
   headerStylesOverride?: SxProps;
   imageStylesOverride?: SxProps;
+  layoutStyleOverride?: SxProps;
   /** if defined, navlink with button will be displayed at the bottom of the template */
   actionNavButton?: IActionNavButton;
   /** if defined, button will be displayed at the bottom of the template */
@@ -28,21 +28,23 @@ interface Props {
 
 const InformationTemplate = ({
   headerText,
-  imageSrc,
-  imageAlt,
+  image,
   reversed = false,
-  headerStylesOverride,
+  layoutStyleOverride,
   imageStylesOverride,
+  headerStylesOverride,
   actionNavButton,
   actionButton,
 }: Props): JSX.Element => {
   return (
-    <StyledWrapper reversed={reversed}>
+    <StyledWrapper reversed={reversed} sx={layoutStyleOverride}>
       {headerText && (
         <StyledHeader sx={headerStylesOverride}>{headerText}</StyledHeader>
       )}
-      {imageSrc && (
-        <StyledImage src={imageSrc} alt={imageAlt} sx={imageStylesOverride} />
+      {image && (
+        <StyledImageWrapper sx={imageStylesOverride}>
+          {image}
+        </StyledImageWrapper>
       )}
       {actionNavButton && (
         <StyledNavLink to={actionNavButton.to}>

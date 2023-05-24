@@ -1,4 +1,5 @@
 import Dialog from "atomicComponents/atoms/Dialog";
+import { SunImage } from "atomicComponents/atoms/images/Sun";
 import InformationTemplate from "atomicComponents/molecules/InformationTemplate";
 import { useDialogs } from "framework/dialogs";
 import { initialDeleteTaskDialog } from "framework/dialogs/models/initialState.const";
@@ -29,20 +30,11 @@ const DeleteTaskModal = (): JSX.Element => {
       onClose={() => updateDeleteTaskDialog(initialDeleteTaskDialog)}
     >
       <InformationTemplate
-        headerStylesOverride={{
-          fontSize: { xs: 20, md: 32 },
-          textAlign: "center",
-          width: { xs: "95%", md: "40%", xl: "30%" },
-          margin: "0 auto 58px",
-        }}
+        image={<SunImage />}
         imageStylesOverride={{
-          display: "block",
-          margin: "8px auto 0",
-          width: { xs: 186, md: 295, xl: 397 },
-          height: { xs: 185, md: 295, xl: 397 },
+          width: { xs: 150 },
+          height: { xs: 100 },
         }}
-        imageSrc={`${process.env.REACT_APP_URL}/images/sun.svg`}
-        imageAlt={"delete"}
         headerText={t(TranslationKeys.DelteTaskWarning)}
         actionButton={{
           children: t(TranslationKeys.DelteTask),

@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
 export const StyledWrapper = styled("div", {
@@ -38,22 +38,6 @@ export const StyledHeader = styled("p")(({ theme }) => ({
   },
 }));
 
-export const StyledImage = styled("img")(({ theme }) => ({
-  display: "block",
-  margin: "8px auto 0",
-
-  width: 107,
-  height: 112,
-  [theme.breakpoints.up("md")]: {
-    margin: "20px auto 0",
-    width: 222,
-    height: 233,
-  },
-  [theme.breakpoints.up("xl")]: {
-    margin: "40px auto 0",
-  },
-}));
-
 export const StyledNavLink = styled(NavLink)({
   display: "block",
   textAlign: "center",
@@ -61,3 +45,10 @@ export const StyledNavLink = styled(NavLink)({
     margin: "18px auto",
   },
 });
+
+export const StyledImageWrapper = styled(Box)(({ theme }) => ({
+  width: "130px",
+  height: "130px",
+  fill: theme.palette.secondary.main,
+  marginBottom: 10,
+}));

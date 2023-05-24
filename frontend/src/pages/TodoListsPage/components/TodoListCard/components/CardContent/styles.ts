@@ -1,8 +1,15 @@
 import { ListItem, styled, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 
-export const StyledTaskItem = styled(ListItem)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
+export const StyledTaskItem = styled(ListItem, {
+  shouldForwardProp: (prop) => prop !== "isTaskFinished",
+})<{
+  isTaskFinished?: boolean;
+}>(({ isTaskFinished, theme }) => ({
+  backgroundColor: isTaskFinished
+    ? theme.palette.primary.light
+    : theme.palette.primary.main,
+  textDecoration: isTaskFinished ? "line-through" : "unset",
   color: theme.palette.primary.contrastText,
   borderBottom: `1px solid ${theme.palette.primary.light}`,
 }));
