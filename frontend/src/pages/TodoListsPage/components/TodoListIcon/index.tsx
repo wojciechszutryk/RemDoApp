@@ -13,10 +13,11 @@ import { StyledTodoListIconWrapper } from "./styles";
 
 interface Props {
   type: TodoListIconEnum;
+  disableHover?: boolean;
   onClick?: () => void;
 }
 
-const TodoListIcon = ({ type, onClick }: Props): JSX.Element => {
+const TodoListIcon = ({ type, onClick, disableHover }: Props): JSX.Element => {
   const getIcon = () => {
     switch (type) {
       case TodoListIconEnum.Child: {
@@ -57,7 +58,11 @@ const TodoListIcon = ({ type, onClick }: Props): JSX.Element => {
     }
   };
 
-  return <StyledTodoListIconWrapper>{getIcon()}</StyledTodoListIconWrapper>;
+  return (
+    <StyledTodoListIconWrapper disableHover={disableHover}>
+      {getIcon()}
+    </StyledTodoListIconWrapper>
+  );
 };
 
 export default memo(TodoListIcon);
