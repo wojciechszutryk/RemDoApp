@@ -17,6 +17,7 @@ export const StyledTodoListCardWrapper = styled("div", {
     : "rgb(63 63 68 / 5%) 0px 0px 0px 1px, rgb(34 33 81 / 15%) 0px 1px 3px 0px",
   transform,
   transition: transition || undefined,
+  borderRadius: "20px",
 }));
 
 export const StyledTodoListCard = styled(Card, {
@@ -32,6 +33,9 @@ export const StyledTodoListCard = styled(Card, {
   },
   animation: withShakeAnimation ? "shake 1s" : "unset",
   animationIterationCount: "infinite",
+  boxShadow: "none",
+  borderRadius: "20px",
+  backgroundImage: "none",
 }));
 
 export const StyledDragIcon = styled(DragIndicatorIcon, {
@@ -51,7 +55,6 @@ export const StyledExpandMore = styled("div", {
 })<{ expand: boolean }>(({ theme, expand }) => ({
   cursor: "pointer",
   transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
   transition: theme.transitions.create("transform", {
     duration: theme.transitions.duration.shortest,
   }),
