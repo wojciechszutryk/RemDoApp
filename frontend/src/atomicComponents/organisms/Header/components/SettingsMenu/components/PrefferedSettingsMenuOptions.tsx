@@ -16,7 +16,7 @@ const PrefferedSettingsMenuOptions = (): JSX.Element => {
     <>
       <StyledMenuItem>
         <StyledFormControlLabel
-          checked={theme === "light"}
+          checked={theme.palette.mode === "light"}
           control={<ThemeSwitch onChange={changeTheme} />}
           label={t(TranslationKeys.Theme)}
         />

@@ -39,7 +39,7 @@ function ThemeProvider({ children }: Props): JSX.Element {
 
   const value = {
     changeTheme,
-    theme: mode,
+    theme: muiTheme,
     initialized: true,
   };
 
