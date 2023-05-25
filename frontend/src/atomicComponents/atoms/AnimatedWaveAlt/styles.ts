@@ -2,13 +2,14 @@ import { Theme } from "@mui/material";
 
 const numOfBlobs = 4;
 
-export const AnimatedWaveAltStyles = (theme: Theme) => ({
+export const AnimatedWaveAltStyles = (theme: Theme, noBorder?: boolean) => ({
   zIndex: 1,
   position: "relative",
   backgroundColor: "transparent",
   outline: "none",
   transition: "color 0.5s",
   "&:before": {
+    display: noBorder ? "none" : "inherit",
     content: "''",
     zIndex: 1,
     position: "absolute",

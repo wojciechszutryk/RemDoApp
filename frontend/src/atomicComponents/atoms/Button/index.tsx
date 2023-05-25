@@ -2,7 +2,11 @@ import { ButtonProps } from "@mui/material";
 import AnimatedWaveAlt from "../AnimatedWaveAlt";
 import { StyledButton } from "./styles";
 
-const Button = (props: ButtonProps): JSX.Element => {
+interface Props extends ButtonProps {
+  noBorder?: boolean;
+}
+
+const Button = (props: Props): JSX.Element => {
   return (
     <StyledButton {...props}>
       {props.children}
