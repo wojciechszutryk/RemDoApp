@@ -11,4 +11,13 @@ export const lightTheme = {
     dark: "#2c4c5b",
     contrastText: "#ffffff",
   },
+  background: {
+    paper: "#fefefe",
+  },
+  info: {
+    main: "#F5F6F7",
+  },
+  warning: {
+    main: "#e0b8cc",
+  },
 };
