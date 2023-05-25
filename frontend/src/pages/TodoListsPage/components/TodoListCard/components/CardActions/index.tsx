@@ -4,13 +4,13 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ShareIcon from "@mui/icons-material/Share";
 import { CardActions as MUICardActions } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import { Button } from "atomicComponents/atoms/Button";
 import { useDialogs } from "framework/dialogs";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledExpandMore } from "../../styles";
+import { StyledCreateTaskButton } from "./styles";
 
 interface Props {
   todoList: IExtendedTodoListDto;
@@ -32,13 +32,14 @@ const CardActions = ({
 
   return (
     <MUICardActions disableSpacing>
-      <Button
+      <StyledCreateTaskButton
+        noBorder
         onClick={() =>
           dialogsActions.updateTaskDialog({ visible: true, todoListId: id })
         }
       >
         {t(TranslationKeys.AddTask)}
-      </Button>
+      </StyledCreateTaskButton>
       <IconButton aria-label="share">
         <ShareIcon
           onClick={() =>
