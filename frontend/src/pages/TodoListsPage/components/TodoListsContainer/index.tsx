@@ -1,70 +1,26 @@
 import {
   closestCenter,
   DndContext,
-  DragEndEvent,
   DragOverlay,
-  DragStartEvent,
   MeasuringStrategy,
   MouseSensor,
   TouchSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import {
-  arrayMove,
-  rectSortingStrategy,
-  SortableContext,
-} from "@dnd-kit/sortable";
+import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import { StyledTodoListsWrapper } from "pages/TodoListsPage/styles";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import TodoListCard from "../TodoListCard";
+import { getOrderedTodoLists } from "./helpers";
+import useHandleDrag from "./useHandleDrag";
 
 interface Props {
   todoLists: IExtendedTodoListDto[];
 }
-
-const measuringConfig = {
-  droppable: {
-    strategy: MeasuringStrategy.Always,
-  },
-};
-
-const getTodoListsOrderLSKey = (userId: string) =>
-  `todoListsOrderForUser${userId}`;
-
-const getOrderedTodoLists = (
-  todoLists: IExtendedTodoListDto[],
-  userId: string | undefined
-) => {
-  if (!userId) return todoLists;
-  const todoListsOrderFromLS = localStorage.getItem(
-    getTodoListsOrderLSKey(userId)
-  );
-  if (!todoListsOrderFromLS) return todoLists;
-  const todoListsOrder: string[] = JSON.parse(todoListsOrderFromLS);
-
-  const orderedTodoLists = todoLists.sort((a, b) => {
-    const indexOfA = todoListsOrder.indexOf(a.id);
-    const indexOfB = todoListsOrder.indexOf(b.id);
-
-    if (indexOfA === -1 || indexOfB === -1) {
-      if (a.whenUpdated < b.whenUpdated) return -1;
-
-      if (a.whenUpdated > b.whenUpdated) return 1;
-    }
-
-    if (indexOfA < indexOfB) return -1;
-
-    if (indexOfA > indexOfB) return 1;
-
-    return 0;
-  });
-
-  return orderedTodoLists;
-};
 
 const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -79,55 +35,27 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
   }, [todoLists, currentUser?.id]);
 
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.up("md"));
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("xl"));
   let columns = 1;
   if (isSmallScreen) columns = 2;
   if (isLargeScreen) columns = 3;
 
-  const handleDragStart = useCallback((event: DragStartEvent) => {
-    setActiveId(event.active.id as string);
-  }, []);
-
-  const handleDragEnd = useCallback(
-    (event: DragEndEvent) => {
-      const { active, over } = event;
-
-      if (active.id !== over?.id) {
-        setOrderedTodoLists((items) => {
-          const itemIDs = items.map((item) => item.id);
-
-          const oldIndex = itemIDs.indexOf(active.id as string);
-          const newIndex = itemIDs.indexOf(over?.id as string);
-
-          if (newIndex) {
-            const reorderedItems = arrayMove(items, oldIndex, newIndex);
-            if (currentUser)
-              localStorage.setItem(
-                getTodoListsOrderLSKey(currentUser?.id),
-                JSON.stringify(reorderedItems.map((todoList) => todoList.id))
-              );
-            return reorderedItems;
-          }
-
-          return items;
-        });
-      }
-
-      setActiveId(null);
-    },
-    [currentUser]
-  );
-
-  const handleDragCancel = useCallback(() => {
-    setActiveId(null);
-  }, []);
-
   const activeTodoList = todoLists.find((td) => td.id === activeId);
+
+  const { handleDragStart, handleDragEnd, handleDragCancel } = useHandleDrag({
+    setActiveId,
+    setOrderedTodoLists,
+    currentUser,
+  });
 
   return (
     <DndContext
-      measuring={measuringConfig}
+      measuring={{
+        droppable: {
+          strategy: MeasuringStrategy.Always,
+        },
+      }}
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}

@@ -45,7 +45,7 @@ const CardHeader = ({
           {icon && (
             <Tooltip title={icon}>
               <div>
-                <TodoListIcon type={icon} />
+                <TodoListIcon type={icon} disableHover />
               </div>
             </Tooltip>
           )}
