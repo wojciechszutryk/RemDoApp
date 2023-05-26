@@ -1,4 +1,4 @@
-import { ListItem, styled, Typography } from "@mui/material";
+import { Collapse, ListItem, styled, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 
 export const StyledTaskItem = styled(ListItem, {
@@ -35,6 +35,14 @@ export const StyledCancelExitTaskText = styled(Typography)(({ theme }) => ({
   cursor: "pointer",
   textDecoration: "underline",
 }));
+
+export const StyledTaskListItem = styled(ListItem)({
+  flexWrap: "wrap",
+});
+
+export const StyledDetailsColapse = styled(Collapse)({
+  flexBasis: "100%",
+});
 
 export const taskAnimations = (isPresent: boolean) => ({
   layout: true,
