@@ -54,6 +54,11 @@ export enum TranslationKeys {
   TaskImportant = "TaskImportant",
   TaskMarkedAsFinishedWithDate = "TaskMarkedAsFinishedWithDate",
   TaskIsOnFinishedList = "TaskIsOnFinishedList",
+  PlannedStartDate = "PlannedStartDate",
+  PlannedFinishDate = "PlannedFinishDate",
+  StartDate = "StartDate",
+  FinishDate = "FinishDate",
+  Creator = "Creator",
 
   PageTitleUserSettings = "PageTitleUserSettings",
   ChangePassword = "ChangePassword",
@@ -69,7 +74,7 @@ export enum TranslationKeys {
   Theme = "Theme",
   LanguageEnglish = "LanguageEnglish",
   LanguagePolish = "LanguagePolish",
-  
+
   Save = "Save",
   Cancel = "Cancel",
 }

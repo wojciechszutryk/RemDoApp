@@ -1,12 +1,6 @@
 import CircleIcon from "@mui/icons-material/Circle";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import {
-  Collapse,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  useTheme,
-} from "@mui/material";
+import { Collapse, ListItemIcon, ListItemText, useTheme } from "@mui/material";
 import {
   motion,
   useMotionValue,
@@ -18,7 +12,8 @@ import { memo, useState } from "react";
 import LeftShiftContent from "./LeftShiftContent";
 import useOnDragEnd from "./onDragEnd.helper";
 import RightShiftContent from "./RightShiftContent";
-import { StyledTaskItem, taskAnimations } from "./styles";
+import { StyledDetailsColapse, StyledTaskItem, StyledTaskListItem, taskAnimations } from "./styles";
+import TaskDetailsList from "./TaskDetailsList";
 
 interface Props {
   task: ITaskAttached;
@@ -26,6 +21,7 @@ interface Props {
 
 const TaskListItem = ({ task }: Props): JSX.Element => {
   const [isPresent, safeToRemove] = usePresence();
+  const [expanded, setExpanded] = useState(false);
   const [dragStartPosition, setDragStartPosition] = useState<null | number>(
     null
   );
@@ -87,14 +83,19 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
           onDragEnd={onDragEnd}
           whileTap={{ cursor: "grabbing" }}
         >
-          <StyledTaskItem isTaskFinished={isTaskFinished}>
-            <ListItem role={undefined} dense>
+          <StyledTaskItem
+            isTaskFinished={isTaskFinished}
+            onClick={() => setExpanded((prev) => !prev)}
+          >
+            <StyledTaskListItem role={undefined} dense>
               <ListItemIcon>
                 {task.important ? <PriorityHighIcon /> : <CircleIcon />}
               </ListItemIcon>
               <ListItemText primary={task.text} />
-              <Collapse></Collapse>
-            </ListItem>
+              <StyledDetailsColapse in={expanded}>
+                <TaskDetailsList task={task} />
+              </StyledDetailsColapse>
+            </StyledTaskListItem>
           </StyledTaskItem>
         </motion.div>
       </motion.div>

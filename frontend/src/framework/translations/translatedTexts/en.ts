@@ -61,6 +61,11 @@ export const enTranslation: Record<TranslationKeys, string> = {
     "Task was marked as finished with date",
   [TranslationKeys.TaskIsOnFinishedList]:
     "It is visible on finished tasks list.",
+  [TranslationKeys.PlannedStartDate]: "Planned start date",
+  [TranslationKeys.PlannedFinishDate]: "Planned finish date",
+  [TranslationKeys.StartDate]: "Start date",
+  [TranslationKeys.FinishDate]: "Finish date",
+  [TranslationKeys.Creator]: "Creator",
 
   [TranslationKeys.PageTitleUserSettings]: "User settings",
   [TranslationKeys.CurrentPasswordLabel]: "current password",
