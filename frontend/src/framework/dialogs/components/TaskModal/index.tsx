@@ -1,6 +1,8 @@
 import { Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
+import { ControlledCheckbox } from "atomicComponents/molecules/ControlledCheckbox";
+import { ControlledDatePicker } from "atomicComponents/molecules/ControlledDatePicker";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { useDialogs } from "framework/dialogs";
 import { initialTaskDialog } from "framework/dialogs/models/initialState.const";
@@ -23,12 +25,13 @@ const TaskModal = (): JSX.Element => {
 
   const defaultFormValues = {
     text: editTaskData?.text || "",
-    whenShouldBeStarted: editTaskData?.whenShouldBeStarted,
-    whenShouldBeFinished: editTaskData?.whenShouldBeFinished,
-    startDate: editTaskData?.startDate,
-    finishDate: editTaskData?.finishDate,
+    whenShouldBeStarted: editTaskData?.whenShouldBeStarted || null,
+    whenShouldBeFinished: editTaskData?.whenShouldBeFinished || null,
+    startDate: editTaskData?.startDate || null,
+    finishDate: editTaskData?.finishDate || null,
     important: editTaskData?.important,
   };
+
   const methods = useForm<ITask>({
     defaultValues: defaultFormValues,
   });
@@ -58,6 +61,31 @@ const TaskModal = (): JSX.Element => {
             name={"text"}
             control={methods.control}
             placeholder={t(TranslationKeys.TaskName)}
+          />
+          <ControlledCheckbox
+            name={"important"}
+            control={methods.control}
+            label={"add trans important"}
+          />
+          <ControlledDatePicker
+            control={methods.control}
+            name={"whenShouldBeStarted"}
+            label={"dsad"}
+          />
+          <ControlledDatePicker
+            control={methods.control}
+            name={"whenShouldBeFinished"}
+            label={"dsad"}
+          />
+          <ControlledDatePicker
+            control={methods.control}
+            name={"startDate"}
+            label={"dsad"}
+          />
+          <ControlledDatePicker
+            control={methods.control}
+            name={"finishDate"}
+            label={"dsad"}
           />
           <Button type="submit">
             {editTaskData

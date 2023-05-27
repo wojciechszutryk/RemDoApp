@@ -68,6 +68,7 @@ export class TaskService {
   ): Promise<ITaskAttached> {
     const update = {
       ...updateData,
+      important: updateData.important ?? false,
       whenUpdated: new Date(),
     };
 

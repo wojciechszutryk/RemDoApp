@@ -21,7 +21,7 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
   } = task;
   return (
     <List disablePadding>
-      {whenShouldBeStarted && (
+      {/* {whenShouldBeStarted && (
         <ListItem>
           <ListItemIcon>
             <StartIcon />
@@ -33,7 +33,7 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
             secondary={t(TranslationKeys.PlannedStartDate)}
           />
         </ListItem>
-      )}
+      )} */}
       {/* {task.whenShouldBeFinished && (
         <ListItem>
           <ListItemIcon>

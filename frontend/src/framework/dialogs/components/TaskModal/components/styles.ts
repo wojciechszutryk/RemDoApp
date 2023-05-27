@@ -1,7 +1,6 @@
-import { styled } from "@mui/system";
-import { DateTimePicker } from "@mui/x-date-pickers";
-import dayjs from "dayjs";
+import { Autocomplete, Chip, styled, Typography } from "@mui/material";
 
-export const StyledDatePicker = styled(DateTimePicker<dayjs.Dayjs>)({
-  minWidth: 300,
+export const StyledDatePickerWrapper = styled("div")({
+  display: "flex",
+  
 });
