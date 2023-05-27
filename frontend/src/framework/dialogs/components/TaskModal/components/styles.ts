@@ -1,6 +1,6 @@
-import { Autocomplete, Chip, styled, Typography } from "@mui/material";
+import { styled } from "@mui/material";
 
 export const StyledDatePickerWrapper = styled("div")({
   display: "flex",
-  
+  alignItems: "center",
 });

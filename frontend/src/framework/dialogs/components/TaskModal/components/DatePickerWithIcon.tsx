@@ -8,16 +8,21 @@ import { StyledDatePickerWrapper } from "./styles";
 interface Props {
   Icon: JSX.Element;
   tooltipTitle: string;
+  name: keyof ITask;
 }
 
-const DatePickerWithIcon = ({ Icon, tooltipTitle }: Props): JSX.Element => {
+const DatePickerWithIcon = ({
+  Icon,
+  tooltipTitle,
+  name,
+}: Props): JSX.Element => {
   const { control } = useFormContext<ITask>();
   return (
     <StyledDatePickerWrapper>
       <Tooltip title={tooltipTitle}>
         <div>{Icon}</div>
       </Tooltip>
-      <ControlledDatePicker control={control} name={"whenShouldBeStarted"} />
+      <ControlledDatePicker control={control} name={name} />
     </StyledDatePickerWrapper>
   );
 };

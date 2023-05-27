@@ -1,8 +1,11 @@
+import FlagCircleIcon from "@mui/icons-material/FlagCircle";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import HourglassFullIcon from "@mui/icons-material/HourglassFull";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
 import { ControlledCheckbox } from "atomicComponents/molecules/ControlledCheckbox";
-import { ControlledDatePicker } from "atomicComponents/molecules/ControlledDatePicker";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { useDialogs } from "framework/dialogs";
 import { initialTaskDialog } from "framework/dialogs/models/initialState.const";
@@ -14,6 +17,7 @@ import { memo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { StyledForm } from "../TodoListModal/styles";
+import DatePickerWithIcon from "./components/DatePickerWithIcon";
 
 const TaskModal = (): JSX.Element => {
   const {
@@ -62,30 +66,34 @@ const TaskModal = (): JSX.Element => {
             control={methods.control}
             placeholder={t(TranslationKeys.TaskName)}
           />
+          {[
+            {
+              Icon: <HourglassEmptyIcon />,
+              tooltipTitle: t(TranslationKeys.PlannedStartDate),
+              name: "whenShouldBeStarted" as keyof ITask,
+            },
+            {
+              Icon: <HourglassFullIcon />,
+              tooltipTitle: t(TranslationKeys.PlannedFinishDate),
+              name: "whenShouldBeFinished" as keyof ITask,
+            },
+            {
+              Icon: <PlayCircleOutlineIcon />,
+              tooltipTitle: t(TranslationKeys.StartDate),
+              name: "startDate" as keyof ITask,
+            },
+            {
+              Icon: <FlagCircleIcon />,
+              tooltipTitle: t(TranslationKeys.FinishDate),
+              name: "finishDate" as keyof ITask,
+            },
+          ].map((props, index) => (
+            <DatePickerWithIcon key={index} {...props} />
+          ))}
           <ControlledCheckbox
             name={"important"}
             control={methods.control}
-            label={"add trans important"}
-          />
-          <ControlledDatePicker
-            control={methods.control}
-            name={"whenShouldBeStarted"}
-            label={"dsad"}
-          />
-          <ControlledDatePicker
-            control={methods.control}
-            name={"whenShouldBeFinished"}
-            label={"dsad"}
-          />
-          <ControlledDatePicker
-            control={methods.control}
-            name={"startDate"}
-            label={"dsad"}
-          />
-          <ControlledDatePicker
-            control={methods.control}
-            name={"finishDate"}
-            label={"dsad"}
+            label={t(TranslationKeys.TaskImportant)}
           />
           <Button type="submit">
             {editTaskData
