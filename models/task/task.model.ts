@@ -14,7 +14,7 @@ export interface ITask {
   finishDate?: Date | null;
 
   /** Date when task was started */
-  startDate?: string;
+  startDate?: string | null;
 
   /** Boolean to determine if task is important */
   important?: boolean;
