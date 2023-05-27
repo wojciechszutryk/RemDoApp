@@ -1,8 +1,5 @@
-import {
-  Checkbox,
-  FormControlLabel,
-  StandardTextFieldProps,
-} from "@mui/material";
+import { FormControlLabel, StandardTextFieldProps } from "@mui/material";
+import { Checkbox } from "atomicComponents/atoms/Checkbox";
 import { Control, Controller, FieldPath, FieldValues } from "react-hook-form";
 
 interface Props<
