@@ -1,6 +1,6 @@
 import CircleIcon from "@mui/icons-material/Circle";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import { Collapse, ListItemIcon, ListItemText, useTheme } from "@mui/material";
+import { ListItemIcon, ListItemText, useTheme } from "@mui/material";
 import {
   motion,
   useMotionValue,
@@ -10,10 +10,15 @@ import {
 import { ITaskAttached } from "linked-models/task/task.model";
 import { memo, useState } from "react";
 import LeftShiftContent from "./LeftShiftContent";
-import useOnDragEnd from "./onDragEnd.helper";
 import RightShiftContent from "./RightShiftContent";
-import { StyledDetailsColapse, StyledTaskItem, StyledTaskListItem, taskAnimations } from "./styles";
 import TaskDetailsList from "./TaskDetailsList";
+import useOnDragEnd from "./onDragEnd.helper";
+import {
+  StyledDetailsColapse,
+  StyledTaskItem,
+  StyledTaskListItem,
+  taskAnimations,
+} from "./styles";
 
 interface Props {
   task: ITaskAttached;
