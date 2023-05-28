@@ -66,6 +66,9 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.StartDate]: "Start date",
   [TranslationKeys.FinishDate]: "Finish date",
   [TranslationKeys.Creator]: "Creator",
+  [TranslationKeys.Days]: "days",
+  [TranslationKeys.Hours]: "hours",
+  [TranslationKeys.Ago]: "ago",
 
   [TranslationKeys.PageTitleUserSettings]: "User settings",
   [TranslationKeys.CurrentPasswordLabel]: "current password",
