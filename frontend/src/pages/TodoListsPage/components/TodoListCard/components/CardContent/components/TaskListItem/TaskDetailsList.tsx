@@ -1,4 +1,7 @@
-import StartIcon from "@mui/icons-material/Start";
+import FlagCircleIcon from "@mui/icons-material/FlagCircle";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import HourglassFullIcon from "@mui/icons-material/HourglassFull";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import UserAvatar from "atomicComponents/molecules/UserAvatar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
@@ -25,7 +28,7 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
       {whenShouldBeStarted && (
         <ListItem>
           <ListItemIcon>
-            <StartIcon />
+            <HourglassEmptyIcon />
           </ListItemIcon>
           <ListItemText
             primary={dateDiffText(t, whenShouldBeStarted)}
@@ -33,7 +36,39 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
           />
         </ListItem>
       )}
-
+      {whenShouldBeFinished && (
+        <ListItem>
+          <ListItemIcon>
+            <HourglassFullIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary={dateDiffText(t, whenShouldBeFinished)}
+            secondary={t(TranslationKeys.PlannedFinishDate)}
+          />
+        </ListItem>
+      )}
+      {startDate && (
+        <ListItem>
+          <ListItemIcon>
+            <PlayCircleOutlineIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary={dateDiffText(t, startDate)}
+            secondary={t(TranslationKeys.StartDate)}
+          />
+        </ListItem>
+      )}
+      {finishDate && (
+        <ListItem>
+          <ListItemIcon>
+            <FlagCircleIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary={dateDiffText(t, finishDate)}
+            secondary={t(TranslationKeys.FinishDate)}
+          />
+        </ListItem>
+      )}
       {
         <ListItem>
           <ListItemIcon>
@@ -47,37 +82,3 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
 };
 
 export default memo(TaskDetailsList);
-
-// {task.whenShouldBeFinished && (
-//   <ListItem>
-//     <ListItemIcon>
-//       <StartIcon />
-//     </ListItemIcon>
-//     <ListItemText
-//       primary={Date.now() - task.whenShouldBeFinished.getTime()}
-//       secondary={t(TranslationKeys.PlannedFinishDate)}
-//     />
-//   </ListItem>
-// )}
-// {task.startDate && (
-//   <ListItem>
-//     <ListItemIcon>
-//       <StartIcon />
-//     </ListItemIcon>
-//     <ListItemText
-//       primary={Date.now() - task.startDate.getTime()}
-//       secondary={t(TranslationKeys.StartDate)}
-//     />
-//   </ListItem>
-// )}
-// {task.finishDate && (
-//   <ListItem>
-//     <ListItemIcon>
-//       <StartIcon />
-//     </ListItemIcon>
-//     <ListItemText
-//       primary={Date.now() - task.finishDate.getTime()}
-//       secondary={t(TranslationKeys.FinishDate)}
-//     />
-//   </ListItem>
-// )}

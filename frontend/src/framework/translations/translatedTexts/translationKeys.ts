@@ -59,6 +59,9 @@ export enum TranslationKeys {
   StartDate = "StartDate",
   FinishDate = "FinishDate",
   Creator = "Creator",
+  Days = "Days",
+  Hours = "Hours",
+  Ago = "ago",
 
   PageTitleUserSettings = "PageTitleUserSettings",
   ChangePassword = "ChangePassword",

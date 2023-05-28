@@ -67,6 +67,9 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.StartDate]: "Data rozpoczęcia",
   [TranslationKeys.FinishDate]: "Data zakończenia",
   [TranslationKeys.Creator]: "Twórca",
+  [TranslationKeys.Days]: "dni",
+  [TranslationKeys.Hours]: "godzin",
+  [TranslationKeys.Ago]: "temu",
 
   [TranslationKeys.PageTitleUserSettings]: "Ustawienia użytkownika",
   [TranslationKeys.ChangePassword]: "Zmień hasło",
