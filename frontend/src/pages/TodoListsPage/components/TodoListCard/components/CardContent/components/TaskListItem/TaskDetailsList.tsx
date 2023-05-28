@@ -5,6 +5,7 @@ import { TranslationKeys } from "framework/translations/translatedTexts/translat
 import { ITaskAttached } from "linked-models/task/task.model";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
+import { dateDiffText } from "./utils";
 
 interface Props {
   task: ITaskAttached;
@@ -21,52 +22,18 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
   } = task;
   return (
     <List disablePadding>
-      {/* {whenShouldBeStarted && (
+      {whenShouldBeStarted && (
         <ListItem>
           <ListItemIcon>
             <StartIcon />
           </ListItemIcon>
           <ListItemText
-            primary={
-              Math.abs(Date.now() - whenShouldBeStarted.getTime()) / 1000 / 60
-            }
+            primary={dateDiffText(t, whenShouldBeStarted)}
             secondary={t(TranslationKeys.PlannedStartDate)}
           />
         </ListItem>
-      )} */}
-      {/* {task.whenShouldBeFinished && (
-        <ListItem>
-          <ListItemIcon>
-            <StartIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary={Date.now() - task.d}
-            secondary={t(TranslationKeys.PlannedFinishDate)}
-          />
-        </ListItem>
       )}
-      {task.startDate && (
-        <ListItem>
-          <ListItemIcon>
-            <StartIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary={Date.now() - task.d}
-            secondary={t(TranslationKeys.StartDate)}
-          />
-        </ListItem>
-      )}
-      {task.finishDate && (
-        <ListItem>
-          <ListItemIcon>
-            <StartIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary={Date.now() - task.d}
-            secondary={t(TranslationKeys.FinishDate)}
-          />
-        </ListItem>
-      )} */}
+
       {
         <ListItem>
           <ListItemIcon>
@@ -80,3 +47,37 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
 };
 
 export default memo(TaskDetailsList);
+
+// {task.whenShouldBeFinished && (
+//   <ListItem>
+//     <ListItemIcon>
+//       <StartIcon />
+//     </ListItemIcon>
+//     <ListItemText
+//       primary={Date.now() - task.whenShouldBeFinished.getTime()}
+//       secondary={t(TranslationKeys.PlannedFinishDate)}
+//     />
+//   </ListItem>
+// )}
+// {task.startDate && (
+//   <ListItem>
+//     <ListItemIcon>
+//       <StartIcon />
+//     </ListItemIcon>
+//     <ListItemText
+//       primary={Date.now() - task.startDate.getTime()}
+//       secondary={t(TranslationKeys.StartDate)}
+//     />
+//   </ListItem>
+// )}
+// {task.finishDate && (
+//   <ListItem>
+//     <ListItemIcon>
+//       <StartIcon />
+//     </ListItemIcon>
+//     <ListItemText
+//       primary={Date.now() - task.finishDate.getTime()}
+//       secondary={t(TranslationKeys.FinishDate)}
+//     />
+//   </ListItem>
+// )}
