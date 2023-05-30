@@ -4,7 +4,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { ITaskAttached } from "linked-models/task/task.model";
+import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import * as React from "react";
 import { memo } from "react";
@@ -40,8 +40,8 @@ const TodoListCard = ({ todoList, withShakeAnimation }: Props): JSX.Element => {
   } = useSortable({ id: todoList.id, animateLayoutChanges });
 
   const { activeTasks, finishedTasks } = React.useMemo(() => {
-    const activeTasks: ITaskAttached[] = [];
-    const finishedTasks: ITaskAttached[] = [];
+    const activeTasks: IExtendedTaskDto[] = [];
+    const finishedTasks: IExtendedTaskDto[] = [];
     todoList.tasks.forEach((task) => {
       if (!!task.finishDate) {
         finishedTasks.push(task);

@@ -5,7 +5,7 @@ import { ITaskAttached } from "linked-models/task/task.model";
 import { URL_TODO_LIST_TASK } from "linked-models/task/task.urls";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import {
-  PARAM_WITH_TASKS,
+  PARAM_EXTENDED,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
 
@@ -26,7 +26,7 @@ export const useDeleteTaskMutation = () => {
   return useMutation(deleteTask, {
     onSuccess: (deletedTask) => {
       queryClient.setQueryData(
-        [URL_TODO_LISTS, PARAM_WITH_TASKS],
+        [URL_TODO_LISTS, PARAM_EXTENDED],
         (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {
           if (!prev) return [];
           const updatedTodoLists = prev.map((todoList) => {

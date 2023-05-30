@@ -7,7 +7,7 @@ import {
 } from "linked-models/todoList/todoList.dto";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import {
-  PARAM_WITH_TASKS,
+  PARAM_EXTENDED,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
 
@@ -23,7 +23,7 @@ export const useCreateTodoListMutation = () => {
 
   return useMutation(createTodoList, {
     onSuccess: (createdTodoList) => {
-      const queryKey = [URL_TODO_LISTS, PARAM_WITH_TASKS];
+      const queryKey = [URL_TODO_LISTS, PARAM_EXTENDED];
       queryClient.setQueryData(
         queryKey,
         (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {

@@ -1,11 +1,11 @@
 import "@sandstreamdev/react-swipeable-list/dist/styles.css";
 import { AnimatePresence } from "framer-motion";
-import { ITaskAttached } from "linked-models/task/task.model";
+import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { memo } from "react";
 import TaskListItem from "./TaskListItem";
 
 interface Props {
-  tasks: ITaskAttached[];
+  tasks: IExtendedTaskDto[];
 }
 
 const TasksList = ({ tasks }: Props): JSX.Element => {

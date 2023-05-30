@@ -3,11 +3,11 @@ import EmptyTodoLists from "./components/EmptyTodoLists";
 import TodoListsContainer from "./components/TodoListsContainer";
 import { TodoListsLoader } from "./components/TodoListsLoader";
 import TopPanel from "./components/TopPanel";
-import { useGetUserTodoListsWithTasksQuery } from "./queries/getUserTodoListsWithTasks.query";
+import { useGetUserExtendedTodoListsQuery } from "./queries/getUserExtendedTodoLists.query";
 import { StyledTodoListsPageWrapper } from "./styles";
 
 const TodoListsPage = (): JSX.Element => {
-  const getUserTodoListsWithTasksQuery = useGetUserTodoListsWithTasksQuery();
+  const getUserTodoListsWithTasksQuery = useGetUserExtendedTodoListsQuery();
 
   const pageContent = useMemo(() => {
     let pageContent = null;

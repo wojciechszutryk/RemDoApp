@@ -7,7 +7,7 @@ import {
   usePresence,
   useTransform,
 } from "framer-motion";
-import { ITaskAttached } from "linked-models/task/task.model";
+import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { memo, useState } from "react";
 import LeftShiftContent from "./LeftShiftContent";
 import RightShiftContent from "./RightShiftContent";
@@ -21,7 +21,7 @@ import {
 } from "./styles";
 
 interface Props {
-  task: ITaskAttached;
+  task: IExtendedTaskDto;
 }
 
 const TaskListItem = ({ task }: Props): JSX.Element => {

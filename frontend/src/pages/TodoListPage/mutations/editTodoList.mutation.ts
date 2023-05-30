@@ -7,7 +7,7 @@ import {
 } from "linked-models/todoList/todoList.dto";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import {
-  PARAM_WITH_TASKS,
+  PARAM_EXTENDED,
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
@@ -32,7 +32,7 @@ export const useEditTodoListMutation = () => {
     onSuccess: (updatedTodoList) => {
       //update all todoLists query
       queryClient.setQueryData(
-        [URL_TODO_LISTS, PARAM_WITH_TASKS],
+        [URL_TODO_LISTS, PARAM_EXTENDED],
         (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {
           return (
             prev?.map((td) => {

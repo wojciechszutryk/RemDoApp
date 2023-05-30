@@ -1,5 +1,10 @@
 import { IUserAttached } from "./user.model";
 
+/**
+ * user without password
+ */
+export type IUserPublicDataDTO = Omit<IUserAttached, "password">;
+
 export type IRegisterUserDTO = {
   email: string;
   password: string;
