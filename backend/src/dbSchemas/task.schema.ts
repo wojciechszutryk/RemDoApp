@@ -32,7 +32,7 @@ const TaskSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  creator: {
+  creatorId: {
     type: String,
     required: true,
   },
@@ -61,7 +61,7 @@ export const mapTaskToAttachedTask = (task: ITaskDocument): ITaskAttached => {
     startDate: task.startDate,
     finishDate: task.finishDate,
     important: task.important,
-    creator: task.creator,
+    creatorId: task.creatorId,
     todoListId: task.todoListId,
     whenCreated: task.whenCreated,
     whenUpdated: task.whenUpdated,

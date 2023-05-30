@@ -45,12 +45,12 @@ export class TaskService {
   public async createTaskInTodoList(
     todoListId: string,
     task: ITask,
-    creator: string
+    creatorId: string
   ): Promise<ITaskAttached> {
     const newTask: ITaskWithReadonlyProperties = {
       ...task,
       todoListId,
-      creator,
+      creatorId,
       whenCreated: new Date(),
       whenUpdated: new Date(),
     };
