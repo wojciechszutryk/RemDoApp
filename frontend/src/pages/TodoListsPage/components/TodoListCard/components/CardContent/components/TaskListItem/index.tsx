@@ -56,7 +56,6 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
 
   return (
     <motion.div
-      onClick={() => setExpanded((prev) => !prev)}
       {...taskAnimations(isPresent)}
       style={{
         cursor: "grab",
@@ -90,7 +89,12 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
           onDragEnd={onDragEnd}
           whileTap={{ cursor: "grabbing" }}
         >
-          <StyledTaskListItem role={undefined}>
+          <StyledTaskListItem
+            role={undefined}
+            onClick={() => {
+              if (!dragStartPosition) setExpanded((prev) => !prev);
+            }}
+          >
             <StyledListItemIcon>
               {task.important ? <PriorityHighIcon /> : <ArrowForwardIcon />}
             </StyledListItemIcon>
