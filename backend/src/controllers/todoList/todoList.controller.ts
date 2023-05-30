@@ -14,13 +14,12 @@ import { OkResult } from "inversify-express-utils/lib/results";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import {
-  PARAM_WITH_MEMBERS,
-  PARAM_WITH_TASKS,
+  PARAM_EXTENDED,
   TODO_LIST_PARAM,
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
-import { IUserAttached } from "linked-models/User/User.model";
+import { IUserAttached } from "linked-models/user/user.model";
 import { CheckPermission } from "middlewares/permissions/checkPermission.middleware";
 import { SetPermissions } from "middlewares/permissions/setPermissions.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
@@ -40,16 +39,9 @@ export class TodoListController extends BaseHttpController {
   @httpGet("")
   async getTodoListsForUser(
     @currentUser() currentUser: IUserAttached,
-    @queryParam(PARAM_WITH_TASKS) withTasks = false,
-    @queryParam(PARAM_WITH_MEMBERS) withMembers = false
+    @queryParam(PARAM_EXTENDED) extended = false
   ): Promise<OkResult> {
-    if (withTasks) {
-      const todoLists = await this.todoListService.getTodoListById(
-        currentUser.id
-      );
-
-      return this.ok(todoLists);
-    } else if (withMembers) {
+    if (extended) {
       const todoLists = await this.todoListService.getExtendedTodoListsForUser(
         currentUser.id
       );
@@ -71,27 +63,25 @@ export class TodoListController extends BaseHttpController {
   )
   async getTodoList(
     @requestParam(TODO_LIST_PARAM) todoListId: string,
-    @queryParam(PARAM_WITH_TASKS) withTasks = false,
-    @queryParam(PARAM_WITH_MEMBERS) withMembers = false
+    @queryParam(PARAM_EXTENDED) extended = false
   ): Promise<OkResult> {
     try {
-      let todoList;
+      if (extended) {
+        const extendedTodoList =
+          await this.todoListService.getTodoListWithMembersById(todoListId);
 
-      if (withTasks) {
-        todoList = await this.todoListService.getExtendedTodoListById(
-          todoListId
-        );
-      } else if (withMembers) {
-        todoList = await this.todoListService.getTodoListWithMembersById(
-          todoListId
-        );
-      } else {
-        todoList = await this.todoListService.getTodoListById(todoListId);
+        return this.ok(extendedTodoList);
       }
 
+      const todoList = await this.todoListService.getTodoListById(todoListId);
+
       return this.ok(todoList);
-    } catch (e) {
-      return this.json(e, 400);
+    } catch (error) {
+      if (error instanceof Error) {
+        return this.json(error.message, 400);
+      }
+
+      return this.statusCode(400);
     }
   }
 
@@ -110,8 +100,12 @@ export class TodoListController extends BaseHttpController {
         body
       );
       return this.ok(todoList);
-    } catch (e) {
-      return this.json(e, 400);
+    } catch (error) {
+      if (error instanceof Error) {
+        return this.json(error.message, 400);
+      }
+
+      return this.statusCode(400);
     }
   }
 
@@ -128,8 +122,12 @@ export class TodoListController extends BaseHttpController {
         todoListId
       );
       return this.ok(deletedTodoList);
-    } catch (e) {
-      return this.json(e, 400);
+    } catch (error) {
+      if (error instanceof Error) {
+        return this.json(error.message, 400);
+      }
+
+      return this.statusCode(400);
     }
   }
 }
