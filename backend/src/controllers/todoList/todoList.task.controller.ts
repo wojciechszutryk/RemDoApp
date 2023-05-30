@@ -33,8 +33,12 @@ export class TodoListTaskController extends BaseHttpController {
       const task = await this.taskServce.updateTask(taskId, body);
 
       return this.ok(task);
-    } catch (e) {
-      return this.json(e, 400);
+    } catch (error) {
+      if (error instanceof Error) {
+        return this.json(error.message, 400);
+      }
+
+      return this.statusCode(400);
     }
   }
 
@@ -50,8 +54,12 @@ export class TodoListTaskController extends BaseHttpController {
       const task = await this.taskServce.deleteTask(taskId);
 
       return this.ok(task);
-    } catch (e) {
-      return this.json(e, 400);
+    } catch (error) {
+      if (error instanceof Error) {
+        return this.json(error.message, 400);
+      }
+
+      return this.statusCode(400);
     }
   }
 }

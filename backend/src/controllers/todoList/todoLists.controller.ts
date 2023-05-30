@@ -11,11 +11,10 @@ import {
 import { OkResult } from "inversify-express-utils/lib/results";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import {
-  PARAM_WITH_MEMBERS,
-  PARAM_WITH_TASKS,
+  PARAM_EXTENDED,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
-import { IUserAttached } from "linked-models/User/User.model";
+import { IUserAttached } from "linked-models/user/user.model";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 
 import { TodoListService } from "services/TodoList.service";
@@ -31,23 +30,15 @@ export class TodoListsController extends BaseHttpController {
   @httpGet("")
   async getTodoListsForUser(
     @currentUser() currentUser: IUserAttached,
-    @queryParam(PARAM_WITH_TASKS) withTasks = false,
-    @queryParam(PARAM_WITH_MEMBERS) withMembers = false
+    @queryParam(PARAM_EXTENDED) extended = false
   ): Promise<OkResult> {
     if (!currentUser.id) return this.ok([]);
 
-    if (withTasks) {
-      const todoLists = await this.todoListService.getExtendedTodoListsForUser(
-        currentUser.id
-      );
+    if (extended) {
+      const extendedTodoLists =
+        await this.todoListService.getExtendedTodoListsForUser(currentUser.id);
 
-      return this.ok(todoLists);
-    } else if (withMembers) {
-      const todoLists = await this.todoListService.getExtendedTodoListsForUser(
-        currentUser.id
-      );
-
-      return this.ok(todoLists);
+      return this.ok(extendedTodoLists);
     }
 
     const todoLists = await this.todoListService.getTodoListsForUser(
