@@ -1,4 +1,4 @@
-import { Dialog as MuiDialog, IconButton, styled } from "@mui/material";
+import { IconButton, Dialog as MuiDialog, styled } from "@mui/material";
 
 export const StyledInnerWrapper = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.primary.light,

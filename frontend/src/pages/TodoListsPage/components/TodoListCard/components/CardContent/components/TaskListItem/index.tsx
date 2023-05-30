@@ -1,6 +1,6 @@
-import CircleIcon from "@mui/icons-material/Circle";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import { ListItemIcon, ListItemText, useTheme } from "@mui/material";
+import { useTheme } from "@mui/material";
 import {
   motion,
   useMotionValue,
@@ -15,7 +15,8 @@ import TaskDetailsList from "./TaskDetailsList";
 import useOnDragEnd from "./onDragEnd.helper";
 import {
   StyledDetailsColapse,
-  StyledTaskItem,
+  StyledListItemIcon,
+  StyledListItemText,
   StyledTaskListItem,
   taskAnimations,
 } from "./styles";
@@ -55,6 +56,7 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
 
   return (
     <motion.div
+      onClick={() => setExpanded((prev) => !prev)}
       {...taskAnimations(isPresent)}
       style={{
         cursor: "grab",
@@ -88,20 +90,18 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
           onDragEnd={onDragEnd}
           whileTap={{ cursor: "grabbing" }}
         >
-          <StyledTaskItem
-            isTaskFinished={isTaskFinished}
-            onClick={() => setExpanded((prev) => !prev)}
-          >
-            <StyledTaskListItem role={undefined} dense>
-              <ListItemIcon>
-                {task.important ? <PriorityHighIcon /> : <CircleIcon />}
-              </ListItemIcon>
-              <ListItemText primary={task.text} />
-              <StyledDetailsColapse in={expanded}>
-                <TaskDetailsList task={task} />
-              </StyledDetailsColapse>
-            </StyledTaskListItem>
-          </StyledTaskItem>
+          <StyledTaskListItem role={undefined}>
+            <StyledListItemIcon>
+              {task.important ? <PriorityHighIcon /> : <ArrowForwardIcon />}
+            </StyledListItemIcon>
+            <StyledListItemText
+              primary={task.text}
+              isTaskFinished={isTaskFinished}
+            />
+            <StyledDetailsColapse in={expanded}>
+              <TaskDetailsList task={task} />
+            </StyledDetailsColapse>
+          </StyledTaskListItem>
         </motion.div>
       </motion.div>
     </motion.div>
