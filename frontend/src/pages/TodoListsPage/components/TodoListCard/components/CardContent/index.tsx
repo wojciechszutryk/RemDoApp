@@ -1,13 +1,13 @@
 import { CardContent as MuiCardContent } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
-import { ITaskAttached } from "linked-models/task/task.model";
+import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import EmptyTasksList from "pages/TodoListPage/components/EmptyTasksList";
 import { memo } from "react";
 import TasksList from "./components/TasksList";
 
 interface Props {
-  activeTasks: ITaskAttached[];
-  finishedTasks: ITaskAttached[];
+  activeTasks: IExtendedTaskDto[];
+  finishedTasks: IExtendedTaskDto[];
   expanded: boolean;
 }
 

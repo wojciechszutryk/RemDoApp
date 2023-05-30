@@ -5,7 +5,7 @@ import { ITask, ITaskAttached } from "linked-models/task/task.model";
 import { URL_TODO_LIST_TASK } from "linked-models/task/task.urls";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import {
-  PARAM_WITH_TASKS,
+  PARAM_EXTENDED,
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
@@ -32,7 +32,7 @@ export const useEditTaskInTodoListMutation = () => {
     onSuccess: (updatedTask, { todoListId }) => {
       //update all todoLists query
       queryClient.setQueryData(
-        [URL_TODO_LISTS, PARAM_WITH_TASKS],
+        [URL_TODO_LISTS, PARAM_EXTENDED],
         (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {
           if (!prev) return [];
           const todoList = prev.find((td) => td.id === todoListId);
@@ -40,7 +40,7 @@ export const useEditTaskInTodoListMutation = () => {
           const todoListWithUpdatedTask = {
             ...todoList,
             tasks: todoList.tasks.map((t) =>
-              t.id === updatedTask.id ? updatedTask : t
+              t.id === updatedTask.id ? { ...t, ...updatedTask } : t
             ),
           };
           return prev.map((td) =>
@@ -56,7 +56,7 @@ export const useEditTaskInTodoListMutation = () => {
           const todoListWithUpdatedTask = {
             ...prev,
             tasks: prev.tasks.map((t) =>
-              t.id === updatedTask.id ? updatedTask : t
+              t.id === updatedTask.id ? { ...t, ...updatedTask } : t
             ),
           };
           return todoListWithUpdatedTask;

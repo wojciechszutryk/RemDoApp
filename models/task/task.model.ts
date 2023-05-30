@@ -28,7 +28,7 @@ export interface ITaskWithReadonlyProperties extends ITask {
   readonly todoListId?: string;
 
   /** Readonly creator id. */
-  readonly creator: string;
+  readonly creatorId: string;
 
   /** Date when task was created. */
   readonly whenCreated: Date;

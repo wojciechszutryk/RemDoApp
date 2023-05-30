@@ -5,24 +5,20 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import UserAvatar from "atomicComponents/molecules/UserAvatar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { ITaskAttached } from "linked-models/task/task.model";
+import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { dateDiffText } from "./utils";
 
 interface Props {
-  task: ITaskAttached;
+  task: IExtendedTaskDto;
 }
 
 const TaskDetailsList = ({ task }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const {
-    whenShouldBeFinished,
-    whenShouldBeStarted,
-    startDate,
-    finishDate,
-    creator,
-  } = task;
+  const { whenShouldBeFinished, whenShouldBeStarted, startDate, finishDate } =
+    task;
+
   return (
     <List disablePadding>
       {whenShouldBeStarted && (
@@ -72,9 +68,12 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
       {
         <ListItem>
           <ListItemIcon>
-            <UserAvatar userId={task.creator} />
+            <UserAvatar userId={task.creatorId} />
           </ListItemIcon>
-          <ListItemText primary={t(TranslationKeys.Creator)} />
+          <ListItemText
+            primary={task.creator.displayName}
+            secondary={t(TranslationKeys.Creator)}
+          />
         </ListItem>
       }
     </List>

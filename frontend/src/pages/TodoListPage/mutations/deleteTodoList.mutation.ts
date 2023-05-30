@@ -4,7 +4,7 @@ import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.hel
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import { ITodoListAttached } from "linked-models/todoList/todoList.model";
 import {
-  PARAM_WITH_TASKS,
+  PARAM_EXTENDED,
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
@@ -20,7 +20,7 @@ export const useDeleteTodoListMutation = () => {
   return useMutation(deleteTodoList, {
     onSuccess: (deletedTodoList) => {
       queryClient.setQueryData(
-        [URL_TODO_LISTS, PARAM_WITH_TASKS],
+        [URL_TODO_LISTS, PARAM_EXTENDED],
         (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {
           return (
             prev?.filter((td) => {

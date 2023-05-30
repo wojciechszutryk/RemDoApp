@@ -18,7 +18,7 @@ import {
   IChangeDisplayNameDTO,
   IChangePasswordDTO,
 } from "linked-models/user/user.dto";
-import { IUserAttached } from "linked-models/User/User.model";
+import { IUserAttached } from "linked-models/user/user.model";
 import {
   URL_AVATAR,
   URL_DISPLAYNAME,
@@ -110,8 +110,12 @@ export class UserController extends BaseHttpController {
         body.newDisplayName
       );
       return this.ok();
-    } catch (e) {
-      return this.json(e, 400);
+    } catch (error) {
+      if (error instanceof Error) {
+        return this.json(error.message, 400);
+      }
+
+      return this.statusCode(400);
     }
   }
 
@@ -131,8 +135,12 @@ export class UserController extends BaseHttpController {
         body.newPassword
       );
       return this.ok(todoList);
-    } catch (e) {
-      return this.json((e as Error).message, 400);
+    } catch (error) {
+      if (error instanceof Error) {
+        return this.json(error.message, 400);
+      }
+
+      return this.statusCode(400);
     }
   }
 }
