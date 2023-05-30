@@ -1,6 +1,11 @@
-import { mapUserToAttachedUser, UserCollectionName, UserCollectionType } from "dbSchemas/user.schema";
+import {
+  UserCollectionName,
+  UserCollectionType,
+  mapUserToAttachedUser,
+} from "dbSchemas/user.schema";
 import { inject, injectable } from "inversify";
-import { IUserAttached } from "linked-models/User/User.model";
+import { IUserPublicDataDTO } from "linked-models/user/user.dto";
+import { IUserAttached } from "linked-models/user/user.model";
 
 @injectable()
 export class UserService {
@@ -15,6 +20,21 @@ export class UserService {
     });
 
     return foundUsers.map((u) => mapUserToAttachedUser(u));
+  }
+
+  public async getUsersPublicDataByEmails(
+    emails: string[]
+  ): Promise<IUserPublicDataDTO[]> {
+    const foundUsers = await this.userCollection.find({
+      email: { $in: emails },
+    });
+
+    return foundUsers.map((u) => ({
+      id: u.id,
+      displayName: u.displayName,
+      email: u.email,
+      whenCreated: u.whenCreated,
+    }));
   }
 
   /**
