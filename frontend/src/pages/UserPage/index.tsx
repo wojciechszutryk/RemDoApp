@@ -1,4 +1,3 @@
-import { Typography } from "@mui/material";
 import Accordion from "atomicComponents/atoms/Accordion";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { memo, useLayoutEffect } from "react";
@@ -6,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import AvatarChangeForm from "./components/AvatarChangeForm";
 import DisplayNameChangeForm from "./components/DisplayNameChangeForm";
 import PasswordChangeForm from "./components/PasswordChangeForm";
-import { StyledWrapper } from "./styles";
+import { StyledTitle, StyledWrapper } from "./styles";
 
 const UserPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -20,7 +19,7 @@ const UserPage = (): JSX.Element => {
 
   return (
     <StyledWrapper>
-      <Typography>{t(TranslationKeys.PageTitleUserSettings)}</Typography>
+      <StyledTitle>{t(TranslationKeys.PageTitleUserSettings)}</StyledTitle>
       <Accordion summaryText={t(TranslationKeys.ChangeAvatar)}>
         <AvatarChangeForm />
       </Accordion>

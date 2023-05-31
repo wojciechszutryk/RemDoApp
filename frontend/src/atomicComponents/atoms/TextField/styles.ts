@@ -14,7 +14,7 @@ export const StyledTextField = styled(TextField)(({ theme }) => ({
   },
 
   "& input, & textarea": {
-    textTransform: "uppercase",
+    // textTransform: "uppercase",
     color: theme.palette.primary.contrastText,
     // "&::placeholder": { color: "red", opacity: 1 },
     // "&:-ms-input-placeholder": { color: "red" },
