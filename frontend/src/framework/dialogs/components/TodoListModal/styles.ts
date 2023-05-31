@@ -4,10 +4,11 @@ export const StyledForm = styled("form")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: 10,
+  padding: "10px 0",
   [theme.breakpoints.up("sm")]: {
     maxHeight: "70vh",
     overflowX: "hidden",
-    overflowY: "scroll",
+    overflowY: "auto",
   },
 }));
 
