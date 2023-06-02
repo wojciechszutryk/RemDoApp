@@ -1,4 +1,3 @@
-import { currentUser } from "decorators/currentUser.decorator";
 import { inject } from "inversify";
 import {
   BaseHttpController,
@@ -19,7 +18,6 @@ import {
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
-import { IUserAttached } from "linked-models/user/user.model";
 import { CheckPermission } from "middlewares/permissions/checkPermission.middleware";
 import { SetPermissions } from "middlewares/permissions/setPermissions.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
@@ -34,26 +32,6 @@ export class TodoListController extends BaseHttpController {
     @inject(TaskService) private readonly taskService: TaskService
   ) {
     super();
-  }
-
-  @httpGet("")
-  async getTodoListsForUser(
-    @currentUser() currentUser: IUserAttached,
-    @queryParam(PARAM_EXTENDED) extended = false
-  ): Promise<OkResult> {
-    if (extended) {
-      const todoLists = await this.todoListService.getExtendedTodoListsForUser(
-        currentUser.id
-      );
-
-      return this.ok(todoLists);
-    }
-
-    const todoLists = await this.todoListService.getTodoListById(
-      currentUser.id
-    );
-
-    return this.ok(todoLists);
   }
 
   @httpGet(

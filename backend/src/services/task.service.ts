@@ -33,10 +33,16 @@ export class TaskService {
   }
 
   public async getTasksByTodoListIDs(
-    todoListIDs: string[]
+    todoListIDs: string[],
+    startDate?: Date,
+    endDate?: Date
   ): Promise<ITaskAttached[]> {
     const foundTasks = await this.taskCollection.find({
       todoListId: { $in: todoListIDs },
+      $or: [
+        { whenShouldBeStarted: { $gte: startDate, $lte: endDate } },
+        { whenShouldBeFinished: { $gte: startDate, $lte: endDate } },
+      ],
     });
 
     return foundTasks.map((t) => mapTaskToAttachedTask(t));

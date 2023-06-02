@@ -6,32 +6,11 @@ import {
   PickersDayProps,
 } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-import React, { memo, useRef, useState } from "react";
+import { memo, useState } from "react";
+import { useGetRemindersForDateRangeQuery } from "./queries/useGetRemindersForDateRange.query";
 
 function getRandomNumber(min: number, max: number) {
   return Math.round(Math.random() * (max - min) + min);
-}
-
-/**
- * Mimic fetch with abort controller https://developer.mozilla.org/en-US/docs/Web/API/AbortController/abort
- * ⚠️ No IE11 support
- */
-function fakeFetch(date: Dayjs, { signal }: { signal: AbortSignal }) {
-  return new Promise<{ daysToHighlight: number[] }>((resolve, reject) => {
-    const timeout = setTimeout(() => {
-      const daysInMonth = date.daysInMonth();
-      const daysToHighlight = [1, 2, 3].map(() =>
-        getRandomNumber(1, daysInMonth)
-      );
-
-      resolve({ daysToHighlight });
-    }, 500);
-
-    signal.onabort = () => {
-      clearTimeout(timeout);
-      reject(new DOMException("aborted", "AbortError"));
-    };
-  });
 }
 
 function ServerDay(
@@ -57,55 +36,37 @@ function ServerDay(
   );
 }
 
-const initialValue = dayjs("2022-04-17");
+const initialValue = dayjs();
 
 const RemindersPage = (): JSX.Element => {
-  const requestAbortController = useRef<AbortController | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [startDate, setStartDate] = useState<Date>(
+    dayjs().startOf("month").toDate()
+  );
+  const [endDate, setEndDate] = useState<Date>(dayjs().endOf("month").toDate());
+
   const [highlightedDays, setHighlightedDays] = useState([1, 2, 15]);
 
-  const fetchHighlightedDays = (date: Dayjs) => {
-    const controller = new AbortController();
-    fakeFetch(date, {
-      signal: controller.signal,
-    })
-      .then(({ daysToHighlight }) => {
-        setHighlightedDays(daysToHighlight);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        // ignore the error if it's caused by `controller.abort`
-        if (error.name !== "AbortError") {
-          throw error;
-        }
-      });
-
-    requestAbortController.current = controller;
-  };
-
-  React.useEffect(() => {
-    fetchHighlightedDays(initialValue);
-    // abort request on unmount
-    return () => requestAbortController.current?.abort();
-  }, []);
+  const getRemindersForDateRangeQuery = useGetRemindersForDateRangeQuery(
+    startDate,
+    endDate,
+    {
+      onSuccess: (data) => {
+        //TODO: set highlighted days with proper icons
+        console.log("data", data);
+      },
+    }
+  );
 
   const handleMonthChange = (date: Dayjs) => {
-    if (requestAbortController.current) {
-      // make sure that you are aborting useless requests
-      // because it is possible to switch between months pretty quickly
-      requestAbortController.current.abort();
-    }
-
-    setIsLoading(true);
-    setHighlightedDays([]);
-    fetchHighlightedDays(date);
+    setStartDate(date.startOf("month").toDate());
+    setEndDate(date.endOf("month").toDate());
   };
 
   return (
     <div>
       <DateCalendar
         defaultValue={initialValue}
-        loading={isLoading}
+        loading={getRemindersForDateRangeQuery.isLoading}
         onMonthChange={handleMonthChange}
         renderLoading={() => <DayCalendarSkeleton />}
         slots={{
