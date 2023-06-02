@@ -4,7 +4,7 @@ import { useDialogs } from "framework/dialogs";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { ITaskAttached } from "linked-models/task/task.model";
-import { useEditTaskInTodoListMutation } from "pages/TodoListPage/mutations/editTaskInTodoList.mutation";
+import { useEditTaskInTodoListMutation } from "pages/TodoListsPage/mutations/editTaskInTodoList.mutation";
 import { Dispatch, SetStateAction, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledCancelExitTaskText } from "./styles";
