@@ -1,7 +1,7 @@
 import { CardContent as MuiCardContent } from "@mui/material";
 import Collapse from "@mui/material/Collapse";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
-import EmptyTasksList from "pages/TodoListPage/components/EmptyTasksList";
+import EmptyTasksList from "pages/TodoListsPage/components/EmptyTasksList";
 import { memo } from "react";
 import TasksList from "./components/TasksList";
 
