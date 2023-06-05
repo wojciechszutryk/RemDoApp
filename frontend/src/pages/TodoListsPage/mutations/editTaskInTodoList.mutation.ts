@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiPut } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
+import { mapITaskToITaskDTO } from "linked-models/task/task.dto";
 import { ITask, ITaskAttached } from "linked-models/task/task.model";
 import { URL_TODO_LIST_TASK } from "linked-models/task/task.urls";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
@@ -23,9 +24,10 @@ export const useEditTaskInTodoListMutation = () => {
     data: Partial<ITask>;
   }) => {
     const url = FRONTIFY_URL(URL_TODO_LIST_TASK(todoListId, taskId));
-    return apiPut<Partial<ITask>, ITaskAttached>(url, data).then(
-      (res) => res.data
-    );
+    return apiPut<Partial<ITask>, ITaskAttached>(
+      url,
+      mapITaskToITaskDTO(data)
+    ).then((res) => res.data);
   };
 
   return useMutation(editTaskInTodoList, {

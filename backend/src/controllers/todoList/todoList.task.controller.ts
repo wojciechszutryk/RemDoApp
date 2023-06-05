@@ -9,7 +9,7 @@ import {
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
-import { ITask } from "linked-models/task/task.model";
+import { ITaskDTO } from "linked-models/task/task.dto";
 import { TASK_PARAM, URL_TODO_LIST_TASK } from "linked-models/task/task.urls";
 import { CheckPermission } from "middlewares/permissions/checkPermission.middleware";
 import { SetPermissions } from "middlewares/permissions/setPermissions.middleware";
@@ -25,7 +25,7 @@ export class TodoListTaskController extends BaseHttpController {
   @httpPut("", SetPermissions, CheckPermission(TodoListPermissions.CanEditTask))
   async editTaskInTodoList(
     @requestParam(TASK_PARAM) taskId: string,
-    @requestBody() body: Partial<ITask>
+    @requestBody() body: Partial<ITaskDTO>
   ): Promise<OkResult> {
     if (Object.values(body).length === 0) return this.json("Invalid data", 400);
 

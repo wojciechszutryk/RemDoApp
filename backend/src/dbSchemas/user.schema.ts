@@ -1,7 +1,7 @@
 import {
   IUserAttached,
   IUserWithReadonlyProperties,
-} from "linked-models/User/User.model";
+} from "linked-models/user/user.model";
 import mongoose, { Document } from "mongoose";
 
 export const UserCollectionName = "Users";

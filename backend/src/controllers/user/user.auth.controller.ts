@@ -8,7 +8,7 @@ import {
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { ILoginUserDTO, IRegisterUserDTO } from "linked-models/user/user.dto";
-import { IUserAttached } from "linked-models/User/User.model";
+import { IUserAttached } from "linked-models/user/user.model";
 import {
   URL_LOGIN,
   URL_REGISTER,

@@ -15,7 +15,7 @@ import {
 } from "../db.testSetup.helpers";
 
 import { getUserCollection } from "dbSchemas/user.schema";
-import { IUserAttached } from "linked-models/User/User.model";
+import { IUserAttached } from "linked-models/user/user.model";
 import { UserAuthService } from "services/user.auth.service";
 import { mockedUser } from "../mocks/user.mock";
 

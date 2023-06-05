@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from "express";
 import { inject, injectable } from "inversify";
 import { BaseMiddleware } from "inversify-express-utils";
 import { TODO_LIST_PARAM } from "linked-models/todoList/todoList.urls";
-import { IUserAttached } from "linked-models/User/User.model";
+import { IUserAttached } from "linked-models/user/user.model";
 import { PermissionsService } from "services/permission.service";
 
 @injectable()

@@ -10,10 +10,10 @@ import {
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
-import { ITask } from "linked-models/task/task.model";
+import { ITaskDTO } from "linked-models/task/task.dto";
 import { URL_TODO_LIST_TASKS } from "linked-models/task/task.urls";
 import { TODO_LIST_PARAM } from "linked-models/todoList/todoList.urls";
-import { IUserAttached } from "linked-models/User/User.model";
+import { IUserAttached } from "linked-models/user/user.model";
 import { CheckPermission } from "middlewares/permissions/checkPermission.middleware";
 import { SetPermissions } from "middlewares/permissions/setPermissions.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
@@ -37,7 +37,7 @@ export class TodoListTasksController extends BaseHttpController {
   @httpPost("", CheckPermission(TodoListPermissions.CanCreateTask))
   async createTaskInTodoList(
     @currentUser() currentUser: IUserAttached,
-    @requestBody() body: ITask,
+    @requestBody() body: ITaskDTO,
     @requestParam(TODO_LIST_PARAM) todoListId: string
   ): Promise<OkResult> {
     if (!body.text) return this.json("Invalid data", 400);
