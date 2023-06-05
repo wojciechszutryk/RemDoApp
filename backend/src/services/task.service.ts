@@ -4,8 +4,8 @@ import {
   TaskCollectionType,
 } from "dbSchemas/task.schema";
 import { inject, injectable } from "inversify";
+import { ITaskDTO, mapITaskDTOToITask } from "linked-models/task/task.dto";
 import {
-  ITask,
   ITaskAttached,
   ITaskWithReadonlyProperties,
 } from "linked-models/task/task.model";
@@ -33,16 +33,10 @@ export class TaskService {
   }
 
   public async getTasksByTodoListIDs(
-    todoListIDs: string[],
-    startDate?: Date,
-    endDate?: Date
+    todoListIDs: string[]
   ): Promise<ITaskAttached[]> {
     const foundTasks = await this.taskCollection.find({
       todoListId: { $in: todoListIDs },
-      $or: [
-        { whenShouldBeStarted: { $gte: startDate, $lte: endDate } },
-        { whenShouldBeFinished: { $gte: startDate, $lte: endDate } },
-      ],
     });
 
     return foundTasks.map((t) => mapTaskToAttachedTask(t));
@@ -50,11 +44,11 @@ export class TaskService {
 
   public async createTaskInTodoList(
     todoListId: string,
-    task: ITask,
+    task: ITaskDTO,
     creatorId: string
   ): Promise<ITaskAttached> {
     const newTask: ITaskWithReadonlyProperties = {
-      ...task,
+      ...mapITaskDTOToITask(task),
       todoListId,
       creatorId,
       whenCreated: new Date(),
@@ -70,10 +64,10 @@ export class TaskService {
    */
   public async updateTask(
     taskId: string,
-    updateData: Partial<ITask>
+    updateData: Partial<ITaskDTO>
   ): Promise<ITaskAttached> {
     const update = {
-      ...updateData,
+      ...mapITaskDTOToITask(updateData),
       important: updateData.important ?? false,
       whenUpdated: new Date(),
     };

@@ -106,8 +106,6 @@ export class TodoListService {
 
   public async getExtendedTodoListsForUser(
     userId: string,
-    startDate?: Date,
-    endDate?: Date
   ): Promise<IExtendedTodoListDto[]> {
     const { todoLists, users } = await this.getTodoListsWithMembersForUser(
       userId
@@ -116,8 +114,6 @@ export class TodoListService {
 
     const tasks = await this.taskService.getTasksByTodoListIDs(
       todoListIDs,
-      startDate,
-      endDate
     );
 
     return todoLists.map((td) => ({
