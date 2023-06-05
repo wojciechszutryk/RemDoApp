@@ -6,12 +6,9 @@ import {
   PickersDayProps,
 } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-import { memo, useState } from "react";
-import { useGetRemindersForDateRangeQuery } from "./queries/useGetRemindersForDateRange.query";
-
-function getRandomNumber(min: number, max: number) {
-  return Math.round(Math.random() * (max - min) + min);
-}
+import { IExtendedTaskDto } from "linked-models/task/task.dto";
+import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
+import { memo, useMemo, useState } from "react";
 
 function ServerDay(
   props: PickersDayProps<Dayjs> & { highlightedDays?: number[] }
@@ -39,27 +36,66 @@ function ServerDay(
 const initialValue = dayjs();
 
 const RemindersPage = (): JSX.Element => {
-  const [startDate, setStartDate] = useState<Date>(
-    dayjs().startOf("month").toDate()
-  );
-  const [endDate, setEndDate] = useState<Date>(dayjs().endOf("month").toDate());
+  const [highlightedDays, setHighlightedDays] =
+    useState<Map<string, IExtendedTaskDto[]>>();
 
-  const [highlightedDays, setHighlightedDays] = useState([1, 2, 15]);
+  const getRemindersForDateRangeQuery = useGetUserExtendedTodoListsQuery();
 
-  const getRemindersForDateRangeQuery = useGetRemindersForDateRangeQuery(
-    startDate,
-    endDate,
-    {
-      onSuccess: (data) => {
-        //TODO: set highlighted days with proper icons
-        console.log("data", data);
-      },
-    }
-  );
+  const userTasks = useMemo(() => {
+    return getRemindersForDateRangeQuery.data
+      ?.map((td) => td.tasks)
+      .flat()
+      .filter(
+        (task) => !!task.whenShouldBeStarted && !!task.whenShouldBeFinished
+      );
+  }, [getRemindersForDateRangeQuery.data]);
+
+  const dateToTasksMap = useMemo(() => {
+    const map = new Map<string, IExtendedTaskDto[]>();
+    userTasks?.forEach((task) => {
+      const taskStartDate = dayjs(task.whenShouldBeStarted);
+      const taskEndDate = dayjs(task.whenShouldBeFinished).add(1, "day");
+
+      for (
+        let date = taskStartDate;
+        taskEndDate.diff(date) > 0;
+        date = date.add(1, "day")
+      ) {
+        const day = date.toString();
+        const dayTask = map.get(day);
+
+        if (!dayTask) {
+          map.set(day, [task]);
+        } else {
+          dayTask.push(task);
+        }
+      }
+    });
+    return map;
+  }, [userTasks]);
 
   const handleMonthChange = (date: Dayjs) => {
-    setStartDate(date.startOf("month").toDate());
-    setEndDate(date.endOf("month").toDate());
+    const monthStartDate = date.startOf("month");
+    const monthEndDate = date.endOf("month");
+
+    const monthDateToTasksMap = new Map(
+      Array.from(dateToTasksMap).filter(([stringDate]) => {
+        const date = dayjs(stringDate);
+        return date.diff(monthStartDate) >= 0 && date.diff(monthEndDate) <= 0;
+      })
+    );
+
+    for (
+      let date = monthStartDate;
+      monthEndDate.diff(date) > 0;
+      date = date.add(1, "day")
+    ) {
+      const day = date.toString();
+      const tasksForDay = monthDateToTasksMap.get(day);
+      monthDateToTasksMap.set(day, tasksForDay ?? []);
+    }
+
+    setHighlightedDays(monthDateToTasksMap);
   };
 
   return (
@@ -69,9 +105,9 @@ const RemindersPage = (): JSX.Element => {
         loading={getRemindersForDateRangeQuery.isLoading}
         onMonthChange={handleMonthChange}
         renderLoading={() => <DayCalendarSkeleton />}
-        slots={{
-          day: ServerDay,
-        }}
+        // slots={{
+        //   day: ServerDay,
+        // }}
         slotProps={{
           day: {
             highlightedDays,
