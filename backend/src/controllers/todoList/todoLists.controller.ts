@@ -17,11 +17,14 @@ import {
 import { IUserAttached } from "linked-models/user/user.model";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { TodoListService } from "services/TodoList.service";
+import { TodoListCacheService } from "services/todoList.cache.service";
 
 @controller(URL_TODO_LISTS, SetCurrentUser)
 export class TodoListsController extends BaseHttpController {
   constructor(
-    @inject(TodoListService) private readonly todoListService: TodoListService
+    @inject(TodoListService) private readonly todoListService: TodoListService,
+    @inject(TodoListCacheService)
+    private readonly todoListCacheService: TodoListCacheService
   ) {
     super();
   }
@@ -32,9 +35,10 @@ export class TodoListsController extends BaseHttpController {
     @queryParam(PARAM_EXTENDED) extended = false
   ): Promise<OkResult> {
     if (extended) {
-      const todoLists = await this.todoListService.getExtendedTodoListsForUser(
-        currentUser.id
-      );
+      const todoLists =
+        await this.todoListCacheService.getCachedExtendedTodoListsForUser(
+          currentUser.id
+        );
 
       return this.ok(todoLists);
     }

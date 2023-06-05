@@ -88,6 +88,7 @@ const TaskModal = (): JSX.Element => {
               name: "finishDate" as keyof ITask,
             },
           ].map((props, index) => (
+            /** TODO: add Range picker to whenShouldBe */
             <DatePickerWithIcon key={index} {...props} />
           ))}
           <ControlledCheckbox
