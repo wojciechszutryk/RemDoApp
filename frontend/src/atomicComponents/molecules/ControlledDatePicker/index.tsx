@@ -3,7 +3,7 @@ import DatePicker from "atomicComponents/atoms/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
 import { Control, Controller, FieldPath, FieldValues } from "react-hook-form";
 
-interface Props<
+export interface ControlledDatePickerProps<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>
 > extends Omit<DatePickerProps<Dayjs>, "name"> {
@@ -18,7 +18,7 @@ export const ControlledDatePicker = <
   control,
   name,
   ...props
-}: Props<TFieldValues, TName>): JSX.Element => {
+}: ControlledDatePickerProps<TFieldValues, TName>): JSX.Element => {
   return (
     <Controller
       control={control}
