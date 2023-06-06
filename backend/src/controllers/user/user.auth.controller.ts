@@ -16,7 +16,7 @@ import {
   URL_WITH_TOKEN,
 } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
-import { UserAuthService } from "services/user.auth.service";
+import { UserAuthService } from "services/user/user.auth.service";
 
 @controller(URL_USERS)
 export class UserAuthController extends BaseHttpController {

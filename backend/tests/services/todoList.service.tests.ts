@@ -16,11 +16,11 @@ import {
 
 import { getTaskCollection } from "dbSchemas/task.schema";
 import { getTodoListCollection } from "dbSchemas/todoList.schema";
-import { TaskService } from "services/task.service";
 import { TodoListService } from "services/TodoList.service";
+import { TaskService } from "services/task/task.service";
 import { ID_THAT_DOES_NOT_EXITS } from "../mocks/constants.mock";
 import { mockedTask } from "../mocks/task.mock";
-import { mockedTodoList, MOCKED_TODO_ID } from "../mocks/todoList.mock";
+import { MOCKED_TODO_ID, mockedTodoList } from "../mocks/todoList.mock";
 
 describe(`TodoList service`, () => {
   const testUserId = mockedTodoList.creator;

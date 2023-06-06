@@ -21,9 +21,9 @@ import {
   AssignedToTodoListPermissions,
 } from "linked-models/permissions/todoList.permissions.constants";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
-import { PermissionsService } from "services/permission.service";
-import { TaskService } from "services/task.service";
 import { TodoListService } from "services/TodoList.service";
+import { TaskService } from "services/task/task.service";
+import { PermissionsService } from "services/user/permission.service";
 import { MOCKED_TASK_ID } from "../mocks/task.mock";
 import { MOCKED_TODO_ID } from "../mocks/todoList.mock";
 

@@ -4,7 +4,7 @@ import { inject, injectable } from "inversify";
 import { BaseMiddleware } from "inversify-express-utils";
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { IToken } from "models/authentication.model";
-import { UserAuthService } from "services/user.auth.service";
+import { UserAuthService } from "services/user/user.auth.service";
 
 const config = process.env;
 

@@ -1,17 +1,14 @@
 import { NextFunction, Request, Response } from "express";
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import { BaseMiddleware } from "inversify-express-utils";
 import { USER_PARAM } from "linked-models/user/user.urls";
 import { AVATARS_BULK_NAME } from "models/storage.const";
 import { GridFSBucket } from "mongodb";
 import mongoose from "mongoose";
-import { UserAuthService } from "services/user.auth.service";
 
 @injectable()
 export class DeleteUserAvatar extends BaseMiddleware {
-  constructor(
-    @inject(UserAuthService) private readonly userService: UserAuthService
-  ) {
+  constructor() {
     super();
   }
 

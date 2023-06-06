@@ -5,13 +5,13 @@ export interface ITodoList {
   /** Name of tasks list */
   name: string;
 
-  /** Ids of invited users. Invited user can create new tasks and edit/delete his own tasks */
+  /** Emails of invited users. Invited user can create new tasks and edit/delete his own tasks */
   assignedUsers?: string[];
 
-  /** Ids of owner users. Owners can modify everything in todoList scope inc. deleting other users' tasks or deleting whole todoList */
+  /** Emails of owner users. Owners can modify everything in todoList scope inc. deleting other users' tasks or deleting whole todoList */
   assignedOwners?: string[];
 
-  /** Ids of owner users. Owners can modify everything in todoList scope inc. deleting other users' tasks or deleting whole todoList */
+  /** Icon of todoList. Icon is used to graphically identify todoList and it's tasks */
   icon?: TodoListIconEnum;
 }
 

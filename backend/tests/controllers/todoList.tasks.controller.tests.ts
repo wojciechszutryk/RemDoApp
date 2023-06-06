@@ -11,7 +11,7 @@ import { TodoListTasksController } from "controllers/todoList/todoList.tasks.con
 import { getTaskCollection } from "dbSchemas/task.schema";
 import { ITask } from "linked-models/task/task.model";
 import { IUserAttached } from "linked-models/user/user.model";
-import { TaskService } from "services/task.service";
+import { TaskService } from "services/task/task.service";
 import {
   dropTestCollections,
   dropTestDB,
