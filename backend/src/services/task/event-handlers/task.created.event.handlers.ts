@@ -5,7 +5,6 @@ import { TaskCreatedEvent } from "framework/events/implementation/task.events";
 import { inject } from "inversify";
 import { ITaskAttached } from "linked-models/task/task.model";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
-import { TodoListService } from "services/todoList/todoList.service";
 
 @EventHandler(TaskCreatedEvent)
 export class TaskCreatedEventHandler
@@ -13,9 +12,7 @@ export class TaskCreatedEventHandler
 {
   constructor(
     @inject(TodoListCacheService)
-    private readonly todoListCacheService: TodoListCacheService,
-    @inject(TodoListService)
-    private readonly todoListService: TodoListService
+    private readonly todoListCacheService: TodoListCacheService
   ) {}
 
   async handle(event: TypedEvent<ITaskAttached>, createdTask: ITaskAttached) {
