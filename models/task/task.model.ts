@@ -1,3 +1,4 @@
+import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { IBaseModelAttached } from "../abstraction/base.interface";
 
 export interface ITask {
@@ -19,13 +20,13 @@ export interface ITask {
   /** Boolean to determine if task is important */
   important?: boolean;
 
-  /** Task's background color in hex */
-  color?: string;
+  /** Icon of task. Optional property. By default task icon is inherited from parent todoList. In case when task is part of 'RemindersList' (special todoList to gather task that are used as reminders), task can have its own icon. */
+  icon?: TodoListIconEnum;
 }
 
 export interface ITaskWithReadonlyProperties extends ITask {
-  /** Id of tododolist which task will be part of. Undefined means that taski is reminder, not connected to todoList */
-  readonly todoListId?: string;
+  /** Id of tododolist which task is part of. */
+  readonly todoListId: string;
 
   /** Readonly creator id. */
   readonly creatorId: string;

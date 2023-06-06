@@ -10,13 +10,13 @@ import {
 import { TodoListTaskController } from "controllers/todoList/todoList.task.controller";
 import { getTaskCollection } from "dbSchemas/task.schema";
 import { ITask } from "linked-models/task/task.model";
-import { TaskService } from "services/task.service";
+import { TaskService } from "services/task/task.service";
 import {
   dropTestCollections,
   dropTestDB,
   setUpTestDB,
 } from "../db.testSetup.helpers";
-import { mockedTask, MOCKED_TASK_ID } from "../mocks/task.mock";
+import { MOCKED_TASK_ID, mockedTask } from "../mocks/task.mock";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 

@@ -15,9 +15,9 @@ import {
 } from "../db.testSetup.helpers";
 
 import { getTaskCollection } from "dbSchemas/task.schema";
-import { TaskService } from "services/task.service";
+import { TaskService } from "services/task/task.service";
 import { ID_THAT_DOES_NOT_EXITS } from "../mocks/constants.mock";
-import { mockedTask, MOCKED_TASK_ID } from "../mocks/task.mock";
+import { MOCKED_TASK_ID, mockedTask } from "../mocks/task.mock";
 
 describe(`Task service`, () => {
   let taskService: TaskService;

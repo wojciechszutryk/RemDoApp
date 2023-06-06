@@ -13,7 +13,7 @@ import { getTodoListCollection } from "dbSchemas/todoList.schema";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import { IUserAttached } from "linked-models/user/user.model";
 import { TodoListService } from "services/TodoList.service";
-import { TaskService } from "services/task.service";
+import { TaskService } from "services/task/task.service";
 import {
   dropTestCollections,
   dropTestDB,

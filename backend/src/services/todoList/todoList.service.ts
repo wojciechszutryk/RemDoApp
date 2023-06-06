@@ -3,6 +3,7 @@ import {
   TodoListCollectionName,
   TodoListCollectionType,
 } from "dbSchemas/todoList.schema";
+import { EventService } from "framework/events/event.service";
 import { inject, injectable } from "inversify";
 import {
   IExtendedTodoListDto,
@@ -14,8 +15,8 @@ import {
   ITodoListWithReadonlyProperties,
 } from "linked-models/todoList/todoList.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
-import { TaskService } from "./task.service";
-import { UserService } from "./user.service";
+import { TaskService } from "services/task/task.service";
+import { UserService } from "services/user/user.service";
 
 @injectable()
 export class TodoListService {
@@ -25,7 +26,9 @@ export class TodoListService {
     @inject(TaskService)
     private readonly taskService: TaskService,
     @inject(UserService)
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    @inject(EventService)
+    private readonly eventService: EventService
   ) {}
 
   public async getTodoListById(
@@ -105,16 +108,14 @@ export class TodoListService {
   }
 
   public async getExtendedTodoListsForUser(
-    userId: string,
+    userId: string
   ): Promise<IExtendedTodoListDto[]> {
     const { todoLists, users } = await this.getTodoListsWithMembersForUser(
       userId
     );
     const todoListIDs = todoLists.map((td) => td.id);
 
-    const tasks = await this.taskService.getTasksByTodoListIDs(
-      todoListIDs,
-    );
+    const tasks = await this.taskService.getTasksByTodoListIDs(todoListIDs);
 
     return todoLists.map((td) => ({
       ...td,
@@ -155,6 +156,11 @@ export class TodoListService {
           mappedCreatedTodoList.assignedUsers
         ),
     ]);
+
+    this.eventService.emit(DiscussionsDeletedEvent, {
+      discussions: [mappedDiscussion],
+      languages,
+    });
 
     return {
       ...mappedCreatedTodoList,

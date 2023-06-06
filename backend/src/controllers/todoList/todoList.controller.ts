@@ -21,9 +21,8 @@ import {
 import { CheckPermission } from "middlewares/permissions/checkPermission.middleware";
 import { SetPermissions } from "middlewares/permissions/setPermissions.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
-import { TaskService } from "services/task.service";
-
-import { TodoListService } from "services/TodoList.service";
+import { TaskService } from "services/task/task.service";
+import { TodoListService } from "services/todoList/todoList.service";
 
 @controller(URL_TODO_LISTS + URL_TODO_LIST(), SetCurrentUser)
 export class TodoListController extends BaseHttpController {

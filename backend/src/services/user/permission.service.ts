@@ -5,8 +5,8 @@ import {
 } from "linked-models/permissions/todoList.permissions.constants";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { ITodoListAttached } from "linked-models/todoList/todoList.model";
-import { TaskService } from "./task.service";
-import { TodoListService } from "./TodoList.service";
+import { TaskService } from "../task/task.service";
+import { TodoListService } from "services/todoList/todoList.service";
 
 @injectable()
 export class PermissionsService {

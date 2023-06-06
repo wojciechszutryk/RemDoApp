@@ -16,8 +16,8 @@ import {
 } from "linked-models/todoList/todoList.urls";
 import { IUserAttached } from "linked-models/user/user.model";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
-import { TodoListService } from "services/TodoList.service";
-import { TodoListCacheService } from "services/todoList.cache.service";
+import { TodoListCacheService } from "services/todoList/todoList.cache.service";
+import { TodoListService } from "services/todoList/todoList.service";
 
 @controller(URL_TODO_LISTS, SetCurrentUser)
 export class TodoListsController extends BaseHttpController {

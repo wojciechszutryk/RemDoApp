@@ -33,8 +33,8 @@ import { AVATARS_BULK_NAME } from "models/storage.const";
 import { GridFSBucket } from "mongodb";
 import mongoose from "mongoose";
 import multer from "multer";
-import { UserAuthService } from "services/user.auth.service";
-import { UserService } from "services/user.service";
+import { UserAuthService } from "services/user/user.auth.service";
+import { UserService } from "services/user/user.service";
 
 const upload = multer(multerConfig);
 

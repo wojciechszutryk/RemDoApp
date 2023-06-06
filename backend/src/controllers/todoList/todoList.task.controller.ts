@@ -14,7 +14,7 @@ import { TASK_PARAM, URL_TODO_LIST_TASK } from "linked-models/task/task.urls";
 import { CheckPermission } from "middlewares/permissions/checkPermission.middleware";
 import { SetPermissions } from "middlewares/permissions/setPermissions.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
-import { TaskService } from "services/task.service";
+import { TaskService } from "services/task/task.service";
 
 @controller(URL_TODO_LIST_TASK(), SetCurrentUser)
 export class TodoListTaskController extends BaseHttpController {
