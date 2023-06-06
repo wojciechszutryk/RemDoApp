@@ -1,6 +1,6 @@
+import { TypedEvent } from "framework/events/event.interface";
 import { injectable } from "inversify";
 import { injectHttpContext, interfaces } from "inversify-express-utils";
-import { TypedEvent } from "linked-models/events/event.interface";
 import { privateEventHandlerMap } from "./event.handler.decorator";
 import { TypedEventHandler } from "./event.handler.interface";
 

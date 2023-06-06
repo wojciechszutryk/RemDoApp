@@ -1,4 +1,4 @@
-import { TypedEvent } from '../../linked-models/events/event.interface';
+import { TypedEvent } from "framework/events/event.interface";
 
 export interface TypedEventHandler<T> {
   handle: HandleEvent<T>;
