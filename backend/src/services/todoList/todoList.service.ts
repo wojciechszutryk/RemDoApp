@@ -4,6 +4,11 @@ import {
   TodoListCollectionType,
 } from "dbSchemas/todoList.schema";
 import { EventService } from "framework/events/event.service";
+import {
+  TodoListCreatedEvent,
+  TodoListDeletedEvent,
+  TodoListUpdatedEvent,
+} from "framework/events/implementation/todoList.events";
 import { inject, injectable } from "inversify";
 import {
   IExtendedTodoListDto,
@@ -157,10 +162,7 @@ export class TodoListService {
         ),
     ]);
 
-    this.eventService.emit(DiscussionsDeletedEvent, {
-      discussions: [mappedDiscussion],
-      languages,
-    });
+    this.eventService.emit(TodoListCreatedEvent, mappedCreatedTodoList);
 
     return {
       ...mappedCreatedTodoList,
@@ -229,6 +231,8 @@ export class TodoListService {
         this.userService.getUsersByEmails(mappedUpdatedTodoList.assignedUsers),
     ]);
 
+    this.eventService.emit(TodoListUpdatedEvent, mappedUpdatedTodoList);
+
     return {
       ...mappedUpdatedTodoList,
       assignedOwners: assignedOwners || [],
@@ -251,6 +255,11 @@ export class TodoListService {
         `Cannot delete todoList: ${todoListId}, because it does not exist.`
       );
 
-    return mapTodoListToAttachedTodoList(deletedTodoList);
+    const mappedDeletedTodoList =
+      mapTodoListToAttachedTodoList(deletedTodoList);
+
+    this.eventService.emit(TodoListDeletedEvent, mappedDeletedTodoList);
+
+    return mappedDeletedTodoList;
   }
 }

@@ -3,6 +3,11 @@ import {
   TaskCollectionName,
   TaskCollectionType,
 } from "dbSchemas/task.schema";
+import { EventService } from "framework/events/event.service";
+import {
+  TaskCreatedEvent,
+  TaskUpdatedEvent,
+} from "framework/events/implementation/task.events";
 import { inject, injectable } from "inversify";
 import { ITaskDTO, mapITaskDTOToITask } from "linked-models/task/task.dto";
 import {
@@ -14,7 +19,9 @@ import {
 export class TaskService {
   constructor(
     @inject(TaskCollectionName)
-    private readonly taskCollection: TaskCollectionType
+    private readonly taskCollection: TaskCollectionType,
+    @inject(EventService)
+    private readonly eventService: EventService
   ) {}
 
   public async getTaskById(id: string): Promise<ITaskAttached | undefined> {
@@ -57,6 +64,10 @@ export class TaskService {
 
     const createdTask = await this.taskCollection.create(newTask);
 
+    const mappedCreatedTask = mapTaskToAttachedTask(createdTask);
+
+    this.eventService.emit(TaskCreatedEvent, mappedCreatedTask);
+
     return mapTaskToAttachedTask(createdTask);
   }
   /**
@@ -83,7 +94,11 @@ export class TaskService {
         `Cannot update task: ${taskId}, because it does not exist.`
       );
 
-    return mapTaskToAttachedTask(updatedTask);
+    const mappedUpdatedTask = mapTaskToAttachedTask(updatedTask);
+
+    this.eventService.emit(TaskUpdatedEvent, mappedUpdatedTask);
+
+    return mappedUpdatedTask;
   }
 
   /**
@@ -97,7 +112,11 @@ export class TaskService {
         `Cannot delete task: ${taskId}, because it does not exist.`
       );
 
-    return mapTaskToAttachedTask(deletedTask);
+    const mappedDeletedTask = mapTaskToAttachedTask(deletedTask);
+
+    this.eventService.emit(TaskUpdatedEvent, mappedDeletedTask);
+
+    return mappedDeletedTask;
   }
 
   public async deleteTasksByTodoListId(todoListId: string): Promise<void> {
