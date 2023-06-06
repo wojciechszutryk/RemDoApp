@@ -7,6 +7,7 @@ import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
 import { ControlledCheckbox } from "atomicComponents/molecules/ControlledCheckbox";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
+import dayjs from "dayjs";
 import { useDialogs } from "framework/dialogs";
 import { initialTaskDialog } from "framework/dialogs/models/initialState.const";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
@@ -14,7 +15,7 @@ import { ITask } from "linked-models/task/task.model";
 import { useCreateTaskInTodoListMutation } from "pages/TodoListsPage/mutations/createTaskInTodoList.mutation";
 import { useEditTaskInTodoListMutation } from "pages/TodoListsPage/mutations/editTaskInTodoList.mutation";
 import { memo } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { StyledForm } from "../TodoListModal/styles";
 import DatePickerWithIcon from "./components/DatePickerWithIcon";
@@ -36,7 +37,7 @@ const TaskModal = (): JSX.Element => {
     important: editTaskData?.important,
   };
 
-  const methods = useForm<ITask>({
+  const { control, getValues, handleSubmit } = useForm<ITask>({
     defaultValues: defaultFormValues,
   });
 
@@ -54,54 +55,55 @@ const TaskModal = (): JSX.Element => {
 
   return (
     <Dialog open={visible} onClose={() => updateTaskDialog(initialTaskDialog)}>
-      <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
-        <FormProvider {...methods}>
-          <Typography variant="h4">
-            {editTaskData
-              ? `${t(TranslationKeys.EditTask)}: ${editTaskData.text}`
-              : t(TranslationKeys.AddTask)}
-          </Typography>
-          <ControlledTextField
-            name={"text"}
-            control={methods.control}
-            placeholder={t(TranslationKeys.TaskName)}
-          />
-          {[
-            {
-              Icon: <HourglassEmptyIcon />,
-              tooltipTitle: t(TranslationKeys.PlannedStartDate),
-              name: "whenShouldBeStarted" as keyof ITask,
-            },
-            {
-              Icon: <HourglassFullIcon />,
-              tooltipTitle: t(TranslationKeys.PlannedFinishDate),
-              name: "whenShouldBeFinished" as keyof ITask,
-            },
-            {
-              Icon: <PlayCircleOutlineIcon />,
-              tooltipTitle: t(TranslationKeys.StartDate),
-              name: "startDate" as keyof ITask,
-            },
-            {
-              Icon: <FlagCircleIcon />,
-              tooltipTitle: t(TranslationKeys.FinishDate),
-              name: "finishDate" as keyof ITask,
-            },
-          ].map((props, index) => (
-            /** TODO: add Range picker to whenShouldBe */
-            <DatePickerWithIcon key={index} {...props} />
-          ))}
-          <ControlledCheckbox
-            name={"important"}
-            control={methods.control}
-            label={t(TranslationKeys.TaskImportant)}
-          />
-          <Button type="submit">
-            {editTaskData
-              ? t(TranslationKeys.Save)
-              : t(TranslationKeys.AddTask)}
-          </Button>
-        </FormProvider>
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+        <Typography variant="h4">
+          {editTaskData
+            ? `${t(TranslationKeys.EditTask)}: ${editTaskData.text}`
+            : t(TranslationKeys.AddTask)}
+        </Typography>
+        <ControlledTextField
+          name={"text"}
+          control={control}
+          placeholder={t(TranslationKeys.TaskName)}
+        />
+        {[
+          {
+            Icon: <HourglassEmptyIcon />,
+            tooltipTitle: t(TranslationKeys.PlannedStartDate),
+            name: "whenShouldBeStarted" as keyof ITask,
+            control,
+            maxDate: dayjs(getValues("whenShouldBeFinished")),
+          },
+          {
+            Icon: <HourglassFullIcon />,
+            tooltipTitle: t(TranslationKeys.PlannedFinishDate),
+            name: "whenShouldBeFinished" as keyof ITask,
+            control,
+            minDate: dayjs(getValues("whenShouldBeStarted")),
+          },
+          {
+            Icon: <PlayCircleOutlineIcon />,
+            tooltipTitle: t(TranslationKeys.StartDate),
+            name: "startDate" as keyof ITask,
+            control,
+          },
+          {
+            Icon: <FlagCircleIcon />,
+            tooltipTitle: t(TranslationKeys.FinishDate),
+            name: "finishDate" as keyof ITask,
+            control,
+          },
+        ].map((props, index) => (
+          <DatePickerWithIcon key={index} {...props} />
+        ))}
+        <ControlledCheckbox
+          name={"important"}
+          control={control}
+          label={t(TranslationKeys.TaskImportant)}
+        />
+        <Button type="submit">
+          {editTaskData ? t(TranslationKeys.Save) : t(TranslationKeys.AddTask)}
+        </Button>
       </StyledForm>
     </Dialog>
   );
