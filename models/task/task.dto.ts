@@ -20,29 +20,30 @@ export interface IExtendedTaskDto extends ITaskAttached {
 }
 
 export function mapITaskDTOToITask<T extends Partial<ITaskDTO>>(task: T) {
+  const converStringifiedDateProperty = (value: string | undefined | null) =>
+    typeof value === "string" ? new Date(value) : value;
+
   return {
     ...task,
-    whenShouldBeStarted: task.whenShouldBeStarted
-      ? new Date(task.whenShouldBeStarted)
-      : undefined,
-    whenShouldBeFinished: task.whenShouldBeFinished
-      ? new Date(task.whenShouldBeFinished)
-      : undefined,
-    finishDate: task.finishDate ? new Date(task.finishDate) : undefined,
-    startDate: task.startDate ? new Date(task.startDate) : undefined,
+    whenShouldBeStarted: converStringifiedDateProperty(
+      task.whenShouldBeStarted
+    ),
+    whenShouldBeFinished: converStringifiedDateProperty(
+      task.whenShouldBeFinished
+    ),
+    finishDate: converStringifiedDateProperty(task.finishDate),
+    startDate: converStringifiedDateProperty(task.startDate),
   };
 }
 
 export function mapITaskToITaskDTO<T extends Partial<ITask>>(task: T) {
+  const converDateProperty = (value: Date | undefined | null) =>
+    value instanceof Date ? value.toString() : value;
   return {
     ...task,
-    whenShouldBeStarted: task.whenShouldBeStarted
-      ? task.whenShouldBeStarted.toString()
-      : undefined,
-    whenShouldBeFinished: task.whenShouldBeFinished
-      ? task.whenShouldBeFinished.toString()
-      : undefined,
-    finishDate: task.finishDate ? task.finishDate.toString() : undefined,
-    startDate: task.startDate ? task.startDate.toString() : undefined,
+    whenShouldBeStarted: converDateProperty(task.whenShouldBeStarted),
+    whenShouldBeFinished: converDateProperty(task.whenShouldBeFinished),
+    finishDate: converDateProperty(task.finishDate),
+    startDate: converDateProperty(task.startDate),
   };
 }
