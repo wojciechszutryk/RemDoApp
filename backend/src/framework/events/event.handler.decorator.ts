@@ -1,5 +1,5 @@
-import { injectable } from 'inversify';
-import { TypedEvent } from 'linked-models/events/event.interface';
+import { TypedEvent } from "framework/events/event.interface";
+import { injectable } from "inversify";
 
 export const privateEventHandlerMap: Record<string, Function[]> = {};
 
