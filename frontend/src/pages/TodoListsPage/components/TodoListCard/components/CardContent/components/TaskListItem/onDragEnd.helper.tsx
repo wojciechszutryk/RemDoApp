@@ -37,7 +37,7 @@ const useOnDragEnd = ({
       if (dragStartPosition && info.offset.x - dragStartPosition > 150) {
         editTaskInTodoListMutation.mutate(
           {
-            todoListId: task.todoListId!,
+            todoListId: task.todoListId,
             taskId: task.id,
             data: {
               finishDate: isTaskFinished ? null : new Date(),
@@ -57,7 +57,7 @@ const useOnDragEnd = ({
                       <StyledCancelExitTaskText
                         onClick={() => {
                           editTaskInTodoListMutation.mutate({
-                            todoListId: task.todoListId!,
+                            todoListId: task.todoListId,
                             taskId: task.id,
                             data: {
                               finishDate: null,
@@ -87,7 +87,7 @@ const useOnDragEnd = ({
         } else {
           dialogsActions.updateTaskDialog({
             visible: true,
-            todoListId: task.todoListId!,
+            todoListId: task.todoListId,
             editTaskData: task,
           });
         }
