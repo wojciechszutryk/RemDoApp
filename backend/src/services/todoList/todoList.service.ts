@@ -4,12 +4,12 @@ import {
   TodoListCollectionType,
 } from "dbSchemas/todoList.schema";
 import { EventService } from "framework/events/event.service";
+import { inject, injectable } from "inversify";
 import {
   TodoListCreatedEvent,
   TodoListDeletedEvent,
   TodoListUpdatedEvent,
-} from "framework/events/implementation/todoList.events";
-import { inject, injectable } from "inversify";
+} from "linked-models/event/implementation/todoList.events";
 import {
   IExtendedTodoListDto,
   ITodoListWithMembersDto,
@@ -81,6 +81,20 @@ export class TodoListService {
     ]);
 
     return { ...todoList, assignedUsers: users, assignedOwners: owners };
+  }
+
+  public async getTodoListMemberIDs(
+    todoListId: string
+  ): Promise<string[]> {
+    const todoList = await this.getTodoListWithMembersById(
+      todoListId
+    );
+
+    const todoListMembersIDs = new Set<string>();
+    todoList?.assignedOwners.forEach((u) => todoListMembersIDs.add(u.id));
+    todoList?.assignedUsers.forEach((u) => todoListMembersIDs.add(u.id));
+
+    return Array.from(todoListMembersIDs);
   }
 
   public async getTodoListsWithMembersForUser(userId: string): Promise<{
