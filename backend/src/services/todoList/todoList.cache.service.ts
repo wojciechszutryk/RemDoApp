@@ -34,16 +34,8 @@ export class TodoListCacheService {
     this.cacheService.del(this.getExtendedTodoListsForUserCacheKey(userId));
   }
 
-  public async invalidateExtendedTodoListCacheByTodoListId(todoListId: string) {
-    const todoList = await this.todoListService.getTodoListWithMembersById(
-      todoListId
-    );
-
-    const todoListMembersIDs = new Set<string>();
-    todoList?.assignedOwners.forEach((u) => todoListMembersIDs.add(u.id));
-    todoList?.assignedUsers.forEach((u) => todoListMembersIDs.add(u.id));
-
-    todoListMembersIDs.forEach((userId) => {
+  public async invalidateExtendedTodoListCacheByUserIDs(userIDs: string[]) {
+    userIDs.forEach((userId) => {
       this.invalidateExtendedTodoListCacheForUser(userId);
     });
   }

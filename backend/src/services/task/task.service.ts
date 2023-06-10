@@ -4,11 +4,11 @@ import {
   TaskCollectionType,
 } from "dbSchemas/task.schema";
 import { EventService } from "framework/events/event.service";
+import { inject, injectable } from "inversify";
 import {
   TaskCreatedEvent,
   TaskUpdatedEvent,
-} from "framework/events/implementation/task.events";
-import { inject, injectable } from "inversify";
+} from "linked-models/event/implementation/task.events";
 import { ITaskDTO, mapITaskDTOToITask } from "linked-models/task/task.dto";
 import {
   ITaskAttached,

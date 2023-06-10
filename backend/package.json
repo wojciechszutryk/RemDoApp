@@ -26,7 +26,8 @@
     "multer-gridfs-storage": "^5.0.2",
     "node-cache": "^5.1.2",
     "prettier": "^2.8.2",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "socket.io": "^4.6.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

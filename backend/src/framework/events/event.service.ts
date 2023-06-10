@@ -1,8 +1,8 @@
-import { TypedEvent } from "framework/events/event.interface";
 import { injectable } from "inversify";
 import { injectHttpContext, interfaces } from "inversify-express-utils";
+import { TypedEvent } from "linked-models/event/event.interface";
+import { TypedEventHandler } from "../../linked-models/event/event.handler.interface";
 import { privateEventHandlerMap } from "./event.handler.decorator";
-import { TypedEventHandler } from "./event.handler.interface";
 
 @injectable()
 export class EventService {
