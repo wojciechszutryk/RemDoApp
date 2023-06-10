@@ -6,6 +6,7 @@ import {
 import { inject, injectable } from "inversify";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
+import mongoose from "mongoose";
 
 @injectable()
 export class UserService {
@@ -22,11 +23,11 @@ export class UserService {
     return foundUsers.map((u) => mapUserToAttachedUser(u));
   }
 
-  public async getUsersPublicDataByEmails(
-    emails: string[]
+  public async getUsersPublicDataByIDs(
+    userIDs: string[]
   ): Promise<IUserPublicDataDTO[]> {
     const foundUsers = await this.userCollection.find({
-      email: { $in: emails },
+      _id: { $in: userIDs.map((id) => new mongoose.Types.ObjectId(id)) },
     });
 
     return foundUsers.map((u) => ({

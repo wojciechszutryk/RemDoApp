@@ -50,12 +50,8 @@ export class TodoListService {
   ): Promise<ITodoListAttached[]> {
     const todoLists = await this.todoListCollection.find({
       $or: [
-        {
-          assignedUsers: userId,
-        },
-        {
-          assignedOwners: userId,
-        },
+        { assignedUsers: { $in: [userId] } },
+        { assignedOwners: { $in: [userId] } },
         { creator: userId },
       ],
     });
@@ -73,22 +69,18 @@ export class TodoListService {
 
     const [users, owners] = await Promise.all([
       todoList.assignedUsers
-        ? this.userService.getUsersPublicDataByEmails(todoList.assignedUsers)
+        ? this.userService.getUsersPublicDataByIDs(todoList.assignedUsers)
         : [],
       todoList.assignedOwners
-        ? this.userService.getUsersPublicDataByEmails(todoList.assignedOwners)
+        ? this.userService.getUsersPublicDataByIDs(todoList.assignedOwners)
         : [],
     ]);
 
     return { ...todoList, assignedUsers: users, assignedOwners: owners };
   }
 
-  public async getTodoListMemberIDs(
-    todoListId: string
-  ): Promise<string[]> {
-    const todoList = await this.getTodoListWithMembersById(
-      todoListId
-    );
+  public async getTodoListMemberIDs(todoListId: string): Promise<string[]> {
+    const todoList = await this.getTodoListWithMembersById(todoListId);
 
     const todoListMembersIDs = new Set<string>();
     todoList?.assignedOwners.forEach((u) => todoListMembersIDs.add(u.id));
@@ -103,23 +95,23 @@ export class TodoListService {
   }> {
     const todoLists = await this.getTodoListsForUser(userId);
 
-    const memberEmails = new Set<string>();
+    const memberIDs = new Set<string>();
     todoLists.forEach((t) => {
-      t.assignedOwners?.forEach(memberEmails.add, memberEmails);
-      t.assignedUsers?.forEach(memberEmails.add, memberEmails);
+      t.assignedOwners?.forEach(memberIDs.add, memberIDs);
+      t.assignedUsers?.forEach(memberIDs.add, memberIDs);
     });
 
-    const members = await this.userService.getUsersPublicDataByEmails(
-      Array.from(memberEmails)
+    const members = await this.userService.getUsersPublicDataByIDs(
+      Array.from(memberIDs)
     );
 
     const todoListsWithMembers = todoLists.map((td) => ({
       ...td,
       assignedOwners: members.filter((member) =>
-        td.assignedOwners?.includes(member.email)
+        td.assignedOwners?.includes(member.id)
       ),
       assignedUsers: members.filter((member) =>
-        td.assignedUsers?.includes(member.email)
+        td.assignedUsers?.includes(member.id)
       ),
     }));
 
@@ -161,17 +153,42 @@ export class TodoListService {
       whenUpdated: new Date(),
     };
 
+    if (
+      todoListData.assignedOwners &&
+      todoListData.assignedOwners?.length > 0
+    ) {
+      const owners = await this.userService.getUsersByEmails(
+        todoListData.assignedOwners
+      );
+      if (owners.length === 0)
+        throw new Error(
+          `One of the owners does not exist. Cannot create todoList.`
+        );
+      newTodoList.assignedOwners = owners.map((u) => u.id);
+    }
+
+    if (todoListData.assignedUsers && todoListData.assignedUsers?.length > 0) {
+      const users = await this.userService.getUsersByEmails(
+        todoListData.assignedUsers
+      );
+      if (users.length === 0)
+        throw new Error(
+          `One of the users does not exist. Cannot create todoList.`
+        );
+      newTodoList.assignedUsers = users.map((u) => u.id);
+    }
+
     const createdTodoList = await this.todoListCollection.create(newTodoList);
     const mappedCreatedTodoList =
       mapTodoListToAttachedTodoList(createdTodoList);
 
     const [assignedOwners, assignedUsers] = await Promise.all([
       mappedCreatedTodoList.assignedOwners &&
-        this.userService.getUsersPublicDataByEmails(
+        this.userService.getUsersPublicDataByIDs(
           mappedCreatedTodoList.assignedOwners
         ),
       mappedCreatedTodoList.assignedUsers &&
-        this.userService.getUsersPublicDataByEmails(
+        this.userService.getUsersPublicDataByIDs(
           mappedCreatedTodoList.assignedUsers
         ),
     ]);
@@ -201,26 +218,29 @@ export class TodoListService {
     if (todoListData.name) update.name = todoListData.name;
     if (todoListData.icon) update.icon = todoListData.icon;
 
-    if (todoListData.assignedOwners) {
-      newOwners = await this.userService.getUsersPublicDataByEmails(
+    if (
+      todoListData.assignedOwners &&
+      todoListData.assignedOwners?.length > 0
+    ) {
+      newOwners = await this.userService.getUsersByEmails(
         todoListData.assignedOwners
       );
       if (newOwners.length === 0)
         throw new Error(
           `Cannot update todoList: ${todoListId}, because user with passed email does not exist.`
         );
-      update.assignedOwners = newOwners.map((u) => u.email);
+      update.assignedOwners = newOwners.map((u) => u.id);
     }
 
-    if (todoListData.assignedUsers) {
-      newUsers = await this.userService.getUsersPublicDataByEmails(
+    if (todoListData.assignedUsers && todoListData.assignedUsers?.length > 0) {
+      newUsers = await this.userService.getUsersByEmails(
         todoListData.assignedUsers
       );
       if (newUsers.length === 0)
         throw new Error(
           `Cannot update todoList: ${todoListId}, because user with passed email does not exist.`
         );
-      update.assignedUsers = newUsers.map((u) => u.email);
+      update.assignedUsers = newUsers.map((u) => u.id);
     }
 
     const updatedTodoList = await this.todoListCollection.findByIdAndUpdate(
