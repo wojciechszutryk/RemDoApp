@@ -1,17 +1,18 @@
+import InputLabel from "@mui/material/InputLabel";
 import {
   DatePicker as MuiDatePicker,
-  DatePickerProps,
+  DatePickerProps as MuiDatePickerProps,
 } from "@mui/x-date-pickers";
 import { Dayjs } from "dayjs";
 import { memo, useState } from "react";
 import { TextField } from "../TextField";
 import { StyledCallendarIcon } from "./styles";
-import InputLabel from "@mui/material/InputLabel";
+
 
 const DatePicker = ({
   label,
   ...props
-}: DatePickerProps<Dayjs>): JSX.Element => {
+}: MuiDatePickerProps<Dayjs>): JSX.Element => {
   const [open, setOpen] = useState(false);
   return (
     <>
