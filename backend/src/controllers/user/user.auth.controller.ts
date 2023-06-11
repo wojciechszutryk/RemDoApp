@@ -16,12 +16,15 @@ import {
   URL_WITH_TOKEN,
 } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
+import { NotificationService } from "services/notification.service";
 import { UserAuthService } from "services/user/user.auth.service";
 
 @controller(URL_USERS)
 export class UserAuthController extends BaseHttpController {
   constructor(
-    @inject(UserAuthService) private readonly userService: UserAuthService
+    @inject(UserAuthService) private readonly userService: UserAuthService,
+    @inject(NotificationService)
+    private readonly notificationService: NotificationService
   ) {
     super();
   }
@@ -40,8 +43,12 @@ export class UserAuthController extends BaseHttpController {
       return this.json("User Already Exist. Please Log in", 400);
     }
 
-    const user = this.userService.registerUser(email, displayName, password);
-    return this.ok(user);
+    const user = await this.userService.registerUser(
+      email,
+      displayName,
+      password
+    );
+    return this.ok({ ...user, notifications: [] });
   }
 
   @httpPost(URL_LOGIN)
@@ -64,17 +71,21 @@ export class UserAuthController extends BaseHttpController {
       return this.json("Invalid Credentials", 400);
     }
 
-    return this.ok(signedUser);
+    const notifications =
+      await this.notificationService.getNotificationsForUser(signedUser.id);
+
+    return this.ok({ ...signedUser, notifications });
   }
 
   @httpPost(URL_LOGIN + URL_WITH_TOKEN, SetCurrentUser)
   async loginUserWithToken(
     @currentUser() currentUser: IUserAttached
   ): Promise<OkResult> {
-    const userWithRefreshedToken = await this.userService.refreshUserToken(
-      currentUser
-    );
+    const [userWithRefreshedToken, notifications] = await Promise.all([
+      this.userService.refreshUserToken(currentUser),
+      this.notificationService.getNotificationsForUser(currentUser.id),
+    ]);
 
-    return this.ok(userWithRefreshedToken);
+    return this.ok({ ...userWithRefreshedToken, notifications });
   }
 }
