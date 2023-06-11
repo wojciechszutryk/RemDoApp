@@ -11,6 +11,7 @@ import ThemeSwitch from "./ThemeSwitch";
 const PrefferedSettingsMenuOptions = (): JSX.Element => {
   const { changeTheme, theme } = useTheme();
   const { changeLanguage, language } = useLocalisation();
+
   const { t } = useTranslation();
   return (
     <>
@@ -23,7 +24,7 @@ const PrefferedSettingsMenuOptions = (): JSX.Element => {
       </StyledMenuItem>
       <StyledMenuItem>
         <StyledFormControlLabel
-          checked={language === TodoListLanguages.en}
+          checked={language === TodoListLanguages.pl}
           control={<LanguageSwitch onChange={changeLanguage} />}
           label={
             language === TodoListLanguages.en
