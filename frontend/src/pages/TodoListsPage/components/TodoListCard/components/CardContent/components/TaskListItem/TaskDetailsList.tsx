@@ -68,7 +68,10 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
       {
         <ListItem>
           <ListItemIcon>
-            <UserAvatar userId={task.creatorId} />
+            <UserAvatar
+              userId={task.creator.id}
+              fallback={task.creator.displayName[0].toUpperCase()}
+            />
           </ListItemIcon>
           <ListItemText
             primary={task.creator.displayName}

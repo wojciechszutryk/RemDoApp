@@ -36,6 +36,7 @@ const CardHeader = ({
               avatarProps={{ sx: { width: 26, height: 26 } }}
               key={user.id}
               userId={user.id}
+              fallback={user.displayName[0].toUpperCase()}
             />
           ))}
         </AvatarGroup>
