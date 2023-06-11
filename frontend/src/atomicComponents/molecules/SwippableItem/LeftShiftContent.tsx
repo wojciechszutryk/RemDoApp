@@ -1,15 +1,13 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import { motion, MotionValue, useTransform } from "framer-motion";
 import { memo } from "react";
 import { StyledSwipeLeftContainer } from "./styles";
 
 interface Props {
   x: MotionValue<number>;
-  finished?: boolean;
+  LeftShiftIcon?: JSX.Element;
 }
 
-const LeftShiftContent = ({ finished, x }: Props): JSX.Element => {
+const LeftShiftContent = ({ LeftShiftIcon, x }: Props): JSX.Element => {
   const opacity = useTransform(x, [-75, 0], [1, 0]);
   const transform = useTransform(
     x,
@@ -19,7 +17,7 @@ const LeftShiftContent = ({ finished, x }: Props): JSX.Element => {
   return (
     <StyledSwipeLeftContainer>
       <motion.div style={{ transform, zIndex: 1, opacity }}>
-        {finished ? <DeleteIcon /> : <EditIcon />}
+        {LeftShiftIcon}
       </motion.div>
     </StyledSwipeLeftContainer>
   );
