@@ -1,8 +1,9 @@
 import Logout from "@mui/icons-material/Logout";
 import Settings from "@mui/icons-material/Settings";
-import { IconButton } from "@mui/material";
+import { Avatar, IconButton } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import UserAvatar from "atomicComponents/molecules/UserAvatar";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
@@ -11,7 +12,6 @@ import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import PrefferedSettingsMenuOptions from "./components/PrefferedSettingsMenuOptions";
-import CurrentUserSettingsAvatar from "./components/UserAvatar";
 import { StyledMenu, StyledMenuItem } from "./styles";
 
 const SettingsMenu = (): JSX.Element => {
@@ -33,7 +33,16 @@ const SettingsMenu = (): JSX.Element => {
   return (
     <>
       <IconButton onClick={handleClickAvatar} size="small">
-        <CurrentUserSettingsAvatar />
+        {currentUser ? (
+          <UserAvatar
+            userId={currentUser?.id}
+            fallback={currentUser.displayName[0].toUpperCase()}
+          />
+        ) : (
+          <Avatar>
+            <Settings />
+          </Avatar>
+        )}
       </IconButton>
       <StyledMenu
         elevation={1}

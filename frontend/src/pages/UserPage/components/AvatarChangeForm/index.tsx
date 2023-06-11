@@ -1,5 +1,8 @@
+import PortraitIcon from "@mui/icons-material/Portrait";
+import { Avatar } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
-import CurrentUserSettingsAvatar from "atomicComponents/organisms/Header/components/SettingsMenu/components/UserAvatar";
+import UserAvatar from "atomicComponents/molecules/UserAvatar";
+import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { AVATAR_FILENAME } from "linked-models/images/avatar";
@@ -10,6 +13,7 @@ import { StyledWrapper } from "./styles";
 
 const AvatarChangeForm = (): JSX.Element => {
   const { t } = useTranslation();
+  const { currentUser } = useCurrentUser();
   const { setSnackbar } = useSnackbar();
 
   const [selectedImage, setSelectedImage] = useState<File | undefined>(
@@ -41,7 +45,16 @@ const AvatarChangeForm = (): JSX.Element => {
         }}
       />
       <label htmlFor="inputFile">
-        <CurrentUserSettingsAvatar />
+        {currentUser ? (
+          <UserAvatar
+            userId={currentUser?.id}
+            fallback={currentUser.displayName[0].toUpperCase()}
+          />
+        ) : (
+          <Avatar>
+            <PortraitIcon />
+          </Avatar>
+        )}
       </label>
 
       <Button disabled={!selectedImage} onClick={saveAvatar}>
