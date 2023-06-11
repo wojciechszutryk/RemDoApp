@@ -26,7 +26,7 @@ export interface IUserNotificationDocument
   extends IUserNotificationWithReadonlyProperties,
     Document {}
 
-export type NotificationCollectionType =
+export type UserNotificationCollectionType =
   mongoose.Model<IUserNotificationDocument>;
 export const getUserNotificationCollection = () =>
   mongoose.model<IUserNotificationDocument>(
