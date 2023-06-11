@@ -7,6 +7,7 @@ import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
+import NotificationsMenu from "./components/NotificationsMenu";
 import SettingsMenu from "./components/SettingsMenu";
 import {
   StyledHeaderBottomAnimation,
@@ -54,6 +55,7 @@ export const Header = (): JSX.Element => {
                 t(TranslationKeys.PageTitleTodoLists)
               )}
             </StyledHeaderButton>
+            <NotificationsMenu />
           </>
         ) : (
           <StyledHeaderButton

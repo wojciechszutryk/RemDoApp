@@ -1,15 +1,13 @@
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import UnpublishedIcon from "@mui/icons-material/Unpublished";
 import { motion, MotionValue, useTransform } from "framer-motion";
 import { memo } from "react";
 import { StyledSwipeRightContainer } from "./styles";
 
 interface Props {
   x: MotionValue<number>;
-  finished?: boolean;
+  RightShiftIcon?: JSX.Element;
 }
 
-const RightShiftContent = ({ finished, x }: Props): JSX.Element => {
+const RightShiftContent = ({ RightShiftIcon, x }: Props): JSX.Element => {
   const opacity = useTransform(x, [0, 75], [0, 1]);
   const transform = useTransform(
     x,
@@ -19,7 +17,7 @@ const RightShiftContent = ({ finished, x }: Props): JSX.Element => {
   return (
     <StyledSwipeRightContainer>
       <motion.div style={{ transform, zIndex: 1, opacity }}>
-        {finished ? <UnpublishedIcon /> : <CheckCircleIcon />}
+        {RightShiftIcon}
       </motion.div>
     </StyledSwipeRightContainer>
   );

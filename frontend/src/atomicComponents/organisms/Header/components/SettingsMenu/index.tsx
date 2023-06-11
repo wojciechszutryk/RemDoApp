@@ -1,8 +1,9 @@
 import Logout from "@mui/icons-material/Logout";
 import Settings from "@mui/icons-material/Settings";
-import { Avatar, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import { Avatar } from "atomicComponents/atoms/Avatar";
 import UserAvatar from "atomicComponents/molecules/UserAvatar";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { Pages } from "framework/routing/pages";

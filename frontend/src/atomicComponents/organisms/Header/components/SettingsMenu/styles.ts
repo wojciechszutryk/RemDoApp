@@ -1,7 +1,5 @@
 import { FormControlLabel, Menu, MenuItem, styled } from "@mui/material";
 
-export const MenuPaperStyles = {};
-
 export const StyledMenu = styled(Menu)(({ theme }) => ({
   ".MuiPaper-root": {
     overflow: "visible",

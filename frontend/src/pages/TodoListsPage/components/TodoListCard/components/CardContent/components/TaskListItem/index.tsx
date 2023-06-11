@@ -1,114 +1,110 @@
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import { useTheme } from "@mui/material";
-import {
-  motion,
-  useMotionValue,
-  usePresence,
-  useTransform,
-} from "framer-motion";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import UnpublishedIcon from "@mui/icons-material/Unpublished";
+import { Typography, useTheme } from "@mui/material";
+import SwippableItem from "atomicComponents/molecules/SwippableItem";
+import { useDialogs } from "framework/dialogs";
+import { useSnackbar } from "framework/snackBar";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
-import { memo, useState } from "react";
-import LeftShiftContent from "./LeftShiftContent";
-import RightShiftContent from "./RightShiftContent";
-import TaskDetailsList from "./TaskDetailsList";
-import useOnDragEnd from "./onDragEnd.helper";
-import {
-  StyledDetailsColapse,
-  StyledListItemIcon,
-  StyledListItemText,
-  StyledTaskListItem,
-  taskAnimations,
-} from "./styles";
+import { useEditTaskInTodoListMutation } from "pages/TodoListsPage/mutations/editTaskInTodoList.mutation";
+import { memo } from "react";
+import { useTranslation } from "react-i18next";
+import TaskItemContent from "./TaskItemContent";
+import { StyledCancelExitTaskText } from "./styles";
 
 interface Props {
   task: IExtendedTaskDto;
 }
 
 const TaskListItem = ({ task }: Props): JSX.Element => {
-  const [isPresent, safeToRemove] = usePresence();
-  const [expanded, setExpanded] = useState(false);
-  const [dragStartPosition, setDragStartPosition] = useState<null | number>(
-    null
-  );
-  const x = useMotionValue(0);
   const isTaskFinished = !!task.finishDate;
-  const onDragEnd = useOnDragEnd({
-    task,
-    isTaskFinished,
-    isPresent,
-    dragStartPosition,
-    setDragStartPosition,
-    safeToRemove,
-  });
+  const editTaskInTodoListMutation = useEditTaskInTodoListMutation();
+  const { setSnackbar } = useSnackbar();
+  const { t } = useTranslation();
+  const { dialogsActions } = useDialogs();
 
   const theme = useTheme();
 
-  const background = useTransform(
-    x,
-    [-75, 0, 75],
-    [
-      isTaskFinished ? theme.palette.warning.main : theme.palette.primary.main,
-      isTaskFinished ? theme.palette.background.paper : theme.palette.info.main,
-      isTaskFinished ? theme.palette.info.main : theme.palette.background.paper,
-    ]
-  );
-
   return (
-    <motion.div
-      {...taskAnimations(isPresent)}
-      style={{
-        cursor: "grab",
-        borderRadius: 8,
-        position: isPresent ? "static" : "absolute",
+    <SwippableItem
+      defaultColor={
+        isTaskFinished
+          ? theme.palette.background.paper
+          : theme.palette.info.main
+      }
+      rightShift={{
+        color: isTaskFinished
+          ? theme.palette.info.main
+          : theme.palette.background.paper,
+        Icon: isTaskFinished ? <UnpublishedIcon /> : <CheckCircleIcon />,
+        action: () => {
+          if (isTaskFinished) {
+            dialogsActions.updateDeleteTaskDialog({
+              visible: true,
+              taskId: task.id,
+              todoListId: task.todoListId,
+            });
+          } else {
+            dialogsActions.updateTaskDialog({
+              visible: true,
+              todoListId: task.todoListId,
+              editTaskData: task,
+            });
+          }
+        },
+      }}
+      leftShift={{
+        color: isTaskFinished
+          ? theme.palette.warning.main
+          : theme.palette.primary.main,
+        Icon: isTaskFinished ? <DeleteIcon /> : <EditIcon />,
+        action: () => {
+          editTaskInTodoListMutation.mutate(
+            {
+              todoListId: task.todoListId,
+              taskId: task.id,
+              data: {
+                finishDate: isTaskFinished ? null : new Date(),
+              },
+            },
+            {
+              onSuccess: () => {
+                if (!isTaskFinished)
+                  setSnackbar({
+                    content: (
+                      <Typography>
+                        {`${t(
+                          TranslationKeys.TaskMarkedAsFinishedWithDate
+                        )}: ${new Date().toLocaleDateString()}. ${t(
+                          TranslationKeys.TaskIsOnFinishedList
+                        )}`}
+                        <StyledCancelExitTaskText
+                          onClick={() => {
+                            editTaskInTodoListMutation.mutate({
+                              todoListId: task.todoListId,
+                              taskId: task.id,
+                              data: {
+                                finishDate: null,
+                              },
+                            });
+                            setSnackbar(undefined);
+                          }}
+                        >
+                          {t(TranslationKeys.Cancel)}
+                        </StyledCancelExitTaskText>
+                      </Typography>
+                    ),
+                  });
+              },
+            }
+          );
+        },
       }}
     >
-      <motion.div
-        style={{
-          width: "100%",
-          height: "100%",
-          position: "relative",
-          overflow: "hidden",
-          background,
-        }}
-      >
-        <RightShiftContent x={x} finished={isTaskFinished} />
-        <LeftShiftContent x={x} finished={isTaskFinished} />
-        <motion.div
-          drag={"x"}
-          style={{ x }}
-          dragDirectionLock
-          dragConstraints={{ right: 0, left: 0 }}
-          dragTransition={{
-            bounceStiffness: 600,
-          }}
-          dragElastic={0.5}
-          onDragStart={(_, info) => {
-            setDragStartPosition(info.offset.x);
-          }}
-          onDragEnd={onDragEnd}
-          whileTap={{ cursor: "grabbing" }}
-        >
-          <StyledTaskListItem
-            role={undefined}
-            onClick={() => {
-              if (!dragStartPosition) setExpanded((prev) => !prev);
-            }}
-          >
-            <StyledListItemIcon>
-              {task.important ? <PriorityHighIcon /> : <ArrowForwardIcon />}
-            </StyledListItemIcon>
-            <StyledListItemText
-              primary={task.text}
-              isTaskFinished={isTaskFinished}
-            />
-            <StyledDetailsColapse in={expanded}>
-              <TaskDetailsList task={task} />
-            </StyledDetailsColapse>
-          </StyledTaskListItem>
-        </motion.div>
-      </motion.div>
-    </motion.div>
+      <TaskItemContent task={task} />
+    </SwippableItem>
   );
 };
 
