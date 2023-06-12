@@ -5,9 +5,11 @@ import {
 import {
   UserNotificationCollectionName,
   UserNotificationCollectionType,
+  mapUserNotificationToAttachedUserNotification,
 } from "dbSchemas/userNotification.schema";
 import { inject, injectable } from "inversify";
 import { INotificationDto } from "linked-models/notification/notification.dto";
+import { IUserNotificationAttached } from "linked-models/notification/userNotification.model";
 
 @injectable()
 export class NotificationService {
@@ -17,6 +19,17 @@ export class NotificationService {
     @inject(UserNotificationCollectionName)
     private readonly userNotificationCollection: UserNotificationCollectionType
   ) {}
+
+  public async getUserNotification(
+    userNotificationId: string
+  ): Promise<IUserNotificationAttached | undefined> {
+    const foundUserNotification =
+      await this.userNotificationCollection.findById(userNotificationId);
+
+    if (!foundUserNotification) return undefined;
+
+    return mapUserNotificationToAttachedUserNotification(foundUserNotification);
+  }
 
   public async getNotificationsForUser(
     userId: string
@@ -91,5 +104,22 @@ export class NotificationService {
       todoListId: notification.todoListId,
       taskId: notification.taskId,
     }));
+  }
+
+  public async updateUserNotification(
+    userNotificationId: string,
+    body: Partial<IUserNotificationAttached>
+  ): Promise<IUserNotificationAttached | undefined> {
+    const updatedUserNotification =
+      await this.userNotificationCollection.findByIdAndUpdate(
+        userNotificationId,
+        body,
+        { new: true }
+      );
+
+    if (!updatedUserNotification) return undefined;
+    return mapUserNotificationToAttachedUserNotification(
+      updatedUserNotification
+    );
   }
 }
