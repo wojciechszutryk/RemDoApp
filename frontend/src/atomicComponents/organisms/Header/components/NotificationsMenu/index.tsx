@@ -10,12 +10,15 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import SwippableItem from "atomicComponents/molecules/SwippableItem";
+import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { memo, useState } from "react";
 import { StyledHeaderButton } from "../../styles";
 import { StyledDrawerListWrapper } from "./styles";
 
 const NotificationsMenu = (): JSX.Element => {
   const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
+  const { notifications } = useCurrentUser();
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -41,30 +44,41 @@ const NotificationsMenu = (): JSX.Element => {
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
-          <List>
-            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
           <Divider />
           <List>
-            {["All mail", "Trash", "Spam"].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
+            {notifications.map(
+              (
+                {
+                  message,
+                  todoListId,
+                  taskId,
+                  notificationId,
+                  userNotificationId,
+                },
+                index
+              ) => (
+                <SwippableItem key={userNotificationId} 
+                rightShift={{
+                  color: string;
+                  Icon: JSX.Element;
+                  action: () => void;
+                }}>
+                  <ListItem
+                    disablePadding
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    <ListItemButton>
+                      <ListItemIcon>
+                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                      </ListItemIcon>
+                      <ListItemText primary={message} />
+                    </ListItemButton>
+                  </ListItem>
+                </SwippableItem>
+              )
+            )}
           </List>
         </StyledDrawerListWrapper>
       </Drawer>

@@ -3,6 +3,7 @@ import { AxiosError } from "axios";
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import {
+  IExtendedLoginUserResponseDTO,
   ILoginUserResponseDTO,
   IRegisterUserDTO,
 } from "linked-models/user/user.dto";
@@ -15,22 +16,23 @@ export const useRegisterUserMutation = (): UseMutationResult<
   IRegisterUserDTO,
   unknown
 > => {
-  const { setCurrentUser } = useCurrentUser();
+  const { setCurrentUser, setNotification } = useCurrentUser();
 
   const url = FRONTIFY_URL(URL_USERS, URL_REGISTER);
 
   const registerUser = async (
     userData: IRegisterUserDTO
-  ): Promise<ILoginUserResponseDTO> => {
-    return await apiPost<IRegisterUserDTO, ILoginUserResponseDTO>(
+  ): Promise<IExtendedLoginUserResponseDTO> => {
+    return await apiPost<IRegisterUserDTO, IExtendedLoginUserResponseDTO>(
       url,
       userData
     ).then((res) => res.data);
   };
 
   return useMutation((userData: IRegisterUserDTO) => registerUser(userData), {
-    onSuccess: (user: ILoginUserResponseDTO) => {
+    onSuccess: ({ notifications, ...user }: IExtendedLoginUserResponseDTO) => {
       setCurrentUser(user);
+      setNotification(notifications);
     },
   });
 };
