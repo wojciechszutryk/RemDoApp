@@ -16,9 +16,11 @@ export type ILoginUserDTO = Omit<IRegisterUserDTO, "displayName">;
 
 export interface ILoginUserResponseDTO extends Omit<IUserAttached, "password"> {
   token: string;
-  notifications?: INotificationDto[];
 }
 
+export interface IExtendedLoginUserResponseDTO extends ILoginUserResponseDTO {
+  notifications: INotificationDto[];
+}
 export type IChangePasswordDTO = {
   currentPassword: string;
   newPassword: string;

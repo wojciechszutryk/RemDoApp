@@ -1,3 +1,4 @@
+import { INotificationDto } from "linked-models/notification/notification.dto";
 import { ILoginUserResponseDTO } from "linked-models/user/user.dto";
 import { ReactNode, useContext, useState } from "react";
 import { Context } from "./context";
@@ -11,6 +12,7 @@ function CurrentUserProvider({ children }: Props): JSX.Element {
   const [currentUserState, setCurrentUserState] = useState<
     ILoginUserResponseDTO | undefined
   >(undefined);
+  const [notifications, setNotification] = useState<INotificationDto[]>([]);
 
   const setCurrentUser = (user: ILoginUserResponseDTO | undefined) => {
     setCurrentUserState(user);
@@ -20,6 +22,8 @@ function CurrentUserProvider({ children }: Props): JSX.Element {
 
   const value = {
     currentUser: currentUserState,
+    notifications,
+    setNotification,
     setCurrentUser,
     initialized: true,
   };
