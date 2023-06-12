@@ -1,5 +1,6 @@
 import { UserAuthController } from "controllers/user/user.auth.controller";
 import { UserController } from "controllers/user/user.controller";
+import { UserNotificationController } from "controllers/user/user.notification";
 import { getUserCollection, UserCollectionName } from "dbSchemas/user.schema";
 import { Container } from "inversify";
 import { DeleteUserAvatar } from "middlewares/user/deleteUserAvatar.middleware";
@@ -15,4 +16,5 @@ export const registerUserBindings = (container: Container) => {
   container.bind(DeleteUserAvatar).toSelf();
   container.bind(UserAuthController).toSelf();
   container.bind(UserController).toSelf();
+  container.bind(UserNotificationController).toSelf();
 };
