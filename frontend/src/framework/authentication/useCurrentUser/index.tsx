@@ -12,7 +12,7 @@ function CurrentUserProvider({ children }: Props): JSX.Element {
   const [currentUserState, setCurrentUserState] = useState<
     ILoginUserResponseDTO | undefined
   >(undefined);
-  const [notifications, setNotification] = useState<INotificationDto[]>([]);
+  const [notifications, setNotifications] = useState<INotificationDto[]>([]);
 
   const setCurrentUser = (user: ILoginUserResponseDTO | undefined) => {
     setCurrentUserState(user);
@@ -23,7 +23,7 @@ function CurrentUserProvider({ children }: Props): JSX.Element {
   const value = {
     currentUser: currentUserState,
     notifications,
-    setNotification,
+    setNotifications,
     setCurrentUser,
     initialized: true,
   };

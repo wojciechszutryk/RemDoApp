@@ -1,5 +1,5 @@
 export enum NotificationState {
-  archived = "ARCHIVED",
-  fresh = "FRESH",
-  read = "READ",
+  Archived = "ARCHIVED",
+  Fresh = "FRESH",
+  Read = "READ",
 }
