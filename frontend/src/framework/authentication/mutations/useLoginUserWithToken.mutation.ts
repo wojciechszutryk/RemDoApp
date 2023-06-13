@@ -10,7 +10,7 @@ import {
 import { useCurrentUser } from "../useCurrentUser";
 
 export const useLoginUserWithTokenMutation = () => {
-  const { setCurrentUser, setNotification } = useCurrentUser();
+  const { setCurrentUser, setNotifications } = useCurrentUser();
 
   const url = FRONTIFY_URL(URL_USERS, `${URL_LOGIN}${URL_WITH_TOKEN}`);
 
@@ -25,7 +25,7 @@ export const useLoginUserWithTokenMutation = () => {
   return useMutation(loginUserWithToken, {
     onSuccess: ({ notifications, ...user }) => {
       setCurrentUser(user);
-      setNotification(notifications);
+      setNotifications(notifications);
     },
   });
 };

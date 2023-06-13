@@ -5,6 +5,6 @@ import { Dispatch, SetStateAction } from "react";
 export interface ContextProps {
   currentUser: ILoginUserResponseDTO | undefined;
   notifications: INotificationDto[];
-  setNotification: Dispatch<SetStateAction<INotificationDto[]>>;
+  setNotifications: Dispatch<SetStateAction<INotificationDto[]>>;
   setCurrentUser: (user: ILoginUserResponseDTO | undefined) => void;
 }

@@ -16,7 +16,7 @@ export const useLoginUserMutation = (): UseMutationResult<
   ILoginUserDTO,
   unknown
 > => {
-  const { setCurrentUser, setNotification } = useCurrentUser();
+  const { setCurrentUser, setNotifications } = useCurrentUser();
 
   const url = FRONTIFY_URL(URL_USERS, URL_LOGIN);
 
@@ -30,12 +30,9 @@ export const useLoginUserMutation = (): UseMutationResult<
   };
 
   return useMutation((userData: ILoginUserDTO) => loginUser(userData), {
-    onSuccess: ({
-      notifications,
-      ...user
-    }: IExtendedLoginUserResponseDTO) => {
+    onSuccess: ({ notifications, ...user }: IExtendedLoginUserResponseDTO) => {
       setCurrentUser(user);
-      setNotification(notifications);
+      setNotifications(notifications);
     },
   });
 };

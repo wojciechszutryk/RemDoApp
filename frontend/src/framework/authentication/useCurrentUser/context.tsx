@@ -5,7 +5,7 @@ import { ContextProps } from "./useCurrentUser.models";
 export const Context = createContext<BaseContextProps & ContextProps>({
   currentUser: undefined,
   setCurrentUser: () => undefined,
-  setNotification: () => undefined,
+  setNotifications: () => undefined,
   notifications: [],
   initialized: false,
 });

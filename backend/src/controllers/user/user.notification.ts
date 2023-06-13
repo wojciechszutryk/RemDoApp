@@ -10,6 +10,7 @@ import {
 import { OkResult } from "inversify-express-utils/lib/results";
 import {
   URL_USER_NOTIFICATION,
+  URL_USER_NOTIFICATIONS,
   USER_NOTIFICATION_PARAM,
 } from "linked-models/notification/notification.urls";
 import { IUserNotification } from "linked-models/notification/userNotification.model";
@@ -18,7 +19,7 @@ import { URL_USERS } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { NotificationService } from "services/notification.service";
 
-@controller(URL_USERS)
+@controller(URL_USERS + URL_USER_NOTIFICATIONS)
 export class UserNotificationController extends BaseHttpController {
   constructor(
     @inject(NotificationService)
