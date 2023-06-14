@@ -48,6 +48,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.DelteTodoList]: "Delete todo list",
   [TranslationKeys.DelteTodoListWarning]:
     "Are you sure you want to delete this todo list? This action cannot be undone. All tasks in this list will be deleted.",
+  [TranslationKeys.Other]: "Other",
 
   [TranslationKeys.EmptyTasksList]: "No tasks in this list.",
   [TranslationKeys.DelteTask]: "Delete task",
