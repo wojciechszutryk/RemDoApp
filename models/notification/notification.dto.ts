@@ -7,3 +7,7 @@ export interface INotificationDto
   notificationId: string;
   userNotificationId: string;
 }
+
+export interface IUpdateUserNotificationDto extends Partial<IUserNotification> {
+  editedUserNotificationId: string;
+}
