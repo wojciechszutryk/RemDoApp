@@ -8,7 +8,10 @@ import {
   mapUserNotificationToAttachedUserNotification,
 } from "dbSchemas/userNotification.schema";
 import { inject, injectable } from "inversify";
-import { INotificationDto } from "linked-models/notification/notification.dto";
+import {
+  INotificationDto,
+  IUpdateUserNotificationDto,
+} from "linked-models/notification/notification.dto";
 import { IUserNotificationAttached } from "linked-models/notification/userNotification.model";
 
 @injectable()
@@ -20,15 +23,41 @@ export class NotificationService {
     private readonly userNotificationCollection: UserNotificationCollectionType
   ) {}
 
-  public async getUserNotification(
-    userNotificationId: string
-  ): Promise<IUserNotificationAttached | undefined> {
-    const foundUserNotification =
-      await this.userNotificationCollection.findById(userNotificationId);
+  public async getUserNotificationsByIDs(
+    userNotificationIDs: string[]
+  ): Promise<IUserNotificationAttached[]> {
+    const foundUserNotifications = await this.userNotificationCollection.find({
+      _id: { $in: userNotificationIDs },
+    });
 
-    if (!foundUserNotification) return undefined;
+    return foundUserNotifications.map((un) =>
+      mapUserNotificationToAttachedUserNotification(un)
+    );
+  }
 
-    return mapUserNotificationToAttachedUserNotification(foundUserNotification);
+  public async returnValidatedUserNotifications(
+    userNotificationIDs: string[],
+    currentUserID: string
+  ): Promise<IUserNotificationAttached[]> {
+    const userNotifications = await this.getUserNotificationsByIDs(
+      userNotificationIDs
+    );
+
+    if (!userNotifications) {
+      throw new Error("User notifications could not be found.");
+    }
+
+    userNotifications.forEach((un) => {
+      if (un.userId !== currentUserID) {
+        return {
+          throw: new Error(
+            `User notification ${un.id} does not belong to user`
+          ),
+        };
+      }
+    });
+
+    return userNotifications;
   }
 
   public async getNotificationsForUser(
@@ -60,6 +89,7 @@ export class NotificationService {
       {
         $project: {
           _id: 0,
+          userNotificationId: { $toString: "$_id" },
           notificationId: { $toString: "$notification._id" },
           userId: 1,
           state: 1,
@@ -106,20 +136,62 @@ export class NotificationService {
     }));
   }
 
-  public async updateUserNotification(
-    userNotificationId: string,
-    body: Partial<IUserNotificationAttached>
-  ): Promise<IUserNotificationAttached | undefined> {
-    const updatedUserNotification =
-      await this.userNotificationCollection.findByIdAndUpdate(
-        userNotificationId,
-        body,
+  /**
+   * Updates the user notifications with the given IDs.
+   */
+  public async updateUserNotifications(
+    updateData: IUpdateUserNotificationDto[]
+  ): Promise<IUserNotificationAttached[]> {
+    const updatePromises = updateData.map((un) =>
+      this.userNotificationCollection.findByIdAndUpdate(
+        un.editedUserNotificationId,
+        un,
         { new: true }
+      )
+    );
+
+    const updatedUserNotifications = await Promise.all(updatePromises);
+
+    if (updatedUserNotifications.includes(null)) {
+      throw new Error("One or more user notifications could not be found.");
+    }
+
+    return updatedUserNotifications.map((un) =>
+      mapUserNotificationToAttachedUserNotification(un!)
+    );
+  }
+
+  /**
+   * Deletes the userNotifications with the given IDs. If a notification is no longer referenced by any user notifications, it is also deleted.
+   */
+  public async deleteUserNotifications(
+    userNotifications: IUserNotificationAttached[]
+  ): Promise<void> {
+    const userNotificationIDs = userNotifications.map((un) => un.id);
+    const notificationIDsOccurrences = new Map();
+    const notificationIDsToDelete = new Set();
+
+    for (const obj of userNotifications) {
+      const { notificationId } = obj;
+      notificationIDsOccurrences.set(
+        notificationId,
+        (notificationIDsOccurrences.get(notificationId) || 0) + 1
       );
 
-    if (!updatedUserNotification) return undefined;
-    return mapUserNotificationToAttachedUserNotification(
-      updatedUserNotification
-    );
+      if (notificationIDsOccurrences.get(notificationId) === 1) {
+        notificationIDsToDelete.add(notificationId);
+      } else {
+        notificationIDsToDelete.delete(notificationId);
+      }
+    }
+
+    await Promise.all([
+      this.userNotificationCollection.deleteMany({
+        _id: { $in: userNotificationIDs },
+      }),
+      this.notificationCollection.deleteMany({
+        _id: { $in: Array.from(notificationIDsToDelete) },
+      }),
+    ]);
   }
 }

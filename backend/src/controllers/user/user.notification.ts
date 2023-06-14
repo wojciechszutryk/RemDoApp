@@ -3,17 +3,15 @@ import { inject } from "inversify";
 import {
   BaseHttpController,
   controller,
+  httpDelete,
   httpPut,
+  queryParam,
   requestBody,
   requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
-import {
-  URL_USER_NOTIFICATION,
-  URL_USER_NOTIFICATIONS,
-  USER_NOTIFICATION_PARAM,
-} from "linked-models/notification/notification.urls";
-import { IUserNotification } from "linked-models/notification/userNotification.model";
+import { IUpdateUserNotificationDto } from "linked-models/notification/notification.dto";
+import { URL_USER_NOTIFICATIONS } from "linked-models/notification/notification.urls";
 import { IUserAttached } from "linked-models/user/user.model";
 import { URL_USERS } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
@@ -28,33 +26,50 @@ export class UserNotificationController extends BaseHttpController {
     super();
   }
 
-  @httpPut(URL_USER_NOTIFICATION(), SetCurrentUser)
+  @httpPut("", SetCurrentUser)
   async editUserNotification(
-    @requestParam(USER_NOTIFICATION_PARAM) userNotificationId: string,
     @requestParam(PARAM_CURRENT_USER) currentUser: IUserAttached,
-    @requestBody() body: Partial<IUserNotification>
+    @requestBody() updateData: IUpdateUserNotificationDto[]
   ): Promise<OkResult> {
-    const userNotification = await this.notificationService.getUserNotification(
-      userNotificationId
-    );
-
-    if (!userNotification) {
-      return this.json("User Notification not found", 404);
-    }
-
-    if (userNotification.userId !== currentUser.id) {
-      return this.json("User Notification not found", 404);
-    }
-
-    const updatedUserNotification =
-      await this.notificationService.updateUserNotification(
-        userNotification.id,
-        body
+    try {
+      const userNotificationIDs = updateData.map(
+        (un) => un.editedUserNotificationId
+      );
+      await this.notificationService.returnValidatedUserNotifications(
+        userNotificationIDs,
+        currentUser.id
       );
 
-    if (!updatedUserNotification)
-      return this.json("Error while updating notification.", 500);
+      const updatedUserNotifications =
+        await this.notificationService.updateUserNotifications(updateData);
 
-    return this.ok(updatedUserNotification);
+      return this.ok(updatedUserNotifications);
+    } catch (err) {
+      return this.json(err, 400);
+    }
+  }
+
+  @httpDelete("", SetCurrentUser)
+  async deleteUserNotifications(
+    @requestParam(PARAM_CURRENT_USER) currentUser: IUserAttached,
+    @queryParam("ids") userNotificationIDsQueryParam: string
+  ): Promise<OkResult> {
+    try {
+      const userNotificationIDs: string[] = JSON.parse(
+        userNotificationIDsQueryParam
+      );
+
+      const userNotifications =
+        await this.notificationService.returnValidatedUserNotifications(
+          userNotificationIDs,
+          currentUser.id
+        );
+
+      await this.notificationService.deleteUserNotifications(userNotifications);
+
+      return this.ok();
+    } catch (err) {
+      return this.json(err, 400);
+    }
   }
 }
