@@ -44,6 +44,7 @@ export enum TranslationKeys {
   TodoListDialogButton = "TodoListDialogButton",
   DelteTodoList = "DelteTodoList",
   DelteTodoListWarning = "DelteTodoListWarning",
+  Other= "Other",
 
   EmptyTasksList = "EmptyTasksList",
   DelteTask = "DelteTask",
