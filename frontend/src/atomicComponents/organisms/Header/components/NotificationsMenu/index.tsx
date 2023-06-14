@@ -1,4 +1,5 @@
 import ArchiveIcon from "@mui/icons-material/Archive";
+import DeleteIcon from "@mui/icons-material/Delete";
 import InboxIcon from "@mui/icons-material/Inbox";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -16,15 +17,16 @@ import SwippableItem from "atomicComponents/molecules/SwippableItem";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { NotificationState } from "linked-models/notification/notification.enum";
 import { memo, useMemo, useState } from "react";
+import { useDeleteUserNotificationsMutation } from "../../mutations/deleteUserNotification.mutation";
 import { useEditUserNotificationMutation } from "../../mutations/editUserNotification.mutation";
 import { StyledHeaderButton } from "../../styles";
 import { StyledDrawerListWrapper } from "./styles";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 const NotificationsMenu = (): JSX.Element => {
   const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
   const { notifications } = useCurrentUser();
   const editUserNotificationMutation = useEditUserNotificationMutation();
+  const deleteUserNotificationsMutation = useDeleteUserNotificationsMutation();
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -83,12 +85,9 @@ const NotificationsMenu = (): JSX.Element => {
                       color: theme.palette.background.paper,
                       Icon: <ArchiveIcon />,
                       action: () =>
-                        editUserNotificationMutation.mutate({
+                        deleteUserNotificationsMutation.mutate([
                           userNotificationId,
-                          data: {
-                            state: NotificationState.Archived,
-                          },
-                        }),
+                        ]),
                     }}
                     leftShift={{
                       color: theme.palette.warning.main,
