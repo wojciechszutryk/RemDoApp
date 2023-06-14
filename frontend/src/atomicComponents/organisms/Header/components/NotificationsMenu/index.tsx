@@ -18,14 +18,14 @@ import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { NotificationState } from "linked-models/notification/notification.enum";
 import { memo, useMemo, useState } from "react";
 import { useDeleteUserNotificationsMutation } from "../../mutations/deleteUserNotification.mutation";
-import { useEditUserNotificationMutation } from "../../mutations/editUserNotification.mutation";
+import { useEditUserNotificationsMutation } from "../../mutations/editUserNotification.mutation";
 import { StyledHeaderButton } from "../../styles";
 import { StyledDrawerListWrapper } from "./styles";
 
 const NotificationsMenu = (): JSX.Element => {
   const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
   const { notifications } = useCurrentUser();
-  const editUserNotificationMutation = useEditUserNotificationMutation();
+  const editUserNotificationMutation = useEditUserNotificationsMutation();
   const deleteUserNotificationsMutation = useDeleteUserNotificationsMutation();
 
   const toggleDrawer =
@@ -93,12 +93,12 @@ const NotificationsMenu = (): JSX.Element => {
                       color: theme.palette.warning.main,
                       Icon: <DeleteIcon />,
                       action: () =>
-                        editUserNotificationMutation.mutate({
-                          userNotificationId,
-                          data: {
+                        editUserNotificationMutation.mutate([
+                          {
+                            editedUserNotificationId: userNotificationId,
                             state: NotificationState.Archived,
                           },
-                        }),
+                        ]),
                     }}
                   >
                     <ListItem
