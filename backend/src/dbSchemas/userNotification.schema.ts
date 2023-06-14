@@ -15,7 +15,7 @@ const UserNotificationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  state: { type: String },
+  state: { type: String, required: true },
   whenCreated: {
     type: Date,
     required: true,
