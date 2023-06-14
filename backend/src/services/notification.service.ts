@@ -12,6 +12,7 @@ import {
   INotificationDto,
   IUpdateUserNotificationDto,
 } from "linked-models/notification/notification.dto";
+import { NotificationState } from "linked-models/notification/notification.enum";
 import { IUserNotificationAttached } from "linked-models/notification/userNotification.model";
 
 @injectable()
@@ -120,6 +121,7 @@ export class NotificationService {
     const userNotifications = await this.userNotificationCollection.create(
       userIDs.map((userId) => ({
         userId,
+        state: NotificationState.Fresh,
         notificationId: notification._id,
         whenCreated: new Date(),
       }))
