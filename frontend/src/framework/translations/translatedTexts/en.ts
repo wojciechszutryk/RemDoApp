@@ -71,6 +71,10 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Hours]: "hours",
   [TranslationKeys.Ago]: "ago",
 
+  [TranslationKeys.EmptyNotificationsList]: "There are no new notifications.",
+  [TranslationKeys.EmptyArchivedNotificationsList]:
+    "No archived notifications.",
+
   [TranslationKeys.PageTitleUserSettings]: "User settings",
   [TranslationKeys.CurrentPasswordLabel]: "current password",
   [TranslationKeys.ChangePassword]: "Change password",
