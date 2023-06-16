@@ -64,6 +64,11 @@ export enum TranslationKeys {
   Hours = "Hours",
   Ago = "ago",
 
+  Notifications = "Notifications",
+  ArchivedNotifications = "ArchivedNotifications",
+  ArchiveAll = "ArchiveAll",
+  UnarchiveAll = "UnarchiveAll",
+  DeleteAllArchived = "DeleteAllArchived",
   EmptyNotificationsList = "EmptyNotificationsList",
   EmptyArchivedNotificationsList = "EmptyArchivedNotificationsList",
 

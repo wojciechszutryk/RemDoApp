@@ -71,6 +71,11 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Hours]: "hours",
   [TranslationKeys.Ago]: "ago",
 
+  [TranslationKeys.Notifications]: "Notifications",
+  [TranslationKeys.ArchivedNotifications]: "Archived notifications",
+  [TranslationKeys.ArchiveAll]: "Archive all",
+  [TranslationKeys.UnarchiveAll]: "Unarchive all",
+  [TranslationKeys.DeleteAllArchived]: "Delete all archived",
   [TranslationKeys.EmptyNotificationsList]: "There are no new notifications.",
   [TranslationKeys.EmptyArchivedNotificationsList]:
     "No archived notifications.",

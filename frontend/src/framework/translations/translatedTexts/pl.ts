@@ -72,6 +72,11 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Hours]: "godzin",
   [TranslationKeys.Ago]: "temu",
 
+  [TranslationKeys.Notifications]: "Powiadomienia",
+  [TranslationKeys.ArchivedNotifications]: "Archiwalne powiadomienia",
+  [TranslationKeys.ArchiveAll]: "Archiwizuj wszystkie",
+  [TranslationKeys.UnarchiveAll]: "Przywróć wszystkie",
+  [TranslationKeys.DeleteAllArchived]: "Usuń wszystkie archiwalne",
   [TranslationKeys.EmptyNotificationsList]: "Brak nowych powiadomień",
   [TranslationKeys.EmptyArchivedNotificationsList]:
     "Archiwum notyfikacji jest puste",
