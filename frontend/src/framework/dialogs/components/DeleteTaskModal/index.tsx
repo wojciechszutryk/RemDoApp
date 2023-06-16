@@ -1,5 +1,5 @@
 import Dialog from "atomicComponents/atoms/Dialog";
-import { SunImage } from "atomicComponents/atoms/images/Sun";
+import { SunImage } from "atomicComponents/atoms/SVGImages/Sun";
 import InformationTemplate from "atomicComponents/molecules/InformationTemplate";
 import { useDialogs } from "framework/dialogs";
 import { initialDeleteTaskDialog } from "framework/dialogs/models/initialState.const";

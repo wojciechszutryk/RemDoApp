@@ -1,4 +1,4 @@
-import { EmptyListImage } from "atomicComponents/atoms/images/EmptyList";
+import { EmptyListImage } from "atomicComponents/atoms/SVGImages/EmptyList";
 import InformationTemplate from "atomicComponents/molecules/InformationTemplate";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { memo } from "react";

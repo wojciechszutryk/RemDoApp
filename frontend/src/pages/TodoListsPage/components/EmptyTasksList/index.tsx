@@ -1,5 +1,5 @@
 import { useTheme } from "@mui/material";
-import { EmptyBoxImage } from "atomicComponents/atoms/images/EmptyBox";
+import { EmptyBoxImage } from "atomicComponents/atoms/SVGImages/EmptyBox";
 import InformationTemplate from "atomicComponents/molecules/InformationTemplate";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { memo } from "react";

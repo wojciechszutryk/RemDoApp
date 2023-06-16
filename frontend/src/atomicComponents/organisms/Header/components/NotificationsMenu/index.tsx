@@ -18,6 +18,8 @@ import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { INotificationDto } from "linked-models/notification/notification.dto";
 import { NotificationState } from "linked-models/notification/notification.enum";
+import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
+import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
 import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
 import { memo, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -81,6 +83,16 @@ const NotificationsMenu = (): JSX.Element => {
     return [archivedNotifications, activeNotifications];
   }, [notifications, t]);
 
+  const todoListsMap = useMemo(() => {
+    const todoListsMap = new Map<string, IExtendedTodoListDto>();
+
+    getUserTodoListsWithTasksQuery.data?.forEach((todoList) => {
+      todoListsMap.set(todoList.id, todoList);
+    });
+
+    return todoListsMap;
+  }, [getUserTodoListsWithTasksQuery.data]);
+
   return (
     <>
       <StyledHeaderButton onClick={toggleDrawer(true)}>
@@ -95,10 +107,18 @@ const NotificationsMenu = (): JSX.Element => {
           <List>
             {Array.from(activeNotifications.entries()).map(
               ([todoListId, notifications]) => {
+                const headerIcon = todoListsMap.get(todoListId)?.icon;
                 return (
-                  <li key={`section-${todoListId}`}>
+                  <li key={todoListId}>
                     <ul>
-                      <ListSubheader>{`I'm sticky ${todoListId}`}</ListSubheader>
+                      <ListSubheader>
+                        {headerIcon && (
+                          <ListItemIcon>
+                            <TodoListIcon type={headerIcon} disableHover />
+                          </ListItemIcon>
+                        )}
+                        {todoListsMap.get(todoListId)?.name}
+                      </ListSubheader>
                       {notifications.map(
                         ({ userNotificationId, state, message }) => {
                           const isFresh = state === NotificationState.Fresh;
@@ -156,54 +176,32 @@ const NotificationsMenu = (): JSX.Element => {
           <List>
             {Array.from(archivedNotifications.entries()).map(
               ([todoListId, notifications]) => {
+                const headerIcon = todoListsMap.get(todoListId)?.icon;
                 return (
-                  <li key={`section-${todoListId}`}>
+                  <li key={todoListId}>
                     <ul>
-                      <ListSubheader>{`I'm sticky ${todoListId}`}</ListSubheader>
+                      <ListSubheader>
+                        {headerIcon && (
+                          <ListItemIcon>
+                            <TodoListIcon type={headerIcon} disableHover />
+                          </ListItemIcon>
+                        )}
+                        {todoListsMap.get(todoListId)?.name}
+                      </ListSubheader>
                       {notifications.map(
-                        ({ userNotificationId, state, message }) => {
-                          const isFresh = state === NotificationState.Fresh;
+                        ({ userNotificationId, message }) => {
                           return (
-                            <SwippableItem
+                            <ListItem
                               key={userNotificationId}
-                              defaultColor={theme.palette.info.main}
-                              rightShift={{
-                                color: theme.palette.background.paper,
-                                Icon: <ArchiveIcon />,
-                                action: () =>
-                                  deleteUserNotificationsMutation.mutate([
-                                    userNotificationId,
-                                  ]),
-                              }}
-                              leftShift={{
-                                color: theme.palette.warning.main,
-                                Icon: <DeleteIcon />,
-                                action: () =>
-                                  editUserNotificationMutation.mutate([
-                                    {
-                                      editedUserNotificationId:
-                                        userNotificationId,
-                                      state: NotificationState.Archived,
-                                    },
-                                  ]),
+                              disablePadding
+                              onClick={(e) => {
+                                e.stopPropagation();
                               }}
                             >
-                              <ListItem
-                                disablePadding
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                }}
-                              >
-                                <ListItemButton>
-                                  {isFresh && (
-                                    <ListItemIcon>
-                                      <CircleIcon />
-                                    </ListItemIcon>
-                                  )}
-                                  <ListItemText primary={message} />
-                                </ListItemButton>
-                              </ListItem>
-                            </SwippableItem>
+                              <ListItemButton>
+                                <ListItemText primary={message} />
+                              </ListItemButton>
+                            </ListItem>
                           );
                         }
                       )}

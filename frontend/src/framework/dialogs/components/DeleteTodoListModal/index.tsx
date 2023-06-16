@@ -1,5 +1,5 @@
 import Dialog from "atomicComponents/atoms/Dialog";
-import { BoatImage } from "atomicComponents/atoms/images/Boat";
+import { BoatImage } from "atomicComponents/atoms/SVGImages/Boat";
 import InformationTemplate from "atomicComponents/molecules/InformationTemplate";
 import { useDialogs } from "framework/dialogs";
 import { initialDeleteTodoListDialog } from "framework/dialogs/models/initialState.const";
