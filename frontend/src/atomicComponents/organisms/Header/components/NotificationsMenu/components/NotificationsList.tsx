@@ -13,7 +13,7 @@ import SwippableItem from "atomicComponents/molecules/SwippableItem";
 import { useDeleteUserNotificationsMutation } from "atomicComponents/organisms/Header/mutations/deleteUserNotification.mutation";
 import { useEditUserNotificationsMutation } from "atomicComponents/organisms/Header/mutations/editUserNotification.mutation";
 import { INotificationDto } from "linked-models/notification/notification.dto";
-import { NotificationState } from "linked-models/notification/notification.enum";
+import { UserNotificationState } from "linked-models/notification/notification.enum";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
 import { memo } from "react";
@@ -51,7 +51,7 @@ const NotificationsList = ({
                   {todoListsMap.get(todoListId)?.name}
                 </StyledTodoListSubHeader>
                 {notifications.map(({ userNotificationId, state, message }) => {
-                  const isFresh = state === NotificationState.Fresh;
+                  const isFresh = state === UserNotificationState.Fresh;
                   return (
                     <SwippableItem
                       key={userNotificationId}
@@ -70,8 +70,8 @@ const NotificationsList = ({
                               editedUserNotificationId: userNotificationId,
                               state:
                                 rightShiftAction === "archive"
-                                  ? NotificationState.Archived
-                                  : NotificationState.Read,
+                                  ? UserNotificationState.Archived
+                                  : UserNotificationState.Read,
                             },
                           ]),
                       }}

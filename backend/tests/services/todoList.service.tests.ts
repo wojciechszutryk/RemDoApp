@@ -37,7 +37,7 @@ describe(`TodoList service`, () => {
       getTodoListCollection().create({
         _id: "some_todo_id",
         name: "todoList2",
-        creator: "some user id",
+        creatorId: "some user id",
         assignedUsers: [testUserId],
         whenCreated: new Date(),
         whenUpdated: new Date(),

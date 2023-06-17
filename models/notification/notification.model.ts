@@ -1,8 +1,9 @@
+import { EventName } from "linked-models/event/event.enum";
 import { IBaseModelAttached } from "../abstraction/base.interface";
 
 export interface INotification {
   /** Action that caused notification */
-  action: NotificationAction;
+  action: EventName;
   /** User who caused action */
   actionCreatorId: string;
   /** Id of todo list that action was performed on */

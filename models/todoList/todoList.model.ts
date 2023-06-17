@@ -17,7 +17,7 @@ export interface ITodoList {
 
 export interface ITodoListWithReadonlyProperties extends ITodoList {
   /** Readonly creator id. */
-  readonly creator?: string;
+  readonly creatorId: string;
 
   /** Date when tasks list was created. */
   readonly whenCreated: Date;

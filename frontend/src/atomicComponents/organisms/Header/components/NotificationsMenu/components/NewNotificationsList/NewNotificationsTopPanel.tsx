@@ -2,7 +2,7 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import { IconButton, Tooltip, Typography } from "@mui/material";
 import { useEditUserNotificationsMutation } from "atomicComponents/organisms/Header/mutations/editUserNotification.mutation";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { NotificationState } from "linked-models/notification/notification.enum";
+import { UserNotificationState } from "linked-models/notification/notification.enum";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledTopPanelWrapper } from "../styles";
@@ -25,7 +25,7 @@ const NewNotificationsTopPanel = ({ notificationIDs }: Props): JSX.Element => {
             editUserNotificationMutation.mutate(
               notificationIDs.map((id) => ({
                 editedUserNotificationId: id,
-                state: NotificationState.Archived,
+                state: UserNotificationState.Archived,
               }))
             )
           }

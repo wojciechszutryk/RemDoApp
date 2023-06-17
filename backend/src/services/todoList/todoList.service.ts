@@ -52,7 +52,7 @@ export class TodoListService {
       $or: [
         { assignedUsers: { $in: [userId] } },
         { assignedOwners: { $in: [userId] } },
-        { creator: userId },
+        { creatorId: userId },
       ],
     });
 
@@ -141,14 +141,14 @@ export class TodoListService {
 
   public async createTodoList(
     todoListData: ITodoList,
-    creator: string
+    creatorId: string
   ): Promise<ITodoListWithMembersDto> {
     const newTodoList: ITodoListWithReadonlyProperties = {
       name: todoListData.name,
       assignedOwners: todoListData.assignedOwners,
       assignedUsers: todoListData.assignedUsers,
       icon: todoListData.icon,
-      creator,
+      creatorId: creatorId,
       whenCreated: new Date(),
       whenUpdated: new Date(),
     };
@@ -193,7 +193,11 @@ export class TodoListService {
         ),
     ]);
 
-    this.eventService.emit(TodoListCreatedEvent, mappedCreatedTodoList);
+    this.eventService.emit(
+      TodoListCreatedEvent,
+      creatorId,
+      mappedCreatedTodoList
+    );
 
     return {
       ...mappedCreatedTodoList,
@@ -207,7 +211,8 @@ export class TodoListService {
    */
   public async updateTodoList(
     todoListId: string,
-    todoListData: Partial<ITodoList>
+    todoListData: Partial<ITodoList>,
+    updaterId: string
   ): Promise<ITodoListWithMembersDto> {
     //only valid properties
     const update: Partial<ITodoListAttached> = {
@@ -265,7 +270,11 @@ export class TodoListService {
         this.userService.getUsersByEmails(mappedUpdatedTodoList.assignedUsers),
     ]);
 
-    this.eventService.emit(TodoListUpdatedEvent, mappedUpdatedTodoList);
+    this.eventService.emit(
+      TodoListUpdatedEvent,
+      updaterId,
+      mappedUpdatedTodoList
+    );
 
     return {
       ...mappedUpdatedTodoList,
@@ -278,7 +287,10 @@ export class TodoListService {
    * deletes todoList and all it's tasks
    * Warning this service doesn't check if user can delete TodoList. It is assumed that proper check is done before using this service
    */
-  public async deleteTodoList(todoListId: string): Promise<ITodoListAttached> {
+  public async deleteTodoList(
+    todoListId: string,
+    deleterId: string
+  ): Promise<ITodoListAttached> {
     const [deletedTodoList] = await Promise.all([
       this.todoListCollection.findByIdAndDelete(todoListId),
       this.taskService.deleteTasksByTodoListId(todoListId),
@@ -292,7 +304,11 @@ export class TodoListService {
     const mappedDeletedTodoList =
       mapTodoListToAttachedTodoList(deletedTodoList);
 
-    this.eventService.emit(TodoListDeletedEvent, mappedDeletedTodoList);
+    this.eventService.emit(
+      TodoListDeletedEvent,
+      deleterId,
+      mappedDeletedTodoList
+    );
 
     return mappedDeletedTodoList;
   }

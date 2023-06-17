@@ -44,7 +44,7 @@ describe(`TodoList permissions service`, () => {
       getTodoListCollection().create({
         _id: MOCKED_TODO_ID,
         name: "todoList1",
-        creator: todoListOwnerId,
+        creatorId: todoListOwnerId,
         assignedUsers: [assignedUserId],
         assignedOwners: [assignedOwnerId],
         whenCreated: new Date(),

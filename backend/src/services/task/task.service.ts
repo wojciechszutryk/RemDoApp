@@ -66,7 +66,7 @@ export class TaskService {
 
     const mappedCreatedTask = mapTaskToAttachedTask(createdTask);
 
-    this.eventService.emit(TaskCreatedEvent, mappedCreatedTask);
+    this.eventService.emit(TaskCreatedEvent, creatorId, mappedCreatedTask);
 
     return mapTaskToAttachedTask(createdTask);
   }
@@ -75,7 +75,8 @@ export class TaskService {
    */
   public async updateTask(
     taskId: string,
-    updateData: Partial<ITaskDTO>
+    updateData: Partial<ITaskDTO>,
+    updaterId: string
   ): Promise<ITaskAttached> {
     const update = {
       ...mapITaskDTOToITask(updateData),
@@ -96,7 +97,7 @@ export class TaskService {
 
     const mappedUpdatedTask = mapTaskToAttachedTask(updatedTask);
 
-    this.eventService.emit(TaskUpdatedEvent, mappedUpdatedTask);
+    this.eventService.emit(TaskUpdatedEvent, updaterId, mappedUpdatedTask);
 
     return mappedUpdatedTask;
   }
@@ -104,7 +105,10 @@ export class TaskService {
   /**
    * Warning this service doesn't check if user can delete Task. It is assumed that proper check is done before using this service
    */
-  public async deleteTask(taskId: string): Promise<ITaskAttached> {
+  public async deleteTask(
+    taskId: string,
+    deleterId: string
+  ): Promise<ITaskAttached> {
     const deletedTask = await this.taskCollection.findByIdAndDelete(taskId);
 
     if (!deletedTask)
@@ -114,7 +118,7 @@ export class TaskService {
 
     const mappedDeletedTask = mapTaskToAttachedTask(deletedTask);
 
-    this.eventService.emit(TaskUpdatedEvent, mappedDeletedTask);
+    this.eventService.emit(TaskUpdatedEvent, deleterId, mappedDeletedTask);
 
     return mappedDeletedTask;
   }

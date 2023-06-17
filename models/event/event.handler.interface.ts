@@ -4,4 +4,8 @@ export interface TypedEventHandler<T> {
   handle: HandleEvent<T>;
 }
 
-export type HandleEvent<T> = (event: TypedEvent<T>, args: T) => void;
+export type HandleEvent<T> = (
+  event: TypedEvent<T>,
+  eventCreatorId: string,
+  args: T
+) => void;

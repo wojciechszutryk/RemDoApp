@@ -5,8 +5,8 @@ import {
 } from "linked-models/permissions/todoList.permissions.constants";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { ITodoListAttached } from "linked-models/todoList/todoList.model";
-import { TaskService } from "../task/task.service";
 import { TodoListService } from "services/todoList/todoList.service";
+import { TaskService } from "../task/task.service";
 
 @injectable()
 export class PermissionsService {
@@ -37,7 +37,7 @@ export class PermissionsService {
     const assignedUsers = todoList?.assignedUsers;
     const assignedOwners = todoList?.assignedOwners;
 
-    if (assignedOwners?.includes(userId) || todoList?.creator === userId) {
+    if (assignedOwners?.includes(userId) || todoList?.creatorId === userId) {
       /** owners have all permissions */
       return Object.values(TodoListPermissions);
     } else if (assignedUsers?.includes(userId)) {

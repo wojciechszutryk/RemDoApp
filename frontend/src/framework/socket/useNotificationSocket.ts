@@ -1,5 +1,12 @@
 import { TypedEvent } from "linked-models/event/event.interface";
-import { TaskCreatedEvent } from "linked-models/event/implementation/task.events";
+import {
+  TaskCreatedEvent,
+  TaskUpdatedEvent,
+} from "linked-models/event/implementation/task.events";
+import {
+  TodoListCreatedEvent,
+  TodoListUpdatedEvent,
+} from "linked-models/event/implementation/todoList.events";
 import { ILoginUserResponseDTO } from "linked-models/user/user.dto";
 import { USER_PARAM } from "linked-models/user/user.urls";
 import { useEffect, useState } from "react";
@@ -39,6 +46,21 @@ export const useNotificationSocket = (
       socket.on(TaskCreatedEvent.name, (something) => {
         //TEST CODE -> TODO LATER!
         console.log("TaskCreatedEvent", something);
+      });
+
+      socket.on(TaskUpdatedEvent.name, (something) => {
+        //TEST CODE -> TODO LATER!
+        console.log("TaskUpdatedEvent", something);
+      });
+
+      socket.on(TodoListCreatedEvent.name, (something) => {
+        //TEST CODE -> TODO LATER!
+        console.log("TodoListCreated", something);
+      });
+
+      socket.on(TodoListUpdatedEvent.name, (something) => {
+        //TEST CODE -> TODO LATER!
+        console.log("TodoListCreated", something);
       });
 
       setOn(() => <R>(event: TypedEvent<R>, callback: (args: R) => void) => {
