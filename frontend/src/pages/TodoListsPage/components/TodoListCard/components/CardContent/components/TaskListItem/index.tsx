@@ -40,27 +40,6 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
           : theme.palette.background.paper,
         Icon: isTaskFinished ? <UnpublishedIcon /> : <CheckCircleIcon />,
         action: () => {
-          if (isTaskFinished) {
-            dialogsActions.updateDeleteTaskDialog({
-              visible: true,
-              taskId: task.id,
-              todoListId: task.todoListId,
-            });
-          } else {
-            dialogsActions.updateTaskDialog({
-              visible: true,
-              todoListId: task.todoListId,
-              editTaskData: task,
-            });
-          }
-        },
-      }}
-      leftShift={{
-        color: isTaskFinished
-          ? theme.palette.warning.main
-          : theme.palette.primary.main,
-        Icon: isTaskFinished ? <DeleteIcon /> : <EditIcon />,
-        action: () => {
           editTaskInTodoListMutation.mutate(
             {
               todoListId: task.todoListId,
@@ -100,6 +79,27 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
               },
             }
           );
+        },
+      }}
+      leftShift={{
+        color: isTaskFinished
+          ? theme.palette.warning.main
+          : theme.palette.primary.main,
+        Icon: isTaskFinished ? <DeleteIcon /> : <EditIcon />,
+        action: () => {
+          if (isTaskFinished) {
+            dialogsActions.updateDeleteTaskDialog({
+              visible: true,
+              taskId: task.id,
+              todoListId: task.todoListId,
+            });
+          } else {
+            dialogsActions.updateTaskDialog({
+              visible: true,
+              todoListId: task.todoListId,
+              editTaskData: task,
+            });
+          }
         },
       }}
     >
