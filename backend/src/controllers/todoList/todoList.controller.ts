@@ -1,3 +1,4 @@
+import { currentUser } from "decorators/currentUser.decorator";
 import { inject } from "inversify";
 import {
   BaseHttpController,
@@ -18,6 +19,7 @@ import {
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
+import { IUserAttached } from "linked-models/user/user.model";
 import { CheckPermission } from "middlewares/permissions/checkPermission.middleware";
 import { SetPermissions } from "middlewares/permissions/setPermissions.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
@@ -69,12 +71,14 @@ export class TodoListController extends BaseHttpController {
   )
   async updateTodoList(
     @requestParam(TODO_LIST_PARAM) todoListId: string,
-    @requestBody() body: Partial<ITodoList>
+    @requestBody() body: Partial<ITodoList>,
+    @currentUser() currentUser: IUserAttached
   ): Promise<OkResult> {
     try {
       const todoList = await this.todoListService.updateTodoList(
         todoListId,
-        body
+        body,
+        currentUser.id
       );
       return this.ok(todoList);
     } catch (error) {
@@ -92,11 +96,13 @@ export class TodoListController extends BaseHttpController {
     CheckPermission(TodoListPermissions.CanDeleteTodoList)
   )
   async deleteTodoList(
-    @requestParam(TODO_LIST_PARAM) todoListId: string
+    @requestParam(TODO_LIST_PARAM) todoListId: string,
+    @currentUser() currentUser: IUserAttached
   ): Promise<OkResult> {
     try {
       const deletedTodoList = await this.todoListService.deleteTodoList(
-        todoListId
+        todoListId,
+        currentUser.id
       );
       return this.ok(deletedTodoList);
     } catch (error) {
