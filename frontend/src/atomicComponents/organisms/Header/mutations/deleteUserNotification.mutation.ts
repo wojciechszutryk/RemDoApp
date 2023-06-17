@@ -9,13 +9,10 @@ export const useDeleteUserNotificationsMutation = () => {
   const { setNotifications, notifications } = useCurrentUser();
 
   const deleteUserNotifications = async (userNotificationIDs: string[]) => {
-    console.log(userNotificationIDs);
-
     const url = FRONTIFY_URL(
       URL_USERS,
       `${URL_USER_NOTIFICATIONS}?ids=${JSON.stringify(userNotificationIDs)}`
     );
-    console.log(url);
 
     return apiDelete(url).then((res) => res.data);
   };

@@ -3,12 +3,10 @@ import CircleIcon from "@mui/icons-material/Circle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import {
-  List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  ListSubheader,
   useTheme,
 } from "@mui/material";
 import SwippableItem from "atomicComponents/molecules/SwippableItem";
@@ -19,6 +17,7 @@ import { NotificationState } from "linked-models/notification/notification.enum"
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
 import { memo } from "react";
+import { StyledList, StyledTodoListSubHeader } from "./styles";
 
 interface Props {
   todoListIdToNotificationsMap: Map<string, INotificationDto[]>;
@@ -36,21 +35,21 @@ const NotificationsList = ({
   const deleteUserNotificationsMutation = useDeleteUserNotificationsMutation();
 
   return (
-    <List>
+    <StyledList>
       {Array.from(todoListIdToNotificationsMap.entries()).map(
         ([todoListId, notifications]) => {
           const headerIcon = todoListsMap.get(todoListId)?.icon;
           return (
             <li key={todoListId}>
               <ul>
-                <ListSubheader>
+                <StyledTodoListSubHeader>
                   {headerIcon && (
                     <ListItemIcon>
                       <TodoListIcon type={headerIcon} disableHover />
                     </ListItemIcon>
                   )}
                   {todoListsMap.get(todoListId)?.name}
-                </ListSubheader>
+                </StyledTodoListSubHeader>
                 {notifications.map(({ userNotificationId, state, message }) => {
                   const isFresh = state === NotificationState.Fresh;
                   return (
@@ -108,7 +107,7 @@ const NotificationsList = ({
           );
         }
       )}
-    </List>
+    </StyledList>
   );
 };
 

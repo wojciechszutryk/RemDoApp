@@ -1,13 +1,12 @@
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { Divider, Drawer } from "@mui/material";
+import { Drawer } from "@mui/material";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
 import { memo, useMemo, useState } from "react";
 import { StyledHeaderButton } from "../../styles";
-import ArchivedNotificationsTopPanel from "./components/ArchivedNotificationsTopPanel";
-import EmptyNotificationsInfo from "./components/EmptyNotificationsInfo";
-import NewNotificationsTopPanel from "./components/NewNotificationsTopPanel";
-import NotificationsList from "./components/NotificationsList";
+import ArchivedNotificationsList from "./components/ArchivedNotificationsList";
+import NewNotificationsList from "./components/NewNotificationsList";
+import NotificationsLoader from "./components/NotificationsLoader";
 import useMarkFreshNotificationsAsRead from "./hooks/useMarkFreshNotificationsAsRead";
 import useNotificationsData from "./hooks/useNotificationsData";
 import useToggleDrawer from "./hooks/useToggleDrawer";
@@ -48,47 +47,27 @@ const NotificationsMenu = (): JSX.Element => {
         {<NotificationsIcon />}
       </StyledHeaderButton>
       <Drawer open={showNotificationDrawer} onClose={toggleDrawer(false)}>
-        /** TODO: loader while mutating */
         <StyledDrawerListWrapper
           role="presentation"
-          onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
-          {archivedNotificationIDs.length <= 0 ? (
-            <EmptyNotificationsInfo />
-          ) : (
-            <>
-              <NewNotificationsTopPanel
-                notificationIDs={[
-                  ...freahNotificationIDs,
-                  ...readNotificationIDs,
-                ]}
-              />
-              <NotificationsList
-                todoListIdToNotificationsMap={
-                  todoListIdToActiveNotificationsMap
-                }
-                todoListsMap={todoListsMap}
-                rightShiftAction="archive"
-              />
-              <Divider />
-            </>
-          )}
-          {archivedNotificationIDs.length <= 0 ? (
-            <EmptyNotificationsInfo archivedList />
-          ) : (
-            <>
-              <ArchivedNotificationsTopPanel
-                notificationIDs={archivedNotificationIDs}
-              />
-              <NotificationsList
-                todoListIdToNotificationsMap={
-                  todoListIdToArchivedNotificationsMap
-                }
-                todoListsMap={todoListsMap}
-                rightShiftAction="unarchive"
-              />
-            </>
+          <NotificationsLoader />
+          <NewNotificationsList
+            freahNotificationIDs={freahNotificationIDs}
+            readNotificationIDs={readNotificationIDs}
+            todoListIdToActiveNotificationsMap={
+              todoListIdToActiveNotificationsMap
+            }
+            todoListsMap={todoListsMap}
+          />
+          {archivedNotificationIDs.length > 0 && (
+            <ArchivedNotificationsList
+              archivedNotificationIDs={archivedNotificationIDs}
+              todoListIdToArchivedNotificationsMap={
+                todoListIdToArchivedNotificationsMap
+              }
+              todoListsMap={todoListsMap}
+            />
           )}
         </StyledDrawerListWrapper>
       </Drawer>
