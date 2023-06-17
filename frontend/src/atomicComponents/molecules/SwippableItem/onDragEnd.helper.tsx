@@ -23,17 +23,17 @@ const useOnDragEnd = ({
   >(
     (_, info) => {
       if (
-        leftShiftAction &&
+        rightShiftAction &&
         dragStartPosition &&
         info.offset.x - dragStartPosition > 150
       ) {
-        leftShiftAction();
+        rightShiftAction();
       } else if (
-        rightShiftAction &&
+        leftShiftAction &&
         dragStartPosition &&
         info.offset.x - dragStartPosition < -150
       ) {
-        rightShiftAction();
+        leftShiftAction();
       }
 
       setDragStartPosition(null);
