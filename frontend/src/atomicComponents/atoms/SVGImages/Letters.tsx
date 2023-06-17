@@ -1,8 +1,7 @@
 export const LettersImage = () => {
   return (
     <svg
-      enableBackground="new 0 0 331.751 311.237"
-      viewBox="0 0 331.751 311.237"
+      viewBox="0 0 650.6 400.1"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g transform="translate(-5046.3 -1442.2)">
