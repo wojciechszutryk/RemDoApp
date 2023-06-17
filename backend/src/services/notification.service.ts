@@ -12,7 +12,7 @@ import {
   INotificationDto,
   IUpdateUserNotificationDto,
 } from "linked-models/notification/notification.dto";
-import { NotificationState } from "linked-models/notification/notification.enum";
+import { UserNotificationState } from "linked-models/notification/notification.enum";
 import { IUserNotificationAttached } from "linked-models/notification/userNotification.model";
 
 @injectable()
@@ -94,7 +94,8 @@ export class NotificationService {
           notificationId: { $toString: "$notification._id" },
           userId: 1,
           state: 1,
-          message: "$notification.message",
+          action: "$notification.action",
+          actionCreatorId: "$notification.actionCreatorId",
           todoListId: "$notification.todoListId",
           taskId: "$notification.taskId",
           whenCreated: "$notification.whenCreated",
@@ -107,12 +108,14 @@ export class NotificationService {
 
   public async createNotificationForUsers(
     userIDs: string[],
-    message: string,
+    action: NotificationAction,
+    actionCreatorId: string,
     todoListId?: string,
     taskId?: string
   ): Promise<INotificationDto[]> {
     const notification = await this.notificationCollection.create({
-      message,
+      action,
+      actionCreatorId,
       todoListId,
       taskId,
       whenCreated: new Date(),
@@ -121,7 +124,7 @@ export class NotificationService {
     const userNotifications = await this.userNotificationCollection.create(
       userIDs.map((userId) => ({
         userId,
-        state: NotificationState.Fresh,
+        state: UserNotificationState.Fresh,
         notificationId: notification._id,
         whenCreated: new Date(),
       }))
@@ -132,7 +135,8 @@ export class NotificationService {
       userNotificationId: un._id,
       userId: un.userId,
       state: un.state,
-      message: notification.message,
+      action: notification.action,
+      actionCreatorId: notification.actionCreatorId,
       todoListId: notification.todoListId,
       taskId: notification.taskId,
     }));

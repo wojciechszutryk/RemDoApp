@@ -1,10 +1,10 @@
 import { IBaseModelAttached } from "../abstraction/base.interface";
-import { NotificationState } from "./notification.enum";
+import { UserNotificationState } from "./notification.enum";
 
 export interface IUserNotification {
   notificationId: string;
   userId: string;
-  state: NotificationState;
+  state: UserNotificationState;
 }
 
 export interface IUserNotificationWithReadonlyProperties

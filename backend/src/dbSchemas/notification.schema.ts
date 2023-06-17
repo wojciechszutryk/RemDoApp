@@ -7,10 +7,11 @@ import mongoose, { Document } from "mongoose";
 export const NotificationCollectionName = "Notifications";
 
 const NotificationSchema = new mongoose.Schema({
-  message: { type: String, default: null, required: true },
+  action: { type: String, required: true },
+  actionCreatorId: { type: String, required: true },
   todoListId: {
     type: String,
-    required: false,
+    required: true,
   },
   taskId: {
     type: String,
@@ -38,7 +39,8 @@ export const mapNotificationToAttachedNotification = (
 ): INotificationAttached => {
   return {
     id: notification.id,
-    message: notification.message,
+    action: notification.action,
+    actionCreatorId: notification.actionCreatorId,
     todoListId: notification.todoListId,
     taskId: notification.taskId,
     whenCreated: notification.whenCreated,

@@ -1,8 +1,13 @@
 import { IBaseModelAttached } from "../abstraction/base.interface";
 
 export interface INotification {
-  message: string;
-  todoListId?: string;
+  /** Action that caused notification */
+  action: NotificationAction;
+  /** User who caused action */
+  actionCreatorId: string;
+  /** Id of todo list that action was performed on */
+  todoListId: string;
+  /** Id of task that action was performed on */
   taskId?: string;
 }
 
