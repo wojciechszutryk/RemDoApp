@@ -8,7 +8,7 @@ export const TodoListCollectionName = "todoLists";
 
 const todoListSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  creator: {
+  creatorId: {
     type: String,
     required: true,
   },
