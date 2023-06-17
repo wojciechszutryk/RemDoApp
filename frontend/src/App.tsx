@@ -30,10 +30,10 @@ const App = (): JSX.Element => {
 
   useEffect(() => {
     if (socketReady && currentUser && socket) {
-      on("something", (something: any) => {
-        //TEST CODE -> TODO LATER!
-        console.log("something", something);
-      });
+      // on("something", (something: any) => {
+      //   //TEST CODE -> TODO LATER!
+      //   console.log("something", something);
+      // });
       on(TaskCreatedEvent, (task) => {
         //TEST CODE -> TODO LATER!
         console.log("TaskCreated event received!", task);

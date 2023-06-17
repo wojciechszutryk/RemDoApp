@@ -1,7 +1,7 @@
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { INotificationDto } from "linked-models/notification/notification.dto";
-import { NotificationState } from "linked-models/notification/notification.enum";
+import { UserNotificationState } from "linked-models/notification/notification.enum";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -23,7 +23,7 @@ const useNotificationsData = () => {
     >();
 
     notifications.forEach((n) => {
-      if (n.state === NotificationState.Archived) {
+      if (n.state === UserNotificationState.Archived) {
         archivedNotificationIDs.push(n.userNotificationId);
         const todoListId = n.todoListId || t(TranslationKeys.Other);
         const notificationsForTodoList =
@@ -35,7 +35,7 @@ const useNotificationsData = () => {
           todoListIdToArchivedNotificationsMap.set(todoListId, [n]);
         }
       } else {
-        if (n.state === NotificationState.Read)
+        if (n.state === UserNotificationState.Read)
           readNotificationIDs.push(n.userNotificationId);
         else freahNotificationIDs.push(n.userNotificationId);
 

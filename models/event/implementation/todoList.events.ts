@@ -1,12 +1,23 @@
 import { ITodoListAttached } from "../../todoList/todoList.model";
+import { EventName } from "../event.enum";
 import { TypedEvent } from "../event.interface";
 
 export const TodoListCreatedEvent = new TypedEvent<ITodoListAttached>(
-  "TodoListCreatedEvent"
+  EventName.TodoListCreated
 );
+
 export const TodoListUpdatedEvent = new TypedEvent<ITodoListAttached>(
-  "TodoListUpdatedEvent"
+  EventName.TodoListUpdated
 );
+
 export const TodoListDeletedEvent = new TypedEvent<ITodoListAttached>(
-  "TodoListDeletedEvent"
+  EventName.TodoListDeleted
+);
+
+export const TodoListMemberAddedEvent = new TypedEvent<ITodoListAttached>(
+  EventName.TodoListMemberAdded
+);
+
+export const TodoListMemberRemovedEvent = new TypedEvent<ITodoListAttached>(
+  EventName.TodoListMemberRemoved
 );
