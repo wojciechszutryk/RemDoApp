@@ -45,7 +45,7 @@ export const mapTodoListToAttachedTodoList = (
   return {
     id: todoList.id,
     name: todoList.name,
-    creator: todoList.creator,
+    creatorId: todoList.creatorId,
     icon: todoList.icon,
     assignedUsers: todoList.assignedUsers,
     assignedOwners: todoList.assignedOwners,
