@@ -46,8 +46,9 @@ export class TodoListController extends BaseHttpController {
   ): Promise<OkResult> {
     try {
       if (extended) {
-        const extendedTodoList =
-          await this.todoListService.getTodoListWithMembersById(todoListId);
+        const extendedTodoList = await this.todoListService.getExtendedTodoList(
+          todoListId
+        );
 
         return this.ok(extendedTodoList);
       }

@@ -10,6 +10,7 @@ import {
   TodoListDeletedEvent,
   TodoListUpdatedEvent,
 } from "linked-models/event/implementation/todoList.events";
+import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import {
   IExtendedTodoListDto,
   ITodoListWithMembersDto,
@@ -116,6 +117,38 @@ export class TodoListService {
     }));
 
     return { todoLists: todoListsWithMembers, users: members };
+  }
+
+  public async getExtendedTodoList(
+    todoListId: string
+  ): Promise<IExtendedTodoListDto> {
+    const [todoListWithMembers, tasks] = await Promise.all([
+      this.getTodoListWithMembersById(todoListId),
+      this.taskService.getTasksByTodoListIDs([todoListId]),
+    ]);
+
+    if (!todoListWithMembers) throw new Error("TodoList does not exist.");
+
+    const todoListMembers = [
+      /** exlamation mark - service always return array  */
+      ...todoListWithMembers!.assignedOwners,
+      ...todoListWithMembers!.assignedUsers,
+    ];
+
+    const mappedTasks: IExtendedTaskDto[] = [];
+    tasks.forEach((t) => {
+      const creator = todoListMembers.find((u) => u.id === t.creatorId);
+      if (creator)
+        mappedTasks.push({
+          ...t,
+          creator,
+        });
+    });
+
+    return {
+      ...todoListWithMembers,
+      tasks: mappedTasks,
+    };
   }
 
   public async getExtendedTodoListsForUser(
