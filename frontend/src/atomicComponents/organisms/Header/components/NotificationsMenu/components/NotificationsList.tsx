@@ -1,13 +1,7 @@
 import ArchiveIcon from "@mui/icons-material/Archive";
-import CircleIcon from "@mui/icons-material/Circle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
-import {
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  useTheme,
-} from "@mui/material";
+import { ListItemIcon, useTheme } from "@mui/material";
 import SwippableItem from "atomicComponents/molecules/SwippableItem";
 import { useDeleteUserNotificationsMutation } from "atomicComponents/organisms/Header/mutations/deleteUserNotification.mutation";
 import { useEditUserNotificationsMutation } from "atomicComponents/organisms/Header/mutations/editUserNotification.mutation";
@@ -21,7 +15,9 @@ import { memo, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import useCreateNotificationMessage from "../hooks/useCreateNotificationMessage";
 import {
+  StyledFreshIcon,
   StyledList,
+  StyledListItem,
   StyledListItemText,
   StyledTodoListSubHeader,
 } from "./styles";
@@ -81,72 +77,62 @@ const NotificationsList = ({
                     actionCreatorId,
                     todoListId,
                     taskId,
-                  }) => {
-                    const isFresh = state === UserNotificationState.Fresh;
-                    return (
-                      <SwippableItem
-                        key={userNotificationId}
-                        defaultColor={theme.palette.info.main}
-                        rightShift={{
-                          color: theme.palette.background.paper,
-                          Icon:
-                            rightShiftAction === "archive" ? (
-                              <ArchiveIcon />
-                            ) : (
-                              <UnarchiveIcon />
-                            ),
-                          action: () =>
-                            editUserNotificationMutation.mutate([
-                              {
-                                editedUserNotificationId: userNotificationId,
-                                state:
-                                  rightShiftAction === "archive"
-                                    ? UserNotificationState.Archived
-                                    : UserNotificationState.Read,
-                              },
-                            ]),
-                        }}
-                        leftShift={{
-                          color: theme.palette.warning.main,
-                          Icon: <DeleteIcon />,
-                          action: () =>
-                            deleteUserNotificationsMutation.mutate([
-                              userNotificationId,
-                            ]),
+                  }) => (
+                    <SwippableItem
+                      key={userNotificationId}
+                      defaultColor={theme.palette.info.main}
+                      rightShift={{
+                        color: theme.palette.background.paper,
+                        Icon:
+                          rightShiftAction === "archive" ? (
+                            <ArchiveIcon />
+                          ) : (
+                            <UnarchiveIcon />
+                          ),
+                        action: () =>
+                          editUserNotificationMutation.mutate([
+                            {
+                              editedUserNotificationId: userNotificationId,
+                              state:
+                                rightShiftAction === "archive"
+                                  ? UserNotificationState.Archived
+                                  : UserNotificationState.Read,
+                            },
+                          ]),
+                      }}
+                      leftShift={{
+                        color: theme.palette.warning.main,
+                        Icon: <DeleteIcon />,
+                        action: () =>
+                          deleteUserNotificationsMutation.mutate([
+                            userNotificationId,
+                          ]),
+                      }}
+                    >
+                      <StyledListItem
+                        onClick={(e) => {
+                          e.stopPropagation();
                         }}
                       >
-                        <ListItem
-                          disablePadding
-                          onClick={(e) => {
-                            e.stopPropagation();
+                        {state === UserNotificationState.Fresh && (
+                          <StyledFreshIcon />
+                        )}
+                        <StyledListItemText
+                          onClick={() => {
+                            if (taskId)
+                              navigate(Pages.TaskPage.path(todoListId, taskId));
+                            else {
+                              navigate(Pages.TodoListPage.path(todoListId));
+                            }
                           }}
-                        >
-                          <ListItemButton>
-                            {isFresh && (
-                              <ListItemIcon>
-                                <CircleIcon />
-                              </ListItemIcon>
-                            )}
-                            <StyledListItemText
-                              onClick={() => {
-                                if (taskId)
-                                  navigate(
-                                    Pages.TaskPage.path(todoListId, taskId)
-                                  );
-                                else {
-                                  navigate(Pages.TodoListPage.path(todoListId));
-                                }
-                              }}
-                              primary={createNotificationMessage(
-                                action,
-                                actionCreatorId
-                              )}
-                            />
-                          </ListItemButton>
-                        </ListItem>
-                      </SwippableItem>
-                    );
-                  }
+                          primary={createNotificationMessage(
+                            action,
+                            actionCreatorId
+                          )}
+                        />
+                      </StyledListItem>
+                    </SwippableItem>
+                  )
                 )}
               </ul>
             </li>
