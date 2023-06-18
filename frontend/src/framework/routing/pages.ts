@@ -30,6 +30,10 @@ export const Pages = {
     path: "/todoLists",
   },
   TodoListPage: {
-    path: "/todoLists/:todoListId",
+    path: (todoListId?: string) => `/todoLists/${todoListId || ":todoListId"}`,
+  },
+  TaskPage: {
+    path: (todoListId?: string, taskId?: string) =>
+      `/todoLists/${todoListId || ":todoListId"}/task/${taskId || ":taskId"}`,
   },
 };

@@ -114,7 +114,7 @@ const App = (): JSX.Element => {
             }
           />
           <Route
-            path={Pages.TodoListPage.path}
+            path={Pages.TodoListsPage.path}
             element={
               <Suspense fallback={false}>
                 <PageTemplate>

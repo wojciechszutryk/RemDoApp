@@ -70,7 +70,7 @@ export const Header = (): JSX.Element => {
 
         <SettingsMenu />
       </StyledHeaderContentWrapper>
-      <StyledHeaderBottomAnimation className="aaaa" />
+      <StyledHeaderBottomAnimation />
     </StyledHeaderWrapper>
   );
 };
