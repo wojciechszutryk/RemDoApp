@@ -1,4 +1,11 @@
-import { List, ListItemText, ListSubheader, styled } from "@mui/material";
+import CircleIcon from "@mui/icons-material/Circle";
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListSubheader,
+  styled,
+} from "@mui/material";
 import { LinearLoader } from "atomicComponents/atoms/LinearLoader";
 
 export const StyledLoader = styled(LinearLoader)(({ theme }) => ({
@@ -26,6 +33,17 @@ export const StyledTopPanelWrapper = styled("div", {
 export const StyledList = styled(List)({
   paddingTop: 0,
 });
+
+export const StyledListItem = styled(ListItem)({
+  padding: "8px 16px",
+});
+
+export const StyledFreshIcon = styled(CircleIcon)(({ theme }) => ({
+  width: 12,
+  height: 12,
+  color: theme.palette.primary.dark,
+  marginRight: 12,
+}));
 
 export const StyledListItemText = styled(ListItemText)(({ theme }) => ({
   flex: "unset",
