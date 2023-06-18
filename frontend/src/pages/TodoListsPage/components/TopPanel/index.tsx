@@ -3,7 +3,7 @@ import { useDialogs } from "framework/dialogs";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { StyledHeader, StyledWrapper } from "./styles";
+import { StyledWrapper } from "./styles";
 
 const TopPanel = (): JSX.Element => {
   const { dialogsActions } = useDialogs();
@@ -15,9 +15,6 @@ const TopPanel = (): JSX.Element => {
 
   return (
     <StyledWrapper>
-      <StyledHeader variant="h4">
-        {t(TranslationKeys.PageTitleTodoLists)}
-      </StyledHeader>
       <Button onClick={handleOpenCreateTodoListDialog}>
         {t(TranslationKeys.CreateNewTodoList)}
       </Button>

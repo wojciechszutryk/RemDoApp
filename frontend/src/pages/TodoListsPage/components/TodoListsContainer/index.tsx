@@ -14,8 +14,9 @@ import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import { StyledTodoListsWrapper } from "pages/TodoListsPage/styles";
 import { memo, useEffect, useState } from "react";
-import TodoListCard from "../TodoListCard";
+import TodoListCard from "../../../SingleTodoListPage/components/TodoListCard";
 import { getOrderedTodoLists } from "./helpers";
+import SortableTodoListCard from "./SortableTodoListCard";
 import useHandleDrag from "./useHandleDrag";
 
 interface Props {
@@ -66,7 +67,7 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
         <StyledTodoListsWrapper columns={columns}>
           {orderedTodoLists.map((td) => {
             return (
-              <TodoListCard
+              <SortableTodoListCard
                 key={td.id}
                 todoList={td}
                 withShakeAnimation={!!activeId && activeId !== td.id}
@@ -77,7 +78,7 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
       </SortableContext>
       <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
         {activeId && activeTodoList ? (
-          <TodoListCard todoList={activeTodoList} withShakeAnimation={false} />
+          <TodoListCard todoList={activeTodoList} />
         ) : null}
       </DragOverlay>
     </DndContext>

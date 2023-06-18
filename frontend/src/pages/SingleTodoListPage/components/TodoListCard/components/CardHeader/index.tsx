@@ -8,21 +8,23 @@ import {
 import UserAvatar from "atomicComponents/molecules/UserAvatar";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import { memo } from "react";
-import TodoListIcon from "../../../TodoListIcon";
+import TodoListIcon from "../../../../../TodoListsPage/components/TodoListIcon";
 import { StyledCardHeaderActions, StyledDragIcon } from "../../styles";
 
-interface Props {
-  todoList: IExtendedTodoListDto;
+export interface IDraggingButtonProps {
   listeners: SyntheticListenerMap | undefined;
   attributes: DraggableAttributes;
   isDragging: boolean;
 }
 
+interface Props {
+  todoList: IExtendedTodoListDto;
+  draggingProps?: IDraggingButtonProps;
+}
+
 const CardHeader = ({
   todoList: { name, icon, assignedOwners, assignedUsers },
-  listeners,
-  attributes,
-  isDragging,
+  draggingProps,
 }: Props): JSX.Element => {
   const allMembers = [];
   if (assignedOwners) allMembers.push(...assignedOwners);
@@ -50,11 +52,13 @@ const CardHeader = ({
               </div>
             </Tooltip>
           )}
-          <StyledDragIcon
-            {...listeners}
-            {...attributes}
-            isDragging={isDragging}
-          />
+          {draggingProps && (
+            <StyledDragIcon
+              {...draggingProps.listeners}
+              {...draggingProps.attributes}
+              isDragging={draggingProps.isDragging}
+            />
+          )}
         </StyledCardHeaderActions>
       }
       title={name}

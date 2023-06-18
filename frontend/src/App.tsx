@@ -16,6 +16,7 @@ const HomePage = lazy(() => import("pages/HomePage"));
 const LoginPage = lazy(() => import("pages/LoginPage"));
 const RemindersPage = lazy(() => import("pages/RemindersPage"));
 const TodoListsPage = lazy(() => import("pages/TodoListsPage"));
+const SingleTodoListPage = lazy(() => import("pages/SingleTodoListPage"));
 
 const App = (): JSX.Element => {
   const { t } = useTranslation();
@@ -108,6 +109,18 @@ const App = (): JSX.Element => {
                 <PageTemplate>
                   <RequireAuthPageWrapper>
                     <TodoListsPage />
+                  </RequireAuthPageWrapper>
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
+            path={Pages.TodoListPage.path()}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
+                  <RequireAuthPageWrapper>
+                    <SingleTodoListPage />
                   </RequireAuthPageWrapper>
                 </PageTemplate>
               </Suspense>

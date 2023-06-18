@@ -2,10 +2,9 @@ import { styled, Typography } from "@mui/material";
 
 export const StyledWrapper = styled("div")({
   display: "flex",
-  flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  gap: 20,
+  marginTop: "2rem",
 });
 
 export const StyledHeader = styled(Typography)(({ theme }) => ({

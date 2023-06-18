@@ -15,7 +15,9 @@ import { StyledDrawerListWrapper } from "./styles";
 const NotificationsMenu = (): JSX.Element => {
   const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
 
-  const getUserTodoListsWithTasksQuery = useGetUserExtendedTodoListsQuery();
+  const getUserTodoListsWithTasksQuery = useGetUserExtendedTodoListsQuery({
+    enabled: !!showNotificationDrawer,
+  });
   const {
     archivedNotificationIDs,
     readNotificationIDs,
