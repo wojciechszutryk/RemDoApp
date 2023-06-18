@@ -1,4 +1,4 @@
-import { List, ListSubheader, styled } from "@mui/material";
+import { List, ListItemText, ListSubheader, styled } from "@mui/material";
 import { LinearLoader } from "atomicComponents/atoms/LinearLoader";
 
 export const StyledLoader = styled(LinearLoader)(({ theme }) => ({
@@ -26,6 +26,17 @@ export const StyledTopPanelWrapper = styled("div", {
 export const StyledList = styled(List)({
   paddingTop: 0,
 });
+
+export const StyledListItemText = styled(ListItemText)(({ theme }) => ({
+  flex: "unset",
+  "& > span": {
+    cursor: "pointer",
+    transition: ".1s",
+    "&:hover": {
+      color: theme.palette.secondary.main,
+    },
+  },
+}));
 
 export const StyledTodoListSubHeader = styled(ListSubheader)(({ theme }) => ({
   position: "sticky",
