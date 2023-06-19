@@ -6,11 +6,14 @@ import { URL_TODO_LIST_TASK } from "linked-models/task/task.urls";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import {
   PARAM_EXTENDED,
+  URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
+import { useParams } from "react-router-dom";
 
 export const useDeleteTaskMutation = () => {
   const queryClient = useQueryClient();
+  const { todoListId: todoListIdParam } = useParams();
 
   const deleteTask = async ({
     todoListId,
@@ -25,17 +28,33 @@ export const useDeleteTaskMutation = () => {
 
   return useMutation(deleteTask, {
     onSuccess: (deletedTask) => {
+      // update single todo list query data only on singletodolist page
+      if (todoListIdParam) {
+        queryClient.setQueryData(
+          [URL_TODO_LISTS, URL_TODO_LIST(todoListIdParam), PARAM_EXTENDED],
+          (prev?: IExtendedTodoListDto): IExtendedTodoListDto => {
+            if (!prev) return {} as IExtendedTodoListDto;
+            const todoListWithFilteredTasks = {
+              ...prev,
+              tasks: prev.tasks.filter((task) => task.id !== deletedTask.id),
+            };
+            return todoListWithFilteredTasks;
+          }
+        );
+      }
+
+      // update all todo lists query data on todolists page
       queryClient.setQueryData(
         [URL_TODO_LISTS, PARAM_EXTENDED],
         (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {
           if (!prev) return [];
           const updatedTodoLists = prev.map((todoList) => {
-            const updatedTasks = todoList.tasks.filter(
+            const filteredTasks = todoList.tasks.filter(
               (task) => task.id !== deletedTask.id
             );
             return {
               ...todoList,
-              tasks: updatedTasks,
+              tasks: filteredTasks,
             };
           });
           return updatedTodoLists;

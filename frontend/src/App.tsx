@@ -115,6 +115,18 @@ const App = (): JSX.Element => {
             }
           />
           <Route
+            path={Pages.TaskPage.path()}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
+                  <RequireAuthPageWrapper>
+                    <SingleTodoListPage />
+                  </RequireAuthPageWrapper>
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
             path={Pages.TodoListPage.path()}
             element={
               <Suspense fallback={false}>
