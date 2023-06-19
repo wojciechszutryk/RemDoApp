@@ -1,7 +1,7 @@
 import { Header } from "atomicComponents/organisms/Header";
 import Dialogs from "framework/dialogs/components";
 import { memo, useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import { StyledPageBackground, StyledPageContentWrapper } from "./styles";
 
 const PageTemplate = ({
@@ -10,14 +10,17 @@ const PageTemplate = ({
   children?: JSX.Element;
 }): JSX.Element => {
   const location = useLocation();
+  const { todoListId } = useParams();
   const [contentVisible, setContentVisible] = useState(true);
 
   useEffect(() => {
-    setContentVisible(false);
-    setTimeout(() => {
-      setContentVisible(true);
-    }, 300);
-  }, [location.pathname]);
+    if (!todoListId) {
+      setContentVisible(false);
+      setTimeout(() => {
+        setContentVisible(true);
+      }, 300);
+    }
+  }, [location.pathname, todoListId]);
 
   return (
     <StyledPageBackground
