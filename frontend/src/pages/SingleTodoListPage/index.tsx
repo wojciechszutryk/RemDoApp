@@ -8,8 +8,7 @@ import { useGetExtendedTodoListQuery } from "./queries/getTodoList.query";
 import { StyledTodoListsPageWrapper } from "./styles";
 
 const SingleTodoListPage = (): JSX.Element => {
-  const { todoListId } = useParams();
-  console.log("todoListId", todoListId);
+  const { todoListId, taskId } = useParams();
 
   const getTodoListWithTasksQuery = useGetExtendedTodoListQuery(todoListId);
 

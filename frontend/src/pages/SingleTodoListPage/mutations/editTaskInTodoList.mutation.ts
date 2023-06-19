@@ -10,9 +10,11 @@ import {
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
+import { useParams } from "react-router-dom";
 
 export const useEditTaskInTodoListMutation = () => {
   const queryClient = useQueryClient();
+  const { todoListId: todoListIdParam } = useParams();
 
   const editTaskInTodoList = async ({
     todoListId,
@@ -23,16 +25,32 @@ export const useEditTaskInTodoListMutation = () => {
     taskId: string;
     data: Partial<ITask>;
   }) => {
-    const url = FRONTIFY_URL(URL_TODO_LIST_TASK(todoListId, taskId));
     return apiPut<Partial<ITask>, ITaskAttached>(
-      url,
+      FRONTIFY_URL(URL_TODO_LIST_TASK(todoListId, taskId)),
       mapITaskToITaskDTO(data)
     ).then((res) => res.data);
   };
 
   return useMutation(editTaskInTodoList, {
     onSuccess: (updatedTask, { todoListId }) => {
-      //update all todoLists query
+      // update single todo list query data only on singletodolist page
+      if (todoListIdParam) {
+        queryClient.setQueryData(
+          [URL_TODO_LISTS, URL_TODO_LIST(todoListIdParam), PARAM_EXTENDED],
+          (prev?: IExtendedTodoListDto): IExtendedTodoListDto => {
+            if (!prev) return {} as IExtendedTodoListDto;
+            const todoListWithUpdatedTask = {
+              ...prev,
+              tasks: prev.tasks.map((t) =>
+                t.id === updatedTask.id ? { ...t, ...updatedTask } : t
+              ),
+            };
+            return todoListWithUpdatedTask;
+          }
+        );
+      }
+
+      // update all todo lists query data on todolists page
       queryClient.setQueryData(
         [URL_TODO_LISTS, PARAM_EXTENDED],
         (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {
@@ -48,20 +66,6 @@ export const useEditTaskInTodoListMutation = () => {
           return prev.map((td) =>
             td.id === todoListWithUpdatedTask.id ? todoListWithUpdatedTask : td
           );
-        }
-      );
-      //update single todoList query data
-      queryClient.setQueryData<IExtendedTodoListDto | undefined>(
-        [URL_TODO_LISTS, URL_TODO_LIST(todoListId)],
-        (prev?: IExtendedTodoListDto) => {
-          if (!prev) return undefined;
-          const todoListWithUpdatedTask = {
-            ...prev,
-            tasks: prev.tasks.map((t) =>
-              t.id === updatedTask.id ? { ...t, ...updatedTask } : t
-            ),
-          };
-          return todoListWithUpdatedTask;
         }
       );
     },

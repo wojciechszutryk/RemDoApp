@@ -8,8 +8,10 @@ import { URL_TODO_LIST_TASKS } from "linked-models/task/task.urls";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import {
   PARAM_EXTENDED,
+  URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
+import { useParams } from "react-router-dom";
 
 interface ICreateTaskInTodoListMutation {
   todoListId: string;
@@ -19,6 +21,7 @@ interface ICreateTaskInTodoListMutation {
 export const useCreateTaskInTodoListMutation = () => {
   const { currentUser } = useCurrentUser();
   const queryClient = useQueryClient();
+  const { todoListId: todoListIdParam } = useParams();
 
   const createTaskInTodoList = async (todoListId: string, data: ITask) => {
     const url = FRONTIFY_URL(URL_TODO_LIST_TASKS(todoListId));
@@ -32,9 +35,29 @@ export const useCreateTaskInTodoListMutation = () => {
       createTaskInTodoList(todoListId, data),
     {
       onSuccess: (createdTask) => {
-        const queryKey = [URL_TODO_LISTS, PARAM_EXTENDED];
+        const mappedTask = {
+          ...createdTask,
+          creator: currentUser!,
+        };
+
+        // update single todo list query data only on singletodolist page
+        if (todoListIdParam) {
+          queryClient.setQueryData(
+            [URL_TODO_LISTS, URL_TODO_LIST(todoListIdParam), PARAM_EXTENDED],
+            (prev?: IExtendedTodoListDto): IExtendedTodoListDto => {
+              if (!prev) return {} as IExtendedTodoListDto;
+              const todoListWithNewTask = {
+                ...prev,
+                tasks: [...prev.tasks, mappedTask],
+              };
+              return todoListWithNewTask;
+            }
+          );
+        }
+
+        // update all todo lists query data on todolists page
         queryClient.setQueryData(
-          queryKey,
+          [URL_TODO_LISTS, PARAM_EXTENDED],
           (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {
             if (!prev) return [];
             const todoList = prev.find(
@@ -43,10 +66,7 @@ export const useCreateTaskInTodoListMutation = () => {
             if (!todoList) return prev;
             const todoListWithNewTask = {
               ...todoList,
-              tasks: [
-                ...todoList.tasks,
-                { ...createdTask, creator: currentUser! },
-              ],
+              tasks: [...todoList.tasks, mappedTask],
             };
             return prev.map((td) =>
               td.id === todoListWithNewTask.id ? todoListWithNewTask : td

@@ -4,7 +4,7 @@ import Dialog from "atomicComponents/atoms/Dialog";
 import { useDialogs } from "framework/dialogs";
 import { initialShareTodoListDialog } from "framework/dialogs/models/initialState.const";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { useEditTodoListMutation } from "pages/TodoListsPage/mutations/editTodoList.mutation";
+import { useEditTodoListMutation } from "pages/SingleTodoListPage/mutations/editTodoList.mutation";
 import { memo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
