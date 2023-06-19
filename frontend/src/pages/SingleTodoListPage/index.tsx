@@ -1,11 +1,11 @@
 import TodoListCard from "pages/SingleTodoListPage/components/TodoListCard";
 import EmptyTodoLists from "pages/TodoListsPage/components/EmptyTodoLists";
-import { TodoListsLoader } from "pages/TodoListsPage/components/TodoListsLoader";
 import TopPanel from "pages/TodoListsPage/components/TopPanel";
 import { memo, useMemo } from "react";
 import { useParams } from "react-router-dom";
+import { TodoListCardLoader } from "./components/TodoListCardLoader";
 import { useGetExtendedTodoListQuery } from "./queries/getTodoList.query";
-import { StyledTodoListsPageWrapper } from "./styles";
+import { StyledSingleTodoListPageWrapper } from "./styles";
 
 const SingleTodoListPage = (): JSX.Element => {
   const { todoListId, taskId } = useParams();
@@ -15,7 +15,8 @@ const SingleTodoListPage = (): JSX.Element => {
   const content = useMemo(() => {
     let pageContent = null;
 
-    if (getTodoListWithTasksQuery.isLoading) pageContent = <TodoListsLoader />;
+    if (getTodoListWithTasksQuery.isLoading)
+      pageContent = <TodoListCardLoader />;
     else if (
       getTodoListWithTasksQuery.isFetched &&
       !!getTodoListWithTasksQuery.data
@@ -33,10 +34,10 @@ const SingleTodoListPage = (): JSX.Element => {
   ]);
 
   return (
-    <StyledTodoListsPageWrapper>
+    <StyledSingleTodoListPageWrapper>
       <TopPanel />
       {content}
-    </StyledTodoListsPageWrapper>
+    </StyledSingleTodoListPageWrapper>
   );
 };
 
