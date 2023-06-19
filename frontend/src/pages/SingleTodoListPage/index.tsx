@@ -1,14 +1,69 @@
+import { motion } from "framer-motion";
+import { useCurrentUser } from "framework/authentication/useCurrentUser";
+import { Pages } from "framework/routing/pages";
 import TodoListCard from "pages/SingleTodoListPage/components/TodoListCard";
 import EmptyTodoLists from "pages/TodoListsPage/components/EmptyTodoLists";
+import { getTodoListsOrderLSKey } from "pages/TodoListsPage/components/TodoListsContainer/helpers";
 import TopPanel from "pages/TodoListsPage/components/TopPanel";
-import { memo, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { memo, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { TodoListCardLoader } from "./components/TodoListCardLoader";
 import { useGetExtendedTodoListQuery } from "./queries/getTodoList.query";
-import { StyledSingleTodoListPageWrapper } from "./styles";
+import {
+  StyledSingleTodoListPageWrapper,
+  StyledSwipeIndicator,
+} from "./styles";
+
+const variants = {
+  enter: (direction: number) => {
+    return {
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+    };
+  },
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => {
+    return {
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+    };
+  },
+};
 
 const SingleTodoListPage = (): JSX.Element => {
-  const { todoListId, taskId } = useParams();
+  const { todoListId } = useParams();
+  const [direction, setDirection] = useState(0);
+  const { currentUser } = useCurrentUser();
+  const navigate = useNavigate();
+  const [animationKey, setAnimationKey] = useState("");
+
+  const todoListsOrderFromLS: string[] = JSON.parse(
+    localStorage.getItem(getTodoListsOrderLSKey(currentUser?.id || "")) || "[]"
+  );
+
+  const paginate = (newDirection: number) => {
+    setDirection(newDirection);
+    if (!todoListId) return;
+    const currentIndex = todoListsOrderFromLS.indexOf(todoListId);
+    const nextIndex =
+      newDirection > 0
+        ? currentIndex > todoListsOrderFromLS.length - 2
+          ? 0
+          : currentIndex + 1
+        : currentIndex === 0
+        ? todoListsOrderFromLS.length - 1
+        : currentIndex - 1;
+    const nextTodoListId = todoListsOrderFromLS[nextIndex];
+    setAnimationKey(nextTodoListId);
+    setTimeout(() => {
+      navigate(Pages.TodoListPage.path(nextTodoListId));
+    }, 200);
+  };
 
   const getTodoListWithTasksQuery = useGetExtendedTodoListQuery(todoListId);
 
@@ -34,9 +89,22 @@ const SingleTodoListPage = (): JSX.Element => {
   ]);
 
   return (
-    <StyledSingleTodoListPageWrapper>
+    <StyledSingleTodoListPageWrapper key={animationKey}>
       <TopPanel />
-      {content}
+      <motion.div
+        custom={direction}
+        variants={variants}
+        initial="enter"
+        animate="center"
+        exit="exit"
+        transition={{
+          opacity: { duration: 0.2 },
+        }}
+      >
+        {content}
+      </motion.div>
+      <StyledSwipeIndicator onClick={() => paginate(1)} />
+      <StyledSwipeIndicator right onClick={() => paginate(-1)} />
     </StyledSingleTodoListPageWrapper>
   );
 };
