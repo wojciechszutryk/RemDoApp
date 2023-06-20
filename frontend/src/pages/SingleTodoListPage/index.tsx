@@ -1,15 +1,18 @@
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { motion } from "framer-motion";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { Pages } from "framework/routing/pages";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import TodoListCard from "pages/SingleTodoListPage/components/TodoListCard";
 import EmptyTodoLists from "pages/TodoListsPage/components/EmptyTodoLists";
 import { getTodoListsOrderLSKey } from "pages/TodoListsPage/components/TodoListsContainer/helpers";
-import TopPanel from "pages/TodoListsPage/components/TopPanel";
 import { memo, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { TodoListCardLoader } from "./components/TodoListCardLoader";
 import { useGetExtendedTodoListQuery } from "./queries/getTodoList.query";
 import {
+  StyledBackButton,
   StyledSingleTodoListPageWrapper,
   StyledSwipeIndicator,
 } from "./styles";
@@ -17,9 +20,14 @@ import {
 const variants = {
   enter: (direction: number) => {
     return {
-      x: direction > 0 ? 1000 : -1000,
+      x: direction > 0 ? 800 : -800,
       opacity: 0,
     };
+  },
+  fadeIn: {
+    opacity: 1,
+    zIndex: 1,
+    x: 0,
   },
   center: {
     zIndex: 1,
@@ -29,7 +37,7 @@ const variants = {
   exit: (direction: number) => {
     return {
       zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
+      x: direction < 0 ? 800 : -800,
       opacity: 0,
     };
   },
@@ -41,6 +49,7 @@ const SingleTodoListPage = (): JSX.Element => {
   const { currentUser } = useCurrentUser();
   const navigate = useNavigate();
   const [animationKey, setAnimationKey] = useState("");
+  const { t } = useTranslation();
 
   const todoListsOrderFromLS: string[] = JSON.parse(
     localStorage.getItem(getTodoListsOrderLSKey(currentUser?.id || "")) || "[]"
@@ -76,7 +85,12 @@ const SingleTodoListPage = (): JSX.Element => {
       getTodoListWithTasksQuery.isFetched &&
       !!getTodoListWithTasksQuery.data
     ) {
-      pageContent = <TodoListCard todoList={getTodoListWithTasksQuery.data} />;
+      pageContent = (
+        <TodoListCard
+          todoList={getTodoListWithTasksQuery.data}
+          fixedContentHeight
+        />
+      );
     } else {
       pageContent = <EmptyTodoLists />;
     }
@@ -90,12 +104,17 @@ const SingleTodoListPage = (): JSX.Element => {
 
   return (
     <StyledSingleTodoListPageWrapper key={animationKey}>
-      <TopPanel />
+      <StyledBackButton
+        onClick={() => navigate(Pages.TodoListsPage.path)}
+      >
+        <ArrowBackIcon />
+        <p>{t(TranslationKeys.BackToTodoLists)}</p>
+      </StyledBackButton>
       <motion.div
         custom={direction}
         variants={variants}
         initial="enter"
-        animate="center"
+        animate={direction === 0 ? "fadeIn" : "center"}
         exit="exit"
         transition={{
           opacity: { duration: 0.2 },

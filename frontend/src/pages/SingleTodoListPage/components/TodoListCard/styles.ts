@@ -1,5 +1,5 @@
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import { Card, styled } from "@mui/material";
+import { Card, CardContent, styled } from "@mui/material";
 
 export const StyledTodoListCardWrapper = styled("div", {
   shouldForwardProp: (prop) =>
@@ -58,4 +58,11 @@ export const StyledExpandMore = styled("div", {
   transition: theme.transitions.create("transform", {
     duration: theme.transitions.duration.shortest,
   }),
+}));
+
+export const StyledCardContent = styled(CardContent, {
+  shouldForwardProp: (prop) => prop !== "fixedHeight",
+})<{ fixedHeight?: boolean }>(({ fixedHeight }) => ({
+  height: fixedHeight ? "calc(100vh - 400px)" : "unset",
+  overflowY: fixedHeight ? "auto" : "unset",
 }));
