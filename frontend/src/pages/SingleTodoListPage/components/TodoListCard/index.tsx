@@ -11,12 +11,15 @@ interface Props {
   todoList: IExtendedTodoListDto;
   withShakeAnimation?: boolean;
   draggingProps?: IDraggingButtonProps;
+  fixedContentHeight?: boolean;
+
 }
 
 const TodoListCard = ({
   todoList,
   withShakeAnimation,
   draggingProps,
+  fixedContentHeight,
 }: Props): JSX.Element => {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -37,12 +40,13 @@ const TodoListCard = ({
     <StyledTodoListCard withShakeAnimation={withShakeAnimation}>
       <CardHeader todoList={todoList} draggingProps={draggingProps} />
       <CardContent
+        fixedContentHeight={fixedContentHeight}
         activeTasks={activeTasks}
         finishedTasks={finishedTasks}
         expanded={expanded}
       />
       <CardActions
-        showExpandIcon={finishedTasks.length > 0 && activeTasks.length !== 0}
+        showExpandIcon={!fixedContentHeight && finishedTasks.length > 0 && activeTasks.length !== 0}
         setExpanded={setExpanded}
         expanded={expanded}
         todoList={todoList}

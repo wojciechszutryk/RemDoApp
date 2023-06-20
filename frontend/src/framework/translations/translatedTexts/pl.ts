@@ -50,6 +50,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.DelteTodoListWarning]:
     "Czy na pewno chcesz usunąć tę listę zadań? Ta operacja jest nieodwracalna. Wszystkie zadania powiązane z tą listą zostaną usunięte.",
   [TranslationKeys.Other]: "Inne",
+  [TranslationKeys.BackToTodoLists]: "Powrót do list zadań",
 
   [TranslationKeys.EmptyTasksList]: "Brak zadań na liście. Dodaj nowe zadanie!",
   [TranslationKeys.DelteTask]: "Usuń zadanie",
