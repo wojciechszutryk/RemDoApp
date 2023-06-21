@@ -40,7 +40,7 @@ export class TaskDeletedEventHandler
         deletedTask.todoListId,
         deletedTask.id
       );
-    this.socketService.sendNotifications(createdNotifications);
+    this.socketService.notifyUsers(createdNotifications, deletedTask);
     this.todoListCacheService.invalidateExtendedTodoListCacheByUserIDs(
       todoListMembers
     );

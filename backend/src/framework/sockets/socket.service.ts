@@ -1,6 +1,5 @@
 import * as http from "http";
 import { injectable } from "inversify";
-import { TypedEvent } from "linked-models/event/event.interface";
 import { INotificationDto } from "linked-models/notification/notification.dto";
 import { USER_PARAM } from "linked-models/user/user.urls";
 import { Server } from "socket.io";
@@ -34,15 +33,11 @@ export class SocketService {
     return USER_PARAM + ": " + userId;
   }
 
-  public emitToUsers<T>(userIDs: string[], event: TypedEvent<T>, args?: T) {
-    userIDs.forEach((userID) => {
-      this.io.in(this.getUserUrlRoom(userID)).emit(event.name, args);
-    });
-  }
-
-  public sendNotifications(notifications: INotificationDto[]) {
+  public notifyUsers<T>(notifications: INotificationDto[], payload: T) {
     notifications.forEach((notification) => {
-      this.io.in(this.getUserUrlRoom(notification.userId)).emit(notification.action, notification);
+      this.io
+        .in(this.getUserUrlRoom(notification.userId))
+        .emit(notification.action, { notification, payload });
     });
   }
 }
