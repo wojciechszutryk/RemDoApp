@@ -7,12 +7,22 @@ import {
   Typography,
 } from "@mui/material";
 
-export const StyledTaskListItem = styled(ListItem)(({ theme }) => ({
+export const StyledTaskListItem = styled(ListItem, {
+  shouldForwardProp: (prop) => prop !== "highlighted",
+})<{
+  highlighted?: boolean;
+}>(({ highlighted, theme }) => ({
+  boxSizing: "border-box",
   flexWrap: "wrap",
   backgroundColor: "transparent",
   color: theme.palette.primary.contrastText,
   userSelect: "none",
   zIndex: 2,
+  transition: "border 0.3s ease",
+  padding: '7px 14px',
+  border: highlighted
+    ? `1px solid ${theme.palette.primary.contrastText}`
+    : `1px solid transparent`,
 }));
 
 export const StyledListItemIcon = styled(ListItemIcon)(({ theme }) => ({

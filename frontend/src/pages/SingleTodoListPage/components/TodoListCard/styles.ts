@@ -50,6 +50,7 @@ export const StyledDragIcon = styled(DragIndicatorIcon, {
 
 export const StyledCardHeaderActions = styled("div")({
   display: "flex",
+  marginRight: "4px",
 });
 
 export const StyledExpandMore = styled("div", {
