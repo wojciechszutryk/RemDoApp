@@ -9,23 +9,23 @@ interface Props {
   activeTasks: IExtendedTaskDto[];
   finishedTasks: IExtendedTaskDto[];
   expanded: boolean;
-  fixedContentHeight?: boolean;
+  scrollable?: boolean;
 }
 
 const CardContent = ({
   activeTasks,
   finishedTasks,
   expanded,
-  fixedContentHeight,
+  scrollable,
 }: Props): JSX.Element => {
   return (
-    <StyledCardContent fixedHeight={fixedContentHeight}>
+    <StyledCardContent scrollable={scrollable}>
       {activeTasks.length + finishedTasks.length === 0 ? (
         <EmptyTasksList />
       ) : (
         <>
           <TasksList tasks={activeTasks} />
-          {fixedContentHeight ? (
+          {scrollable ? (
             <TasksList tasks={finishedTasks} />
           ) : (
             <Collapse

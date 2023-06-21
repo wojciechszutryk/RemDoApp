@@ -5,21 +5,25 @@ import { memo } from "react";
 import CardActions from "./components/CardActions";
 import CardContent from "./components/CardContent";
 import CardHeader, { IDraggingButtonProps } from "./components/CardHeader";
+import CardActionsSkeleton from "./components/LoaderSkeletons/CardActionsSkeleton";
+import CardContentSkeleton from "./components/LoaderSkeletons/CardContentSkeleton";
+import CardHeaderSkeleton from "./components/LoaderSkeletons/CardHeaderSkeleton";
 import { StyledTodoListCard } from "./styles";
 
 interface Props {
   todoList: IExtendedTodoListDto;
   withShakeAnimation?: boolean;
   draggingProps?: IDraggingButtonProps;
-  fixedContentHeight?: boolean;
-
+  scrollableContent?: boolean;
+  isLoading?: boolean;
 }
 
 const TodoListCard = ({
   todoList,
   withShakeAnimation,
   draggingProps,
-  fixedContentHeight,
+  scrollableContent,
+  isLoading,
 }: Props): JSX.Element => {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -38,19 +42,35 @@ const TodoListCard = ({
 
   return (
     <StyledTodoListCard withShakeAnimation={withShakeAnimation}>
-      <CardHeader todoList={todoList} draggingProps={draggingProps} />
-      <CardContent
-        fixedContentHeight={fixedContentHeight}
-        activeTasks={activeTasks}
-        finishedTasks={finishedTasks}
-        expanded={expanded}
-      />
-      <CardActions
-        showExpandIcon={!fixedContentHeight && finishedTasks.length > 0 && activeTasks.length !== 0}
-        setExpanded={setExpanded}
-        expanded={expanded}
-        todoList={todoList}
-      />
+      {isLoading ? (
+        <CardHeaderSkeleton />
+      ) : (
+        <CardHeader todoList={todoList} draggingProps={draggingProps} />
+      )}
+      {isLoading ? (
+        <CardContentSkeleton />
+      ) : (
+        <CardContent
+          scrollable={scrollableContent}
+          activeTasks={activeTasks}
+          finishedTasks={finishedTasks}
+          expanded={expanded}
+        />
+      )}
+      {isLoading ? (
+        <CardActionsSkeleton />
+      ) : (
+        <CardActions
+          showExpandIcon={
+            !scrollableContent &&
+            finishedTasks.length > 0 &&
+            activeTasks.length !== 0
+          }
+          setExpanded={setExpanded}
+          expanded={expanded}
+          todoList={todoList}
+        />
+      )}
     </StyledTodoListCard>
   );
 };

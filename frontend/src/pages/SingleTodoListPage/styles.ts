@@ -5,14 +5,24 @@ export const StyledSingleTodoListPageWrapper = styled("main")(({ theme }) => ({
   position: "relative",
   width: "100%",
   top: 15,
-  padding: "0 15px",
+  paddingLeft: "15px",
+  paddingRight: "15px",
+  marginBottom: "30px",
   maxWidth: 800,
   overflow: "hidden",
   height: "calc(100vh - 90px)",
-  [theme.breakpoints.up("sm")]: {
-    padding: "0 50px",
-  },
   zIndex: 1000,
+  [theme.breakpoints.up("sm")]: {
+    paddingLeft: "50px",
+    paddingRight: "50px",
+  },
+  "& > div": {
+    marginTop: "20px",
+    height: "calc(100% - 60px)",
+    "& > div": {
+      height: "100%",
+    },
+  },
 }));
 
 export const StyledSwipeIndicator = styled(ArrowBackIosNewIcon, {
@@ -39,6 +49,7 @@ export const StyledSwipeIndicator = styled(ArrowBackIosNewIcon, {
 
 export const StyledBackButton = styled("button")(({ theme }) => ({
   background: "transparent",
+  margin: "10px auto 0",
   padding: "0",
   border: "none",
   display: "flex",
@@ -47,6 +58,7 @@ export const StyledBackButton = styled("button")(({ theme }) => ({
   cursor: "pointer",
   color: theme.palette.primary.contrastText,
   "& svg": {
+    display: "none",
     transition: ".2s",
   },
   "& p": {
@@ -59,5 +71,11 @@ export const StyledBackButton = styled("button")(({ theme }) => ({
   },
   "&:hover p": {
     transform: "scale(1.05)",
+  },
+
+  [theme.breakpoints.up("sm")]: {
+    "& svg": {
+      display: "block",
+    },
   },
 }));
