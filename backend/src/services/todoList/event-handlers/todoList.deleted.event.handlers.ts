@@ -36,7 +36,7 @@ export class TodoListDeletedEventHandler
     const createdNotifications =
       await this.notificationService.createNotificationForUsers(
         todoListMembers,
-        EventName.TaskCreated,
+        EventName.TodoListDeleted,
         eventCreatorId,
         deletedTodoList.id
       );
