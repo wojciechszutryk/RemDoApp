@@ -1,8 +1,5 @@
 import { TypedEvent } from "linked-models/event/event.interface";
-import {
-  TaskCreatedEvent,
-  TaskUpdatedEvent,
-} from "linked-models/event/implementation/task.events";
+import { TaskCreatedEvent, TaskUpdatedEvent } from "linked-models/event/implementation/task.events";
 import {
   TodoListCreatedEvent,
   TodoListUpdatedEvent,
@@ -37,11 +34,6 @@ export const useNotificationSocket = (
 
       setNotificationSocket(notificationSocket);
       setNotificationSocketReady(true);
-
-      socket.on("something", (something: any) => {
-        //TEST CODE -> TODO LATER!
-        console.log("something in useNotificationSocket", something);
-      });
 
       socket.on(TaskCreatedEvent.name, (something) => {
         //TEST CODE -> TODO LATER!

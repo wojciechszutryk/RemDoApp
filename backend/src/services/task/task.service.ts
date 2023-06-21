@@ -70,6 +70,7 @@ export class TaskService {
 
     return mapTaskToAttachedTask(createdTask);
   }
+  
   /**
    * Warning this service doesn't check if user can update Task. It is assumed that proper check is done before using this service
    */

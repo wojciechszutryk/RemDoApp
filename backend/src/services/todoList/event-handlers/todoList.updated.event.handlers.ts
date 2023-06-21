@@ -36,7 +36,7 @@ export class TodoListUpdatedEventHandler
     const createdNotifications =
       await this.notificationService.createNotificationForUsers(
         todoListMembers,
-        EventName.TaskCreated,
+        EventName.TodoListUpdated,
         eventCreatorId,
         updatedTodoList.id
       );

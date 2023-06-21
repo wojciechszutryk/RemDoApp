@@ -23,9 +23,8 @@ export const useCreateTodoListMutation = () => {
 
   return useMutation(createTodoList, {
     onSuccess: (createdTodoList) => {
-      const queryKey = [URL_TODO_LISTS, PARAM_EXTENDED];
       queryClient.setQueryData(
-        queryKey,
+        [URL_TODO_LISTS, PARAM_EXTENDED],
         (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {
           const todoListWithTasks = {
             ...createdTodoList,
