@@ -8,6 +8,11 @@ export interface INotificationDto
   userNotificationId: string;
 }
 
+export interface INotificationWithPayloadDto<T> {
+  notification: INotificationDto;
+  payload?: T;
+}
+
 export interface IUpdateUserNotificationDto extends Partial<IUserNotification> {
   editedUserNotificationId: string;
 }
