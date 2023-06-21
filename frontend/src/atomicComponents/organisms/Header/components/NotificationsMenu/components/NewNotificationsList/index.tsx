@@ -8,27 +8,29 @@ import NewNotificationsTopPanel from "./NewNotificationsTopPanel";
 
 interface Props {
   readNotificationIDs: string[];
-  freahNotificationIDs: string[];
+  freshNotificationIDs: string[];
   todoListIdToActiveNotificationsMap: Map<string, INotificationDto[]>;
   todoListsMap: Map<string, IExtendedTodoListDto>;
+  hideNotificationMenu: (event: React.KeyboardEvent | React.MouseEvent) => void
 }
 
 const NewNotificationsList = ({
   readNotificationIDs,
-  freahNotificationIDs,
+  freshNotificationIDs,
   todoListIdToActiveNotificationsMap,
   todoListsMap,
+  hideNotificationMenu,
 }: Props): JSX.Element => {
   if (readNotificationIDs.length <= 0) return <EmptyNotificationsInfo />;
   return (
     <>
       <NewNotificationsTopPanel
-        notificationIDs={[...freahNotificationIDs, ...readNotificationIDs]}
+        notificationIDs={[...freshNotificationIDs, ...readNotificationIDs]}
       />
       <NotificationsList
         todoListIdToNotificationsMap={todoListIdToActiveNotificationsMap}
         todoListsMap={todoListsMap}
-        rightShiftAction="archive"
+        hideNotificationMenu={hideNotificationMenu}
       />
       <Divider />
     </>

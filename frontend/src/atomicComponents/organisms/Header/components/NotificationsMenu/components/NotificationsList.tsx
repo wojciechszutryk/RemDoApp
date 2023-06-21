@@ -25,13 +25,15 @@ import {
 interface Props {
   todoListIdToNotificationsMap: Map<string, INotificationDto[]>;
   todoListsMap: Map<string, IExtendedTodoListDto>;
-  rightShiftAction: "archive" | "unarchive";
+  archived?: boolean;
+  hideNotificationMenu: (event: React.KeyboardEvent | React.MouseEvent) => void;
 }
 
 const NotificationsList = ({
   todoListIdToNotificationsMap,
   todoListsMap,
-  rightShiftAction,
+  archived,
+  hideNotificationMenu,
 }: Props): JSX.Element => {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -80,23 +82,23 @@ const NotificationsList = ({
                   }) => (
                     <SwippableItem
                       key={userNotificationId}
-                      defaultColor={theme.palette.info.main}
+                      defaultColor={
+                        archived
+                          ? theme.palette.background.paper
+                          : theme.palette.info.main
+                      }
                       rightShift={{
-                        color: theme.palette.background.paper,
-                        Icon:
-                          rightShiftAction === "archive" ? (
-                            <ArchiveIcon />
-                          ) : (
-                            <UnarchiveIcon />
-                          ),
+                        color: archived
+                          ? theme.palette.info.main
+                          : theme.palette.background.paper,
+                        Icon: archived ? <UnarchiveIcon /> : <ArchiveIcon />,
                         action: () =>
                           editUserNotificationMutation.mutate([
                             {
                               editedUserNotificationId: userNotificationId,
-                              state:
-                                rightShiftAction === "archive"
-                                  ? UserNotificationState.Archived
-                                  : UserNotificationState.Read,
+                              state: archived
+                                ? UserNotificationState.Read
+                                : UserNotificationState.Archived,
                             },
                           ]),
                       }}
@@ -118,12 +120,14 @@ const NotificationsList = ({
                           <StyledFreshIcon />
                         )}
                         <StyledListItemText
-                          onClick={() => {
+                          onClick={(e) => {
                             if (taskId)
                               navigate(Pages.TaskPage.path(todoListId, taskId));
                             else {
                               navigate(Pages.TodoListPage.path(todoListId));
                             }
+
+                            hideNotificationMenu(e);
                           }}
                           primary={createNotificationMessage(
                             action,

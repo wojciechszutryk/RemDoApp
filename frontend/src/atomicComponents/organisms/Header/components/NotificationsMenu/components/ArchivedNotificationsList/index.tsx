@@ -9,12 +9,14 @@ interface Props {
   archivedNotificationIDs: string[];
   todoListIdToArchivedNotificationsMap: Map<string, INotificationDto[]>;
   todoListsMap: Map<string, IExtendedTodoListDto>;
+  hideNotificationMenu: (event: React.KeyboardEvent | React.MouseEvent) => void;
 }
 
 const ArchivedNotificationsList = ({
   archivedNotificationIDs,
   todoListIdToArchivedNotificationsMap,
   todoListsMap,
+  hideNotificationMenu,
 }: Props): JSX.Element => {
   const [expanded, setExpanded] = useState(false);
 
@@ -29,7 +31,8 @@ const ArchivedNotificationsList = ({
         <NotificationsList
           todoListIdToNotificationsMap={todoListIdToArchivedNotificationsMap}
           todoListsMap={todoListsMap}
-          rightShiftAction="unarchive"
+          hideNotificationMenu={hideNotificationMenu}
+          archived
         />
       </Collapse>
     </>
