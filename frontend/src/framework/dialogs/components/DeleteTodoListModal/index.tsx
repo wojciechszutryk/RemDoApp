@@ -4,7 +4,7 @@ import InformationTemplate from "atomicComponents/molecules/InformationTemplate"
 import { useDialogs } from "framework/dialogs";
 import { initialDeleteTodoListDialog } from "framework/dialogs/models/initialState.const";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { useDeleteTodoListMutation } from "pages/SingleTodoListPage/mutations/deleteTodoList.mutation";
+import { useDeleteTodoListMutation } from "pages/SingleTodoListPage/mutations/deleteTodoList/deleteTodoList.mutation";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 

@@ -12,8 +12,8 @@ import { useDialogs } from "framework/dialogs";
 import { initialTaskDialog } from "framework/dialogs/models/initialState.const";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { ITask } from "linked-models/task/task.model";
-import { useCreateTaskInTodoListMutation } from "pages/SingleTodoListPage/mutations/createTaskInTodoList.mutation";
-import { useEditTaskInTodoListMutation } from "pages/SingleTodoListPage/mutations/editTaskInTodoList.mutation";
+import { useCreateTaskMutation } from "pages/SingleTodoListPage/mutations/createTask/createTask.mutation";
+import { useEditTaskInTodoListMutation } from "pages/SingleTodoListPage/mutations/editTask/editTask.mutation";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -41,7 +41,7 @@ const TaskModal = (): JSX.Element => {
     defaultValues: defaultFormValues,
   });
 
-  const createTaskMutation = useCreateTaskInTodoListMutation();
+  const createTaskMutation = useCreateTaskMutation();
   const editTaskMutation = useEditTaskInTodoListMutation();
   const { t } = useTranslation();
 

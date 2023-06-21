@@ -1,37 +1,22 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiPut } from "framework/asyncInteractions";
-import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   IExtendedTodoListDto,
   ITodoListWithMembersDto,
 } from "linked-models/todoList/todoList.dto";
-import { ITodoList } from "linked-models/todoList/todoList.model";
 import {
   PARAM_EXTENDED,
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
+import { useCallback } from "react";
 import { useParams } from "react-router-dom";
 
-export const useEditTodoListMutation = () => {
+const useUpdateQueriesAfterEditingTodoList = () => {
   const queryClient = useQueryClient();
   const { todoListId: todoListIdParam } = useParams();
 
-  const editTodoList = async ({
-    todoListId,
-    data,
-  }: {
-    todoListId: string;
-    data: Partial<ITodoList>;
-  }) => {
-    return apiPut<Partial<ITodoList>, ITodoListWithMembersDto>(
-      FRONTIFY_URL(URL_TODO_LISTS, URL_TODO_LIST(todoListId)),
-      data
-    ).then((res) => res.data);
-  };
-
-  return useMutation(editTodoList, {
-    onSuccess: (updatedTodoList) => {
+  return useCallback(
+    (updatedTodoList: ITodoListWithMembersDto) => {
       // update single todo list query data only on singletodolist page
       if (todoListIdParam) {
         queryClient.setQueryData(
@@ -59,5 +44,8 @@ export const useEditTodoListMutation = () => {
         }
       );
     },
-  });
+    [queryClient, todoListIdParam]
+  );
 };
+
+export default useUpdateQueriesAfterEditingTodoList;
