@@ -21,13 +21,10 @@ export const StyledSwipeLeftContainer = styled(StyledSwipeRightContainer)({
 export const listItemAnimations = (isPresent: boolean) => ({
   layout: true,
   initial: "out",
-  animate: isPresent ? "in" : "out",
+  animate: isPresent && "out",
   whileTap: "tapped",
   variants: {
-    in: { scaleY: 1, opacity: 1 },
     out: {
-      scaleY: 0,
-      opacity: 0,
       zIndex: -1299,
       transition: { duration: 0 },
     },

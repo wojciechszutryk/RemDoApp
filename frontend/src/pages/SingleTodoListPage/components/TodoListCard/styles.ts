@@ -31,6 +31,8 @@ export const StyledTodoListCard = styled(Card, {
     "75%": { transform: "rotate(1deg)" },
     "100%": { transform: "rotate(0deg)" },
   },
+  display: "flex",
+  flexDirection: "column",
   animation: withShakeAnimation ? "shake 1s" : "unset",
   animationIterationCount: "infinite",
   boxShadow: "none",
@@ -61,8 +63,8 @@ export const StyledExpandMore = styled("div", {
 }));
 
 export const StyledCardContent = styled(CardContent, {
-  shouldForwardProp: (prop) => prop !== "fixedHeight",
-})<{ fixedHeight?: boolean }>(({ fixedHeight }) => ({
-  height: fixedHeight ? "calc(100vh - 400px)" : "unset",
-  overflowY: fixedHeight ? "auto" : "unset",
+  shouldForwardProp: (prop) => prop !== "scrollable",
+})<{ scrollable?: boolean }>(({ scrollable }) => ({
+  flexGrow: 1,
+  overflowY: scrollable ? "auto" : "unset",
 }));

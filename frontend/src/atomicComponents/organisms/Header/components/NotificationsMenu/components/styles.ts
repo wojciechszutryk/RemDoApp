@@ -6,7 +6,7 @@ import {
   ListSubheader,
   styled,
 } from "@mui/material";
-import { LinearLoader } from "atomicComponents/atoms/LinearLoader";
+import { LinearLoader } from "atomicComponents/atoms/Loaders/LinearLoader";
 
 export const StyledLoader = styled(LinearLoader)(({ theme }) => ({
   position: "sticky",
