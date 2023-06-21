@@ -55,12 +55,13 @@ const NotificationsMenu = (): JSX.Element => {
         >
           <NotificationsLoader />
           <NewNotificationsList
-            freahNotificationIDs={freahNotificationIDs}
+            freshNotificationIDs={freahNotificationIDs}
             readNotificationIDs={readNotificationIDs}
             todoListIdToActiveNotificationsMap={
               todoListIdToActiveNotificationsMap
             }
             todoListsMap={todoListsMap}
+            hideNotificationMenu={toggleDrawer(false)}
           />
           {archivedNotificationIDs.length > 0 && (
             <ArchivedNotificationsList
@@ -69,6 +70,7 @@ const NotificationsMenu = (): JSX.Element => {
                 todoListIdToArchivedNotificationsMap
               }
               todoListsMap={todoListsMap}
+              hideNotificationMenu={toggleDrawer(false)}
             />
           )}
         </StyledDrawerListWrapper>
