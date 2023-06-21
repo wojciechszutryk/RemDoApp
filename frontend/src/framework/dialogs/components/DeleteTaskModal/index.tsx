@@ -4,7 +4,7 @@ import InformationTemplate from "atomicComponents/molecules/InformationTemplate"
 import { useDialogs } from "framework/dialogs";
 import { initialDeleteTaskDialog } from "framework/dialogs/models/initialState.const";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { useDeleteTaskMutation } from "pages/SingleTodoListPage/mutations/deleteTask.mutation";
+import { useDeleteTaskMutation } from "pages/SingleTodoListPage/mutations/deleteTask/deleteTask.mutation";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 

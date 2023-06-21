@@ -8,7 +8,7 @@ import { useDialogs } from "framework/dialogs";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
-import { useEditTaskInTodoListMutation } from "pages/SingleTodoListPage/mutations/editTaskInTodoList.mutation";
+import { useEditTaskInTodoListMutation } from "pages/SingleTodoListPage/mutations/editTask/editTask.mutation";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import TaskItemContent from "./TaskItemContent";

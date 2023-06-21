@@ -1,33 +1,20 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiDelete } from "framework/asyncInteractions";
-import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
+import { useQueryClient } from "@tanstack/react-query";
 import { ITaskAttached } from "linked-models/task/task.model";
-import { URL_TODO_LIST_TASK } from "linked-models/task/task.urls";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import {
   PARAM_EXTENDED,
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
+import { useCallback } from "react";
 import { useParams } from "react-router-dom";
 
-export const useDeleteTaskMutation = () => {
+const useUpdateQueriesAfterDeletingTask = () => {
   const queryClient = useQueryClient();
   const { todoListId: todoListIdParam } = useParams();
 
-  const deleteTask = async ({
-    todoListId,
-    taskId,
-  }: {
-    taskId: string;
-    todoListId?: string;
-  }) => {
-    const url = FRONTIFY_URL(URL_TODO_LIST_TASK(todoListId, taskId));
-    return apiDelete<ITaskAttached>(url).then((res) => res.data);
-  };
-
-  return useMutation(deleteTask, {
-    onSuccess: (deletedTask) => {
+  return useCallback(
+    (deletedTask: ITaskAttached) => {
       // update single todo list query data only on singletodolist page
       if (todoListIdParam) {
         queryClient.setQueryData(
@@ -61,5 +48,8 @@ export const useDeleteTaskMutation = () => {
         }
       );
     },
-  });
+    [queryClient, todoListIdParam]
+  );
 };
+
+export default useUpdateQueriesAfterDeletingTask;
