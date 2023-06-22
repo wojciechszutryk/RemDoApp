@@ -80,19 +80,22 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.EmptyNotificationsList]: "There are no new notifications.",
   [TranslationKeys.EmptyArchivedNotificationsList]:
     "No archived notifications.",
-  [TranslationKeys.TaskCreatedNotification]: "Task created by user: ",
-  [TranslationKeys.TaskDeletedNotification]: "Task deleted by user: ",
-  [TranslationKeys.TaskEditedNotification]: "Task modified by user: ",
-  [TranslationKeys.TodoListCreatedNotification]:
-    "You've been invited to new todo list created by user: ",
-  [TranslationKeys.TodoListEditedNotification]: "Todo list modified by user: ",
-  [TranslationKeys.TodoListDeletedNotification]: "Todo list deleted by user: ",
-  [TranslationKeys.UserInvitedToTodoListNotification]:
-    "You've been invited to todo list by user: ",
-  [TranslationKeys.UserRemovedFromTodoListNotification]:
-    "You've been removed from todo list's members by user: ",
-  [TranslationKeys.UnknownAction]: "Unknown action done on todo list by user: ",
-  [TranslationKeys.UnknownActionCreator]: "Unknown user",
+
+  // Notifications messages
+  [TranslationKeys.NotificationByUserPart]: ", by user: ",
+  [TranslationKeys.NotificationInTodoListPart]: ", in todo list: ",
+  [TranslationKeys.NotificationNewTodoListPart]: "New todo list ",
+  [TranslationKeys.NotificationExistingTodoListPart]: "Todo list ",
+  [TranslationKeys.NotificationNewTaskPart]: "New task ",
+  [TranslationKeys.NotificationExistingTaskPart]: "Task ",
+  [TranslationKeys.NotificationWasCreatedPart]: "was created ",
+  [TranslationKeys.NotificationWasModifiedPart]: "was modified ",
+  [TranslationKeys.NotificationWasDeletedPart]: "was deleted ",
+  [TranslationKeys.NotificationUserInvitedPart]:
+    "You've been invited to todo list ",
+  [TranslationKeys.NotificationUserRemovedPart]:
+    "You've been removed from members of todo list ",
+  [TranslationKeys.NotificationUnknownAction]: "Unknown action was done",
 
   [TranslationKeys.PageTitleUserSettings]: "User settings",
   [TranslationKeys.CurrentPasswordLabel]: "current password",

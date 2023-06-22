@@ -81,25 +81,22 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.EmptyNotificationsList]: "Brak nowych powiadomień",
   [TranslationKeys.EmptyArchivedNotificationsList]:
     "Archiwum notyfikacji jest puste",
-  [TranslationKeys.TaskCreatedNotification]:
-    "Nowe zadanie utworzone przez użytkownika: ",
-  [TranslationKeys.TaskDeletedNotification]:
-    "Zadanie zostało usunięte przez użytkowniak",
-  [TranslationKeys.TaskEditedNotification]:
-    "Zadanie zostało zmodyfikowane przez użytkownika:",
-  [TranslationKeys.TodoListCreatedNotification]:
-    "Zostałeś/aś zaproszony do nowej listy zadań stworzonej przez użytkownika: ",
-  [TranslationKeys.TodoListEditedNotification]:
-    "Lista zadań została zmodyfikowana przez użytkownika: ",
-  [TranslationKeys.TodoListDeletedNotification]:
-    "Lista zadań została usunięta przez użytkownika: ",
-  [TranslationKeys.UserInvitedToTodoListNotification]:
-    "Zostałeś zaproszony/a do listy zadań użytkownika: ",
-  [TranslationKeys.UserRemovedFromTodoListNotification]:
-    "Zostałeś usunięty z listy zadań użytkownika: ",
-  [TranslationKeys.UnknownAction]:
-    "Nieznana akcja w obrębie listy zadań przez użytkownika: ",
-  [TranslationKeys.UnknownActionCreator]: "Nieznany użytkownik",
+
+  // Notifications messages
+  [TranslationKeys.NotificationByUserPart]: ", przez użytkownika ",
+  [TranslationKeys.NotificationInTodoListPart]: ", w liście zadań ",
+  [TranslationKeys.NotificationNewTodoListPart]: "Nowa lista zadań ",
+  [TranslationKeys.NotificationExistingTodoListPart]: "Lista zadań ",
+  [TranslationKeys.NotificationNewTaskPart]: "Nowe zadanie ",
+  [TranslationKeys.NotificationExistingTaskPart]: "Zadanie ",
+  [TranslationKeys.NotificationWasCreatedPart]: "zostało utworzone ",
+  [TranslationKeys.NotificationWasModifiedPart]: "zostało zmodyfikowane ",
+  [TranslationKeys.NotificationWasDeletedPart]: "zostało usunięte ",
+  [TranslationKeys.NotificationUserInvitedPart]:
+    "Zostałeś zaproszony do listy zadań ",
+  [TranslationKeys.NotificationUserRemovedPart]:
+    "Zostałeś usunięty z listy zadań ",
+  [TranslationKeys.NotificationUnknownAction]: "Nieznana akcja ",
 
   [TranslationKeys.PageTitleUserSettings]: "Ustawienia użytkownika",
   [TranslationKeys.ChangePassword]: "Zmień hasło",
