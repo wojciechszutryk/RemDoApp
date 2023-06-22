@@ -1,16 +1,15 @@
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Drawer } from "@mui/material";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
 import { memo, useMemo, useState } from "react";
-import { StyledHeaderButton } from "../../styles";
 import ArchivedNotificationsList from "./components/ArchivedNotificationsList";
 import NewNotificationsList from "./components/NewNotificationsList";
+import NotificationIcon from "./components/NotificationIcon";
 import NotificationsLoader from "./components/NotificationsLoader";
 import useMarkFreshNotificationsAsRead from "./hooks/useMarkFreshNotificationsAsRead";
 import useNotificationsData from "./hooks/useNotificationsData";
 import useToggleDrawer from "./hooks/useToggleDrawer";
-import { StyledDrawerListWrapper } from "./styles";
+import { StyledDrawerListWrapper, StyledNotificationButton } from "./styles";
 
 const NotificationsMenu = (): JSX.Element => {
   const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
@@ -21,16 +20,16 @@ const NotificationsMenu = (): JSX.Element => {
   const {
     archivedNotificationIDs,
     readNotificationIDs,
-    freahNotificationIDs,
+    freshNotificationIDs,
     todoListIdToActiveNotificationsMap,
     todoListIdToArchivedNotificationsMap,
   } = useNotificationsData();
 
   const markFreshNotificationsAsRead =
-    useMarkFreshNotificationsAsRead(freahNotificationIDs);
+    useMarkFreshNotificationsAsRead(freshNotificationIDs);
   const toggleDrawer = useToggleDrawer({
     setDrawerState: setShowNotificationDrawer,
-    onClose: freahNotificationIDs ? markFreshNotificationsAsRead : undefined,
+    onClose: freshNotificationIDs ? markFreshNotificationsAsRead : undefined,
   });
 
   const todoListsMap = useMemo(() => {
@@ -45,9 +44,11 @@ const NotificationsMenu = (): JSX.Element => {
 
   return (
     <>
-      <StyledHeaderButton onClick={toggleDrawer(true)}>
-        {<NotificationsIcon />}
-      </StyledHeaderButton>
+      <StyledNotificationButton onClick={toggleDrawer(true)}>
+        <NotificationIcon
+          freshNotificationsNumber={freshNotificationIDs.length}
+        />
+      </StyledNotificationButton>
       <Drawer open={showNotificationDrawer} onClose={toggleDrawer(false)}>
         <StyledDrawerListWrapper
           role="presentation"
@@ -55,7 +56,7 @@ const NotificationsMenu = (): JSX.Element => {
         >
           <NotificationsLoader />
           <NewNotificationsList
-            freshNotificationIDs={freahNotificationIDs}
+            freshNotificationIDs={freshNotificationIDs}
             readNotificationIDs={readNotificationIDs}
             todoListIdToActiveNotificationsMap={
               todoListIdToActiveNotificationsMap

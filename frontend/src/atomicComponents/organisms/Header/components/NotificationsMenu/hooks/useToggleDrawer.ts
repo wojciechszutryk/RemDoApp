@@ -19,7 +19,7 @@ const useToggleDrawer = ({ setDrawerState, onClose, onOpen }: Args) => {
 
       if (open === true && !!onOpen) {
         onOpen();
-      } else if (!!onClose) {
+      } else if (open === false && !!onClose) {
         onClose();
       }
 
