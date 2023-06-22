@@ -226,17 +226,19 @@ export class TodoListService {
         ),
     ]);
 
-    this.eventService.emit(
-      TodoListCreatedEvent,
-      creatorId,
-      mappedCreatedTodoList
-    );
-
-    return {
+    const todoListWithMembers = {
       ...mappedCreatedTodoList,
       assignedOwners: assignedOwners || [],
       assignedUsers: assignedUsers || [],
     };
+
+    this.eventService.emit(
+      TodoListCreatedEvent,
+      creatorId,
+      todoListWithMembers
+    );
+
+    return todoListWithMembers;
   }
 
   /**
@@ -303,17 +305,19 @@ export class TodoListService {
         this.userService.getUsersByEmails(mappedUpdatedTodoList.assignedUsers),
     ]);
 
-    this.eventService.emit(
-      TodoListUpdatedEvent,
-      updaterId,
-      mappedUpdatedTodoList
-    );
-
-    return {
+    const todoListWithMembers = {
       ...mappedUpdatedTodoList,
       assignedOwners: assignedOwners || [],
       assignedUsers: assignedUsers || [],
     };
+
+    this.eventService.emit(
+      TodoListUpdatedEvent,
+      updaterId,
+      todoListWithMembers
+    );
+
+    return todoListWithMembers;
   }
 
   /**

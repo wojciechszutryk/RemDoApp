@@ -5,15 +5,14 @@ import { EventName } from "linked-models/event/event.enum";
 import { TypedEventHandler } from "linked-models/event/event.handler.interface";
 import { TypedEvent } from "linked-models/event/event.interface";
 import { TodoListUpdatedEvent } from "linked-models/event/implementation/todoList.events";
-import { ITaskAttached } from "linked-models/task/task.model";
-import { ITodoListAttached } from "linked-models/todoList/todoList.model";
+import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
 import { NotificationService } from "services/notification.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { TodoListService } from "../todoList.service";
 
 @EventHandler(TodoListUpdatedEvent)
 export class TodoListUpdatedEventHandler
-  implements TypedEventHandler<ITodoListAttached>
+  implements TypedEventHandler<ITodoListWithMembersDto>
 {
   constructor(
     @inject(TodoListCacheService)
@@ -26,9 +25,9 @@ export class TodoListUpdatedEventHandler
   ) {}
 
   async handle(
-    event: TypedEvent<ITaskAttached>,
+    event: TypedEvent<ITodoListWithMembersDto>,
     eventCreatorId: string,
-    updatedTodoList: ITodoListAttached
+    updatedTodoList: ITodoListWithMembersDto
   ) {
     const todoListMembers = await this.todoListService.getTodoListMemberIDs(
       updatedTodoList.id
