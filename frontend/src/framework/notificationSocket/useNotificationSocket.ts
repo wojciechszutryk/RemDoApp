@@ -11,6 +11,7 @@ import {
   TodoListUpdatedEvent,
 } from "linked-models/event/implementation/todoList.events";
 import { INotificationDto } from "linked-models/notification/notification.dto";
+import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { USER_PARAM } from "linked-models/user/user.urls";
 import useUpdateQueriesAfterCreatingTask from "pages/SingleTodoListPage/mutations/createTask/useUpdateQueriesAfterCreatingTask";
 import useUpdateQueriesAfterDeletingTask from "pages/SingleTodoListPage/mutations/deleteTask/useUpdateQueriesAfterDeletingTask";
@@ -18,7 +19,8 @@ import useUpdateQueriesAfterDeletingTodoList from "pages/SingleTodoListPage/muta
 import useUpdateQueriesAfterEditingTask from "pages/SingleTodoListPage/mutations/editTask/useUpdateQueriesAfterEditingTask";
 import useUpdateQueriesAfterEditingTodoList from "pages/SingleTodoListPage/mutations/editTodoList/useUpdateQueriesAfterEditingTodoList";
 import useUpdateQueriesAfterCreatingTodoList from "pages/TodoListsPage/mutations/createTodoList/useUpdateQueriesAfterCreatingTodoList";
-import { useEffect, useState } from "react";
+import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
+import { useEffect, useMemo, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import { useNotifications } from "./useNotifications";
 
@@ -27,6 +29,7 @@ type NotificationOnType = <R>(
   callback: (args: { notification: INotificationDto; payload: R }) => void
 ) => void;
 
+//TODO divide this hook into smaller hooks
 export const useNotificationSocket = () => {
   const [notificationSocketReady, setNotificationSocketReady] = useState(false);
   const [notificationSocket, setNotificationSocket] = useState<Socket>();
@@ -68,42 +71,108 @@ export const useNotificationSocket = () => {
     [notificationSocket, notificationSocketReady, currentUser]
   );
 
+  const getUserTodoListsWithTasksQuery = useGetUserExtendedTodoListsQuery({
+    enabled: !!false,
+  });
+
+  const todoLists = useMemo(
+    () => getUserTodoListsWithTasksQuery.data || [],
+    [getUserTodoListsWithTasksQuery.data]
+  );
+
+  const userIdToUserMap = useMemo(() => {
+    const userIdToUserMap = new Map<string, IUserPublicDataDTO>();
+    getUserTodoListsWithTasksQuery.data?.forEach((todoList) => {
+      [...todoList.assignedOwners, ...todoList.assignedUsers].forEach((u) => {
+        if (!userIdToUserMap.get(u.id)) {
+          userIdToUserMap.set(u.id, u);
+        }
+      });
+    });
+    return userIdToUserMap;
+  }, [getUserTodoListsWithTasksQuery.data]);
+
   useEffect(
     function handleNotificationSocketEvents() {
       if (notificationSocketReady) {
         on(
           TodoListCreatedEvent,
           ({ notification, payload: createdTodoList }) => {
-            handleSocketNotification(notification);
+            handleSocketNotification(notification, {
+              action: notification.action,
+              actionCreatorDisplayName: createdTodoList.assignedOwners.find(
+                (u) => u.id === notification.actionCreatorId
+              )?.displayName,
+              todoListName: createdTodoList.name,
+            });
             updateQueriesAfterCreatingTodoList(createdTodoList);
           }
         );
         on(
           TodoListUpdatedEvent,
           ({ notification, payload: updatedTodoList }) => {
-            handleSocketNotification(notification);
+            handleSocketNotification(notification, {
+              action: notification.action,
+              actionCreatorDisplayName: updatedTodoList.assignedOwners.find(
+                (u) => u.id === notification.actionCreatorId
+              )?.displayName,
+              todoListName: updatedTodoList.name,
+            });
             updateQueriesAfterEditingTodoList(updatedTodoList);
           }
         );
         on(
           TodoListDeletedEvent,
           ({ notification, payload: deletedTodoList }) => {
-            handleSocketNotification(notification);
+            handleSocketNotification(notification, {
+              action: notification.action,
+              actionCreatorDisplayName: userIdToUserMap.get(
+                notification.actionCreatorId
+              )?.displayName,
+              todoListName: deletedTodoList.name,
+            });
             updateQueriesAfterDeletingTodoList(deletedTodoList);
           }
         );
         on(TaskCreatedEvent, ({ notification, payload: createTask }) => {
-          handleSocketNotification(notification);
+          handleSocketNotification(notification, {
+            action: notification.action,
+            actionCreatorDisplayName: userIdToUserMap.get(
+              notification.actionCreatorId
+            )?.displayName,
+            todoListName: todoLists.find(
+              (td) => td.id === createTask.todoListId
+            )?.name,
+            taskName: createTask.text,
+          });
           updateQueriesAfterCreatingTask(createTask);
         });
         on(TaskUpdatedEvent, ({ notification, payload: updatedTask }) => {
-          handleSocketNotification(notification);
+          handleSocketNotification(notification, {
+            action: notification.action,
+            actionCreatorDisplayName: userIdToUserMap.get(
+              notification.actionCreatorId
+            )?.displayName,
+            todoListName: todoLists.find(
+              (td) => td.id === updatedTask.todoListId
+            )?.name,
+            taskName: updatedTask.text,
+          });
           updateQueriesAfterEditingTask(updatedTask, {
             todoListId: updatedTask.todoListId,
           });
         });
         on(TaskDeletedEvent, ({ notification, payload: deletedTask }) => {
-          handleSocketNotification(notification);
+          handleSocketNotification(notification, {
+            action: notification.action,
+            actionCreatorDisplayName: userIdToUserMap.get(
+              notification.actionCreatorId
+            )?.displayName,
+            todoListName: todoLists.find(
+              (td) => td.id === deletedTask.todoListId
+            )?.name,
+            taskName: deletedTask.text,
+          });
           updateQueriesAfterDeletingTask(deletedTask);
         });
 
@@ -117,12 +186,14 @@ export const useNotificationSocket = () => {
       notificationSocket,
       notificationSocketReady,
       on,
+      todoLists,
       updateQueriesAfterCreatingTask,
       updateQueriesAfterCreatingTodoList,
       updateQueriesAfterDeletingTask,
       updateQueriesAfterDeletingTodoList,
       updateQueriesAfterEditingTask,
       updateQueriesAfterEditingTodoList,
+      userIdToUserMap,
     ]
   );
 };

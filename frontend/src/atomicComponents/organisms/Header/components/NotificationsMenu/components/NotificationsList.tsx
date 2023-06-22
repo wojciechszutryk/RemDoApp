@@ -13,7 +13,7 @@ import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
 import { memo, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import useCreateNotificationMessage from "../hooks/useCreateNotificationMessage";
+import useCreateNotificationMessage from "../../../../../../framework/notificationSocket/useCreateNotificationMessage/useCreateNotificationMessage";
 import {
   StyledFreshIcon,
   StyledList,
@@ -52,8 +52,7 @@ const NotificationsList = ({
     return userIdToUserMap;
   }, [todoListsMap]);
 
-  const createNotificationMessage =
-    useCreateNotificationMessage(userIdToUserMap);
+  const createNotificationMessage = useCreateNotificationMessage();
 
   return (
     <StyledList>
@@ -129,10 +128,15 @@ const NotificationsList = ({
 
                             hideNotificationMenu(e);
                           }}
-                          primary={createNotificationMessage(
+                          primary={createNotificationMessage({
                             action,
-                            actionCreatorId
-                          )}
+                            actionCreatorDisplayName:
+                              userIdToUserMap.get(actionCreatorId)?.displayName,
+                            todoListName: todoListsMap.get(todoListId)?.name,
+                            taskName: todoListsMap
+                              .get(todoListId)
+                              ?.tasks.find((t) => t.id === taskId)?.text,
+                          })}
                         />
                       </StyledListItem>
                     </SwippableItem>
