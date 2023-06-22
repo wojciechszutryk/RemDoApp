@@ -1,12 +1,13 @@
+import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
 import { ITodoListAttached } from "../../todoList/todoList.model";
 import { EventName } from "../event.enum";
 import { TypedEvent } from "../event.interface";
 
-export const TodoListCreatedEvent = new TypedEvent<ITodoListAttached>(
+export const TodoListCreatedEvent = new TypedEvent<ITodoListWithMembersDto>(
   EventName.TodoListCreated
 );
 
-export const TodoListUpdatedEvent = new TypedEvent<ITodoListAttached>(
+export const TodoListUpdatedEvent = new TypedEvent<ITodoListWithMembersDto>(
   EventName.TodoListUpdated
 );
 
