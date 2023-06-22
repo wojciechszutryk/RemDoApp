@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
+import { useNotifications } from "framework/notificationSocket/useNotifications";
 import { IExtendedLoginUserResponseDTO } from "linked-models/user/user.dto";
 import {
   URL_LOGIN,
@@ -10,7 +11,8 @@ import {
 import { useCurrentUser } from "../useCurrentUser";
 
 export const useLoginUserWithTokenMutation = () => {
-  const { setCurrentUser, setNotifications } = useCurrentUser();
+  const { setCurrentUser } = useCurrentUser();
+  const { setNotifications } = useNotifications();
 
   const url = FRONTIFY_URL(URL_USERS, `${URL_LOGIN}${URL_WITH_TOKEN}`);
 

@@ -1,14 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiPut } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
-import { useCurrentUser } from "framework/authentication/useCurrentUser";
+import { useNotifications } from "framework/notificationSocket/useNotifications";
 import { IUpdateUserNotificationDto } from "linked-models/notification/notification.dto";
 import { URL_USER_NOTIFICATIONS } from "linked-models/notification/notification.urls";
 import { IUserNotificationAttached } from "linked-models/notification/userNotification.model";
 import { URL_USERS } from "linked-models/user/user.urls";
 
 export const useEditUserNotificationsMutation = () => {
-  const { setNotifications, notifications } = useCurrentUser();
+  const { setNotifications, notifications } = useNotifications();
 
   const editUserNotifications = async (
     updateData: IUpdateUserNotificationDto[]
