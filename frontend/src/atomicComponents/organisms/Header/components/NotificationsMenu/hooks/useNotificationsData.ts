@@ -11,7 +11,7 @@ const useNotificationsData = () => {
 
   return useMemo(() => {
     const readNotificationIDs: string[] = [];
-    const freahNotificationIDs: string[] = [];
+    const freshNotificationIDs: string[] = [];
     const archivedNotificationIDs: string[] = [];
     const todoListIdToActiveNotificationsMap = new Map<
       string,
@@ -37,7 +37,7 @@ const useNotificationsData = () => {
       } else {
         if (n.state === UserNotificationState.Read)
           readNotificationIDs.push(n.userNotificationId);
-        else freahNotificationIDs.push(n.userNotificationId);
+        else freshNotificationIDs.push(n.userNotificationId);
 
         const todoListId = n.todoListId || t(TranslationKeys.Other);
         const notificationsForTodoList =
@@ -56,7 +56,7 @@ const useNotificationsData = () => {
       archivedNotificationIDs,
       todoListIdToActiveNotificationsMap,
       readNotificationIDs,
-      freahNotificationIDs,
+      freshNotificationIDs,
     };
   }, [notifications, t]);
 };
