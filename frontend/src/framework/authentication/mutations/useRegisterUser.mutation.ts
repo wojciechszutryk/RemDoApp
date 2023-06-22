@@ -9,6 +9,7 @@ import {
 } from "linked-models/user/user.dto";
 import { URL_REGISTER, URL_USERS } from "linked-models/user/user.urls";
 import { useCurrentUser } from "../useCurrentUser";
+import { useNotifications } from "framework/notificationSocket/useNotifications";
 
 export const useRegisterUserMutation = (): UseMutationResult<
   ILoginUserResponseDTO,
@@ -16,7 +17,8 @@ export const useRegisterUserMutation = (): UseMutationResult<
   IRegisterUserDTO,
   unknown
 > => {
-  const { setCurrentUser, setNotifications } = useCurrentUser();
+  const { setCurrentUser } = useCurrentUser();
+  const { setNotifications } = useNotifications();
 
   const url = FRONTIFY_URL(URL_USERS, URL_REGISTER);
 

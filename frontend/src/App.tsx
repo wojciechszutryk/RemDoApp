@@ -1,14 +1,12 @@
 import PageTemplate from "atomicComponents/molecules/PageTemplate";
 import { RequireAuthPageWrapper } from "atomicComponents/organisms/RequireAuthPageWrapper";
 import useAutoLogin from "framework/authentication/useAutoLogin";
-import { useCurrentUser } from "framework/authentication/useCurrentUser";
+import { useNotificationSocket } from "framework/notificationSocket/useNotificationSocket";
 import { Pages } from "framework/routing/pages";
-import { useNotificationSocket } from "framework/socket/useNotificationSocket";
 import "framework/translations/i18.config/resources";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { TaskCreatedEvent } from "linked-models/event/implementation/task.events";
 import UserPage from "pages/UserPage";
-import { lazy, Suspense, useEffect, useLayoutEffect } from "react";
+import { lazy, Suspense, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -20,29 +18,13 @@ const SingleTodoListPage = lazy(() => import("pages/SingleTodoListPage"));
 
 const App = (): JSX.Element => {
   const { t } = useTranslation();
-  const { currentUser } = useCurrentUser();
 
   useLayoutEffect(() => {
     const title = t(TranslationKeys.PageTitleMain);
     document.title = title;
   });
 
-  const { socketReady, on, socket } = useNotificationSocket(currentUser);
-
-  useEffect(() => {
-    if (socketReady && currentUser && socket) {
-      // on("something", (something: any) => {
-      //   //TEST CODE -> TODO LATER!
-      //   console.log("something", something);
-      // });
-      console.log(on);
-
-      on(TaskCreatedEvent, (task) => {
-        //TEST CODE -> TODO LATER!
-        console.log("TaskCreated event received!", task);
-      });
-    }
-  }, [socketReady, on, currentUser, socket]);
+  useNotificationSocket();
 
   useAutoLogin();
 
