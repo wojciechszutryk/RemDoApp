@@ -78,7 +78,7 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
       </SortableContext>
       <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
         {activeId && activeTodoList ? (
-          <TodoListCard todoList={activeTodoList} />
+          <TodoListCard todoList={activeTodoList} actionsVariant="menu" />
         ) : null}
       </DragOverlay>
     </DndContext>

@@ -9,6 +9,7 @@ import { StyledTodoListCard } from "./styles";
 
 interface Props {
   todoList: IExtendedTodoListDto;
+  actionsVariant: "buttons" | "menu";
   withShakeAnimation?: boolean;
   draggingProps?: IDraggingButtonProps;
   scrollableContent?: boolean;
@@ -21,6 +22,7 @@ const TodoListCard = ({
   draggingProps,
   scrollableContent,
   disableHeaderRedirect,
+  actionsVariant,
 }: Props): JSX.Element => {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -51,6 +53,7 @@ const TodoListCard = ({
         expanded={expanded}
       />
       <CardActions
+        actionsVariant={actionsVariant}
         showExpandIcon={
           !scrollableContent &&
           finishedTasks.length > 0 &&
