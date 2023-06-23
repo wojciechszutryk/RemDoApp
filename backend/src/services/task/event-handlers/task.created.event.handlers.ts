@@ -29,6 +29,7 @@ export class TaskCreatedEventHandler
     eventCreatorId: string,
     createdTask: ITaskAttached
   ) {
+
     const todoListMembers = await this.todoListService.getTodoListMemberIDs(
       createdTask.todoListId
     );

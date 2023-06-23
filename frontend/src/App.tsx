@@ -1,12 +1,13 @@
 import PageTemplate from "atomicComponents/molecules/PageTemplate";
 import { RequireAuthPageWrapper } from "atomicComponents/organisms/RequireAuthPageWrapper";
+
 import useAutoLogin from "framework/authentication/useAutoLogin";
-import { useNotificationSocket } from "framework/notificationSocket/useNotificationSocket";
+import useNotificationSocket from "framework/notificationSocket/useNotificationSocket";
 import { Pages } from "framework/routing/pages";
 import "framework/translations/i18.config/resources";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import UserPage from "pages/UserPage";
-import { lazy, Suspense, useLayoutEffect } from "react";
+import { Suspense, lazy, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
