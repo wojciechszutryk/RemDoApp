@@ -3,13 +3,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ShareIcon from "@mui/icons-material/Share";
 import { CardActions as MUICardActions } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
 import { useDialogs } from "framework/dialogs";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledExpandMore } from "../../styles";
+import ActionsButtons from "./components/ActionsButtons";
+import ActionsMenu from "./components/ActionsMenu";
 import { StyledCreateTaskButton } from "./styles";
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
   expanded: boolean;
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
   showExpandIcon?: boolean;
+  actionsVariant: "buttons" | "menu";
 }
 
 const CardActions = ({
@@ -24,11 +26,61 @@ const CardActions = ({
   expanded,
   setExpanded,
   showExpandIcon,
+  actionsVariant,
 }: Props): JSX.Element => {
   const { dialogsActions } = useDialogs();
   const { t } = useTranslation();
   const assignedOwnersEmials = assignedOwners.map((owner) => owner.email);
   const assignedUsersEmails = assignedUsers.map((user) => user.email);
+
+  const interactions = useMemo(() => {
+    return [
+      {
+        onClick: () =>
+          dialogsActions.updateTodoListDialog({
+            visible: true,
+            editTodoListData: {
+              id,
+              name,
+              icon,
+              assignedOwners: assignedOwnersEmials,
+              assignedUsers: assignedUsersEmails,
+            },
+          }),
+        label: t(TranslationKeys.EditTodoListDialogHeader),
+        icon: <EditIcon />,
+      },
+      {
+        onClick: () =>
+          dialogsActions.updateShareTodoListDialog({
+            visible: true,
+            todoListId: id,
+            assignedOwners: assignedOwnersEmials,
+            assignedUsers: assignedUsersEmails,
+            todoListName: name,
+          }),
+        label: t(TranslationKeys.ShareTodoList),
+        icon: <ShareIcon />,
+      },
+      {
+        onClick: () =>
+          dialogsActions.updateDeleteTodoListDialog({
+            visible: true,
+            todoListId: id,
+          }),
+        label: t(TranslationKeys.DelteTodoList),
+        icon: <DeleteIcon />,
+      },
+    ];
+  }, [
+    t,
+    dialogsActions,
+    id,
+    name,
+    icon,
+    assignedOwnersEmials,
+    assignedUsersEmails,
+  ]);
 
   return (
     <MUICardActions disableSpacing>
@@ -40,45 +92,12 @@ const CardActions = ({
       >
         {t(TranslationKeys.AddTask)}
       </StyledCreateTaskButton>
-      <IconButton aria-label="share">
-        <ShareIcon
-          onClick={() =>
-            dialogsActions.updateShareTodoListDialog({
-              visible: true,
-              todoListId: id,
-              assignedOwners: assignedOwnersEmials,
-              assignedUsers: assignedUsersEmails,
-              todoListName: name,
-            })
-          }
-        />
-      </IconButton>
-      <IconButton aria-label="delete">
-        <DeleteIcon
-          onClick={() =>
-            dialogsActions.updateDeleteTodoListDialog({
-              visible: true,
-              todoListId: id,
-            })
-          }
-        />
-      </IconButton>
-      <IconButton aria-label="edit">
-        <EditIcon
-          onClick={() =>
-            dialogsActions.updateTodoListDialog({
-              visible: true,
-              editTodoListData: {
-                id,
-                name,
-                icon,
-                assignedOwners: assignedOwnersEmials,
-                assignedUsers: assignedUsersEmails,
-              },
-            })
-          }
-        />
-      </IconButton>
+      {actionsVariant === "buttons" ? (
+        <ActionsButtons interactions={interactions} />
+      ) : (
+        <ActionsMenu interactions={interactions} />
+      )}
+
       {showExpandIcon && (
         <StyledExpandMore
           expand={expanded}

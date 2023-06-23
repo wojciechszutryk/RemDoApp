@@ -48,6 +48,7 @@ const SortableTodoListCard = ({
         todoList={todoList}
         withShakeAnimation={withShakeAnimation}
         draggingProps={{ listeners, attributes, isDragging }}
+        actionsVariant="menu"
       />
     </StyledTodoListCardWrapper>
   );

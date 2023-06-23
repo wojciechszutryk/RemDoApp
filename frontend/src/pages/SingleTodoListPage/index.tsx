@@ -83,6 +83,7 @@ const SingleTodoListPage = (): JSX.Element => {
           disableHeaderRedirect
           todoList={getTodoListWithTasksQuery.data}
           scrollableContent
+          actionsVariant="buttons"
         />
       );
     }
