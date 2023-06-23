@@ -80,6 +80,7 @@ const SingleTodoListPage = (): JSX.Element => {
     } else if (!!getTodoListWithTasksQuery.data) {
       pageContent = (
         <TodoListCard
+          disableHeaderRedirect
           todoList={getTodoListWithTasksQuery.data}
           scrollableContent
         />
