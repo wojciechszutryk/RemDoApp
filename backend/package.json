@@ -6,7 +6,11 @@
   "scripts": {
     "build": "tsc -p ./tsconfig.build.json",
     "test": "jest --config ./tests/jest.unit.config.json",
-    "start": "cross-env ts-node-dev -r tsconfig-paths/register --respawn --transpile-only ./src/app.ts"
+    "start": "cross-env ts-node-dev -r tsconfig-paths/register --respawn --transpile-only ./src/app.ts",
+    "postinstall": "tsc",
+    "watch-node": "nodemon dist/index.js",
+    "watch-ts": "tsc -w",
+    "deploy": "git add . && git commit -m Heroku && git push heroku master"
   },
   "author": "",
   "license": "ISC",
