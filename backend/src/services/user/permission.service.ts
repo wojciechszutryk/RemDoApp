@@ -45,7 +45,7 @@ export class PermissionsService {
       if (taskId) {
         const task = await this.taskService.getTaskById(taskId);
 
-        if (task?.creator === userId) {
+        if (task?.creatorId === userId) {
           return AssignedToTodoListAndTaskCreatorPermissions;
         }
       }
