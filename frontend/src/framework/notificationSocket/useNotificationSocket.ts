@@ -97,8 +97,6 @@ const useNotificationSocket = () => {
         );
 
         on(TaskCreatedEvent, ({ notification, payload: createTask }) => {
-          console.log("createTask event in on");
-
           handleSocketNotification(notification, {
             action: notification.action,
             actionCreatorDisplayName: userIdToUserMap.get(
