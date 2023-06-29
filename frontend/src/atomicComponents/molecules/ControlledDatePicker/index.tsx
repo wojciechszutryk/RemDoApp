@@ -1,7 +1,13 @@
 import { DatePickerProps } from "@mui/x-date-pickers";
 import DatePicker from "atomicComponents/atoms/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
-import { Control, Controller, FieldPath, FieldValues } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldPath,
+  FieldValues,
+  PathValue,
+} from "react-hook-form";
 
 export interface ControlledDatePickerProps<
   TFieldValues extends FieldValues,
@@ -26,7 +32,9 @@ export const ControlledDatePicker = <
       render={({ field: { ref, onChange, value } }) => (
         <DatePicker
           {...props}
-          onChange={(date) => onChange(date?.toDate())}
+          onChange={(date) =>
+            onChange(date?.toDate() as PathValue<TFieldValues, TName>)
+          }
           value={dayjs(value)}
           inputRef={ref}
         />

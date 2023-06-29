@@ -1,11 +1,11 @@
-import { FormControlLabel, StandardTextFieldProps } from "@mui/material";
+import { CheckboxProps, FormControlLabel } from "@mui/material";
 import { Checkbox } from "atomicComponents/atoms/Checkbox";
 import { Control, Controller, FieldPath, FieldValues } from "react-hook-form";
 
 interface Props<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>
-> extends Omit<StandardTextFieldProps, "name"> {
+> extends Omit<CheckboxProps, "name"> {
   control?: Control<TFieldValues, any> | undefined;
   name: TName;
   label?: string;
@@ -26,11 +26,7 @@ export const ControlledCheckbox = <
           name={name}
           control={control}
           render={({ field: props }) => (
-            <Checkbox
-              {...props}
-              checked={props.value}
-              onChange={(e) => props.onChange(e.target.checked)}
-            />
+            <Checkbox {...props} checked={props.value} />
           )}
         />
       }

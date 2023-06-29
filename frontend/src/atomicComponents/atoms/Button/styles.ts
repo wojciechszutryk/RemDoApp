@@ -1,8 +1,7 @@
-import ButtonUnstyled from "@mui/base/ButtonUnstyled";
-import { styled } from "@mui/material";
+import { Button, styled } from "@mui/material";
 import { AnimatedWaveAltStyles } from "../AnimatedWaveAlt/styles";
 
-export const StyledButton = styled(ButtonUnstyled, {
+export const StyledButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== "disabled" && prop !== "noBorder",
 })<{ disabled?: boolean; noBorder?: boolean }>(
   ({ theme, disabled, noBorder }) => ({
