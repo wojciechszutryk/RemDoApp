@@ -20,6 +20,7 @@ server.setConfig((app) => {
   app.use(json({ limit: "100mb" }));
   app.use(urlencoded({ extended: true }));
   app.use(cors());
+  app.set("trust proxy", true);
 });
 
 //Connect to MongoDb
