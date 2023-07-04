@@ -12,7 +12,7 @@ export interface ITodoList {
   assignedOwners?: string[];
 
   /** Icon of todoList. Icon is used to graphically identify todoList and it's tasks */
-  icon?: TodoListIconEnum;
+  icon: TodoListIconEnum;
 }
 
 export interface ITodoListWithReadonlyProperties extends ITodoList {
