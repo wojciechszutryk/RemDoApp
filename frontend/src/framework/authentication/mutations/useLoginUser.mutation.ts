@@ -31,7 +31,7 @@ export const useLoginUserMutation = (): UseMutationResult<
     ).then((res) => res.data);
   };
 
-  return useMutation((userData: ILoginUserDTO) => loginUser(userData), {
+  return useMutation(loginUser, {
     onSuccess: ({ notifications, ...user }: IExtendedLoginUserResponseDTO) => {
       setCurrentUser(user);
       setNotifications(notifications);
