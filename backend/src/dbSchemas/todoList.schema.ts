@@ -20,7 +20,7 @@ const todoListSchema = new mongoose.Schema({
     type: Date,
     required: false,
   },
-  icon: { type: String, required: false },
+  icon: { type: String, required: true },
   assignedUsers: {
     type: [String],
     required: false,
