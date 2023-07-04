@@ -139,10 +139,9 @@ const useNotificationSocket = () => {
         });
       }
     },
-    // disabled because dependencies 'todoLists' and 'userIdToUserMap' cause invocation of socket.on() many times
+    // disabled because dependencies 'todoLists' and 'userIdToUserMap' and 'handleSocketNotification' cause invocation of socket.on() many times
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
-      handleSocketNotification,
       notificationSocketReady,
       on,
       updateQueriesAfterCreatingTask,
