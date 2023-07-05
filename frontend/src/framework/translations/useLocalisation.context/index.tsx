@@ -1,4 +1,7 @@
-import i18next from "i18next";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { locale } from "dayjs";
+import { use } from "i18next";
 import { ReactNode, useCallback, useContext, useState } from "react";
 import { initReactI18next, useTranslation } from "react-i18next";
 import { resources } from "../i18.config/resources";
@@ -11,19 +14,25 @@ interface Props {
   children: ReactNode;
 }
 
-i18next.use(initReactI18next).init({
-  lng:
-    localStorage.getItem(TodoListPrefferedLanguageLSKey) ||
-    TodoListLanguages.en,
-  debug: true,
-  resources,
-});
+const initialLanguage =
+  localStorage.getItem(TodoListPrefferedLanguageLSKey) || TodoListLanguages.en;
+
+use(initReactI18next).init(
+  {
+    lng: initialLanguage,
+    debug: true,
+    resources,
+  },
+  () => {
+    if (initialLanguage !== TodoListLanguages.en) require(`dayjs/locale/pl`);
+
+    locale(initialLanguage);
+  }
+);
 
 function LocalisationProvider({ children }: Props): JSX.Element {
   const [language, setLanguage] = useState<TodoListLanguages>(
-    (localStorage.getItem(
-      TodoListPrefferedLanguageLSKey
-    ) as TodoListLanguages) || TodoListLanguages.en
+    initialLanguage as TodoListLanguages
   );
   const { i18n } = useTranslation();
 
@@ -34,7 +43,7 @@ function LocalisationProvider({ children }: Props): JSX.Element {
         : TodoListLanguages.en;
     setLanguage(newLanguage);
     localStorage.setItem(TodoListPrefferedLanguageLSKey, newLanguage);
-    i18n.changeLanguage(newLanguage);
+    i18n.changeLanguage(newLanguage, () => {});
   }, [i18n, language]);
 
   const value = {
@@ -43,7 +52,13 @@ function LocalisationProvider({ children }: Props): JSX.Element {
     initialized: true,
   };
 
-  return <Context.Provider value={value}>{children}</Context.Provider>;
+  return (
+    <Context.Provider value={value}>
+      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={language}>
+        {children}
+      </LocalizationProvider>
+    </Context.Provider>
+  );
 }
 
 function useLocalisation(): ContextProps {

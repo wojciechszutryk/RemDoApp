@@ -1,5 +1,3 @@
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import App from "App";
@@ -21,23 +19,21 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <LocalisationProvider>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider>
-            <SnackbarProvider>
-              <DialogsProvider>
-                <NotificationsProvider>
-                  <CurrentUserProvider>
-                    <App />
-                    <Snackbar />
-                  </CurrentUserProvider>
-                </NotificationsProvider>
-              </DialogsProvider>
-            </SnackbarProvider>
-          </ThemeProvider>
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </LocalizationProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <SnackbarProvider>
+            <DialogsProvider>
+              <NotificationsProvider>
+                <CurrentUserProvider>
+                  <App />
+                  <Snackbar />
+                </CurrentUserProvider>
+              </NotificationsProvider>
+            </DialogsProvider>
+          </SnackbarProvider>
+        </ThemeProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </LocalisationProvider>
   </React.StrictMode>
 );
