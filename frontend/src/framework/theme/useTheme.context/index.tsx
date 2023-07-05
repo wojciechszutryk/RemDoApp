@@ -3,6 +3,7 @@ import {
   PaletteMode,
   ThemeProvider as MuiThemeProvider,
 } from "@mui/material";
+
 import { ReactNode, useContext, useMemo, useState } from "react";
 import { TodoListThemeLSKey } from "../models/theme.const";
 import { darkTheme } from "../palletes/dark";
@@ -26,6 +27,40 @@ function ThemeProvider({ children }: Props): JSX.Element {
         palette: {
           mode: mode,
           ...(mode === "dark" ? darkTheme : lightTheme),
+        },
+        components: {
+          MuiCssBaseline: {
+            styleOverrides: (theme) => `
+            ::-webkit-scrollbar {
+              width: 5px;
+              height: 5px;
+              border-radius: 0;
+            }
+            
+            ::-webkit-scrollbar-track {
+              border-radius: 0;
+              background: ${theme.palette.background.default};
+              box-shadow: inset 0px 0px 11px -7px rgba(0, 0, 0, 0.4);
+            }
+            
+            ::-webkit-scrollbar-thumb {
+              border-radius: 3px;
+              transition: all 0.1s;
+              background: ${theme.palette.primary.contrastText};
+              opacity: 0.7;
+              cursor: grab;
+            }
+            
+            ::-webkit-scrollbar-thumb:hover {
+              background: ${theme.palette.primary.light};
+              opacity: 0.9;
+            }
+            
+            ::-webkit-scrollbar-thumb:active {
+              background: ${theme.palette.primary.dark};
+            }
+          `,
+          },
         },
       }),
     [mode]
