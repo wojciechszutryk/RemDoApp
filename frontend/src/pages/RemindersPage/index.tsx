@@ -1,3 +1,5 @@
+import { Box } from "@mui/material";
+import dayjs from "dayjs";
 import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
 import { memo, useMemo } from "react";
 import Callendar from "./components/Callendar";
@@ -20,17 +22,53 @@ const RemindersPage = (): JSX.Element => {
         })
         .flat()
         .filter(
-          (task) => !!task.whenShouldBeStarted && !!task.whenShouldBeFinished
+          (task) =>
+            !!task.whenShouldBeStarted &&
+            !!task.whenShouldBeFinished &&
+            !task.finishDate
         ) || []
     );
   }, [getRemindersForDateRangeQuery.data]);
 
+  const dateToTasksMap = useMemo(() => {
+    const map = new Map<string, IExtendedTaskWithTodoList[]>();
+    userTasks?.forEach((task) => {
+      const taskStartDate = dayjs(task.whenShouldBeStarted);
+      const taskEndDate = dayjs(task.whenShouldBeFinished).add(1, "day");
+
+      for (
+        let date = taskStartDate;
+        taskEndDate.diff(date) > 0;
+        date = date.add(1, "day")
+      ) {
+        const day = date.toString();
+        const dayTask = map.get(day);
+
+        if (!dayTask) {
+          map.set(day, [task]);
+        } else {
+          dayTask.push(task);
+        }
+      }
+    });
+    return map;
+  }, [userTasks]);
+
   if (getRemindersForDateRangeQuery.isLoading) return <RemindersPageLoader />;
 
   return (
-    <div>
-      <Callendar userTasks={userTasks || []} />
-    </div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        maxWidth: 1000,
+        width: "100%",
+        marginTop: 20,
+      }}
+    >
+      <Callendar dateToTasksMap={dateToTasksMap} />
+      {/* <RemindersList dateToTasksMap={dateToTasksMap} /> */}
+    </Box>
   );
 };
 

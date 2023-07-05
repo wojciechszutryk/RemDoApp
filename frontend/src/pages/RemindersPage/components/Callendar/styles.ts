@@ -44,6 +44,8 @@ export const StyledDateCalendar = styled(DateCalendar<dayjs.Dayjs>)(
         },
       },
       "& div.MuiPickersArrowSwitcher-root": {
+        opacity: "1 !important",
+        visibility: "visible !important",
         order: 0,
         "& button": {
           backgroundColor: theme.palette.background.paper,
@@ -70,7 +72,7 @@ export const StyledDateCalendar = styled(DateCalendar<dayjs.Dayjs>)(
       },
     },
     "& div.MuiDateCalendar-viewTransitionContainer": {
-      padding: "20px 40px 00px",
+      padding: "20px 40px 0px",
       borderRadius: "50px 50px 150px 50px",
       backgroundColor: theme.palette.background.paper,
     },
@@ -95,6 +97,7 @@ export const StyledDateCalendar = styled(DateCalendar<dayjs.Dayjs>)(
     },
     "& .MuiYearCalendar-root": {
       width: "100%",
+      marginBottom: "20px",
       "-ms-overflow-style": "none",
       "scrollbar-width": "none",
       "&::-webkit-scrollbar": {
