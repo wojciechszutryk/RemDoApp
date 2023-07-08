@@ -1,4 +1,5 @@
 import { ITask } from "linked-models/task/task.model";
+import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import { IBaseDialogProps } from "./baseModalProps.model";
 
@@ -30,10 +31,20 @@ export interface IDeleteTaskDialog {
   todoListId?: string;
 }
 
+export interface IReminderDialog {
+  visible: boolean;
+  editReminderData?: ITask & {
+    id: string;
+    todoListId: string;
+    icon: TodoListIconEnum;
+  };
+}
+
 export interface IDialogsState {
   todoListDialog: ITodoListDialog;
   shareTodoListDialog: IShareTodoListDialog;
   deleteTodoListDialog: IDeleteTodoListDialog;
   taskDialog: ITaskDialog;
   deleteTaskDialog: IDeleteTaskDialog;
+  reminderDialog: IReminderDialog;
 }

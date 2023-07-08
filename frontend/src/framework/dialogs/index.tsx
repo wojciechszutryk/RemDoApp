@@ -2,6 +2,7 @@ import { useContext, useReducer } from "react";
 import {
   updateDeleteTaskDialogAction,
   updateDeleteTodoListDialogAction,
+  updateReminderDialogAction,
   updateShareTodoListDialogAction,
   updateTaskDialogAction,
   updateTodoListDialogAction,
@@ -10,6 +11,7 @@ import { Context, initialState } from "./context";
 import {
   IDeleteTaskDialog,
   IDeleteTodoListDialog,
+  IReminderDialog,
   IShareTodoListDialog,
   ITaskDialog,
   ITodoListDialog,
@@ -35,6 +37,8 @@ function DialogsProvider({ children }: Props): JSX.Element {
       dialogsDispatch(updateTaskDialogAction(actionPayload)),
     updateDeleteTaskDialog: (actionPayload: IDeleteTaskDialog) =>
       dialogsDispatch(updateDeleteTaskDialogAction(actionPayload)),
+    updateReminderDialog: (actionPayload: IReminderDialog) =>
+      dialogsDispatch(updateReminderDialogAction(actionPayload)),
   };
 
   const value = {

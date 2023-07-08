@@ -2,6 +2,7 @@ import {
   DialogsActionTypes,
   UpdateDeleteTaskDialogAction,
   UpdateDeleteTodoListDialogAction,
+  UpdateReminderDialogAction,
   UpdateShareTodoListDialogAction,
   UpdateTaskDialogAction,
   UpdateTodoListDialogAction,
@@ -9,6 +10,7 @@ import {
 import {
   IDeleteTaskDialog,
   IDeleteTodoListDialog,
+  IReminderDialog,
   IShareTodoListDialog,
   ITaskDialog,
   ITodoListDialog,
@@ -55,6 +57,15 @@ export const updateDeleteTaskDialogAction = (
 ): UpdateDeleteTaskDialogAction => {
   return {
     type: DialogsActionTypes.updateDeleteTaskDialog,
+    payload,
+  };
+};
+
+export const updateReminderDialogAction = (
+  payload: IReminderDialog
+): UpdateReminderDialogAction => {
+  return {
+    type: DialogsActionTypes.updateReminderDialog,
     payload,
   };
 };

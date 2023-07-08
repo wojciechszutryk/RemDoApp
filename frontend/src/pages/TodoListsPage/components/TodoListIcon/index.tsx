@@ -1,6 +1,7 @@
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ChildFriendlyIcon from "@mui/icons-material/ChildFriendly";
+import EventIcon from "@mui/icons-material/Event";
 import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import LuggageIcon from "@mui/icons-material/Luggage";
@@ -50,6 +51,10 @@ const TodoListIcon = ({ type, onClick, disableHover }: Props): JSX.Element => {
 
       case TodoListIconEnum.Shopping: {
         return <ShoppingCartIcon onClick={onClick} />;
+      }
+
+      case TodoListIconEnum.Reminder: {
+        return <EventIcon onClick={onClick} />;
       }
 
       default: {

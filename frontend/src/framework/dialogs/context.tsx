@@ -23,6 +23,7 @@ export const initialState = {
   },
   taskDialog: { ...initialTaskDialog, onClose: () => {} },
   deleteTaskDialog: { ...initialDeleteTaskDialog, onClose: () => {} },
+  reminderDialog: { ...initialTaskDialog, onClose: () => {} },
 };
 
 export const Context = createContext<BaseContextProps & ContextProps>({
@@ -33,6 +34,7 @@ export const Context = createContext<BaseContextProps & ContextProps>({
     updateDeleteTodoListDialog: () => null,
     updateTaskDialog: () => null,
     updateDeleteTaskDialog: () => null,
+    updateReminderDialog: () => null,
   },
   initialized: false,
 });
