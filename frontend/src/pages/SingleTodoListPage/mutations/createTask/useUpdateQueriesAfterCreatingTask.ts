@@ -10,7 +10,9 @@ import {
 import { useCallback } from "react";
 import { useParams } from "react-router-dom";
 
-const useUpdateQueriesAfterCreatingTask = () => {
+const useUpdateQueriesAfterCreatingTask = (
+  updateOnlyAllTodoListsData?: boolean
+) => {
   const queryClient = useQueryClient();
   const { currentUser } = useCurrentUser();
   const { todoListId: todoListIdParam } = useParams();
@@ -23,7 +25,7 @@ const useUpdateQueriesAfterCreatingTask = () => {
       };
 
       // update single todo list query data only on singletodolist page
-      if (todoListIdParam) {
+      if (todoListIdParam && !updateOnlyAllTodoListsData) {
         queryClient.setQueryData(
           [URL_TODO_LISTS, URL_TODO_LIST(todoListIdParam), PARAM_EXTENDED],
           (prev?: IExtendedTodoListDto): IExtendedTodoListDto => {
@@ -37,7 +39,7 @@ const useUpdateQueriesAfterCreatingTask = () => {
         );
       }
 
-      // update all todo lists query data on todolists page
+      // update all todo lists query data
       queryClient.setQueryData(
         [URL_TODO_LISTS, PARAM_EXTENDED],
         (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {

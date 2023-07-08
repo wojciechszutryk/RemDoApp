@@ -1,5 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { DialogProps, IconButton, Slide } from "@mui/material";
+import { DialogProps, Slide } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 import { forwardRef, memo } from "react";
 import { StyledCloseButton, StyledDialog, StyledInnerWrapper } from "./styles";

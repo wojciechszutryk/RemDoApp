@@ -2,6 +2,7 @@ import {
   IDeleteTaskDialog,
   IDeleteTodoListDialog,
   IShareTodoListDialog,
+  ITaskDialog,
 } from "./state.model";
 
 export const initialShareTodoListDialog: IShareTodoListDialog = {
@@ -17,7 +18,7 @@ export const initialDeleteTodoListDialog: IDeleteTodoListDialog = {
   todoListId: "",
 };
 
-export const initialTaskDialog: IDeleteTodoListDialog = {
+export const initialTaskDialog: ITaskDialog = {
   visible: false,
   todoListId: "",
 };

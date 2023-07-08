@@ -6,7 +6,7 @@ export const StyledDateCalendar = styled(DateCalendar<dayjs.Dayjs>)(
   ({ theme }) => ({
     width: "100vw",
     maxHeight: "400px",
-    maxWidth: "700px",
+    maxWidth: "1000px",
     overflow: "visible",
     "& div.MuiPickersCalendarHeader-root": {
       margin: "0 0 0 15px",
@@ -72,9 +72,13 @@ export const StyledDateCalendar = styled(DateCalendar<dayjs.Dayjs>)(
       },
     },
     "& div.MuiDateCalendar-viewTransitionContainer": {
-      padding: "20px 40px 0px",
-      borderRadius: "50px 50px 150px 50px",
+      padding: "20px 0px 0px",
+      borderRadius: "20px",
       backgroundColor: theme.palette.background.paper,
+      [theme.breakpoints.up("sm")]: {
+        padding: "20px 40px 0px",
+        borderRadius: "50px 50px 150px 50px",
+      },
     },
     "& div.MuiDayCalendar-slideTransition": {
       height: "320px",
@@ -137,7 +141,6 @@ export const StyledPickersDay = styled(PickersDay<dayjs.Dayjs>)(
     "&.MuiPickersDay-today, &.MuiPickersDay-today:hover": {
       borderTop: "none",
       borderLeft: "none",
-      //   borderColor: theme.palette.primary.main,
       backgroundColor: theme.palette.primary.light,
       "&+div > div > div > svg, &+div > div": {
         color: theme.palette.primary.contrastText,
@@ -146,10 +149,6 @@ export const StyledPickersDay = styled(PickersDay<dayjs.Dayjs>)(
       borderWidth: 1,
       borderStyle: "solid",
       borderColor: theme.palette.primary.contrastText,
-      //   borderRightColor: theme.palette.primary.main,
-      //   borderBottomColor: theme.palette.primary.main,
-      //   borderTopColor: "transparent",
-      //   borderLeftColor: "transparent",
       borderBottomRightRadius: "20px",
     },
     "& > div > div": {

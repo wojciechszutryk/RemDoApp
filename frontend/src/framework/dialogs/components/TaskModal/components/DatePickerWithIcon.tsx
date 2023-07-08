@@ -4,22 +4,22 @@ import {
   ControlledDatePickerProps,
 } from "atomicComponents/molecules/ControlledDatePicker";
 import { ITask } from "linked-models/task/task.model";
-import { memo } from "react";
 import { FieldPath } from "react-hook-form";
 import { StyledDatePickerWrapper } from "./styles";
 
-interface Props extends ControlledDatePickerProps<ITask, FieldPath<ITask>> {
+interface Props<T extends ITask>
+  extends ControlledDatePickerProps<T, FieldPath<T>> {
   Icon: JSX.Element;
   tooltipTitle: string;
 }
 
-const DatePickerWithIcon = ({
+function DatePickerWithIcon<T extends ITask>({
   Icon,
   tooltipTitle,
   name,
   control,
   ...props
-}: Props): JSX.Element => {
+}: Props<T>) {
   return (
     <StyledDatePickerWrapper>
       <Tooltip title={tooltipTitle}>
@@ -28,6 +28,6 @@ const DatePickerWithIcon = ({
       <ControlledDatePicker {...props} control={control} name={name} />
     </StyledDatePickerWrapper>
   );
-};
+}
 
-export default memo(DatePickerWithIcon);
+export default DatePickerWithIcon;

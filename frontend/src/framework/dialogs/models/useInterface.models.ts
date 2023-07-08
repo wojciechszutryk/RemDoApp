@@ -2,6 +2,7 @@ import {
   IDeleteTaskDialog,
   IDeleteTodoListDialog,
   IDialogsState,
+  IReminderDialog,
   IShareTodoListDialog,
   ITaskDialog,
   ITodoListDialog,
@@ -15,5 +16,6 @@ export interface ContextProps {
     updateDeleteTodoListDialog: (actionPayload: IDeleteTodoListDialog) => void;
     updateTaskDialog: (actionPayload: ITaskDialog) => void;
     updateDeleteTaskDialog: (actionPayload: IDeleteTaskDialog) => void;
+    updateReminderDialog: (actionPayload: IReminderDialog) => void;
   };
 }
