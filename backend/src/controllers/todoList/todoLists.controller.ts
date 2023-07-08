@@ -12,6 +12,7 @@ import { OkResult } from "inversify-express-utils/lib/results";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import {
   PARAM_EXTENDED,
+  PARAM_WITH_MEMBERS,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
 import { IUserAttached } from "linked-models/user/user.model";
@@ -32,7 +33,8 @@ export class TodoListsController extends BaseHttpController {
   @httpGet("")
   async getTodoListsForUser(
     @currentUser() currentUser: IUserAttached,
-    @queryParam(PARAM_EXTENDED) extended = false
+    @queryParam(PARAM_EXTENDED) extended = false,
+    @queryParam(PARAM_WITH_MEMBERS) withMembers = false
   ): Promise<OkResult> {
     if (extended) {
       const todoLists =
@@ -41,9 +43,16 @@ export class TodoListsController extends BaseHttpController {
         );
 
       return this.ok(todoLists);
+    } else if (withMembers) {
+      const { todoLists } =
+        await this.todoListService.getTodoListsWithMembersForUser(
+          currentUser.id
+        );
+
+      return this.ok(todoLists);
     }
 
-    const todoLists = await this.todoListService.getTodoListById(
+    const todoLists = await this.todoListService.getTodoListsForUser(
       currentUser.id
     );
 
