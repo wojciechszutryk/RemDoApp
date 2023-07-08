@@ -1,8 +1,8 @@
 import { Button } from "atomicComponents/atoms/Button";
+import { Separator } from "atomicComponents/atoms/Separator";
 import { TextField } from "atomicComponents/atoms/TextField";
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { Separator } from "pages/HomePage/components/TopSection/UserPanel/Separator";
 import { StyledWrapper } from "pages/LoginPage/LoginPanel/styles";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -40,7 +40,7 @@ export const UserPanel = (): JSX.Element => {
       >
         {t(TranslationKeys.LoginButtonText)}
       </Button>
-      <Separator />
+      <Separator text={t(TranslationKeys.LoginPanelSeparatorText)} />
       <Button
         onClick={() =>
           navigate(

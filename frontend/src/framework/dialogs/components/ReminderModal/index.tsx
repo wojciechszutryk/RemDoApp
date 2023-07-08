@@ -1,8 +1,8 @@
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import HourglassFullIcon from "@mui/icons-material/HourglassFull";
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
+import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
-import { ControlledCheckbox } from "atomicComponents/molecules/ControlledCheckbox";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import dayjs from "dayjs";
 import { useDialogs } from "framework/dialogs";
@@ -15,11 +15,11 @@ import { useCreateReminderMutation } from "pages/RemindersPage/mutations/createR
 import { useEditTaskInTodoListMutation } from "pages/SingleTodoListPage/mutations/editTask/editTask.mutation";
 import { useEditTodoListMutation } from "pages/SingleTodoListPage/mutations/editTodoList/editTodoList.mutation";
 import { memo } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import DatePickerWithIcon from "../TaskModal/components/DatePickerWithIcon";
-import IconPicker from "../TodoListModal/components/IconPicker";
-import { StyledForm, StyledInlineInputs } from "../TodoListModal/styles";
+import { StyledForm } from "../TodoListModal/styles";
+import TodoListSelect from "./components/TodoListSelect";
 
 const ReminderModal = (): JSX.Element => {
   const {
@@ -34,9 +34,10 @@ const ReminderModal = (): JSX.Element => {
     icon: editReminderData?.icon || TodoListIconEnum.Reminder,
     whenShouldBeStarted: editReminderData?.whenShouldBeStarted || null,
     whenShouldBeFinished: editReminderData?.whenShouldBeFinished || null,
+    todoListId: editReminderData?.todoListId || "reminder",
   };
 
-  const { control, getValues, handleSubmit } = useForm<IReminderDTO>({
+  const methods = useForm<IReminderDTO>({
     defaultValues: defaultFormValues,
   });
 
@@ -46,24 +47,26 @@ const ReminderModal = (): JSX.Element => {
   const { t } = useTranslation();
 
   const onSubmit = (data: IReminderDTO) => {
-    if (editReminderData) {
-      editTaskMutation.mutate({
-        todoListId: editReminderData.todoListId,
-        taskId: editReminderData.id,
-        data,
-      });
+    console.log(data);
 
-      if (editReminderData.icon !== data.icon) {
-        editTodoListMutation.mutate({
-          todoListId: editReminderData.todoListId,
-          data: {
-            icon: data.icon,
-          },
-        });
-      }
-    } else createReminderMutation.mutate(data);
+    // if (editReminderData) {
+    //   editTaskMutation.mutate({
+    //     todoListId: editReminderData.todoListId,
+    //     taskId: editReminderData.id,
+    //     data,
+    //   });
 
-    updateReminderDialog(initialTaskDialog);
+    //   if (editReminderData.icon !== data.icon) {
+    //     editTodoListMutation.mutate({
+    //       todoListId: editReminderData.todoListId,
+    //       data: {
+    //         icon: data.icon,
+    //       },
+    //     });
+    //   }
+    // } else createReminderMutation.mutate(data);
+
+    // updateReminderDialog(initialTaskDialog);
   };
 
   return (
@@ -71,50 +74,45 @@ const ReminderModal = (): JSX.Element => {
       open={visible}
       onClose={() => updateReminderDialog(initialTaskDialog)}
     >
-      <StyledForm onSubmit={handleSubmit(onSubmit)}>
-        <Typography variant="h4">
-          {editReminderData
-            ? `${t(TranslationKeys.EditTask)}: ${editReminderData.text}`
-            : t(TranslationKeys.AddTask)}
-        </Typography>
+      <FormProvider {...methods}>
+        <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
+          <Typography variant="h4">
+            {editReminderData
+              ? `${t(TranslationKeys.EditTask)}: ${editReminderData.text}`
+              : t(TranslationKeys.AddTask)}
+          </Typography>
 
-        <StyledInlineInputs>
-          <IconPicker />
           <ControlledTextField
             name={"text"}
-            control={control}
+            control={methods.control}
             placeholder={t(TranslationKeys.TaskName)}
           />
-        </StyledInlineInputs>
-        {[
-          {
-            Icon: <HourglassEmptyIcon />,
-            tooltipTitle: t(TranslationKeys.PlannedStartDate),
-            name: "whenShouldBeStarted" as keyof ITask,
-            control,
-            maxDate: dayjs(getValues("whenShouldBeFinished")),
-          },
-          {
-            Icon: <HourglassFullIcon />,
-            tooltipTitle: t(TranslationKeys.PlannedFinishDate),
-            name: "whenShouldBeFinished" as keyof ITask,
-            control,
-            minDate: dayjs(getValues("whenShouldBeStarted")),
-          },
-        ].map((props, index) => (
-          <DatePickerWithIcon<IReminderDTO> key={index} {...props} />
-        ))}
-        <ControlledCheckbox
-          name={"important"}
-          control={control}
-          label={t(TranslationKeys.TaskImportant)}
-        />
-        <Button type="submit">
-          {editReminderData
-            ? t(TranslationKeys.Save)
-            : t(TranslationKeys.AddTask)}
-        </Button>
-      </StyledForm>
+          {[
+            {
+              Icon: <HourglassEmptyIcon />,
+              tooltipTitle: t(TranslationKeys.PlannedStartDate),
+              name: "whenShouldBeStarted" as keyof ITask,
+              control: methods.control,
+              maxDate: dayjs(methods.getValues("whenShouldBeFinished")),
+            },
+            {
+              Icon: <HourglassFullIcon />,
+              tooltipTitle: t(TranslationKeys.PlannedFinishDate),
+              name: "whenShouldBeFinished" as keyof ITask,
+              control: methods.control,
+              minDate: dayjs(methods.getValues("whenShouldBeStarted")),
+            },
+          ].map((props, index) => (
+            <DatePickerWithIcon<IReminderDTO> key={index} {...props} />
+          ))}
+          <TodoListSelect />
+          <Button type="submit">
+            {editReminderData
+              ? t(TranslationKeys.Save)
+              : t(TranslationKeys.AddTask)}
+          </Button>
+        </StyledForm>
+      </FormProvider>
     </Dialog>
   );
 };

@@ -42,8 +42,8 @@ mongoose.connection.on("open", () => {
   const app = server.build();
   const httpServer = createServer(app);
 
-  const socketService = new SocketService(httpServer);
-  container.bind(SocketService).toConstantValue(socketService);
+  // const socketService = new SocketService(httpServer);
+  // container.bind(SocketService).toConstantValue(socketService);
 
   const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 

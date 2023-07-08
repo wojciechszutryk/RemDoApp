@@ -19,28 +19,22 @@ export const StyledWrapper = styled("div")({
 
 export const StyledSelect = styled(Select)(({ theme }) => ({
   height: 52,
-  marginTop: "30px",
   paddingLeft: 0,
   paddingTop: 0,
   paddingBottom: 0,
   lineHeight: "54px",
-  color: theme.palette.secondary.contrastText,
-  backgroundColor: theme.palette.secondary.main,
-  boxShadow: `inset 0px 3px 4px ${theme.palette.primary.main}`,
+  color: theme.palette.primary.contrastText,
+  border: `2px solid ${theme.palette.primary.contrastText}`,
   borderRadius: theme.spacing(3),
+  transition: "all .15s",
 
   [`&.${selectClasses.select}`]: {
     backgroundColor: "transparent",
     boxShadow: "none",
   },
-  "&:hover, &.MuiFilledInput-root:hover": {
-    boxShadow: `inset 0px 3px 4px ${theme.palette.primary.dark}`,
-    backgroundColor: theme.palette.secondary.light,
-  },
   [`&.Mui-focused:has(.${selectClasses.select}[aria-expanded="true"])`]: {
-    backgroundColor: `${theme.palette.secondary.light} !important`,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
+    backgroundColor: `transparent !important`,
+    border: "none",
   },
   [`& > .${selectClasses.select}`]: {
     paddingLeft: 16,
