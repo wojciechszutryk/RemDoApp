@@ -8,4 +8,5 @@ export enum TodoListIconEnum {
   Family = "Family",
   Shopping = "Shopping",
   Food = "Food",
+  Reminder = "Reminder",
 }
