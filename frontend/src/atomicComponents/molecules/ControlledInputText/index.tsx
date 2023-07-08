@@ -27,7 +27,6 @@ export const ControlledTextField = <
   ...otherProps
 }: Props<TFieldValues, TName>): JSX.Element => {
   return (
-    <>
       <Controller
         name={name}
         control={control}
@@ -36,6 +35,5 @@ export const ControlledTextField = <
           <TextField onChange={onChange} value={value} {...otherProps} />
         )}
       />
-    </>
   );
 };

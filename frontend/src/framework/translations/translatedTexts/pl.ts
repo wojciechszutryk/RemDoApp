@@ -33,6 +33,11 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PageTitleFeatures]: "Funkcje",
 
   [TranslationKeys.PageTitleReminders]: "Przypomnienia",
+  [TranslationKeys.Reminder]: "Przypomnienie",
+  [TranslationKeys.ReminderInfo]:
+    "Utwórz nowe przypomnienie. Będzie ono widoczne jedynie w twoim kalendarzu. ",
+  [TranslationKeys.ScopeChoose]: "Wybierz zakres",
+  [TranslationKeys.OrChooseTodoList]: "Lub wybierz listę zadań",
 
   [TranslationKeys.PageTitleTodoLists]: "Listy zadań",
   [TranslationKeys.EmptyTodoLists]: "Brak list zadań. Utwórz nową listę!",

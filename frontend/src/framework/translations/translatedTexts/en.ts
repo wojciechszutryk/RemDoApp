@@ -32,6 +32,11 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PageTitleFeatures]: "Features",
 
   [TranslationKeys.PageTitleReminders]: "Reminders",
+  [TranslationKeys.Reminder]: "Reminder",
+  [TranslationKeys.ReminderInfo]:
+    "Create new reminder. It will be visible only in yours callendar.",
+  [TranslationKeys.ScopeChoose]: "Choose scope",
+  [TranslationKeys.OrChooseTodoList]: "Or choose todo list",
 
   [TranslationKeys.PageTitleTodoLists]: "TodoLists",
   [TranslationKeys.EmptyTodoLists]: "There are no todo lists. Create one!",

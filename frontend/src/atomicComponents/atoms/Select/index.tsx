@@ -7,19 +7,22 @@ import {
 import { StyledSelect, StyledWrapper } from "./styles";
 
 const MenuProps: Partial<MuiMenuProps> = {
-  variant: "menu",
   anchorOrigin: {
-    vertical: "bottom",
-    horizontal: "left",
-  },
-  transformOrigin: {
     vertical: "top",
-    horizontal: "left",
+    horizontal: "center",
+  },
+  variant: "menu",
+  MenuListProps: {
+    sx: {
+      width: "calc(100% - 32px)",
+      margin: "0 auto",
+      wordWrap: "break-word",
+    },
   },
   PaperProps: {
     style: {
-      boxShadow: "1px 4px 15px 0px #0000001a",
-      borderRadius: "0px 0px 8px 8px",
+      borderRadius: "20px",
+      maxHeight: 300,
       margin: 0,
     },
   },
@@ -41,8 +44,8 @@ export const Select = ({
       <FormControl fullWidth variant={"standard"}>
         <StyledSelect
           {...otherProps}
-          autoWidth={true}
           disableUnderline
+          autoWidth={false}
           value={value ? value : []}
           MenuProps={MenuProps}
         >

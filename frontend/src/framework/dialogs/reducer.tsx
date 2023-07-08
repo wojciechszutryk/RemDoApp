@@ -41,6 +41,12 @@ function Reducer(
       return newState;
     }
 
+    case DialogsActionTypes.updateReminderDialog: {
+      newState.reminderDialog = action.payload;
+
+      return newState;
+    }
+
     default:
       throw new Error();
   }

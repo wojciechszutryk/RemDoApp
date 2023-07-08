@@ -59,9 +59,6 @@ const Callendar = ({ dateToTasksMap }: Props): JSX.Element => {
   >(getHighlightedDaysForMonth(dayjs()));
 
   const {
-    dialogsState: {
-      reminderDialog: { visible },
-    },
     dialogsActions: { updateReminderDialog },
   } = useDialogs();
 
@@ -78,7 +75,7 @@ const Callendar = ({ dateToTasksMap }: Props): JSX.Element => {
             highlightedDays: highlightedMonthDays,
 
             onClick: () => {
-              console.log("outer");
+              updateReminderDialog({ visible: true });
             },
           },
         } as any

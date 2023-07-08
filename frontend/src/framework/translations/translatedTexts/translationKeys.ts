@@ -29,6 +29,10 @@ export enum TranslationKeys {
   PageTitleFeatures = "PageTitleFeatures",
 
   PageTitleReminders = "PageTitleReminders",
+  Reminder = "Reminder",
+  ReminderInfo = "ReminderInfo",
+  ScopeChoose = "ScopeChoose",
+  OrChooseTodoList = "OrChooseTodoList",
 
   PageTitleTodoLists = "PageTitleTodoLists",
   EmptyTodoLists = "EmptyTodoLists",

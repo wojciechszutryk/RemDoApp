@@ -6,6 +6,7 @@ const ShareTodoListModal = lazy(() => import("./ShareTodoListModal"));
 const DeleteTodoListModal = lazy(() => import("./DeleteTodoListModal"));
 const TaskModal = lazy(() => import("./TaskModal"));
 const DeleteTaskModal = lazy(() => import("./DeleteTaskModal"));
+const ReminderModal = lazy(() => import("./ReminderModal"));
 
 const Dialogs = (): JSX.Element => {
   const { dialogsState } = useDialogs();
@@ -35,6 +36,11 @@ const Dialogs = (): JSX.Element => {
       {dialogsState.deleteTaskDialog.visible && (
         <Suspense fallback={<></>}>
           <DeleteTaskModal />
+        </Suspense>
+      )}
+      {dialogsState.reminderDialog.visible && (
+        <Suspense fallback={<></>}>
+          <ReminderModal />
         </Suspense>
       )}
     </>
