@@ -20,8 +20,8 @@ export interface ITask {
   /** Boolean to determine if task is important */
   important?: boolean;
 
-  /** Icon of task. Optional property. By default task icon is inherited from parent todoList. In case when task is part of 'RemindersList' (special todoList to gather task that are used as reminders), task can have its own icon. */
-  icon?: TodoListIconEnum;
+  /** Boolean to determine if task is a reminder */
+  isReminder?: boolean;
 }
 
 export interface ITaskWithReadonlyProperties extends ITask {
