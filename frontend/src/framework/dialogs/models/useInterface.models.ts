@@ -6,6 +6,7 @@ import {
   IShareTodoListDialog,
   ITaskDialog,
   ITodoListDialog,
+  IReminderListDialog,
 } from "./state.model";
 
 export interface ContextProps {
@@ -17,5 +18,6 @@ export interface ContextProps {
     updateTaskDialog: (actionPayload: ITaskDialog) => void;
     updateDeleteTaskDialog: (actionPayload: IDeleteTaskDialog) => void;
     updateReminderDialog: (actionPayload: IReminderDialog) => void;
+    updateReminderListDialog: (actionPayload: IReminderListDialog) => void;
   };
 }

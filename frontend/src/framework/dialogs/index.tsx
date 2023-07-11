@@ -3,6 +3,7 @@ import {
   updateDeleteTaskDialogAction,
   updateDeleteTodoListDialogAction,
   updateReminderDialogAction,
+  updateReminderListDialogAction,
   updateShareTodoListDialogAction,
   updateTaskDialogAction,
   updateTodoListDialogAction,
@@ -12,6 +13,7 @@ import {
   IDeleteTaskDialog,
   IDeleteTodoListDialog,
   IReminderDialog,
+  IReminderListDialog,
   IShareTodoListDialog,
   ITaskDialog,
   ITodoListDialog,
@@ -39,6 +41,8 @@ function DialogsProvider({ children }: Props): JSX.Element {
       dialogsDispatch(updateDeleteTaskDialogAction(actionPayload)),
     updateReminderDialog: (actionPayload: IReminderDialog) =>
       dialogsDispatch(updateReminderDialogAction(actionPayload)),
+    updateReminderListDialog: (actionPayload: IReminderListDialog) =>
+      dialogsDispatch(updateReminderListDialogAction(actionPayload)),
   };
 
   const value = {

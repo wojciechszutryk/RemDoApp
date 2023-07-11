@@ -2,9 +2,10 @@ import { useMediaQuery } from "@mui/material";
 import { PickersDayProps } from "@mui/x-date-pickers";
 import Tooltip from "atomicComponents/atoms/Tooltip";
 import { Dayjs } from "dayjs";
+import { useDialogs } from "framework/dialogs";
 import { IExtendedTaskWithTodoList } from "pages/RemindersPage/helpers/models";
 import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { StyledDay, StyledMoreTasksIcon, StyledPickersDay } from "./styles";
 
 const CallendarDay = (
@@ -22,11 +23,29 @@ const CallendarDay = (
   const dayTasks =
     !props.outsideCurrentMonth && highlightedDays?.get(day.toString());
 
+  const {
+    dialogsActions: { updateReminderDialog, updateReminderListDialog },
+  } = useDialogs();
+
+  const handleDayClick = useCallback(() => {
+    if (!Array.isArray(dayTasks) || dayTasks?.length === 0) {
+      updateReminderDialog({
+        visible: true,
+      });
+    } else {
+      updateReminderListDialog({
+        visible: true,
+        reminders: dayTasks,
+      });
+    }
+  }, [dayTasks, updateReminderDialog, updateReminderListDialog]);
+
   return (
     <StyledPickersDay
       {...other}
       outsideCurrentMonth={outsideCurrentMonth}
       day={day}
+      onClick={handleDayClick}
     >
       <StyledDay>{day.date()}</StyledDay>
       {Array.isArray(dayTasks) && dayTasks.length > 0 ? (

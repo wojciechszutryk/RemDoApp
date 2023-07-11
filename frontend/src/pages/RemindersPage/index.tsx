@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
 import { memo, useMemo } from "react";
 import Callendar from "./components/Callendar";
+import RemindersList from "./components/RemindersList";
 import RemindersPageLoader from "./components/RemindersPageLoader";
 import { IExtendedTaskWithTodoList } from "./helpers/models";
 
@@ -67,7 +68,7 @@ const RemindersPage = (): JSX.Element => {
       }}
     >
       <Callendar dateToTasksMap={dateToTasksMap} />
-      {/* <RemindersList dateToTasksMap={dateToTasksMap} /> */}
+      <RemindersList dateToTasksMap={dateToTasksMap} />
     </Box>
   );
 };

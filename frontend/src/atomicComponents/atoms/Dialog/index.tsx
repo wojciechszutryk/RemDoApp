@@ -15,7 +15,7 @@ const Transition = forwardRef(function Transition(
 
 const Dialog = ({ children, ...props }: DialogProps): JSX.Element => {
   return (
-    <StyledDialog {...props} TransitionComponent={Transition}>
+    <StyledDialog {...props} TransitionComponent={Transition} keepMounted>
       <StyledInnerWrapper>{children}</StyledInnerWrapper>
 
       {props.onClose && (
