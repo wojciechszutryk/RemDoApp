@@ -3,6 +3,7 @@ import { BaseContextProps } from "../contexts/base.context.props";
 import {
   initialDeleteTaskDialog,
   initialDeleteTodoListDialog,
+  initialReminderListDialog,
   initialShareTodoListDialog,
   initialTaskDialog,
 } from "./models/initialState.const";
@@ -24,6 +25,7 @@ export const initialState = {
   taskDialog: { ...initialTaskDialog, onClose: () => {} },
   deleteTaskDialog: { ...initialDeleteTaskDialog, onClose: () => {} },
   reminderDialog: { ...initialTaskDialog, onClose: () => {} },
+  reminderListDialog: { ...initialReminderListDialog, onClose: () => {} },
 };
 
 export const Context = createContext<BaseContextProps & ContextProps>({
@@ -35,6 +37,7 @@ export const Context = createContext<BaseContextProps & ContextProps>({
     updateTaskDialog: () => null,
     updateDeleteTaskDialog: () => null,
     updateReminderDialog: () => null,
+    updateReminderListDialog: () => null,
   },
   initialized: false,
 });

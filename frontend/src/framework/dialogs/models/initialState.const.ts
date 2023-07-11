@@ -1,6 +1,7 @@
 import {
   IDeleteTaskDialog,
   IDeleteTodoListDialog,
+  IReminderListDialog,
   IShareTodoListDialog,
   ITaskDialog,
 } from "./state.model";
@@ -26,4 +27,9 @@ export const initialTaskDialog: ITaskDialog = {
 export const initialDeleteTaskDialog: IDeleteTaskDialog = {
   visible: false,
   taskId: "",
+};
+
+export const initialReminderListDialog: IReminderListDialog = {
+  visible: false,
+  reminders: [],
 };

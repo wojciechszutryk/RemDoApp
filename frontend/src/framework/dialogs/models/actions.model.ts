@@ -2,6 +2,7 @@ import {
   IDeleteTaskDialog,
   IDeleteTodoListDialog,
   IReminderDialog,
+  IReminderListDialog,
   IShareTodoListDialog,
   ITaskDialog,
   ITodoListDialog,
@@ -14,7 +15,8 @@ export enum DialogsActionTypes {
   updateTaskDialog = "UPDATE_TASK_DIALOG",
   updateDeleteTaskDialog = "UPDATE_DELETE_TASK_DIALOG",
   updateRemindersListDialog = "UPDATE_REMINSERS_LIST_DIALOG",
-  updateReminderDialog = "UPDATE_CREATE_REMINDER_DIALOG",
+  updateReminderDialog = "UPDATE_REMINDER_DIALOG",
+  updateReminderListDialog = "UPDATE_REMINDER_LIST_DIALOG",
 }
 export interface UpdateTodoListDialogAction {
   type: DialogsActionTypes.updateTodoListDialog;
@@ -45,6 +47,10 @@ export interface UpdateReminderDialogAction {
   type: DialogsActionTypes.updateReminderDialog;
   payload: IReminderDialog;
 }
+export interface UpdateReminderListDialogAction {
+  type: DialogsActionTypes.updateReminderListDialog;
+  payload: IReminderListDialog;
+}
 
 export type DialogsReducerActions =
   | UpdateTodoListDialogAction
@@ -52,4 +58,5 @@ export type DialogsReducerActions =
   | UpdateDeleteTodoListDialogAction
   | UpdateTaskDialogAction
   | UpdateReminderDialogAction
+  | UpdateReminderListDialogAction
   | UpdateDeleteTaskDialogAction;

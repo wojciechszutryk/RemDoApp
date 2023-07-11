@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { useDialogs } from "..";
+import ReminderListModal from "./ReminderListModal";
 
 const TodoListModal = lazy(() => import("./TodoListModal"));
 const ShareTodoListModal = lazy(() => import("./ShareTodoListModal"));
@@ -41,6 +42,11 @@ const Dialogs = (): JSX.Element => {
       {dialogsState.reminderDialog.visible && (
         <Suspense fallback={<></>}>
           <ReminderModal />
+        </Suspense>
+      )}
+      {dialogsState.reminderListDialog.visible && (
+        <Suspense fallback={<></>}>
+          <ReminderListModal />
         </Suspense>
       )}
     </>

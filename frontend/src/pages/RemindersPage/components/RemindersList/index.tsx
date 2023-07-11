@@ -1,13 +1,7 @@
-import {
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  ListSubheader,
-} from "@mui/material";
+import { List } from "@mui/material";
 import { IExtendedTaskWithTodoList } from "pages/RemindersPage/helpers/models";
-import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
 import { memo, useMemo } from "react";
+import DayRemindersList from "./DayRemindersList";
 
 interface Props {
   dateToTasksMap: Map<string, IExtendedTaskWithTodoList[]>;
@@ -36,17 +30,7 @@ const RemindersList = ({ dateToTasksMap }: Props): JSX.Element => {
     >
       {sortedDateToTasksArr.map(([date, tasks]) => (
         <li key={`section-${date}`}>
-          <ul>
-            <ListSubheader>{`${date}`}</ListSubheader>
-            {tasks.map((t) => (
-              <ListItem key={t.id}>
-                <ListItemIcon>
-                  <TodoListIcon type={t.todoList.icon} />
-                </ListItemIcon>
-                <ListItemText primary={t.text} />
-              </ListItem>
-            ))}
-          </ul>
+          <DayRemindersList reminders={tasks} date={date} />
         </li>
       ))}
     </List>

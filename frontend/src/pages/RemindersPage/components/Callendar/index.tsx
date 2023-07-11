@@ -1,5 +1,4 @@
 import dayjs, { Dayjs } from "dayjs";
-import { useDialogs } from "framework/dialogs";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { memo, useMemo, useState } from "react";
 import CallendarDay from "./CallendarDay";
@@ -58,10 +57,6 @@ const Callendar = ({ dateToTasksMap }: Props): JSX.Element => {
     Map<string, IExtendedTaskDto[]>
   >(getHighlightedDaysForMonth(dayjs()));
 
-  const {
-    dialogsActions: { updateReminderDialog },
-  } = useDialogs();
-
   return (
     <StyledDateCalendar
       defaultValue={initialValue}
@@ -73,10 +68,6 @@ const Callendar = ({ dateToTasksMap }: Props): JSX.Element => {
         {
           day: {
             highlightedDays: highlightedMonthDays,
-
-            onClick: () => {
-              updateReminderDialog({ visible: true });
-            },
           },
         } as any
       }

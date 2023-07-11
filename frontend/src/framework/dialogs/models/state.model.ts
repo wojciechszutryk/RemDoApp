@@ -1,3 +1,4 @@
+import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { ITask } from "linked-models/task/task.model";
 import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { ITodoList } from "linked-models/todoList/todoList.model";
@@ -40,6 +41,11 @@ export interface IReminderDialog {
   };
 }
 
+export interface IReminderListDialog {
+  visible: boolean;
+  reminders: IExtendedTaskDto[];
+}
+
 export interface IDialogsState {
   todoListDialog: ITodoListDialog;
   shareTodoListDialog: IShareTodoListDialog;
@@ -47,4 +53,5 @@ export interface IDialogsState {
   taskDialog: ITaskDialog;
   deleteTaskDialog: IDeleteTaskDialog;
   reminderDialog: IReminderDialog;
+  reminderListDialog: IReminderListDialog;
 }
