@@ -1,0 +1,16 @@
+version: '3'
+services:
+  web:
+    container_name: backend-prod
+    build: .
+    restart: always
+    command:
+      - /bin/sh
+      - -c
+      - npm run start
+    env_file:
+      - ./backend/.env
+    volumes:
+      - .:/app
+    ports:
+      - '3001:3001'
