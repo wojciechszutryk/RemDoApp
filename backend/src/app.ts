@@ -44,7 +44,7 @@ mongoose.connection.on("open", () => {
 
   // const socketService = new SocketService(httpServer);
   // container.bind(SocketService).toConstantValue(socketService);
-
+ 
   const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 
   httpServer.listen(port, () => {
