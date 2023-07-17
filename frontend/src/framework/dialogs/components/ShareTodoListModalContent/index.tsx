@@ -8,11 +8,14 @@ import { useEditTodoListMutation } from "pages/SingleTodoListPage/mutations/edit
 import { memo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import EmailAutocomplete from "../TodoListModal/components/EmailAutocomplete";
-import { StyledAutocompleteLabel, StyledForm } from "../TodoListModal/styles";
+import EmailAutocomplete from "../TodoListModalContent/components/EmailAutocomplete";
+import {
+  StyledAutocompleteLabel,
+  StyledForm,
+} from "../TodoListModalContent/styles";
 import { ShareTodoListForm } from "./models";
 
-const ShareTodoListModal = (): JSX.Element => {
+const ShareTodoListModalContent = (): JSX.Element => {
   const {
     dialogsState: {
       shareTodoListDialog: {
@@ -73,4 +76,4 @@ const ShareTodoListModal = (): JSX.Element => {
   );
 };
 
-export default memo(ShareTodoListModal);
+export default memo(ShareTodoListModalContent);

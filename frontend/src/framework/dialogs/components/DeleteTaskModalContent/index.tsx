@@ -1,4 +1,3 @@
-import Dialog from "atomicComponents/atoms/Dialog";
 import { SunImage } from "atomicComponents/atoms/SVGImages/Sun";
 import InformationTemplate from "atomicComponents/molecules/InformationTemplate";
 import { useDialogs } from "framework/dialogs";
@@ -8,10 +7,10 @@ import { useDeleteTaskMutation } from "pages/SingleTodoListPage/mutations/delete
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
-const DeleteTaskModal = (): JSX.Element => {
+const DeleteTaskModalContent = (): JSX.Element => {
   const {
     dialogsState: {
-      deleteTaskDialog: { visible, taskId, todoListId },
+      deleteTaskDialog: { taskId, todoListId },
     },
     dialogsActions: { updateDeleteTaskDialog },
   } = useDialogs();
@@ -25,25 +24,20 @@ const DeleteTaskModal = (): JSX.Element => {
   };
 
   return (
-    <Dialog
-      open={visible}
-      onClose={() => updateDeleteTaskDialog(initialDeleteTaskDialog)}
-    >
-      <InformationTemplate
-        image={<SunImage />}
-        imageStylesOverride={{
-          width: { xs: 150 },
-          height: { xs: 100 },
-        }}
-        headerText={t(TranslationKeys.DelteTaskWarning)}
-        actionButton={{
-          children: t(TranslationKeys.DelteTask),
-          onClick: onDelete,
-        }}
-        reversed
-      />
-    </Dialog>
+    <InformationTemplate
+      image={<SunImage />}
+      imageStylesOverride={{
+        width: { xs: 150 },
+        height: { xs: 100 },
+      }}
+      headerText={t(TranslationKeys.DelteTaskWarning)}
+      actionButton={{
+        children: t(TranslationKeys.DelteTask),
+        onClick: onDelete,
+      }}
+      reversed
+    />
   );
 };
 
-export default memo(DeleteTaskModal);
+export default memo(DeleteTaskModalContent);

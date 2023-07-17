@@ -1,4 +1,3 @@
-import Dialog from "atomicComponents/atoms/Dialog";
 import { BoatImage } from "atomicComponents/atoms/SVGImages/Boat";
 import InformationTemplate from "atomicComponents/molecules/InformationTemplate";
 import { useDialogs } from "framework/dialogs";
@@ -11,7 +10,7 @@ import { useTranslation } from "react-i18next";
 const DeleteTodoListModal = (): JSX.Element => {
   const {
     dialogsState: {
-      deleteTodoListDialog: { visible, todoListId },
+      deleteTodoListDialog: { todoListId },
     },
     dialogsActions: { updateDeleteTodoListDialog },
   } = useDialogs();
@@ -26,19 +25,14 @@ const DeleteTodoListModal = (): JSX.Element => {
   };
 
   return (
-    <Dialog
-      open={visible}
-      onClose={() => updateDeleteTodoListDialog(initialDeleteTodoListDialog)}
-    >
-      <InformationTemplate
-        image={<BoatImage />}
-        headerText={t(TranslationKeys.DelteTodoListWarning)}
-        actionButton={{
-          children: t(TranslationKeys.DelteTodoList),
-          onClick: onDelete,
-        }}
-      />
-    </Dialog>
+    <InformationTemplate
+      image={<BoatImage />}
+      headerText={t(TranslationKeys.DelteTodoListWarning)}
+      actionButton={{
+        children: t(TranslationKeys.DelteTodoList),
+        onClick: onDelete,
+      }}
+    />
   );
 };
 

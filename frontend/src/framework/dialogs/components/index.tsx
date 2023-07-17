@@ -1,52 +1,127 @@
 import { lazy, Suspense } from "react";
 import { useDialogs } from "..";
-import ReminderListModal from "./ReminderListModal";
+import {
+  initialDeleteTaskDialog,
+  initialDeleteTodoListDialog,
+  initialShareTodoListDialog,
+  initialTaskDialog,
+} from "../models/initialState.const";
+import ContextDialogImpl from "./ContextDialogImpl";
+import ReminderListModalContent from "./ReminderListModalContent";
 
-const TodoListModal = lazy(() => import("./TodoListModal"));
-const ShareTodoListModal = lazy(() => import("./ShareTodoListModal"));
-const DeleteTodoListModal = lazy(() => import("./DeleteTodoListModal"));
-const TaskModal = lazy(() => import("./TaskModal"));
-const DeleteTaskModal = lazy(() => import("./DeleteTaskModal"));
-const ReminderModal = lazy(() => import("./ReminderModal"));
+const TodoListModalContent = lazy(() => import("./TodoListModalContent"));
+const ShareTodoListModalContent = lazy(
+  () => import("./ShareTodoListModalContent")
+);
+const DeleteTodoListModalContent = lazy(
+  () => import("./DeleteTodoListModalContent")
+);
+const TaskModalContent = lazy(() => import("./TaskModalContent"));
+const DeleteTaskModalContent = lazy(() => import("./DeleteTaskModalContent"));
+const ReminderModalContent = lazy(() => import("./ReminderModalContent"));
 
 const Dialogs = (): JSX.Element => {
-  const { dialogsState } = useDialogs();
+  const {
+    dialogsState: {
+      deleteTaskDialog,
+      deleteTodoListDialog,
+      taskDialog,
+      reminderDialog,
+      todoListDialog,
+      reminderListDialog,
+      shareTodoListDialog,
+    },
+    dialogsActions: {
+      updateReminderListDialog,
+      updateDeleteTaskDialog,
+      updateDeleteTodoListDialog,
+      updateReminderDialog,
+      updateShareTodoListDialog,
+      updateTaskDialog,
+      updateTodoListDialog,
+    },
+  } = useDialogs();
 
   return (
     <>
-      {dialogsState.todoListDialog.visible && (
+      {todoListDialog.visible && (
         <Suspense fallback={<></>}>
-          <TodoListModal />
+          <ContextDialogImpl
+            contextVisible={todoListDialog.visible}
+            onCloseContextAction={() =>
+              updateTodoListDialog({ visible: false })
+            }
+          >
+            <TodoListModalContent />
+          </ContextDialogImpl>
         </Suspense>
       )}
-      {dialogsState.shareTodoListDialog.visible && (
+      {shareTodoListDialog.visible && (
         <Suspense fallback={<></>}>
-          <ShareTodoListModal />
+          <ContextDialogImpl
+            contextVisible={shareTodoListDialog.visible}
+            onCloseContextAction={() =>
+              updateShareTodoListDialog(initialShareTodoListDialog)
+            }
+          >
+            <ShareTodoListModalContent />
+          </ContextDialogImpl>
         </Suspense>
       )}
-      {dialogsState.deleteTodoListDialog.visible && (
+      {deleteTodoListDialog.visible && (
         <Suspense fallback={<></>}>
-          <DeleteTodoListModal />
+          <ContextDialogImpl
+            contextVisible={deleteTodoListDialog.visible}
+            onCloseContextAction={() =>
+              updateDeleteTodoListDialog(initialDeleteTodoListDialog)
+            }
+          >
+            <DeleteTodoListModalContent />
+          </ContextDialogImpl>
         </Suspense>
       )}
-      {dialogsState.taskDialog.visible && (
+      {taskDialog.visible && (
         <Suspense fallback={<></>}>
-          <TaskModal />
+          <ContextDialogImpl
+            contextVisible={taskDialog.visible}
+            onCloseContextAction={() => updateTaskDialog(initialTaskDialog)}
+          >
+            <TaskModalContent />
+          </ContextDialogImpl>
         </Suspense>
       )}
-      {dialogsState.deleteTaskDialog.visible && (
+      {deleteTaskDialog.visible && (
         <Suspense fallback={<></>}>
-          <DeleteTaskModal />
+          <ContextDialogImpl
+            contextVisible={deleteTaskDialog.visible}
+            onCloseContextAction={() =>
+              updateDeleteTaskDialog(initialDeleteTaskDialog)
+            }
+          >
+            <DeleteTaskModalContent />
+          </ContextDialogImpl>
         </Suspense>
       )}
-      {dialogsState.reminderDialog.visible && (
+      {reminderDialog.visible && (
         <Suspense fallback={<></>}>
-          <ReminderModal />
+          <ContextDialogImpl
+            contextVisible={reminderDialog.visible}
+            onCloseContextAction={() => updateReminderDialog(initialTaskDialog)}
+          >
+            <ReminderModalContent />
+          </ContextDialogImpl>
         </Suspense>
       )}
-      {dialogsState.reminderListDialog.visible && (
+      {reminderListDialog.visible && (
         <Suspense fallback={<></>}>
-          <ReminderListModal />
+          <ContextDialogImpl
+            contextVisible={reminderListDialog.visible}
+            onCloseContextAction={() =>
+              updateReminderListDialog({ visible: false, reminders: [] })
+            }
+          >
+            <ReminderListModalContent />
+          </ContextDialogImpl>
         </Suspense>
       )}
     </>

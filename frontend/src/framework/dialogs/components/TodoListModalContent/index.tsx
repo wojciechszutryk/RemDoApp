@@ -1,7 +1,6 @@
 import { Typography } from "@mui/material";
 import Accordion from "atomicComponents/atoms/Accordion";
 import { Button } from "atomicComponents/atoms/Button";
-import Dialog from "atomicComponents/atoms/Dialog";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useDialogs } from "framework/dialogs";
@@ -21,10 +20,10 @@ import {
   StyledInlineInputs,
 } from "./styles";
 
-const TodoListModal = (): JSX.Element => {
+const TodoListModalContent = (): JSX.Element => {
   const {
     dialogsState: {
-      todoListDialog: { visible, editTodoListData },
+      todoListDialog: { editTodoListData },
     },
     dialogsActions: { updateTodoListDialog },
   } = useDialogs();
@@ -56,52 +55,47 @@ const TodoListModal = (): JSX.Element => {
   };
 
   return (
-    <Dialog
-      open={visible}
-      onClose={() => updateTodoListDialog({ visible: false })}
-    >
-      <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
-        <FormProvider {...methods}>
-          <Typography variant="h4">
-            {editTodoListData
-              ? `${t(TranslationKeys.EditTodoListDialogHeader)}: ${
-                  editTodoListData.name
-                }`
-              : t(TranslationKeys.CreateTodoListDialogHeader)}
-          </Typography>
-          <StyledInlineInputs>
-            <IconPicker />
-            <ControlledTextField
-              name={"name"}
-              control={methods.control}
-              placeholder={t(TranslationKeys.TodoListDialogInputTitle)}
-            />
-          </StyledInlineInputs>
-          <Accordion summaryText={t(TranslationKeys.ShareTodoList)}>
-            <StyledAutocompleteLabel>
-              {t(TranslationKeys.CurrentOwners)}
-            </StyledAutocompleteLabel>
-            <EmailAutocomplete
-              name="assignedOwners"
-              defaultValues={defaultFormValues.assignedOwners}
-            />
-            <StyledAutocompleteLabel>
-              {t(TranslationKeys.CurrentUsers)}
-            </StyledAutocompleteLabel>
-            <EmailAutocomplete
-              name="assignedUsers"
-              defaultValues={defaultFormValues.assignedUsers}
-            />
-          </Accordion>
-          <Button type="submit">
-            {editTodoListData
-              ? t(TranslationKeys.Save)
-              : t(TranslationKeys.CreateTodoListDialogHeader)}
-          </Button>
-        </FormProvider>
-      </StyledForm>
-    </Dialog>
+    <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
+      <FormProvider {...methods}>
+        <Typography variant="h4">
+          {editTodoListData
+            ? `${t(TranslationKeys.EditTodoListDialogHeader)}: ${
+                editTodoListData.name
+              }`
+            : t(TranslationKeys.CreateTodoListDialogHeader)}
+        </Typography>
+        <StyledInlineInputs>
+          <IconPicker />
+          <ControlledTextField
+            name={"name"}
+            control={methods.control}
+            placeholder={t(TranslationKeys.TodoListDialogInputTitle)}
+          />
+        </StyledInlineInputs>
+        <Accordion summaryText={t(TranslationKeys.ShareTodoList)}>
+          <StyledAutocompleteLabel>
+            {t(TranslationKeys.CurrentOwners)}
+          </StyledAutocompleteLabel>
+          <EmailAutocomplete
+            name="assignedOwners"
+            defaultValues={defaultFormValues.assignedOwners}
+          />
+          <StyledAutocompleteLabel>
+            {t(TranslationKeys.CurrentUsers)}
+          </StyledAutocompleteLabel>
+          <EmailAutocomplete
+            name="assignedUsers"
+            defaultValues={defaultFormValues.assignedUsers}
+          />
+        </Accordion>
+        <Button type="submit">
+          {editTodoListData
+            ? t(TranslationKeys.Save)
+            : t(TranslationKeys.CreateTodoListDialogHeader)}
+        </Button>
+      </FormProvider>
+    </StyledForm>
   );
 };
 
-export default memo(TodoListModal);
+export default memo(TodoListModalContent);

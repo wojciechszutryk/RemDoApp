@@ -10,7 +10,7 @@ const Transition = forwardRef(function Transition(
   },
   ref: React.Ref<unknown>
 ) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="down" ref={ref} in={true} {...props} />;
 });
 
 const Dialog = ({ children, ...props }: DialogProps): JSX.Element => {
