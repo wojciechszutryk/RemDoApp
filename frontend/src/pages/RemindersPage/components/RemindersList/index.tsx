@@ -1,39 +1,61 @@
-import { List } from "@mui/material";
 import { IExtendedTaskWithTodoList } from "pages/RemindersPage/helpers/models";
-import { memo, useMemo } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import DayRemindersList from "./DayRemindersList";
+import { StyledDayListItem, StyledRemindersList } from "./styles";
 
 interface Props {
   dateToTasksMap: Map<string, IExtendedTaskWithTodoList[]>;
 }
 
 const RemindersList = ({ dateToTasksMap }: Props): JSX.Element => {
-  const sortedDateToTasksArr = useMemo(() => {
+  const firstCurrentListItem = useRef<HTMLLIElement>(null);
+
+  const [pastReminders, futureReminders] = useMemo(() => {
     const sortedDateToTasksArr = Array.from(dateToTasksMap).sort((a, b) => {
       return new Date(a[0]).getTime() - new Date(b[0]).getTime();
     });
-    return sortedDateToTasksArr;
+    const todaysDate = new Date().getTime();
+    const firstUpcomingReminderIndex = sortedDateToTasksArr.findIndex(
+      ([date]) => {
+        return new Date(date).getTime() > todaysDate;
+      }
+    );
+    const pastReminders = sortedDateToTasksArr.slice(
+      0,
+      firstUpcomingReminderIndex === -1 ? undefined : firstUpcomingReminderIndex
+    );
+    const futureReminders = sortedDateToTasksArr.slice(
+      firstUpcomingReminderIndex === -1 ? undefined : firstUpcomingReminderIndex
+    );
+    return [pastReminders, futureReminders];
   }, [dateToTasksMap]);
 
+  useEffect(() => {
+    if (firstCurrentListItem.current) {
+      firstCurrentListItem.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [firstCurrentListItem]);
+
   return (
-    <List
-      sx={{
-        width: "100%",
-        maxWidth: 360,
-        bgcolor: "background.paper",
-        position: "relative",
-        overflow: "auto",
-        maxHeight: 300,
-        "& ul": { padding: 0 },
-      }}
-      subheader={<li />}
-    >
-      {sortedDateToTasksArr.map(([date, tasks]) => (
-        <li key={`section-${date}`}>
+    <StyledRemindersList subheader={<li />}>
+      {pastReminders.map(([date, tasks]) => (
+        <li key={date}>
           <DayRemindersList reminders={tasks} date={date} />
         </li>
       ))}
-    </List>
+      {futureReminders.map(([date, tasks], index) => (
+        <StyledDayListItem
+          key={date}
+          ref={index === 0 ? firstCurrentListItem : undefined}
+          highlighted={index === 0}
+        >
+          <DayRemindersList reminders={tasks} date={date} />
+        </StyledDayListItem>
+      ))}
+    </StyledRemindersList>
   );
 };
 

@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import dayjs from "dayjs";
 import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
 import { memo, useMemo } from "react";
@@ -6,6 +5,7 @@ import Callendar from "./components/Callendar";
 import RemindersList from "./components/RemindersList";
 import RemindersPageLoader from "./components/RemindersPageLoader";
 import { IExtendedTaskWithTodoList } from "./helpers/models";
+import { StyledRemindersPageWrapper } from "./styles";
 
 const RemindersPage = (): JSX.Element => {
   const getRemindersForDateRangeQuery = useGetUserExtendedTodoListsQuery();
@@ -58,18 +58,10 @@ const RemindersPage = (): JSX.Element => {
   if (getRemindersForDateRangeQuery.isLoading) return <RemindersPageLoader />;
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        maxWidth: 1000,
-        width: "100%",
-        marginTop: 20,
-      }}
-    >
-      <Callendar dateToTasksMap={dateToTasksMap} />
+    <StyledRemindersPageWrapper>
       <RemindersList dateToTasksMap={dateToTasksMap} />
-    </Box>
+      <Callendar dateToTasksMap={dateToTasksMap} />
+    </StyledRemindersPageWrapper>
   );
 };
 
