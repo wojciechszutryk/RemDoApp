@@ -8,7 +8,6 @@ import { TaskService } from "services/task/task.service";
 export const registerTaskBindings = (container: Container) => {
   container.bind(TaskCollectionName).toDynamicValue(() => getTaskCollection());
   container.bind(TaskService).toSelf();
-
   container.bind(TaskCreatedEventHandler).toSelf();
   container.bind(TaskUpdatedEventHandler).toSelf();
   container.bind(TaskDeletedEventHandler).toSelf();
