@@ -2,9 +2,12 @@ import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import HourglassFullIcon from "@mui/icons-material/HourglassFull";
 import { Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
+import Dialog from "atomicComponents/atoms/Dialog";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import dayjs from "dayjs";
 import { useDialogs } from "framework/dialogs";
+import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
+import { initialTaskDialog } from "framework/dialogs/models/initialState.const";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IReminderDTO } from "linked-models/reminder/reminder.dto";
 import { ITask } from "linked-models/task/task.model";
@@ -15,17 +18,21 @@ import { useEditTodoListMutation } from "pages/SingleTodoListPage/mutations/edit
 import { memo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import DatePickerWithIcon from "../TaskModalContent/components/DatePickerWithIcon";
-import { StyledForm } from "../TodoListModalContent/styles";
+import DatePickerWithIcon from "../TaskDilog/components/DatePickerWithIcon";
+import { StyledForm } from "../TodoListDialog/styles";
 import TodoListSelect from "./components/TodoListSelect";
 
-const ReminderModalContent = (): JSX.Element => {
+const ReminderDialog = (): JSX.Element => {
   const {
     dialogsState: {
-      reminderDialog: { editReminderData },
+      reminderDialog: { editReminderData, visible },
     },
     dialogsActions: { updateReminderDialog },
   } = useDialogs();
+
+  const [open, onClose] = useAppDialogState(visible, () =>
+    updateReminderDialog(initialTaskDialog)
+  );
 
   const defaultFormValues = {
     text: editReminderData?.text || "",
@@ -65,49 +72,52 @@ const ReminderModalContent = (): JSX.Element => {
     // } else createReminderMutation.mutate(data);
 
     // updateReminderDialog(initialTaskDialog);
+    onClose();
   };
 
   return (
-    <FormProvider {...methods}>
-      <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
-        <Typography variant="h4">
-          {editReminderData
-            ? `${t(TranslationKeys.EditTask)}: ${editReminderData.text}`
-            : t(TranslationKeys.AddTask)}
-        </Typography>
+    <Dialog open={open} onClose={onClose}>
+      <FormProvider {...methods}>
+        <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
+          <Typography variant="h4">
+            {editReminderData
+              ? `${t(TranslationKeys.EditTask)}: ${editReminderData.text}`
+              : t(TranslationKeys.AddTask)}
+          </Typography>
 
-        <ControlledTextField
-          name={"text"}
-          control={methods.control}
-          placeholder={t(TranslationKeys.TaskName)}
-        />
-        {[
-          {
-            Icon: <HourglassEmptyIcon />,
-            tooltipTitle: t(TranslationKeys.PlannedStartDate),
-            name: "whenShouldBeStarted" as keyof ITask,
-            control: methods.control,
-            maxDate: dayjs(methods.getValues("whenShouldBeFinished")),
-          },
-          {
-            Icon: <HourglassFullIcon />,
-            tooltipTitle: t(TranslationKeys.PlannedFinishDate),
-            name: "whenShouldBeFinished" as keyof ITask,
-            control: methods.control,
-            minDate: dayjs(methods.getValues("whenShouldBeStarted")),
-          },
-        ].map((props, index) => (
-          <DatePickerWithIcon<IReminderDTO> key={index} {...props} />
-        ))}
-        <TodoListSelect />
-        <Button type="submit">
-          {editReminderData
-            ? t(TranslationKeys.Save)
-            : t(TranslationKeys.AddTask)}
-        </Button>
-      </StyledForm>
-    </FormProvider>
+          <ControlledTextField
+            name={"text"}
+            control={methods.control}
+            placeholder={t(TranslationKeys.TaskName)}
+          />
+          {[
+            {
+              Icon: <HourglassEmptyIcon />,
+              tooltipTitle: t(TranslationKeys.PlannedStartDate),
+              name: "whenShouldBeStarted" as keyof ITask,
+              control: methods.control,
+              maxDate: dayjs(methods.getValues("whenShouldBeFinished")),
+            },
+            {
+              Icon: <HourglassFullIcon />,
+              tooltipTitle: t(TranslationKeys.PlannedFinishDate),
+              name: "whenShouldBeFinished" as keyof ITask,
+              control: methods.control,
+              minDate: dayjs(methods.getValues("whenShouldBeStarted")),
+            },
+          ].map((props, index) => (
+            <DatePickerWithIcon<IReminderDTO> key={index} {...props} />
+          ))}
+          <TodoListSelect />
+          <Button type="submit">
+            {editReminderData
+              ? t(TranslationKeys.Save)
+              : t(TranslationKeys.AddTask)}
+          </Button>
+        </StyledForm>
+      </FormProvider>
+    </Dialog>
   );
 };
 
-export default memo(ReminderModalContent);
+export default memo(ReminderDialog);

@@ -1,24 +1,13 @@
 import { lazy, Suspense } from "react";
 import { useDialogs } from "..";
-import {
-  initialDeleteTaskDialog,
-  initialDeleteTodoListDialog,
-  initialShareTodoListDialog,
-  initialTaskDialog,
-} from "../models/initialState.const";
-import ContextDialogImpl from "./ContextDialogImpl";
-import ReminderListModalContent from "./ReminderListModalContent";
+import ReminderListDialog from "./ReminderListDialog";
 
-const TodoListModalContent = lazy(() => import("./TodoListModalContent"));
-const ShareTodoListModalContent = lazy(
-  () => import("./ShareTodoListModalContent")
-);
-const DeleteTodoListModalContent = lazy(
-  () => import("./DeleteTodoListModalContent")
-);
-const TaskModalContent = lazy(() => import("./TaskModalContent"));
-const DeleteTaskModalContent = lazy(() => import("./DeleteTaskModalContent"));
-const ReminderModalContent = lazy(() => import("./ReminderModalContent"));
+const TodoListModalContent = lazy(() => import("./TodoListDialog"));
+const ShareTodoListModalContent = lazy(() => import("./ShareTodoListDialog"));
+const DeleteTodoListModalContent = lazy(() => import("./DeleteTodoListDialog"));
+const TaskModalContent = lazy(() => import("./TaskDilog"));
+const DeleteTaskModalContent = lazy(() => import("./DeleteTaskDialog"));
+const ReminderModalContent = lazy(() => import("./ReminderDialog"));
 
 const Dialogs = (): JSX.Element => {
   const {
@@ -46,82 +35,37 @@ const Dialogs = (): JSX.Element => {
     <>
       {todoListDialog.visible && (
         <Suspense fallback={<></>}>
-          <ContextDialogImpl
-            contextVisible={todoListDialog.visible}
-            onCloseContextAction={() =>
-              updateTodoListDialog({ visible: false })
-            }
-          >
-            <TodoListModalContent />
-          </ContextDialogImpl>
+          <TodoListModalContent />
         </Suspense>
       )}
       {shareTodoListDialog.visible && (
         <Suspense fallback={<></>}>
-          <ContextDialogImpl
-            contextVisible={shareTodoListDialog.visible}
-            onCloseContextAction={() =>
-              updateShareTodoListDialog(initialShareTodoListDialog)
-            }
-          >
-            <ShareTodoListModalContent />
-          </ContextDialogImpl>
+          <ShareTodoListModalContent />
         </Suspense>
       )}
       {deleteTodoListDialog.visible && (
         <Suspense fallback={<></>}>
-          <ContextDialogImpl
-            contextVisible={deleteTodoListDialog.visible}
-            onCloseContextAction={() =>
-              updateDeleteTodoListDialog(initialDeleteTodoListDialog)
-            }
-          >
-            <DeleteTodoListModalContent />
-          </ContextDialogImpl>
+          <DeleteTodoListModalContent />
         </Suspense>
       )}
       {taskDialog.visible && (
         <Suspense fallback={<></>}>
-          <ContextDialogImpl
-            contextVisible={taskDialog.visible}
-            onCloseContextAction={() => updateTaskDialog(initialTaskDialog)}
-          >
-            <TaskModalContent />
-          </ContextDialogImpl>
+          <TaskModalContent />
         </Suspense>
       )}
       {deleteTaskDialog.visible && (
         <Suspense fallback={<></>}>
-          <ContextDialogImpl
-            contextVisible={deleteTaskDialog.visible}
-            onCloseContextAction={() =>
-              updateDeleteTaskDialog(initialDeleteTaskDialog)
-            }
-          >
-            <DeleteTaskModalContent />
-          </ContextDialogImpl>
+          <DeleteTaskModalContent />
         </Suspense>
       )}
       {reminderDialog.visible && (
         <Suspense fallback={<></>}>
-          <ContextDialogImpl
-            contextVisible={reminderDialog.visible}
-            onCloseContextAction={() => updateReminderDialog(initialTaskDialog)}
-          >
-            <ReminderModalContent />
-          </ContextDialogImpl>
+          <ReminderModalContent />
         </Suspense>
       )}
       {reminderListDialog.visible && (
         <Suspense fallback={<></>}>
-          <ContextDialogImpl
-            contextVisible={reminderListDialog.visible}
-            onCloseContextAction={() =>
-              updateReminderListDialog({ visible: false, reminders: [] })
-            }
-          >
-            <ReminderListModalContent />
-          </ContextDialogImpl>
+          <ReminderListDialog />
         </Suspense>
       )}
     </>

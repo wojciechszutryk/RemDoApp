@@ -8,8 +8,8 @@ import { useGetUserTodoListsQuery } from "pages/TodoListsPage/queries/getUserTod
 import { memo, useMemo } from "react";
 import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import IconPicker from "../../TodoListModalContent/components/IconPicker";
-import { StyledInlineInputs } from "../../TodoListModalContent/styles";
+import IconPicker from "../../TodoListDialog/components/IconPicker";
+import { StyledInlineInputs } from "../../TodoListDialog/styles";
 
 const TodoListSelect = (): JSX.Element => {
   const getUserTodoListsWithMembersQuery = useGetUserTodoListsQuery(true);

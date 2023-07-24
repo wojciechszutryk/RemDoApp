@@ -1,9 +1,11 @@
 import { Typography } from "@mui/material";
 import Accordion from "atomicComponents/atoms/Accordion";
 import { Button } from "atomicComponents/atoms/Button";
+import Dialog from "atomicComponents/atoms/Dialog";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useDialogs } from "framework/dialogs";
+import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { ITodoList } from "linked-models/todoList/todoList.model";
@@ -20,13 +22,17 @@ import {
   StyledInlineInputs,
 } from "./styles";
 
-const TodoListModalContent = (): JSX.Element => {
+const TodoListDialog = (): JSX.Element => {
   const {
     dialogsState: {
-      todoListDialog: { editTodoListData },
+      todoListDialog: { editTodoListData, visible },
     },
     dialogsActions: { updateTodoListDialog },
   } = useDialogs();
+
+  const [open, onClose] = useAppDialogState(visible, () =>
+    updateTodoListDialog({ visible: false })
+  );
 
   const { currentUser } = useCurrentUser();
 
@@ -50,52 +56,53 @@ const TodoListModalContent = (): JSX.Element => {
     if (editTodoListData)
       editTodoListMutation.mutate({ todoListId: editTodoListData.id, data });
     else createTodoListMutation.mutate(data);
-
-    updateTodoListDialog({ visible: false });
+    onClose();
   };
 
   return (
-    <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
-      <FormProvider {...methods}>
-        <Typography variant="h4">
-          {editTodoListData
-            ? `${t(TranslationKeys.EditTodoListDialogHeader)}: ${
-                editTodoListData.name
-              }`
-            : t(TranslationKeys.CreateTodoListDialogHeader)}
-        </Typography>
-        <StyledInlineInputs>
-          <IconPicker />
-          <ControlledTextField
-            name={"name"}
-            control={methods.control}
-            placeholder={t(TranslationKeys.TodoListDialogInputTitle)}
-          />
-        </StyledInlineInputs>
-        <Accordion summaryText={t(TranslationKeys.ShareTodoList)}>
-          <StyledAutocompleteLabel>
-            {t(TranslationKeys.CurrentOwners)}
-          </StyledAutocompleteLabel>
-          <EmailAutocomplete
-            name="assignedOwners"
-            defaultValues={defaultFormValues.assignedOwners}
-          />
-          <StyledAutocompleteLabel>
-            {t(TranslationKeys.CurrentUsers)}
-          </StyledAutocompleteLabel>
-          <EmailAutocomplete
-            name="assignedUsers"
-            defaultValues={defaultFormValues.assignedUsers}
-          />
-        </Accordion>
-        <Button type="submit">
-          {editTodoListData
-            ? t(TranslationKeys.Save)
-            : t(TranslationKeys.CreateTodoListDialogHeader)}
-        </Button>
-      </FormProvider>
-    </StyledForm>
+    <Dialog open={open} onClose={onClose}>
+      <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
+        <FormProvider {...methods}>
+          <Typography variant="h4">
+            {editTodoListData
+              ? `${t(TranslationKeys.EditTodoListDialogHeader)}: ${
+                  editTodoListData.name
+                }`
+              : t(TranslationKeys.CreateTodoListDialogHeader)}
+          </Typography>
+          <StyledInlineInputs>
+            <IconPicker />
+            <ControlledTextField
+              name={"name"}
+              control={methods.control}
+              placeholder={t(TranslationKeys.TodoListDialogInputTitle)}
+            />
+          </StyledInlineInputs>
+          <Accordion summaryText={t(TranslationKeys.ShareTodoList)}>
+            <StyledAutocompleteLabel>
+              {t(TranslationKeys.CurrentOwners)}
+            </StyledAutocompleteLabel>
+            <EmailAutocomplete
+              name="assignedOwners"
+              defaultValues={defaultFormValues.assignedOwners}
+            />
+            <StyledAutocompleteLabel>
+              {t(TranslationKeys.CurrentUsers)}
+            </StyledAutocompleteLabel>
+            <EmailAutocomplete
+              name="assignedUsers"
+              defaultValues={defaultFormValues.assignedUsers}
+            />
+          </Accordion>
+          <Button type="submit">
+            {editTodoListData
+              ? t(TranslationKeys.Save)
+              : t(TranslationKeys.CreateTodoListDialogHeader)}
+          </Button>
+        </FormProvider>
+      </StyledForm>
+    </Dialog>
   );
 };
 
-export default memo(TodoListModalContent);
+export default memo(TodoListDialog);

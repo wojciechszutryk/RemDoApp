@@ -18,7 +18,7 @@ import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { NotificationService } from "services/notification.service";
 
 @controller(URL_USERS + URL_USER_NOTIFICATIONS)
-export class UserNotificationController extends BaseHttpController {
+export class NotificationController extends BaseHttpController {
   constructor(
     @inject(NotificationService)
     private readonly notificationService: NotificationService
