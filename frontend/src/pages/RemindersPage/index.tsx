@@ -1,8 +1,9 @@
 import dayjs from "dayjs";
 import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
 import { memo, useMemo } from "react";
-import Callendar from "./components/Callendar";
-import RemindersList from "./components/RemindersList";
+import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import BigCallendar from "./components/BigCallendar";
 import RemindersPageLoader from "./components/RemindersPageLoader";
 import { IExtendedTaskWithTodoList } from "./helpers/models";
 import { StyledRemindersPageWrapper } from "./styles";
@@ -59,10 +60,15 @@ const RemindersPage = (): JSX.Element => {
 
   return (
     <StyledRemindersPageWrapper>
-      <RemindersList dateToTasksMap={dateToTasksMap} />
-      <Callendar dateToTasksMap={dateToTasksMap} />
+      <BigCallendar />
     </StyledRemindersPageWrapper>
   );
+  // return (
+  //   <StyledRemindersPageWrapper>
+  //     <RemindersList dateToTasksMap={dateToTasksMap} />
+  //     <Callendar dateToTasksMap={dateToTasksMap} />
+  //   </StyledRemindersPageWrapper>
+  // );
 };
 
 export default memo(RemindersPage);
