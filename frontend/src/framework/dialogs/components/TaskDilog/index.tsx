@@ -19,7 +19,7 @@ import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { StyledForm } from "../TodoListDialog/styles";
-import DatePickerWithIcon from "./components/DatePickerWithIcon";
+import DateTimePickerWithIcon from "./components/DatePickerWithIcon";
 
 const TaskDialog = (): JSX.Element => {
   const {
@@ -98,7 +98,7 @@ const TaskDialog = (): JSX.Element => {
             control,
           },
         ].map((props, index) => (
-          <DatePickerWithIcon key={index} {...props} />
+          <DateTimePickerWithIcon key={index} {...props} />
         ))}
         <ControlledCheckbox
           name={"important"}

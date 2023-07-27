@@ -1,19 +1,19 @@
 import { Tooltip } from "@mui/material";
 import {
-  ControlledDatePicker,
-  ControlledDatePickerProps,
-} from "atomicComponents/molecules/ControlledDatePicker";
+  ControlledDateTimePicker,
+  ControlledDateTimePickerProps,
+} from "atomicComponents/molecules/ControlledDateTimePicker";
 import { ITask } from "linked-models/task/task.model";
 import { FieldPath } from "react-hook-form";
-import { StyledDatePickerWrapper } from "./styles";
+import { StyledDatePickerWrapper as StyledDateTimePickerWrapper } from "./styles";
 
 interface Props<T extends ITask>
-  extends ControlledDatePickerProps<T, FieldPath<T>> {
+  extends ControlledDateTimePickerProps<T, FieldPath<T>> {
   Icon: JSX.Element;
   tooltipTitle: string;
 }
 
-function DatePickerWithIcon<T extends ITask>({
+function DateTimePickerWithIcon<T extends ITask>({
   Icon,
   tooltipTitle,
   name,
@@ -21,13 +21,13 @@ function DatePickerWithIcon<T extends ITask>({
   ...props
 }: Props<T>) {
   return (
-    <StyledDatePickerWrapper>
+    <StyledDateTimePickerWrapper>
       <Tooltip title={tooltipTitle}>
         <div>{Icon}</div>
       </Tooltip>
-      <ControlledDatePicker {...props} control={control} name={name} />
-    </StyledDatePickerWrapper>
+      <ControlledDateTimePicker {...props} control={control} name={name} />
+    </StyledDateTimePickerWrapper>
   );
 }
 
-export default DatePickerWithIcon;
+export default DateTimePickerWithIcon;

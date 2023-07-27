@@ -18,7 +18,7 @@ import { useEditTodoListMutation } from "pages/SingleTodoListPage/mutations/edit
 import { memo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import DatePickerWithIcon from "../TaskDilog/components/DatePickerWithIcon";
+import DateTimePickerWithIcon from "../TaskDilog/components/DatePickerWithIcon";
 import { StyledForm } from "../TodoListDialog/styles";
 import TodoListSelect from "./components/TodoListSelect";
 
@@ -106,7 +106,7 @@ const ReminderDialog = (): JSX.Element => {
               minDate: dayjs(methods.getValues("whenShouldBeStarted")),
             },
           ].map((props, index) => (
-            <DatePickerWithIcon<IReminderDTO> key={index} {...props} />
+            <DateTimePickerWithIcon<IReminderDTO> key={index} {...props} />
           ))}
           <TodoListSelect />
           <Button type="submit">

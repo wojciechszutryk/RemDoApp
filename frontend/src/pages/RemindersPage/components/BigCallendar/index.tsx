@@ -1,5 +1,5 @@
 import { useMediaQuery } from "@mui/material";
-import dayjs, { locale } from "dayjs";
+import dayjs, { locale, Ls } from "dayjs";
 import { useLocalisation } from "framework/translations/useLocalisation.context";
 import { useGetUserRemindersForDateRange } from "pages/RemindersPage/queries/getUserRemindersForDateRange.query";
 import { memo, useCallback, useMemo, useState } from "react";
@@ -21,18 +21,17 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { StyledCallendarWrapper } from "./styles";
 
-dayjs.Ls.en.weekStart = 1;
+Ls.en.weekStart = 1;
 
 const DnDCalendar = withDragAndDrop(Calendar);
 
 const BigCallendar = (): JSX.Element => {
   const [dateRange, setDateRange] = useState<DateRange>({
-    start: new Date(),
-    end: new Date(),
+    start: dayjs().startOf("month").toDate(),
+    end: dayjs().endOf("month").toDate(),
   });
   useGetUserRemindersForDateRange(dateRange, {
     onSuccess: (data) => {
-
       const eventsArr = data.map((event) => ({
         id: event.id,
         title: event.text,
