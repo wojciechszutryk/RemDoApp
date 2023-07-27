@@ -1,6 +1,9 @@
 import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
-import { ITask } from "../task/task.model";
+import { IUserPublicDataDTO } from "linked-models/user/user.dto";
+import { ITaskAttached } from "../task/task.model";
 
-export interface IReminderDTO extends ITask {
-  icon: TodoListIconEnum;
+export interface IReminderDTO extends ITaskAttached {
+  icon: TodoListIconEnum | undefined;
+  creator: IUserPublicDataDTO | undefined;
+  assignedUsers: IUserPublicDataDTO[] | undefined;
 }

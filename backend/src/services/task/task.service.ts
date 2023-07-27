@@ -40,10 +40,16 @@ export class TaskService {
   }
 
   public async getTasksByTodoListIDs(
-    todoListIDs: string[]
+    todoListIDs: string[],
+    minWhenShouldBeStartedDate?: Date,
+    maxWhenShouldBeStartedDate?: Date
   ): Promise<ITaskAttached[]> {
     const foundTasks = await this.taskCollection.find({
       todoListId: { $in: todoListIDs },
+      whenShouldBeStarted: {
+        $gte: minWhenShouldBeStartedDate,
+        $lte: maxWhenShouldBeStartedDate,
+      },
     });
 
     return foundTasks.map((t) => mapTaskToAttachedTask(t));
@@ -70,7 +76,7 @@ export class TaskService {
 
     return mapTaskToAttachedTask(createdTask);
   }
-  
+
   /**
    * Warning this service doesn't check if user can update Task. It is assumed that proper check is done before using this service
    */

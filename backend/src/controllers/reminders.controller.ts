@@ -4,28 +4,22 @@ import {
   BaseHttpController,
   controller,
   httpGet,
-  httpPost,
   queryParam,
-  requestBody,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
-import { URL_REMINDERS } from "linked-models/reminder/reminder.urls";
-import { ITodoList } from "linked-models/todoList/todoList.model";
 import {
-  PARAM_EXTENDED,
-  PARAM_WITH_MEMBERS,
-} from "linked-models/todoList/todoList.urls";
+  PARAM_END_DATE,
+  PARAM_START_DATE,
+  URL_REMINDERS,
+} from "linked-models/reminder/reminder.urls";
 import { IUserAttached } from "linked-models/user/user.model";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
-import { TodoListCacheService } from "services/todoList/todoList.cache.service";
-import { TodoListService } from "services/todoList/todoList.service";
+import { ReminderService } from "services/reminder/reminder.service";
 
 @controller(URL_REMINDERS, SetCurrentUser)
-export class TodoListsController extends BaseHttpController {
+export class RemindersController extends BaseHttpController {
   constructor(
-    @inject(TodoListService) private readonly todoListService: TodoListService,
-    @inject(TodoListCacheService)
-    private readonly todoListCacheService: TodoListCacheService
+    @inject(ReminderService) private readonly reminderService: ReminderService
   ) {
     super();
   }
@@ -33,44 +27,18 @@ export class TodoListsController extends BaseHttpController {
   @httpGet("")
   async getTodoListsForUser(
     @currentUser() currentUser: IUserAttached,
-    @queryParam(PARAM_EXTENDED) extended = false,
-    @queryParam(PARAM_WITH_MEMBERS) withMembers = false
+    @queryParam(PARAM_START_DATE) startDateParam = undefined,
+    @queryParam(PARAM_END_DATE) endDateParam = undefined
   ): Promise<OkResult> {
-    if (extended) {
-      const todoLists =
-        await this.todoListCacheService.getCachedExtendedTodoListsForUser(
-          currentUser.id
-        );
+    const startDate = startDateParam ? new Date(startDateParam) : undefined;
+    const endDate = endDateParam ? new Date(endDateParam) : undefined;
 
-      return this.ok(todoLists);
-    } else if (withMembers) {
-      const { todoLists } =
-        await this.todoListService.getTodoListsWithMembersForUser(
-          currentUser.id
-        );
-
-      return this.ok(todoLists);
-    }
-
-    const todoLists = await this.todoListService.getTodoListsForUser(
-      currentUser.id
+    const reminders = await this.reminderService.getUserRemindersForDateRange(
+      currentUser.id,
+      startDate,
+      endDate
     );
 
-    return this.ok(todoLists);
-  }
-
-  @httpPost("")
-  async createTodoList(
-    @currentUser() currentUser: IUserAttached,
-    @requestBody() body: ITodoList
-  ): Promise<OkResult> {
-    if (!body.name) return this.json("Invalid data", 400);
-
-    const todoList = await this.todoListService.createTodoList(
-      body,
-      currentUser.id
-    );
-
-    return this.ok(todoList);
+    return this.ok(reminders);
   }
 }

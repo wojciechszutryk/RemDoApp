@@ -32,25 +32,8 @@ const BigCallendar = (): JSX.Element => {
   });
   useGetUserRemindersForDateRange(dateRange, {
     onSuccess: (data) => {
-      const events =
-        data
-          ?.map((td) => {
-            const { tasks, ...todoList } = td;
 
-            return tasks.map((t) => ({
-              ...t,
-              todoList,
-            }));
-          })
-          .flat()
-          .filter(
-            (task) =>
-              !!task.whenShouldBeStarted &&
-              !!task.whenShouldBeFinished &&
-              !task.finishDate
-          ) || [];
-
-      const eventsArr = events.map((event) => ({
+      const eventsArr = data.map((event) => ({
         id: event.id,
         title: event.text,
         start: new Date(event.whenShouldBeStarted!),
