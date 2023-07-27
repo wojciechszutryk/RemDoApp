@@ -1,4 +1,3 @@
-import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { IBaseModelAttached } from "../abstraction/base.interface";
 
 export interface ITask {
