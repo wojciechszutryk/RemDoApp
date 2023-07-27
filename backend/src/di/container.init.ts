@@ -1,3 +1,4 @@
+import "controllers/reminders.controller";
 import "controllers/todoList.controller";
 import "controllers/todoList.task.controller";
 import "controllers/todoList.tasks.controller";

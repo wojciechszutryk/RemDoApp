@@ -18,8 +18,8 @@ export const useGetUserRemindersForDateRange = (
   options?: Omit<UseQueryOptions<IReminderDTO[]>, "queryFn">
 ) => {
   const url = FRONTIFY_URL(URL_REMINDERS, "", {
-    [PARAM_START_DATE]: encodeURIComponent(dateRange.start.toString()),
-    [PARAM_END_DATE]: encodeURIComponent(dateRange.end.toString()),
+    [PARAM_START_DATE]: dateRange.start.toString(),
+    [PARAM_END_DATE]: dateRange.end.toString(),
   });
 
   const getTodoListsWithTasks = async () => {
