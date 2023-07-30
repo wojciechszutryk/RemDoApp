@@ -30,6 +30,10 @@ const BigCallendar = (): JSX.Element => {
     start: dayjs().startOf("month").toDate(),
     end: dayjs().endOf("month").toDate(),
   });
+  const [contentAnimation, setContentAnimation] = useState<
+    "fadeIn 0.5s ease-in-out" | "fadeIn1 0.5s ease-in-out" | undefined
+  >("fadeIn 0.5s ease-in-out");
+
   useGetUserRemindersForDateRange(dateRange, {
     onSuccess: (data) => {
       const eventsArr = data.map((event) => ({
@@ -39,6 +43,7 @@ const BigCallendar = (): JSX.Element => {
         end: new Date(event.whenShouldBeFinished!),
       }));
 
+      // setContentAnimation("fadeIn 0.5s ease-in-out");
       setEvents(eventsArr);
     },
   });
@@ -89,7 +94,6 @@ const BigCallendar = (): JSX.Element => {
     () => ({
       agendaDateFormat: (date, culture, localizer) =>
         localizer!.format(date, "dddd D MMM", culture),
-      // dateFormat: "D",
       weekdayFormat: (date, culture, localizer) =>
         localizer!.format(date, isSmallScreen ? "dd" : "dddd", culture),
       dayFormat: (date, culture, localizer) =>
@@ -97,7 +101,7 @@ const BigCallendar = (): JSX.Element => {
       dayHeaderFormat: (date, culture, localizer) =>
         localizer!.format(date, "dddd, D MMMM", culture),
       timeGutterFormat: (date, culture, localizer) =>
-        localizer!.format(date, "hh:mm", culture),
+        localizer!.format(date, "HH:mm", culture),
     }),
     [isSmallScreen]
   );
@@ -106,7 +110,7 @@ const BigCallendar = (): JSX.Element => {
     (event, start, end, isSelected) => ({
       ...(isSelected && {
         style: {
-          backgroundColor: "#000",
+          backgroundColor: "red",
         },
       }),
       ...(dayjs(start).hour() < 12 && {
@@ -120,13 +124,18 @@ const BigCallendar = (): JSX.Element => {
   );
 
   const onNavigate = useCallback(
-    (newDate: Date, view: View, action: NavigateAction) =>
-      console.log(newDate, view, action),
-    []
+    (newDate: Date, view: View, action: NavigateAction) => {
+      if (contentAnimation === "fadeIn 0.5s ease-in-out") {
+        setContentAnimation("fadeIn1 0.5s ease-in-out");
+      } else {
+        setContentAnimation("fadeIn 0.5s ease-in-out");
+      }
+    },
+    [contentAnimation]
   );
 
   return (
-    <StyledCallendarWrapper>
+    <StyledCallendarWrapper contentAnimation={contentAnimation}>
       <DnDCalendar
         formats={formats}
         onNavigate={onNavigate}
@@ -162,13 +171,6 @@ const BigCallendar = (): JSX.Element => {
 
           showMore: (total) => `+${total} więcej`,
         }}
-        // components={{
-        //   event: ({ event }) => (
-        //     <div>
-        //       <span>{event?.title}</span>
-        //     </div>
-        //   ),
-        // }}
         showMultiDayTimes
         step={15}
         // toolbar={false}
