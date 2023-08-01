@@ -1,4 +1,4 @@
-import { useMediaQuery } from "@mui/material";
+import { Skeleton, useMediaQuery } from "@mui/material";
 import dayjs, { locale, Ls } from "dayjs";
 import { useLocalisation } from "framework/translations/useLocalisation.context";
 import { useGetUserRemindersForDateRange } from "pages/RemindersPage/queries/getUserRemindersForDateRange.query";
@@ -20,6 +20,7 @@ import withDragAndDrop, {
 } from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import CollapsableReminder from "./CollapsableReminder";
 import { StyledCallendarWrapper } from "./styles";
 
 Ls.en.weekStart = 1;
@@ -46,13 +47,13 @@ const BigCallendar = (): JSX.Element => {
     {
       onSuccess: (data) => {
         const eventsArr = data.map((event) => ({
+          ...event,
           id: event.id,
           title: event.text,
           start: new Date(event.whenShouldBeStarted!),
           end: new Date(event.whenShouldBeFinished!),
         }));
 
-        // setContentAnimation("fadeIn 0.5s ease-in-out");
         setEvents(eventsArr);
       },
     }
@@ -80,10 +81,9 @@ const BigCallendar = (): JSX.Element => {
     });
   };
 
-  const onSelectEvent = useCallback(
-    (event: Event) => window.alert(event.title),
-    []
-  );
+  const onSelectEvent = useCallback((event: Event) => {
+    // window.alert(event.title);
+  }, []);
 
   const handleSelectSlot = useCallback(
     ({ start, end }: Event) => {
@@ -120,7 +120,7 @@ const BigCallendar = (): JSX.Element => {
     (event, start, end, isSelected) => ({
       ...(isSelected && {
         style: {
-          backgroundColor: "red",
+          // backgroundColor: "red",
         },
       }),
       ...(dayjs(start).hour() < 12 && {
@@ -152,16 +152,27 @@ const BigCallendar = (): JSX.Element => {
     [contentAnimation]
   );
 
+  // if (!!getUserRemindersForDateRange.isLoading) return <div></div>;
+
   return (
-    <StyledCallendarWrapper contentAnimation={contentAnimation}>
+    <StyledCallendarWrapper
+      contentAnimation={contentAnimation}
+      isLoading={!!getUserRemindersForDateRange.isLoading}
+    >
+      {!!getUserRemindersForDateRange.isLoading && (
+        <Skeleton
+          height={"calc(100vh - 80px)"}
+          width={"calc(100vw - 20px)"}
+          sx={{ transform: "none" }}
+        />
+      )}
       <DnDCalendar
         formats={formats}
         onNavigate={onNavigate}
         components={{
           agenda: {
             event: (a) => {
-              console.log("event", a);
-              return <div>{a.title}</div>;
+              return <CollapsableReminder reminder={a.event} />;
             },
           },
           week: {
@@ -171,9 +182,7 @@ const BigCallendar = (): JSX.Element => {
               )?.icon;
 
               return (
-                <div
-                  style={{ display: "flex", flexWrap: "wrap" }}
-                >
+                <div style={{ display: "flex", flexWrap: "wrap" }}>
                   {icon && (
                     <TodoListIcon
                       type={icon}
@@ -187,6 +196,8 @@ const BigCallendar = (): JSX.Element => {
           },
         }}
         onView={() => {
+          console.log("onView");
+
           if (contentAnimation === "fadeIn 0.5s ease-in-out") {
             setContentAnimation("fadeInAlt 0.5s ease-in-out");
           } else {
@@ -194,18 +205,31 @@ const BigCallendar = (): JSX.Element => {
           }
         }}
         onRangeChange={(range) => {
-          let rangeToSet = undefined;
+          let newRangeStart = undefined;
+          let newRangeEnd = undefined;
 
           if (Array.isArray(range)) {
-            rangeToSet = {
-              start: range[0],
-              end: range[range.length - 1],
-            };
+            newRangeStart = range[0];
+            newRangeEnd = range[range.length - 1];
           } else {
-            rangeToSet = { ...range };
+            newRangeStart = range.start;
+            newRangeEnd = range.end;
           }
 
-          setDateRange(rangeToSet);
+          if (
+            newRangeStart.getTime() < dateRange.start.getTime() ||
+            newRangeEnd.getTime() > dateRange.end.getTime()
+          ) {
+            console.log("set", {
+              start: dayjs(newRangeStart).startOf("month").toDate(),
+              end: dayjs(newRangeEnd).endOf("month").toDate(),
+            });
+
+            setDateRange({
+              start: dayjs(newRangeStart).startOf("month").toDate(),
+              end: dayjs(newRangeEnd).endOf("month").toDate(),
+            });
+          }
         }}
         eventPropGetter={eventPropGetter}
         dayLayoutAlgorithm={"no-overlap"}

@@ -16,7 +16,7 @@ export interface ITaskDTO
  * Task with creator
  */
 export interface IExtendedTaskDto extends ITaskAttached {
-  creator: IUserPublicDataDTO;
+  creator?: IUserPublicDataDTO;
 }
 
 export function mapITaskDTOToITask<T extends Partial<ITaskDTO>>(task: T) {

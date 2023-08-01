@@ -65,7 +65,7 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
           />
         </ListItem>
       )}
-      {
+      {task.creator && (
         <ListItem>
           <ListItemIcon>
             <UserAvatar
@@ -78,7 +78,7 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
             secondary={t(TranslationKeys.Creator)}
           />
         </ListItem>
-      }
+      )}
     </List>
   );
 };
