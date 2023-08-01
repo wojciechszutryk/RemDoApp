@@ -102,7 +102,7 @@ const App = (): JSX.Element => {
           path={Pages.TaskPage.path()}
           element={
             <Suspense fallback={false}>
-              <PageTemplate disabledScroll>
+              <PageTemplate>
                 <RequireAuthPageWrapper>
                   <SingleTodoListPage />
                 </RequireAuthPageWrapper>
@@ -114,7 +114,7 @@ const App = (): JSX.Element => {
           path={Pages.TodoListPage.path()}
           element={
             <Suspense fallback={false}>
-              <PageTemplate disabledScroll>
+              <PageTemplate>
                 <RequireAuthPageWrapper>
                   <SingleTodoListPage />
                 </RequireAuthPageWrapper>

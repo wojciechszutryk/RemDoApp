@@ -16,15 +16,14 @@ export const StyledHeaderBottomAnimation = styled(StyledWave)(({ theme }) => ({
   },
 }));
 
-export const StyledHeaderWrapper = styled("div", {
-  shouldForwardProp: (prop) => prop !== "noContentOverlay",
-})<{ noContentOverlay?: boolean }>(({ noContentOverlay }) => ({
+export const StyledHeaderWrapper = styled("div")({
   position: "fixed",
   height: 122,
   top: 0,
-  zIndex: noContentOverlay ? 1302 : 1303,
+  zIndex: 1303,
+  pointerEvents: "none",
   width: "100%",
-}));
+});
 
 export const StyledHeaderButton = styled(Button)(({ theme }) => ({
   minWidth: "60px",
@@ -42,6 +41,7 @@ export const StyledHeaderContentWrapper = styled("div")(({ theme }) => ({
   justifyContent: "space-around",
   alignContent: "center",
   alignItems: "center",
+  pointerEvents: "all",
   "& > button": {
     zIndex: 1,
   },

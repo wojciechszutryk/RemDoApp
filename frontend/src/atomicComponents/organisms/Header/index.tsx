@@ -16,11 +16,7 @@ import {
   StyledHeaderWrapper,
 } from "./styles";
 
-interface Props {
-  noContentOverlay?: boolean;
-}
-
-export const Header = ({ noContentOverlay }: Props): JSX.Element => {
+export const Header = (): JSX.Element => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { currentUser } = useCurrentUser();
@@ -29,7 +25,7 @@ export const Header = ({ noContentOverlay }: Props): JSX.Element => {
   const isMobile = useMediaQuery("(max-width:600px)");
 
   return (
-    <StyledHeaderWrapper noContentOverlay={noContentOverlay}>
+    <StyledHeaderWrapper>
       <StyledHeaderContentWrapper>
         <StyledHeaderButton
           onClick={() => navigate(Pages.HomePage.path)}
