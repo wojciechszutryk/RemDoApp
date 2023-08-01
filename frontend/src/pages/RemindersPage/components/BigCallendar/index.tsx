@@ -2,6 +2,7 @@ import { useMediaQuery } from "@mui/material";
 import dayjs, { locale, Ls } from "dayjs";
 import { useLocalisation } from "framework/translations/useLocalisation.context";
 import { useGetUserRemindersForDateRange } from "pages/RemindersPage/queries/getUserRemindersForDateRange.query";
+import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
 import { memo, useCallback, useMemo, useState } from "react";
 import {
   Calendar,
@@ -31,22 +32,31 @@ const BigCallendar = (): JSX.Element => {
     end: dayjs().endOf("month").toDate(),
   });
   const [contentAnimation, setContentAnimation] = useState<
-    "fadeIn 0.5s ease-in-out" | "fadeIn1 0.5s ease-in-out" | undefined
+    | "fadeIn 0.5s ease-in-out"
+    | "fadeInAlt 0.5s ease-in-out"
+    | "slideLeft 0.5s ease-in-out"
+    | "slideLeftAlt 0.5s ease-in-out"
+    | "slideRight 0.5s ease-in-out"
+    | "slideRightAlt 0.5s ease-in-out"
+    | undefined
   >("fadeIn 0.5s ease-in-out");
 
-  useGetUserRemindersForDateRange(dateRange, {
-    onSuccess: (data) => {
-      const eventsArr = data.map((event) => ({
-        id: event.id,
-        title: event.text,
-        start: new Date(event.whenShouldBeStarted!),
-        end: new Date(event.whenShouldBeFinished!),
-      }));
+  const getUserRemindersForDateRange = useGetUserRemindersForDateRange(
+    dateRange,
+    {
+      onSuccess: (data) => {
+        const eventsArr = data.map((event) => ({
+          id: event.id,
+          title: event.text,
+          start: new Date(event.whenShouldBeStarted!),
+          end: new Date(event.whenShouldBeFinished!),
+        }));
 
-      // setContentAnimation("fadeIn 0.5s ease-in-out");
-      setEvents(eventsArr);
-    },
-  });
+        // setContentAnimation("fadeIn 0.5s ease-in-out");
+        setEvents(eventsArr);
+      },
+    }
+  );
   const { language } = useLocalisation();
   const isSmallScreen = useMediaQuery("(max-width:600px)");
 
@@ -125,10 +135,18 @@ const BigCallendar = (): JSX.Element => {
 
   const onNavigate = useCallback(
     (newDate: Date, view: View, action: NavigateAction) => {
-      if (contentAnimation === "fadeIn 0.5s ease-in-out") {
-        setContentAnimation("fadeIn1 0.5s ease-in-out");
-      } else {
-        setContentAnimation("fadeIn 0.5s ease-in-out");
+      if (action === "PREV") {
+        if (contentAnimation === "slideLeft 0.5s ease-in-out") {
+          setContentAnimation("slideLeftAlt 0.5s ease-in-out");
+        } else {
+          setContentAnimation("slideLeft 0.5s ease-in-out");
+        }
+      } else if (action === "NEXT") {
+        if (contentAnimation === "slideRight 0.5s ease-in-out") {
+          setContentAnimation("slideRightAlt 0.5s ease-in-out");
+        } else {
+          setContentAnimation("slideRight 0.5s ease-in-out");
+        }
       }
     },
     [contentAnimation]
@@ -139,6 +157,42 @@ const BigCallendar = (): JSX.Element => {
       <DnDCalendar
         formats={formats}
         onNavigate={onNavigate}
+        components={{
+          agenda: {
+            event: (a) => {
+              console.log("event", a);
+              return <div>{a.title}</div>;
+            },
+          },
+          week: {
+            event: (a) => {
+              const icon = getUserRemindersForDateRange.data?.find(
+                (reminder) => reminder.id === a.event.id
+              )?.icon;
+
+              return (
+                <div
+                  style={{ display: "flex", flexWrap: "wrap" }}
+                >
+                  {icon && (
+                    <TodoListIcon
+                      type={icon}
+                      sx={{ transform: "scale(0.8)" }}
+                    />
+                  )}
+                  {a.title}
+                </div>
+              );
+            },
+          },
+        }}
+        onView={() => {
+          if (contentAnimation === "fadeIn 0.5s ease-in-out") {
+            setContentAnimation("fadeInAlt 0.5s ease-in-out");
+          } else {
+            setContentAnimation("fadeIn 0.5s ease-in-out");
+          }
+        }}
         onRangeChange={(range) => {
           let rangeToSet = undefined;
 
@@ -168,12 +222,15 @@ const BigCallendar = (): JSX.Element => {
           next: "Następny",
           today: "Dzisiaj",
           agenda: "Agenda",
-
+          noEventsInRange: "Brak wydarzeń",
+          allDay: "Cały dzień",
           showMore: (total) => `+${total} więcej`,
+          date: "Data",
+          time: "Czas",
+          event: "Wydarzenie",
         }}
         showMultiDayTimes
         step={15}
-        // toolbar={false}
         timeslots={2}
         defaultView={Views.WEEK}
         onSelectEvent={onSelectEvent}
