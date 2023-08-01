@@ -8,17 +8,23 @@ import LuggageIcon from "@mui/icons-material/Luggage";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import SchoolIcon from "@mui/icons-material/School";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { BoxProps } from "@mui/system";
 import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { memo } from "react";
 import { StyledTodoListIconWrapper } from "./styles";
 
-interface Props {
+interface Props extends BoxProps {
   type: TodoListIconEnum;
   disableHover?: boolean;
   onClick?: () => void;
 }
 
-const TodoListIcon = ({ type, onClick, disableHover }: Props): JSX.Element => {
+const TodoListIcon = ({
+  type,
+  onClick,
+  disableHover,
+  ...boxProps
+}: Props): JSX.Element => {
   const getIcon = () => {
     switch (type) {
       case TodoListIconEnum.Child: {
@@ -64,7 +70,7 @@ const TodoListIcon = ({ type, onClick, disableHover }: Props): JSX.Element => {
   };
 
   return (
-    <StyledTodoListIconWrapper disableHover={disableHover}>
+    <StyledTodoListIconWrapper disableHover={disableHover} {...boxProps}>
       {getIcon()}
     </StyledTodoListIconWrapper>
   );
