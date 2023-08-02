@@ -1,4 +1,4 @@
-import { Skeleton, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import dayjs, { locale, Ls } from "dayjs";
 import { useLocalisation } from "framework/translations/useLocalisation.context";
 import { useGetUserRemindersForDateRange } from "pages/RemindersPage/queries/getUserRemindersForDateRange.query";
@@ -20,6 +20,7 @@ import withDragAndDrop, {
 } from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import CallendarLoader from "../CallendarLoader";
 import CollapsableReminder from "./CollapsableReminder";
 import { StyledCallendarWrapper } from "./styles";
 
@@ -152,20 +153,9 @@ const BigCallendar = (): JSX.Element => {
     [contentAnimation]
   );
 
-  // if (!!getUserRemindersForDateRange.isLoading) return <div></div>;
-
   return (
-    <StyledCallendarWrapper
-      contentAnimation={contentAnimation}
-      isLoading={!!getUserRemindersForDateRange.isLoading}
-    >
-      {!!getUserRemindersForDateRange.isLoading && (
-        <Skeleton
-          height={"calc(100vh - 80px)"}
-          width={"calc(100vw - 20px)"}
-          sx={{ transform: "none" }}
-        />
-      )}
+    <StyledCallendarWrapper contentAnimation={contentAnimation}>
+      {!!getUserRemindersForDateRange.isLoading && <CallendarLoader />}
       <DnDCalendar
         formats={formats}
         onNavigate={onNavigate}
