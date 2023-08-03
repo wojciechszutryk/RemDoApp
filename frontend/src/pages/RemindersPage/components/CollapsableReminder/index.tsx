@@ -7,7 +7,7 @@ import {
 import TaskDetailsList from "pages/SingleTodoListPage/components/TodoListCard/components/CardContent/components/TaskListItem/TaskDetailsList";
 import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
 import { memo, useState } from "react";
-import { StyledRemindersListItem } from "../RemindersList/styles";
+import { StyledRemindersListItem } from "./styles";
 
 interface Props {
   reminder: IReminderDTO;
