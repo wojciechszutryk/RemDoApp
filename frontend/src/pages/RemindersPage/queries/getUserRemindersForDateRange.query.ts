@@ -15,7 +15,7 @@ import { DateRange } from "react-big-calendar";
 
 export const useGetUserRemindersForDateRange = (
   dateRange: DateRange,
-  options?: Omit<UseQueryOptions<IReminderDTO[]>, "queryFn">
+  options?: Omit<UseQueryOptions<Map<string, IReminderDTO>>, "queryFn">
 ) => {
   const url = FRONTIFY_URL(URL_REMINDERS, "", {
     [PARAM_START_DATE]: dateRange.start.toString(),
@@ -23,7 +23,13 @@ export const useGetUserRemindersForDateRange = (
   });
 
   const getTodoListsWithTasks = async () => {
-    return await apiGet<IReminderDTO[]>(url).then((res) => res.data);
+    return await apiGet<IReminderDTO[]>(url).then((res) => {
+      const idToReminderMap = new Map<string, IReminderDTO>();
+      res.data.forEach((reminder) => {
+        idToReminderMap.set(reminder.id, reminder);
+      });
+      return idToReminderMap;
+    });
   };
 
   return useQuery(
