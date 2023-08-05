@@ -11,6 +11,7 @@ import {
 } from "linked-models/event/implementation/task.events";
 import { ITaskDTO, mapITaskDTOToITask } from "linked-models/task/task.dto";
 import {
+  ITask,
   ITaskAttached,
   ITaskWithReadonlyProperties,
 } from "linked-models/task/task.model";
@@ -57,11 +58,16 @@ export class TaskService {
 
   public async createTaskInTodoList(
     todoListId: string,
-    task: ITaskDTO,
+    task: ITask,
     creatorId: string
   ): Promise<ITaskAttached> {
     const newTask: ITaskWithReadonlyProperties = {
-      ...mapITaskDTOToITask(task),
+      text: task.text,
+      whenShouldBeStarted: task.whenShouldBeStarted,
+      whenShouldBeFinished: task.whenShouldBeFinished,
+      finishDate: task.finishDate,
+      startDate: task.startDate,
+      important: task.important ?? false,
       todoListId,
       creatorId,
       whenCreated: new Date(),
