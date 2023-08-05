@@ -135,7 +135,8 @@ export class ReminderService {
     };
     const newTodoList = await this.todoListService.createTodoList(
       newTodoListToCreate,
-      creatorId
+      creatorId,
+      false
     );
 
     const newTaskToCreate: ITask = {
@@ -147,13 +148,17 @@ export class ReminderService {
     const newTask = await this.taskService.createTaskInTodoList(
       newTodoList.id,
       newTaskToCreate,
-      creatorId
+      creatorId,
+      false
     );
+
+    //TODO: event service
 
     return this.mapTodoListAndTaskToReminderAttached(newTodoList, newTask);
   }
 
   /**
+   * This method does not check if the user has permissions to edit the reminder.
    * Modifies a reminder. TodoList and/or task might be modified depending on the data provided.
    */
   public async editReminder(
@@ -176,7 +181,8 @@ export class ReminderService {
       await this.todoListService.updateTodoList(
         editReminderData.todoListId,
         todoListDataToEdit,
-        creatorId
+        creatorId,
+        false
       );
     }
 
@@ -198,7 +204,8 @@ export class ReminderService {
       await this.taskService.updateTask(
         editReminderData.todoListId,
         mapITaskToITaskDTO(taskDataToEdit),
-        creatorId
+        creatorId,
+        false
       );
     }
 
@@ -209,6 +216,36 @@ export class ReminderService {
     if (!updatedReminder)
       throw new Error("There was an error while updating reminder");
 
+    //TODO: event service
+
     return updatedReminder;
+  }
+
+  /**
+   * This method does not check if the user has permissions to delete the reminder.
+   * Deletes a reminder. TodoList and task will be deleted.
+   */
+  public async deleteReminder(
+    taskId: string,
+    deleterId: string
+  ): Promise<IReminderAttached> {
+    const task = await this.taskService.getTaskById(taskId);
+
+    if (!task) throw new Error("Task not found");
+
+    const [, deletedTask, deletedTodoList] = await Promise.all([
+      this.todoListService.deleteTodoList(task.todoListId, deleterId, false),
+      this.taskService.deleteTask(taskId, deleterId, false),
+      this.todoListService.getTodoListWithMembersById(task.todoListId),
+    ]);
+
+    if (!deletedTodoList) throw new Error("TodoList not found");
+
+    //TODO: event service
+
+    return this.mapTodoListAndTaskToReminderAttached(
+      deletedTodoList,
+      deletedTask
+    );
   }
 }

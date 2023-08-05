@@ -181,7 +181,8 @@ export class TodoListService {
 
   public async createTodoList(
     todoListData: ITodoList,
-    creatorId: string
+    creatorId: string,
+    generateEvent = true
   ): Promise<ITodoListWithMembersDto> {
     const newTodoList: ITodoListWithReadonlyProperties = {
       name: todoListData.name,
@@ -226,11 +227,12 @@ export class TodoListService {
 
     if (!todoListWithMembers) throw new Error("Error while creating todoList.");
 
-    this.eventService.emit(
-      TodoListCreatedEvent,
-      creatorId,
-      todoListWithMembers
-    );
+    if (generateEvent)
+      this.eventService.emit(
+        TodoListCreatedEvent,
+        creatorId,
+        todoListWithMembers
+      );
 
     return todoListWithMembers;
   }
@@ -241,7 +243,8 @@ export class TodoListService {
   public async updateTodoList(
     todoListId: string,
     todoListData: Partial<ITodoList>,
-    updaterId: string
+    updaterId: string,
+    generateEvent = true
   ): Promise<ITodoListWithMembersDto> {
     //only valid properties
     const update: Partial<ITodoListAttached> = {
@@ -299,11 +302,12 @@ export class TodoListService {
       );
     }
 
-    this.eventService.emit(
-      TodoListUpdatedEvent,
-      updaterId,
-      todoListWithMembers
-    );
+    if (generateEvent)
+      this.eventService.emit(
+        TodoListUpdatedEvent,
+        updaterId,
+        todoListWithMembers
+      );
 
     return todoListWithMembers;
   }
@@ -314,7 +318,8 @@ export class TodoListService {
    */
   public async deleteTodoList(
     todoListId: string,
-    deleterId: string
+    deleterId: string,
+    generateEvent = true
   ): Promise<ITodoListAttached> {
     const [deletedTodoList] = await Promise.all([
       this.todoListCollection.findByIdAndDelete(todoListId),
@@ -329,11 +334,12 @@ export class TodoListService {
     const mappedDeletedTodoList =
       mapTodoListToAttachedTodoList(deletedTodoList);
 
-    this.eventService.emit(
-      TodoListDeletedEvent,
-      deleterId,
-      mappedDeletedTodoList
-    );
+    if (generateEvent)
+      this.eventService.emit(
+        TodoListDeletedEvent,
+        deleterId,
+        mappedDeletedTodoList
+      );
 
     return mappedDeletedTodoList;
   }

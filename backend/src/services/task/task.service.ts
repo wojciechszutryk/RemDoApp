@@ -59,7 +59,8 @@ export class TaskService {
   public async createTaskInTodoList(
     todoListId: string,
     task: ITask,
-    creatorId: string
+    creatorId: string,
+    generateEvent = true
   ): Promise<ITaskAttached> {
     const newTask: ITaskWithReadonlyProperties = {
       text: task.text,
@@ -78,7 +79,8 @@ export class TaskService {
 
     const mappedCreatedTask = mapTaskToAttachedTask(createdTask);
 
-    this.eventService.emit(TaskCreatedEvent, creatorId, mappedCreatedTask);
+    if (generateEvent)
+      this.eventService.emit(TaskCreatedEvent, creatorId, mappedCreatedTask);
 
     return mapTaskToAttachedTask(createdTask);
   }
@@ -89,7 +91,8 @@ export class TaskService {
   public async updateTask(
     taskId: string,
     updateData: Partial<ITaskDTO>,
-    updaterId: string
+    updaterId: string,
+    generateEvent = true
   ): Promise<ITaskAttached> {
     const update = {
       ...mapITaskDTOToITask(updateData),
@@ -110,7 +113,8 @@ export class TaskService {
 
     const mappedUpdatedTask = mapTaskToAttachedTask(updatedTask);
 
-    this.eventService.emit(TaskUpdatedEvent, updaterId, mappedUpdatedTask);
+    if (generateEvent)
+      this.eventService.emit(TaskUpdatedEvent, updaterId, mappedUpdatedTask);
 
     return mappedUpdatedTask;
   }
@@ -120,7 +124,8 @@ export class TaskService {
    */
   public async deleteTask(
     taskId: string,
-    deleterId: string
+    deleterId: string,
+    generateEvent = true
   ): Promise<ITaskAttached> {
     const deletedTask = await this.taskCollection.findByIdAndDelete(taskId);
 
@@ -131,7 +136,8 @@ export class TaskService {
 
     const mappedDeletedTask = mapTaskToAttachedTask(deletedTask);
 
-    this.eventService.emit(TaskUpdatedEvent, deleterId, mappedDeletedTask);
+    if (generateEvent)
+      this.eventService.emit(TaskUpdatedEvent, deleterId, mappedDeletedTask);
 
     return mappedDeletedTask;
   }

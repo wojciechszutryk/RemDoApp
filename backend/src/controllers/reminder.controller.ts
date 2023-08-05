@@ -10,7 +10,7 @@ import {
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
-import { IReminderAttached } from "linked-models/reminder/reminder.dto";
+import { IEditReminderReqDTO } from "linked-models/reminder/reminder.dto";
 import {
   REMINDER_PARAM,
   URL_REMINDER,
@@ -39,15 +39,13 @@ export class ReminderController extends BaseHttpController {
 
   @httpPut("", SetPermissions, CheckPermission(TodoListPermissions.CanEditTask))
   async editReminder(
-    @requestParam(REMINDER_PARAM) reminderId: string,
     @currentUser() currentUser: IUserAttached,
-    @requestBody() body: Partial<IReminderAttached>
+    @requestBody() body: IEditReminderReqDTO
   ): Promise<OkResult> {
     if (Object.values(body).length === 0) return this.json("Invalid data", 400);
 
     try {
-      const reminder = await this.reminderService.updateReminder(
-        reminderId,
+      const reminder = await this.reminderService.editReminder(
         body,
         currentUser.id
       );

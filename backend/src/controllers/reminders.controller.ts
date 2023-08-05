@@ -4,9 +4,12 @@ import {
   BaseHttpController,
   controller,
   httpGet,
+  httpPost,
   queryParam,
+  requestBody,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import { ICreateReminderDTO } from "linked-models/reminder/reminder.dto";
 import {
   PARAM_END_DATE,
   PARAM_START_DATE,
@@ -40,5 +43,26 @@ export class RemindersController extends BaseHttpController {
     );
 
     return this.ok(reminders);
+  }
+
+  @httpPost("")
+  async createReminder(
+    @currentUser() currentUser: IUserAttached,
+    @requestBody() body: ICreateReminderDTO
+  ): Promise<OkResult> {
+    try {
+      const createdReminder = await this.reminderService.createReminder(
+        body,
+        currentUser.id
+      );
+
+      return this.ok(createdReminder);
+    } catch (error) {
+      if (error instanceof Error) {
+        return this.json(error.message, 400);
+      }
+
+      return this.statusCode(400);
+    }
   }
 }
