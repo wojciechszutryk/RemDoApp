@@ -18,9 +18,6 @@ export interface ITask {
 
   /** Boolean to determine if task is important */
   important?: boolean;
-
-  /** Boolean to determine if task is a reminder */
-  isReminder?: boolean;
 }
 
 export interface ITaskWithReadonlyProperties extends ITask {

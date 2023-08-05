@@ -3,9 +3,13 @@ import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { ITodoListAttached } from "./todoList.model";
 
 export interface ITodoListWithMembersDto
-  extends Omit<ITodoListAttached, "assignedOwners" | "assignedUsers"> {
+  extends Omit<
+    ITodoListAttached,
+    "assignedOwners" | "assignedUsers" | "creatorId"
+  > {
   assignedOwners: IUserPublicDataDTO[];
   assignedUsers: IUserPublicDataDTO[];
+  creator: IUserPublicDataDTO;
 }
 
 /**

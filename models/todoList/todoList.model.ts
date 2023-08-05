@@ -2,8 +2,8 @@ import { IBaseModelAttached } from "../abstraction/base.interface";
 import { TodoListIconEnum } from "./todoList.enum";
 
 export interface ITodoList {
-  /** Name of tasks list */
-  name: string;
+  /** Name of tasks list. Undefined for reminders. */
+  name?: string;
 
   /** Emails of invited users. Invited user can create new tasks and edit/delete his own tasks */
   assignedUsers?: string[];
