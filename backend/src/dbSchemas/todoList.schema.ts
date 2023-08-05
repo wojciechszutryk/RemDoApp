@@ -7,7 +7,7 @@ import mongoose, { Document } from "mongoose";
 export const TodoListCollectionName = "todoLists";
 
 const todoListSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  name: { type: String, required: false },
   creatorId: {
     type: String,
     required: true,

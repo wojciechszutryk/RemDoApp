@@ -44,10 +44,6 @@ const TaskSchema = new mongoose.Schema({
     type: Date,
     required: false,
   },
-  isReminder: {
-    type: Boolean,
-    required: false,
-  },
 });
 
 export interface ITaskDocument extends ITaskWithReadonlyProperties, Document {}
@@ -69,6 +65,5 @@ export const mapTaskToAttachedTask = (task: ITaskDocument): ITaskAttached => {
     todoListId: task.todoListId,
     whenCreated: task.whenCreated,
     whenUpdated: task.whenUpdated,
-    isReminder: task.isReminder,
   };
 };
