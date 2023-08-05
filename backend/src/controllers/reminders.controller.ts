@@ -9,7 +9,10 @@ import {
   requestBody,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
-import { ICreateReminderDTO } from "linked-models/reminder/reminder.dto";
+import {
+  ICreateReminder,
+  ICreateReminderDTO,
+} from "linked-models/reminder/reminder.dto";
 import {
   PARAM_END_DATE,
   PARAM_START_DATE,
@@ -51,8 +54,16 @@ export class RemindersController extends BaseHttpController {
     @requestBody() body: ICreateReminderDTO
   ): Promise<OkResult> {
     try {
+      const reminderData = {
+        ...body,
+        whenShouldBeStarted: new Date(body.whenShouldBeStarted),
+        whenShouldBeFinished: new Date(body.whenShouldBeFinished),
+      } as ICreateReminder;
+      if (body.startDate) reminderData.startDate = new Date(body.startDate);
+      if (body.finishDate) reminderData.finishDate = new Date(body.finishDate);
+
       const createdReminder = await this.reminderService.createReminder(
-        body,
+        reminderData,
         currentUser.id
       );
 

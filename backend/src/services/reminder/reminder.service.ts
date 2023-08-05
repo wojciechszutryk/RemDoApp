@@ -2,10 +2,10 @@ import { EventService } from "framework/events/event.service";
 import { extractPropertiesToUpdate } from "helpers/extractPropertiesToUpdate";
 import { inject, injectable } from "inversify";
 import {
-  ICreateReminderDTO,
-  IEditReminderReqDTO,
-  IReminderAttached,
+  ICreateReminder,
+  IEditReminder,
 } from "linked-models/reminder/reminder.dto";
+import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import { mapITaskToITaskDTO } from "linked-models/task/task.dto";
 import { ITask, ITaskAttached } from "linked-models/task/task.model";
 import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
@@ -126,7 +126,7 @@ export class ReminderService {
    * Creates a reminder for a user. New todoList and task will be created.
    */
   public async createReminder(
-    reminderData: ICreateReminderDTO,
+    reminderData: ICreateReminder,
     creatorId: string
   ): Promise<IReminderAttached> {
     const newTodoListToCreate: ITodoList = {
@@ -162,7 +162,7 @@ export class ReminderService {
    * Modifies a reminder. TodoList and/or task might be modified depending on the data provided.
    */
   public async editReminder(
-    editReminderData: IEditReminderReqDTO,
+    editReminderData: IEditReminder,
     creatorId: string
   ): Promise<IReminderAttached> {
     const todoListKeys: (keyof ITodoList)[] = [
@@ -186,7 +186,7 @@ export class ReminderService {
       );
     }
 
-    const taskKeys: (keyof IEditReminderReqDTO)[] = [
+    const taskKeys: (keyof IEditReminder)[] = [
       "text",
       "finishDate",
       "startDate",

@@ -1,34 +1,40 @@
-import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
+import { ITaskDTO } from "linked-models/task/task.dto";
 import { ITodoList } from "linked-models/todoList/todoList.model";
-import { IUserPublicDataDTO } from "linked-models/user/user.dto";
-import { ITask, ITaskAttached } from "../task/task.model";
+import { ITask } from "../task/task.model";
 
-export interface IReminderAttached
-  extends Omit<
-      ITaskAttached,
-      "whenShouldBeStarted" | "whenShouldBeFinished" | "id" | "creatorId"
-    >,
-    Omit<ITodoListWithMembersDto, "id" | "creator"> {
-  whenShouldBeStarted: Date;
-  whenShouldBeFinished: Date;
-  creator?: IUserPublicDataDTO;
-  todoListId: string;
-  taskId: string;
-}
-
-export interface ICreateReminderDTO
+/**
+ * sum of ITask (with required whenShouldBeStarted and whenShouldBeFinished) and ITodoList
+ */
+export interface ICreateReminder
   extends Omit<ITask, "whenShouldBeStarted" | "whenShouldBeFinished">,
     ITodoList {
   whenShouldBeStarted: Date;
   whenShouldBeFinished: Date;
 }
 
-export interface IEditReminderReqDTO
-  extends Partial<
-    Omit<ICreateReminderDTO, "assignedOwners" | "assignedUsers">
-  > {
-  assignedOwners?: string[];
-  assignedUsers?: string[];
+/**
+ * DTO for create reminder - sum of ITaskDTO (with required whenShouldBeStarted and whenShouldBeFinished) and ITodoList
+ * all dates are strings to transfer over HTTP correctly
+ */
+export interface ICreateReminderDTO
+  extends Omit<ITaskDTO, "whenShouldBeStarted" | "whenShouldBeFinished">,
+    ITodoList {
+  whenShouldBeStarted: string;
+  whenShouldBeFinished: string;
+}
+
+/**
+ * Partial of ICreateReminder with required todoListId and taskId
+ */
+export interface IEditReminder extends Partial<ICreateReminder> {
+  todoListId: string;
+  taskId: string;
+}
+
+/**
+ * Partial of ICreateReminderDTO with required todoListId and taskId
+ */
+export interface IEditReminderDTO extends Partial<ICreateReminderDTO> {
   todoListId: string;
   taskId: string;
 }

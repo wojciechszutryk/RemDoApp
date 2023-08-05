@@ -10,7 +10,10 @@ import {
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
-import { IEditReminderReqDTO } from "linked-models/reminder/reminder.dto";
+import {
+  IEditReminder,
+  IEditReminderDTO,
+} from "linked-models/reminder/reminder.dto";
 import {
   REMINDER_PARAM,
   URL_REMINDER,
@@ -40,13 +43,23 @@ export class ReminderController extends BaseHttpController {
   @httpPut("", SetPermissions, CheckPermission(TodoListPermissions.CanEditTask))
   async editReminder(
     @currentUser() currentUser: IUserAttached,
-    @requestBody() body: IEditReminderReqDTO
+    @requestBody() body: IEditReminderDTO
   ): Promise<OkResult> {
     if (Object.values(body).length === 0) return this.json("Invalid data", 400);
 
     try {
+      const reminderData = { ...body } as IEditReminder;
+      if (body.whenShouldBeStarted)
+        reminderData.whenShouldBeStarted = new Date(body.whenShouldBeStarted);
+      if (body.whenShouldBeFinished)
+        reminderData.whenShouldBeFinished = new Date(body.whenShouldBeFinished);
+      if (body.startDate)
+        reminderData.whenShouldBeFinished = new Date(body.startDate);
+      if (body.finishDate)
+        reminderData.whenShouldBeFinished = new Date(body.finishDate);
+
       const reminder = await this.reminderService.editReminder(
-        body,
+        reminderData,
         currentUser.id
       );
 
@@ -66,16 +79,16 @@ export class ReminderController extends BaseHttpController {
     CheckPermission(TodoListPermissions.CanDeleteTask)
   )
   async deleteReminder(
-    @requestParam(REMINDER_PARAM) ReminderId: string,
+    @requestParam(REMINDER_PARAM) reminderId: string,
     @currentUser() currentUser: IUserAttached
   ): Promise<OkResult> {
     try {
-      const Reminder = await this.reminderServce.deleteReminder(
-        ReminderId,
+      const deletedReminder = await this.reminderService.deleteReminder(
+        reminderId,
         currentUser.id
       );
 
-      return this.ok(Reminder);
+      return this.ok(deletedReminder);
     } catch (error) {
       if (error instanceof Error) {
         return this.json(error.message, 400);
