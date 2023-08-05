@@ -1,6 +1,7 @@
 import dayjs, { Ls } from "dayjs";
 import useCheckLoader from "hooks/useCheckLoader";
 import { IReminderDTO } from "linked-models/reminder/reminder.dto";
+import { CalendarAnimation } from "pages/RemindersPage/helpers/enums";
 import { useGetUserRemindersForDateRange } from "pages/RemindersPage/queries/getUserRemindersForDateRange.query";
 import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
 import { memo, useCallback, useState } from "react";
@@ -41,15 +42,9 @@ const BigCallendar = (): JSX.Element => {
     start: dayjs().startOf("month").toDate(),
     end: dayjs().endOf("month").toDate(),
   });
-  const [contentAnimation, setContentAnimation] = useState<
-    | "fadeIn 0.5s ease-in-out"
-    | "fadeInAlt 0.5s ease-in-out"
-    | "slideLeft 0.5s ease-in-out"
-    | "slideLeftAlt 0.5s ease-in-out"
-    | "slideRight 0.5s ease-in-out"
-    | "slideRightAlt 0.5s ease-in-out"
-    | undefined
-  >("fadeIn 0.5s ease-in-out");
+  const [contentAnimation, setContentAnimation] = useState<CalendarAnimation>(
+    CalendarAnimation.FADE_IN
+  );
   const propsConfig = useCallendarConfig();
 
   const getUserRemindersForDateRange = useGetUserRemindersForDateRange(
@@ -77,23 +72,13 @@ const BigCallendar = (): JSX.Element => {
   const [events, setEvents] = useState<ICallendarEvent[]>([]);
   const [backgroundEvents, setBackgroundEvents] = useState<Event[]>([]);
 
-  const onEventResize: withDragAndDropProps["onEventResize"] = (data) => {
-    const { start, end } = data;
 
-    setEvents((currentEvents) => {
-      const firstEvent = {
-        start: new Date(start),
-        end: new Date(end),
-      };
-      return [...currentEvents, firstEvent];
-    });
-  };
 
   const onSelectEvent = useCallback((event: ICallendarEvent) => {
     // window.alert(event.title);
   }, []);
 
-  const handleSelectSlot = useCallback(
+  const onSelectSlot = useCallback(
     ({ start, end }: Event) => {
       const title = window.prompt("New Event Name");
 
@@ -128,20 +113,61 @@ const BigCallendar = (): JSX.Element => {
   const onNavigate = useCallback(
     (newDate: Date, view: View, action: NavigateAction) => {
       if (action === "PREV") {
-        if (contentAnimation === "slideLeft 0.5s ease-in-out") {
-          setContentAnimation("slideLeftAlt 0.5s ease-in-out");
+        if (contentAnimation === CalendarAnimation.SLIDE_LEFT) {
+          setContentAnimation(CalendarAnimation.SLIDE_LEFT_ALT);
         } else {
-          setContentAnimation("slideLeft 0.5s ease-in-out");
+          setContentAnimation(CalendarAnimation.SLIDE_LEFT);
         }
       } else if (action === "NEXT") {
-        if (contentAnimation === "slideRight 0.5s ease-in-out") {
-          setContentAnimation("slideRightAlt 0.5s ease-in-out");
+        if (contentAnimation === CalendarAnimation.SLIDE_RIGHT) {
+          setContentAnimation(CalendarAnimation.SLIDE_RIGHT_ALT);
         } else {
-          setContentAnimation("slideRight 0.5s ease-in-out");
+          setContentAnimation(CalendarAnimation.SLIDE_RIGHT);
         }
       }
     },
     [contentAnimation]
+  );
+
+  const onView = useCallback(() => {
+    if (contentAnimation === CalendarAnimation.FADE_IN) {
+      setContentAnimation(CalendarAnimation.FADE_IN_ALT);
+    } else {
+      setContentAnimation(CalendarAnimation.FADE_IN);
+    }
+  }, [contentAnimation]);
+
+  const onRangeChange = useCallback(
+    (
+      range:
+        | Date[]
+        | {
+            start: Date;
+            end: Date;
+          }
+    ) => {
+      let newRangeStart = undefined;
+      let newRangeEnd = undefined;
+
+      if (Array.isArray(range)) {
+        newRangeStart = range[0];
+        newRangeEnd = range[range.length - 1];
+      } else {
+        newRangeStart = range.start;
+        newRangeEnd = range.end;
+      }
+
+      if (
+        newRangeStart.getTime() < dateRange.start.getTime() ||
+        newRangeEnd.getTime() > dateRange.end.getTime()
+      ) {
+        setDateRange({
+          start: dayjs(newRangeStart).startOf("month").toDate(),
+          end: dayjs(newRangeEnd).endOf("month").toDate(),
+        });
+      }
+    },
+    [dateRange.end, dateRange.start]
   );
 
   return (
@@ -149,7 +175,6 @@ const BigCallendar = (): JSX.Element => {
       {!!isLoading && <CallendarLoader />}
       <DnDCalendar
         {...propsConfig}
-        onNavigate={onNavigate}
         components={{
           agenda: {
             event: (a) => {
@@ -180,46 +205,13 @@ const BigCallendar = (): JSX.Element => {
             },
           },
         }}
-        onView={() => {
-          console.log("onView");
-
-          if (contentAnimation === "fadeIn 0.5s ease-in-out") {
-            setContentAnimation("fadeInAlt 0.5s ease-in-out");
-          } else {
-            setContentAnimation("fadeIn 0.5s ease-in-out");
-          }
-        }}
-        onRangeChange={(range) => {
-          let newRangeStart = undefined;
-          let newRangeEnd = undefined;
-
-          if (Array.isArray(range)) {
-            newRangeStart = range[0];
-            newRangeEnd = range[range.length - 1];
-          } else {
-            newRangeStart = range.start;
-            newRangeEnd = range.end;
-          }
-
-          if (
-            newRangeStart.getTime() < dateRange.start.getTime() ||
-            newRangeEnd.getTime() > dateRange.end.getTime()
-          ) {
-            console.log("set", {
-              start: dayjs(newRangeStart).startOf("month").toDate(),
-              end: dayjs(newRangeEnd).endOf("month").toDate(),
-            });
-
-            setDateRange({
-              start: dayjs(newRangeStart).startOf("month").toDate(),
-              end: dayjs(newRangeEnd).endOf("month").toDate(),
-            });
-          }
-        }}
-        eventPropGetter={eventPropGetter}
         events={events}
+        onNavigate={onNavigate}
+        onView={onView}
+        onRangeChange={onRangeChange}
+        eventPropGetter={eventPropGetter}
         onSelectEvent={onSelectEvent}
-        onSelectSlot={handleSelectSlot}
+        onSelectSlot={onSelectSlot}
         onEventDrop={onEventDrop}
         onEventResize={onEventResize}
       />
