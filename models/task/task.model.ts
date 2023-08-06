@@ -20,6 +20,13 @@ export interface ITask {
   important?: boolean;
 }
 
+export const taskModifiableDateFields: (keyof ITask)[] = [
+  "whenShouldBeStarted",
+  "whenShouldBeFinished",
+  "finishDate",
+  "startDate",
+];
+
 export interface ITaskWithReadonlyProperties extends ITask {
   /** Id of tododolist which task is part of. */
   readonly todoListId: string;

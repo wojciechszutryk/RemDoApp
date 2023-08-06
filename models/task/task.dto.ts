@@ -15,11 +15,11 @@ export interface ITaskDTO
 /**
  * Task with creator
  */
-export interface IExtendedTaskDto extends ITaskAttached {
+export interface IExtendedTaskDto extends Omit<ITaskAttached, "creatorId"> {
   creator?: IUserPublicDataDTO;
 }
 
-export function mapITaskDTOToITask<T extends Partial<ITaskDTO>>(task: T) {
+export function parseTaskDateFields<T extends Partial<ITaskDTO>>(task: T) {
   const converStringifiedDateProperty = (value: string | undefined | null) =>
     typeof value === "string" ? new Date(value) : value;
 
@@ -36,7 +36,7 @@ export function mapITaskDTOToITask<T extends Partial<ITaskDTO>>(task: T) {
   };
 }
 
-export function mapITaskToITaskDTO<T extends Partial<ITask>>(task: T) {
+export function stringifyTaskDateFields<T extends Partial<ITask>>(task: T) {
   const converDateProperty = (value: Date | undefined | null) =>
     value instanceof Date ? value.toString() : value;
   return {

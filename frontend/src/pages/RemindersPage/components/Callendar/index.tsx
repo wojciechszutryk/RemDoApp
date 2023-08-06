@@ -1,7 +1,8 @@
 import dayjs, { Ls } from "dayjs";
 import useCheckLoader from "hooks/useCheckLoader";
-import { IReminderDTO } from "linked-models/reminder/reminder.dto";
+import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import { CalendarAnimation } from "pages/RemindersPage/helpers/enums";
+import useOnEventResize from "pages/RemindersPage/hooks/useOnEventResize";
 import { useGetUserRemindersForDateRange } from "pages/RemindersPage/queries/getUserRemindersForDateRange.query";
 import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
 import { memo, useCallback, useState } from "react";
@@ -27,9 +28,10 @@ Ls.en.weekStart = 1;
 
 export interface ICallendarEvent
   extends Omit<
-    IReminderDTO,
-    "text" | "whenShouldBeStarted" | "whenShouldBeFinished"
+    IReminderAttached,
+    "text" | "whenShouldBeStarted" | "whenShouldBeFinished" | "taskId"
   > {
+  id: string;
   title: string;
   start: Date;
   end: Date;
@@ -46,6 +48,7 @@ const BigCallendar = (): JSX.Element => {
     CalendarAnimation.FADE_IN
   );
   const propsConfig = useCallendarConfig();
+  const onEventResize = useOnEventResize();
 
   const getUserRemindersForDateRange = useGetUserRemindersForDateRange(
     dateRange,
@@ -56,10 +59,10 @@ const BigCallendar = (): JSX.Element => {
         data.forEach((reminder) => {
           eventsArr.push({
             ...reminder,
-            id: reminder.id,
+            id: reminder.taskId,
             title: reminder.text,
-            start: new Date(reminder.whenShouldBeStarted!),
-            end: new Date(reminder.whenShouldBeFinished!),
+            start: new Date(reminder.whenShouldBeStarted),
+            end: new Date(reminder.whenShouldBeFinished),
           });
         });
 
@@ -72,8 +75,6 @@ const BigCallendar = (): JSX.Element => {
   const [events, setEvents] = useState<ICallendarEvent[]>([]);
   const [backgroundEvents, setBackgroundEvents] = useState<Event[]>([]);
 
-
-
   const onSelectEvent = useCallback((event: ICallendarEvent) => {
     // window.alert(event.title);
   }, []);
@@ -83,7 +84,7 @@ const BigCallendar = (): JSX.Element => {
       const title = window.prompt("New Event Name");
 
       if (title) {
-        setEvents((prev) => [...prev, { start, end, title }]);
+        // setEvents((prev) => [...prev, { start, end, title }]);
       }
     },
     [setEvents]

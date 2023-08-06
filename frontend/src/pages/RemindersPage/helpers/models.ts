@@ -1,3 +1,3 @@
-import { IReminderDTO } from "linked-models/reminder/reminder.dto";
+import { IReminderAttached } from "linked-models/reminder/reminder.model";
 
-export type IRemindersQueryData = Map<string, IReminderDTO>;
+export type IRemindersQueryData = Map<string, IReminderAttached>;

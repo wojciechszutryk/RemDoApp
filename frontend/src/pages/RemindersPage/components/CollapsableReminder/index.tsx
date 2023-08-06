@@ -1,5 +1,5 @@
 import { StyledListItemText } from "atomicComponents/organisms/Header/components/NotificationsMenu/components/styles";
-import { IReminderDTO } from "linked-models/reminder/reminder.dto";
+import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import {
   StyledDetailsColapse,
   StyledListItemIcon,
@@ -10,14 +10,14 @@ import { memo, useState } from "react";
 import { StyledRemindersListItem } from "./styles";
 
 interface Props {
-  reminder: IReminderDTO;
+  reminder: IReminderAttached;
 }
 
 const CollapsableReminder = ({ reminder }: Props): JSX.Element => {
   const [expanded, setExpanded] = useState(false);
   return (
     <StyledRemindersListItem
-      key={reminder.id}
+      key={reminder.taskId}
       onClick={() => {
         setExpanded((prev) => !prev);
       }}
@@ -29,7 +29,12 @@ const CollapsableReminder = ({ reminder }: Props): JSX.Element => {
       )}
       <StyledListItemText primary={reminder.text} />
       <StyledDetailsColapse in={expanded}>
-        <TaskDetailsList task={reminder} />
+        <TaskDetailsList
+          task={{
+            ...reminder,
+            id: reminder.taskId,
+          }}
+        />
       </StyledDetailsColapse>
     </StyledRemindersListItem>
   );

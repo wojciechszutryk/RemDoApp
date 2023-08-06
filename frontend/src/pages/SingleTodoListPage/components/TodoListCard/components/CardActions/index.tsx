@@ -57,7 +57,7 @@ const CardActions = ({
             todoListId: id,
             assignedOwners: assignedOwnersEmials,
             assignedUsers: assignedUsersEmails,
-            todoListName: name,
+            todoListName: name || t(TranslationKeys.Reminder),
           }),
         label: t(TranslationKeys.ShareTodoList),
         icon: <ShareIcon />,
