@@ -1,6 +1,6 @@
+import { IEditReminder } from "linked-models/reminder/reminder.dto";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { ITask } from "linked-models/task/task.model";
-import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import { IBaseDialogProps } from "./baseModalProps.model";
 
@@ -34,11 +34,7 @@ export interface IDeleteTaskDialog {
 
 export interface IReminderDialog {
   visible: boolean;
-  editReminderData?: ITask & {
-    id: string;
-    todoListId: string;
-    icon: TodoListIconEnum;
-  };
+  editReminderData?: IEditReminder;
 }
 
 export interface IReminderListDialog {

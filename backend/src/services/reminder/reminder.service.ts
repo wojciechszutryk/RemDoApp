@@ -6,7 +6,7 @@ import {
   IEditReminder,
 } from "linked-models/reminder/reminder.dto";
 import { IReminderAttached } from "linked-models/reminder/reminder.model";
-import { mapITaskToITaskDTO } from "linked-models/task/task.dto";
+import { convertObjectDateFieldsToString } from "linked-models/task/task.dto";
 import { ITask, ITaskAttached } from "linked-models/task/task.model";
 import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
 import { ITodoList } from "linked-models/todoList/todoList.model";
@@ -203,7 +203,12 @@ export class ReminderService {
     if (Object.keys(taskDataToEdit).length > 0) {
       await this.taskService.updateTask(
         editReminderData.todoListId,
-        mapITaskToITaskDTO(taskDataToEdit),
+        convertObjectDateFieldsToString(taskDataToEdit, [
+          "finishDate",
+          "startDate",
+          "whenShouldBeStarted",
+          "whenShouldBeFinished",
+        ]),
         creatorId,
         false
       );

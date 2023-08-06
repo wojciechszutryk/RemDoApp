@@ -9,7 +9,8 @@ import { useDialogs } from "framework/dialogs";
 import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
 import { initialTaskDialog } from "framework/dialogs/models/initialState.const";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { IReminderDTO } from "linked-models/reminder/reminder.dto";
+import { ICreateReminder } from "linked-models/reminder/reminder.dto";
+import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import { ITask } from "linked-models/task/task.model";
 import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { useCreateReminderMutation } from "pages/RemindersPage/mutations/createReminder/createReminder.mutation";
@@ -34,15 +35,15 @@ const ReminderDialog = (): JSX.Element => {
     updateReminderDialog(initialTaskDialog)
   );
 
-  const defaultFormValues = {
+  const defaultFormValues: ICreateReminder = {
     text: editReminderData?.text || "",
     icon: editReminderData?.icon || TodoListIconEnum.Reminder,
-    whenShouldBeStarted: editReminderData?.whenShouldBeStarted || null,
-    whenShouldBeFinished: editReminderData?.whenShouldBeFinished || null,
-    todoListId: editReminderData?.todoListId || "reminder",
+    whenShouldBeStarted: editReminderData.whenShouldBeStarted,
+    whenShouldBeFinished: editReminderData.whenShouldBeFinished,
+    todoListId: editReminderData.todoListId,
   };
 
-  const methods = useForm<IReminderDTO>({
+  const methods = useForm<ICreateReminder>({
     defaultValues: defaultFormValues,
   });
 
@@ -51,7 +52,7 @@ const ReminderDialog = (): JSX.Element => {
   const editTaskMutation = useEditTaskInTodoListMutation();
   const { t } = useTranslation();
 
-  const onSubmit = (data: IReminderDTO) => {
+  const onSubmit = (data: ICreateReminder) => {
     console.log(data);
 
     // if (editReminderData) {
@@ -106,7 +107,7 @@ const ReminderDialog = (): JSX.Element => {
               minDate: dayjs(methods.getValues("whenShouldBeStarted")),
             },
           ].map((props, index) => (
-            <DateTimePickerWithIcon<IReminderDTO> key={index} {...props} />
+            <DateTimePickerWithIcon<IReminderAttached> key={index} {...props} />
           ))}
           <TodoListSelect />
           <Button type="submit">
