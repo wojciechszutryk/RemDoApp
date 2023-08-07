@@ -1,10 +1,7 @@
 import { EventService } from "framework/events/event.service";
 import { extractPropertiesToUpdate } from "helpers/extractPropertiesToUpdate";
 import { inject, injectable } from "inversify";
-import {
-  ICreateReminder,
-  IEditReminder,
-} from "linked-models/reminder/reminder.dto";
+import { IReminder } from "linked-models/reminder/reminder.dto";
 import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import { ITask, ITaskAttached } from "linked-models/task/task.model";
 import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
@@ -125,7 +122,7 @@ export class ReminderService {
    * Creates a reminder for a user. New todoList and task will be created.
    */
   public async createReminder(
-    reminderData: ICreateReminder,
+    reminderData: IReminder,
     creatorId: string
   ): Promise<IReminderAttached> {
     const newTodoListToCreate: ITodoList = {
@@ -162,7 +159,9 @@ export class ReminderService {
    * Modifies a reminder. TodoList and/or task might be modified depending on the data provided.
    */
   public async editReminder(
-    editReminderData: IEditReminder,
+    todoListId: string,
+    taskId: string,
+    editReminderData: Partial<IReminder>,
     creatorId: string
   ): Promise<IReminderAttached> {
     const todoListKeys: (keyof ITodoList)[] = [
@@ -179,14 +178,14 @@ export class ReminderService {
 
     if (Object.keys(todoListDataToEdit).length > 0) {
       await this.todoListService.updateTodoList(
-        editReminderData.todoListId,
+        todoListId,
         todoListDataToEdit,
         creatorId,
         false
       );
     }
 
-    const taskKeys: (keyof IEditReminder)[] = [
+    const taskKeys: (keyof Partial<IReminder>)[] = [
       "text",
       "finishDate",
       "startDate",
@@ -202,16 +201,14 @@ export class ReminderService {
 
     if (Object.keys(taskDataToEdit).length > 0) {
       await this.taskService.updateTask(
-        editReminderData.todoListId,
+        taskId,
         taskDataToEdit,
         creatorId,
         false
       );
     }
 
-    const updatedReminder = await this.getReminderByTaskId(
-      editReminderData.taskId
-    );
+    const updatedReminder = await this.getReminderByTaskId(taskId);
 
     if (!updatedReminder)
       throw new Error("There was an error while updating reminder");

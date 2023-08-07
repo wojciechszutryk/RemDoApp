@@ -10,14 +10,12 @@ import {
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
-import { IEditReminderDTO } from "linked-models/reminder/reminder.dto";
-import {
-  REMINDER_PARAM,
-  URL_REMINDER,
-  URL_REMINDERS,
-} from "linked-models/reminder/reminder.urls";
+import { IReminderDTO } from "linked-models/reminder/reminder.dto";
+import { URL_REMINDERS } from "linked-models/reminder/reminder.urls";
 import { parseTaskDateFields } from "linked-models/task/task.dto";
+import { TASK_PARAM, URL_TASK } from "linked-models/task/task.urls";
 import {
+  TODO_LIST_PARAM,
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
@@ -28,7 +26,7 @@ import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { ReminderService } from "services/reminder/reminder.service";
 
 @controller(
-  URL_TODO_LISTS + URL_TODO_LIST() + URL_REMINDERS + URL_REMINDER(),
+  URL_TODO_LISTS + URL_TODO_LIST() + URL_REMINDERS + URL_TASK(),
   SetCurrentUser
 )
 export class ReminderController extends BaseHttpController {
@@ -40,13 +38,17 @@ export class ReminderController extends BaseHttpController {
 
   @httpPut("", SetPermissions, CheckPermission(TodoListPermissions.CanEditTask))
   async editReminder(
+    @requestParam(TODO_LIST_PARAM) todoListId: string,
+    @requestParam(TASK_PARAM) taskId: string,
     @currentUser() currentUser: IUserAttached,
-    @requestBody() body: IEditReminderDTO
+    @requestBody() body: Partial<IReminderDTO>
   ): Promise<OkResult> {
     if (Object.values(body).length === 0) return this.json("Invalid data", 400);
 
     try {
       const reminder = await this.reminderService.editReminder(
+        todoListId,
+        taskId,
         parseTaskDateFields(body),
         currentUser.id
       );
@@ -67,12 +69,12 @@ export class ReminderController extends BaseHttpController {
     CheckPermission(TodoListPermissions.CanDeleteTask)
   )
   async deleteReminder(
-    @requestParam(REMINDER_PARAM) reminderId: string,
+    @requestParam(TASK_PARAM) taskId: string,
     @currentUser() currentUser: IUserAttached
   ): Promise<OkResult> {
     try {
       const deletedReminder = await this.reminderService.deleteReminder(
-        reminderId,
+        taskId,
         currentUser.id
       );
 

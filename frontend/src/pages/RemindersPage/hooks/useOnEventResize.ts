@@ -1,20 +1,34 @@
-import { useEditTaskInTodoListMutation } from "pages/SingleTodoListPage/mutations/editTask/editTask.mutation";
 import { withDragAndDropProps } from "react-big-calendar/lib/addons/dragAndDrop";
+import { ICallendarEvent } from "../helpers/models";
+import { useEditReminderMutation } from "../mutations/editReminder/editReminder.mutation";
 
 const useOnEventResize = () => {
-  const editTaskMutation = useEditTaskInTodoListMutation();
+  const editReminderMutation = useEditReminderMutation();
 
-  const onEventResize: withDragAndDropProps["onEventResize"] = (data) => {
-    const { start, end } = data;
+  const onEventResize: withDragAndDropProps<ICallendarEvent>["onEventResize"] =
+    (data) => {
+      const {
+        start,
+        end,
+        event: { todoListId, id },
+      } = data;
 
-    // setEvents((currentEvents) => {
-    //   const firstEvent = {
-    //     start: new Date(start),
-    //     end: new Date(end),
-    //   };
-    //   return [...currentEvents, firstEvent];
-    // });
-  };
+      editReminderMutation.mutate({
+        todoListId,
+        taskId: id,
+        data: {
+          startDate: new Date(start),
+          finishDate: new Date(end),
+        },
+      });
+      // setEvents((currentEvents) => {
+      //   const firstEvent = {
+      //     start: new Date(start),
+      //     end: new Date(end),
+      //   };
+      //   return [...currentEvents, firstEvent];
+      // });
+    };
 
   return onEventResize;
 };

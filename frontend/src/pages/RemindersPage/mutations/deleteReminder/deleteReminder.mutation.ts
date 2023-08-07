@@ -2,10 +2,8 @@ import { useMutation } from "@tanstack/react-query";
 import { apiDelete } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import { IReminderAttached } from "linked-models/reminder/reminder.model";
-import {
-  URL_REMINDER,
-  URL_REMINDERS,
-} from "linked-models/reminder/reminder.urls";
+import { URL_REMINDERS } from "linked-models/reminder/reminder.urls";
+import { URL_TASK } from "linked-models/task/task.urls";
 import {
   URL_TODO_LIST,
   URL_TODO_LISTS,
@@ -27,7 +25,7 @@ export const useDeleteReminderMutation = () => {
       URL_TODO_LISTS +
         URL_TODO_LIST(todoListId) +
         URL_REMINDERS +
-        URL_REMINDER(taskId)
+        URL_TASK(taskId)
     );
     return apiDelete<IReminderAttached>(url).then((res) => res.data);
   };

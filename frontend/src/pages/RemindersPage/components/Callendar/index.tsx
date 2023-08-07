@@ -2,6 +2,7 @@ import dayjs, { Ls } from "dayjs";
 import useCheckLoader from "hooks/useCheckLoader";
 import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import { CalendarAnimation } from "pages/RemindersPage/helpers/enums";
+import { ICallendarEvent } from "pages/RemindersPage/helpers/models";
 import useOnEventResize from "pages/RemindersPage/hooks/useOnEventResize";
 import { useGetUserRemindersForDateRange } from "pages/RemindersPage/queries/getUserRemindersForDateRange.query";
 import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
@@ -25,17 +26,6 @@ import { StyledCallendarWrapper } from "./styles";
 import useCallendarConfig from "./useCallendarConfig";
 
 Ls.en.weekStart = 1;
-
-export interface ICallendarEvent
-  extends Omit<
-    IReminderAttached,
-    "text" | "startDate" | "finishDate" | "taskId"
-  > {
-  id: string;
-  title: string;
-  start: Date;
-  end: Date;
-}
 
 const DnDCalendar = withDragAndDrop<ICallendarEvent>(Calendar);
 

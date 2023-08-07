@@ -9,10 +9,7 @@ import { useDialogs } from "framework/dialogs";
 import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
 import { initialTaskDialog } from "framework/dialogs/models/initialState.const";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import {
-  ICreateReminder,
-  IEditReminder,
-} from "linked-models/reminder/reminder.dto";
+import { IReminder } from "linked-models/reminder/reminder.dto";
 import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { useCreateReminderMutation } from "pages/RemindersPage/mutations/createReminder/createReminder.mutation";
 import { useEditReminderMutation } from "pages/RemindersPage/mutations/editReminder/editReminder.mutation";
@@ -22,11 +19,6 @@ import { useTranslation } from "react-i18next";
 import DateTimePickerWithIcon from "../TaskDilog/components/DatePickerWithIcon";
 import { StyledForm } from "../TodoListDialog/styles";
 import TodoListSelect from "./components/TodoListSelect";
-
-interface FormValues extends Partial<ICreateReminder> {
-  todoListId?: string;
-  taskId?: string;
-}
 
 const ReminderDialog = (): JSX.Element => {
   const {
@@ -40,15 +32,16 @@ const ReminderDialog = (): JSX.Element => {
     updateReminderDialog(initialTaskDialog)
   );
 
-  const defaultFormValues: FormValues = {
-    text: editReminderData?.text || "",
-    icon: editReminderData?.icon || TodoListIconEnum.Reminder,
-    startDate: editReminderData?.startDate || dayjs().toDate(),
-    finishDate: editReminderData?.finishDate || dayjs().add(1, "hour").toDate(),
-    todoListId: editReminderData?.todoListId,
+  const defaultFormValues: IReminder = {
+    text: editReminderData?.data?.text || "",
+    name: editReminderData?.data?.name || "",
+    icon: editReminderData?.data?.icon || TodoListIconEnum.Reminder,
+    startDate: editReminderData?.data?.startDate || dayjs().toDate(),
+    finishDate:
+      editReminderData?.data?.finishDate || dayjs().add(1, "hour").toDate(),
   };
 
-  const methods = useForm<FormValues>({
+  const methods = useForm<IReminder>({
     defaultValues: defaultFormValues,
   });
 
@@ -56,27 +49,28 @@ const ReminderDialog = (): JSX.Element => {
   const editReminderMutation = useEditReminderMutation();
   const { t } = useTranslation();
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
+  const onSubmit = (data: IReminder) => {
+    if (editReminderData) {
+      editReminderMutation.mutate({
+        todoListId: editReminderData.todoListId,
+        taskId: editReminderData.taskId,
+        data,
+      });
+    } else {
+      if (!data.startDate || !data.finishDate || !data.text || !data.icon)
+        return;
+      const createReminderData: IReminder = {
+        ...data,
+        text: data.text,
+        name: data.text,
+        icon: data.icon,
+        startDate: data.startDate,
+        finishDate: data.finishDate,
+      };
+      createReminderMutation.mutate(createReminderData);
+    }
 
-    // if (editReminderData) {
-    //   editTaskMutation.mutate({
-    //     todoListId: editReminderData.todoListId,
-    //     taskId: editReminderData.id,
-    //     data,
-    //   });
-
-    //   if (editReminderData.icon !== data.icon) {
-    //     editTodoListMutation.mutate({
-    //       todoListId: editReminderData.todoListId,
-    //       data: {
-    //         icon: data.icon,
-    //       },
-    //     });
-    //   }
-    // } else createReminderMutation.mutate(data);
-
-    // updateReminderDialog(initialTaskDialog);
+    updateReminderDialog(initialTaskDialog);
     onClose();
   };
 
@@ -86,7 +80,7 @@ const ReminderDialog = (): JSX.Element => {
         <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
           <Typography variant="h4">
             {editReminderData
-              ? `${t(TranslationKeys.EditTask)}: ${editReminderData.text}`
+              ? `${t(TranslationKeys.EditTask)}: ${editReminderData.data.text}`
               : t(TranslationKeys.AddTask)}
           </Typography>
 
@@ -100,7 +94,7 @@ const ReminderDialog = (): JSX.Element => {
             {
               Icon: <PlayCircleOutlineIcon />,
               tooltipTitle: t(TranslationKeys.StartDate),
-              name: "startDate" as keyof IEditReminder,
+              name: "startDate" as keyof IReminder,
               required: true,
               control: methods.control,
               maxDate: dayjs(methods.getValues("startDate")),
@@ -108,13 +102,13 @@ const ReminderDialog = (): JSX.Element => {
             {
               Icon: <FlagCircleIcon />,
               tooltipTitle: t(TranslationKeys.FinishDate),
-              name: "finishDate" as keyof IEditReminder,
+              name: "finishDate" as keyof IReminder,
               required: true,
               control: methods.control,
               minDate: dayjs(methods.getValues("finishDate")),
             },
           ].map((props, index) => (
-            <DateTimePickerWithIcon<FormValues> key={index} {...props} />
+            <DateTimePickerWithIcon key={index} {...props} />
           ))}
           <TodoListSelect />
           <Button type="submit">
