@@ -71,6 +71,7 @@ export class ReminderService {
       whenShouldBeStarted: task.whenShouldBeStarted!,
       whenShouldBeFinished: task.whenShouldBeFinished!,
       creator,
+      name: todoList.name,
       assignedUsers: todoList.assignedUsers,
       assignedOwners: todoList.assignedOwners,
       icon: todoList.icon,
@@ -109,11 +110,12 @@ export class ReminderService {
           ...task,
           whenShouldBeStarted: task.whenShouldBeStarted,
           whenShouldBeFinished: task.whenShouldBeFinished,
+          taskId: task.id,
           creator: userMap.get(task.creatorId),
+          name: todoList.name,
           assignedUsers: todoList?.assignedUsers,
           assignedOwners: todoList?.assignedOwners,
           todoListId: todoList?.id,
-          taskId: task.id,
           icon: todoList?.icon,
         });
       }
@@ -136,6 +138,7 @@ export class ReminderService {
     const newTodoList = await this.todoListService.createTodoList(
       newTodoListToCreate,
       creatorId,
+      true,
       false
     );
 

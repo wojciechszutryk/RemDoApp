@@ -182,6 +182,7 @@ export class TodoListService {
   public async createTodoList(
     todoListData: ITodoList,
     creatorId: string,
+    isReminder = false,
     generateEvent = true
   ): Promise<ITodoListWithMembersDto> {
     const newTodoList: ITodoListWithReadonlyProperties = {
@@ -192,6 +193,7 @@ export class TodoListService {
       creatorId: creatorId,
       whenCreated: new Date(),
       whenUpdated: new Date(),
+      isReminder,
     };
 
     if (

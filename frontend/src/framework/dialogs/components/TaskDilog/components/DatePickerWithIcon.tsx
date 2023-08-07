@@ -7,13 +7,13 @@ import { ITask } from "linked-models/task/task.model";
 import { FieldPath } from "react-hook-form";
 import { StyledDatePickerWrapper as StyledDateTimePickerWrapper } from "./styles";
 
-interface Props<T extends ITask>
+interface Props<T extends Partial<ITask>>
   extends ControlledDateTimePickerProps<T, FieldPath<T>> {
   Icon: JSX.Element;
   tooltipTitle: string;
 }
 
-function DateTimePickerWithIcon<T extends ITask>({
+function DateTimePickerWithIcon<T extends Partial<ITask>>({
   Icon,
   tooltipTitle,
   name,

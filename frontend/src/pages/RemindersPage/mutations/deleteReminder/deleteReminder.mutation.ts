@@ -12,7 +12,6 @@ import {
 } from "linked-models/todoList/todoList.urls";
 import useUpdateQueriesAfterDeletingReminder from "./useUpdateQueriesAfterDeletingReminder";
 
-//TODO: FINISH
 export const useDeleteReminderMutation = () => {
   const updateQueriesAfterDeletingReminder =
     useUpdateQueriesAfterDeletingReminder();

@@ -12,6 +12,10 @@ const todoListSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  isReminder: {
+    type: Boolean,
+    required: false,
+  },
   whenCreated: {
     type: Date,
     required: true,
@@ -47,6 +51,7 @@ export const mapTodoListToAttachedTodoList = (
     name: todoList.name,
     creatorId: todoList.creatorId,
     icon: todoList.icon,
+    isReminder: todoList.isReminder,
     assignedUsers: todoList.assignedUsers,
     assignedOwners: todoList.assignedOwners,
     whenCreated: todoList.whenCreated,

@@ -3,7 +3,7 @@ import { TodoListIconEnum } from "./todoList.enum";
 
 export interface ITodoList {
   /** Name of tasks list. Undefined for reminders. */
-  name?: string;
+  name: string;
 
   /** Emails of invited users. Invited user can create new tasks and edit/delete his own tasks */
   assignedUsers?: string[];
@@ -13,6 +13,9 @@ export interface ITodoList {
 
   /** Icon of todoList. Icon is used to graphically identify todoList and it's tasks */
   icon: TodoListIconEnum;
+
+  /** Boolean to determine if todoList was created as part of reminder */
+  isReminder?: boolean;
 }
 
 export interface ITodoListWithReadonlyProperties extends ITodoList {

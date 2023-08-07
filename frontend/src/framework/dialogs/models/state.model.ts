@@ -1,4 +1,4 @@
-import { IEditReminder } from "linked-models/reminder/reminder.dto";
+import { ICreateReminder, IEditReminder } from "linked-models/reminder/reminder.dto";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { ITask } from "linked-models/task/task.model";
 import { ITodoList } from "linked-models/todoList/todoList.model";

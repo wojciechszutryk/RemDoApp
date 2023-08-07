@@ -1,10 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiPut } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
-import { IEditReminder, IEditReminderDTO } from "linked-models/reminder/reminder.dto";
 import {
-  IReminderAttached,
-} from "linked-models/reminder/reminder.model";
+  IEditReminder,
+  IEditReminderDTO,
+} from "linked-models/reminder/reminder.dto";
+import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import {
   URL_REMINDER,
   URL_REMINDERS,
@@ -16,7 +17,7 @@ import {
 } from "linked-models/todoList/todoList.urls";
 import useUpdateQueriesAfterEditingReminder from "./useUpdateQueriesAfterEditingReminder";
 
-export const useEditReminderInTodoListMutation = () => {
+export const useEditReminderMutation = () => {
   const updateQueriesAfterEditingReminder =
     useUpdateQueriesAfterEditingReminder();
 
