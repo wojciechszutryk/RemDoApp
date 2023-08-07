@@ -1,10 +1,8 @@
 import FlagCircleIcon from "@mui/icons-material/FlagCircle";
-import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
-import HourglassFullIcon from "@mui/icons-material/HourglassFull";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
-import Dialog from "atomicComponents/atoms/Dialog";
+import Dialog from "atomicComponents/atoms/Dialog";import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import { ControlledCheckbox } from "atomicComponents/molecules/ControlledCheckbox";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import dayjs from "dayjs";
@@ -35,10 +33,9 @@ const TaskDialog = (): JSX.Element => {
 
   const defaultFormValues = {
     text: editTaskData?.text || "",
-    whenShouldBeStarted: editTaskData?.whenShouldBeStarted || null,
-    whenShouldBeFinished: editTaskData?.whenShouldBeFinished || null,
     startDate: editTaskData?.startDate || null,
     finishDate: editTaskData?.finishDate || null,
+    completionDate: editTaskData?.completionDate || null,
     important: editTaskData?.important,
   };
 
@@ -72,29 +69,23 @@ const TaskDialog = (): JSX.Element => {
         />
         {[
           {
-            Icon: <HourglassEmptyIcon />,
-            tooltipTitle: t(TranslationKeys.PlannedStartDate),
-            name: "whenShouldBeStarted" as keyof ITask,
-            control,
-            maxDate: dayjs(getValues("whenShouldBeFinished")),
-          },
-          {
-            Icon: <HourglassFullIcon />,
-            tooltipTitle: t(TranslationKeys.PlannedFinishDate),
-            name: "whenShouldBeFinished" as keyof ITask,
-            control,
-            minDate: dayjs(getValues("whenShouldBeStarted")),
-          },
-          {
             Icon: <PlayCircleOutlineIcon />,
             tooltipTitle: t(TranslationKeys.StartDate),
             name: "startDate" as keyof ITask,
             control,
+            maxDate: dayjs(getValues("startDate")),
           },
           {
             Icon: <FlagCircleIcon />,
             tooltipTitle: t(TranslationKeys.FinishDate),
             name: "finishDate" as keyof ITask,
+            control,
+            minDate: dayjs(getValues("finishDate")),
+          },
+          {
+            Icon: <EventAvailableIcon />,
+            tooltipTitle: t(TranslationKeys.CompletionDate),
+            name: "completionDate" as keyof ITask,
             control,
           },
         ].map((props, index) => (

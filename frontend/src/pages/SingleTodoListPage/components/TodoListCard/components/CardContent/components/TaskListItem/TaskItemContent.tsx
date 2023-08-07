@@ -19,7 +19,7 @@ interface Props {
 const TaskItemContent = ({ task }: Props): JSX.Element => {
   const [expanded, setExpanded] = useState(false);
   const { dragStartPosition } = useSwippableItemContext();
-  const isTaskFinished = !!task.finishDate;
+  const isTaskCompleted = !!task.completionDate;
   const [showHighlight, setShowHighlight] = useState(false);
   const { taskId } = useParams();
 
@@ -42,7 +42,7 @@ const TaskItemContent = ({ task }: Props): JSX.Element => {
       <StyledListItemIcon>
         {task.important ? <PriorityHighIcon /> : <ArrowForwardIcon />}
       </StyledListItemIcon>
-      <StyledListItemText primary={task.text} isTaskFinished={isTaskFinished} />
+      <StyledListItemText primary={task.text} isTaskFinished={isTaskCompleted} />
       <StyledDetailsColapse in={expanded}>
         <TaskDetailsList task={task} />
       </StyledDetailsColapse>

@@ -11,7 +11,7 @@ const useUpdateQueriesAfterCreatingReminder = () => {
     (createdReminder: IReminderAttached) => {
       // update reminder query for month when created reminder is supposed to start
       queryClient.setQueryData(
-        getRemindersQueryKey(createdReminder.whenShouldBeStarted),
+        getRemindersQueryKey(createdReminder.startDate),
         (prev?: IRemindersQueryData): IRemindersQueryData => {
           if (!prev) return new Map();
 

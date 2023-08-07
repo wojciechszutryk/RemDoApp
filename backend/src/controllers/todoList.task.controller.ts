@@ -10,7 +10,7 @@ import {
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
-import { ITaskDTO } from "linked-models/task/task.dto";
+import { ITaskDTO, parseTaskDateFields } from "linked-models/task/task.dto";
 import { TASK_PARAM, URL_TODO_LIST_TASK } from "linked-models/task/task.urls";
 import { IUserAttached } from "linked-models/user/user.model";
 import { CheckPermission } from "middlewares/permissions/checkPermission.middleware";
@@ -35,7 +35,7 @@ export class TodoListTaskController extends BaseHttpController {
     try {
       const task = await this.taskServce.updateTask(
         taskId,
-        body,
+        parseTaskDateFields(body),
         currentUser.id
       );
 

@@ -1,4 +1,5 @@
 import {
+  ITaskDocument,
   mapTaskToAttachedTask,
   TaskCollectionName,
   TaskCollectionType,
@@ -9,12 +10,12 @@ import {
   TaskCreatedEvent,
   TaskUpdatedEvent,
 } from "linked-models/event/implementation/task.events";
-import { ITaskDTO, mapITaskDTOToITask } from "linked-models/task/task.dto";
 import {
   ITask,
   ITaskAttached,
   ITaskWithReadonlyProperties,
 } from "linked-models/task/task.model";
+import { FilterQuery } from "mongoose";
 
 @injectable()
 export class TaskService {
@@ -45,13 +46,12 @@ export class TaskService {
     minStartDate?: Date,
     maxStartDate?: Date
   ): Promise<ITaskAttached[]> {
-    const foundTasks = await this.taskCollection.find({
+    const filter: FilterQuery<ITaskDocument> = {
       todoListId: { $in: todoListIDs },
-      startDate: {
-        $gte: minStartDate,
-        $lte: maxStartDate,
-      },
-    });
+    };
+    if (minStartDate) filter.startDate = { $gte: minStartDate };
+    if (maxStartDate) filter.startDate = { $lte: maxStartDate };
+    const foundTasks = await this.taskCollection.find(filter);
 
     return foundTasks.map((t) => mapTaskToAttachedTask(t));
   }
@@ -89,12 +89,12 @@ export class TaskService {
    */
   public async updateTask(
     taskId: string,
-    updateData: Partial<ITaskDTO>,
+    updateData: Partial<ITask>,
     updaterId: string,
     generateEvent = true
   ): Promise<ITaskAttached> {
     const update = {
-      ...mapITaskDTOToITask(updateData),
+      ...updateData,
       important: updateData.important ?? false,
       whenUpdated: new Date(),
     };

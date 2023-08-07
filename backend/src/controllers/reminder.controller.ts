@@ -10,15 +10,13 @@ import {
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
-import {
-  IEditReminder,
-  IEditReminderDTO,
-} from "linked-models/reminder/reminder.dto";
+import { IEditReminderDTO } from "linked-models/reminder/reminder.dto";
 import {
   REMINDER_PARAM,
   URL_REMINDER,
   URL_REMINDERS,
 } from "linked-models/reminder/reminder.urls";
+import { parseTaskDateFields } from "linked-models/task/task.dto";
 import {
   URL_TODO_LIST,
   URL_TODO_LISTS,
@@ -48,12 +46,8 @@ export class ReminderController extends BaseHttpController {
     if (Object.values(body).length === 0) return this.json("Invalid data", 400);
 
     try {
-      const reminderData = { ...body } as IEditReminder;
-      if (body.startDate) reminderData.startDate = new Date(body.startDate);
-      if (body.finishDate) reminderData.finishDate = new Date(body.finishDate);
-
       const reminder = await this.reminderService.editReminder(
-        reminderData,
+        parseTaskDateFields(body),
         currentUser.id
       );
 

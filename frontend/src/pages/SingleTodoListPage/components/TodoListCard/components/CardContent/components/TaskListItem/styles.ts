@@ -19,7 +19,7 @@ export const StyledTaskListItem = styled(ListItem, {
   userSelect: "none",
   zIndex: 2,
   transition: "border 0.3s ease",
-  padding: '7px 14px',
+  padding: "7px 14px",
   border: highlighted
     ? `1px solid ${theme.palette.primary.contrastText}`
     : `1px solid transparent`,

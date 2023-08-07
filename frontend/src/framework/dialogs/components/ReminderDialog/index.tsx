@@ -1,5 +1,5 @@
-import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
-import HourglassFullIcon from "@mui/icons-material/HourglassFull";
+import FlagCircleIcon from "@mui/icons-material/FlagCircle";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
@@ -43,10 +43,8 @@ const ReminderDialog = (): JSX.Element => {
   const defaultFormValues: FormValues = {
     text: editReminderData?.text || "",
     icon: editReminderData?.icon || TodoListIconEnum.Reminder,
-    whenShouldBeStarted:
-      editReminderData?.whenShouldBeStarted || dayjs().toDate(),
-    whenShouldBeFinished:
-      editReminderData?.whenShouldBeFinished || dayjs().add(1, "hour").toDate(),
+    startDate: editReminderData?.startDate || dayjs().toDate(),
+    finishDate: editReminderData?.finishDate || dayjs().add(1, "hour").toDate(),
     todoListId: editReminderData?.todoListId,
   };
 
@@ -100,20 +98,20 @@ const ReminderDialog = (): JSX.Element => {
           />
           {[
             {
-              Icon: <HourglassEmptyIcon />,
-              tooltipTitle: t(TranslationKeys.PlannedStartDate),
-              name: "whenShouldBeStarted" as keyof IEditReminder,
+              Icon: <PlayCircleOutlineIcon />,
+              tooltipTitle: t(TranslationKeys.StartDate),
+              name: "startDate" as keyof IEditReminder,
               required: true,
               control: methods.control,
-              maxDate: dayjs(methods.getValues("whenShouldBeFinished")),
+              maxDate: dayjs(methods.getValues("startDate")),
             },
             {
-              Icon: <HourglassFullIcon />,
-              tooltipTitle: t(TranslationKeys.PlannedFinishDate),
-              name: "whenShouldBeFinished" as keyof IEditReminder,
+              Icon: <FlagCircleIcon />,
+              tooltipTitle: t(TranslationKeys.FinishDate),
+              name: "finishDate" as keyof IEditReminder,
               required: true,
               control: methods.control,
-              minDate: dayjs(methods.getValues("whenShouldBeStarted")),
+              minDate: dayjs(methods.getValues("finishDate")),
             },
           ].map((props, index) => (
             <DateTimePickerWithIcon<FormValues> key={index} {...props} />

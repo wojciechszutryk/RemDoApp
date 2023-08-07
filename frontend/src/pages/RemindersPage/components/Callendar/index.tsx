@@ -29,7 +29,7 @@ Ls.en.weekStart = 1;
 export interface ICallendarEvent
   extends Omit<
     IReminderAttached,
-    "text" | "whenShouldBeStarted" | "whenShouldBeFinished" | "taskId"
+    "text" | "startDate" | "finishDate" | "taskId"
   > {
   id: string;
   title: string;
@@ -61,8 +61,8 @@ const BigCallendar = (): JSX.Element => {
             ...reminder,
             id: reminder.taskId,
             title: reminder.text,
-            start: new Date(reminder.whenShouldBeStarted),
-            end: new Date(reminder.whenShouldBeFinished),
+            start: new Date(reminder.startDate),
+            end: new Date(reminder.finishDate),
           });
         });
 

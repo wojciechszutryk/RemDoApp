@@ -10,7 +10,7 @@ import {
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
-import { ITaskDTO, mapITaskDTOToITask } from "linked-models/task/task.dto";
+import { ITaskDTO, parseTaskDateFields } from "linked-models/task/task.dto";
 import { URL_TODO_LIST_TASKS } from "linked-models/task/task.urls";
 import { TODO_LIST_PARAM } from "linked-models/todoList/todoList.urls";
 import { IUserAttached } from "linked-models/user/user.model";
@@ -44,7 +44,7 @@ export class TodoListTasksController extends BaseHttpController {
 
     const task = await this.taskServce.createTaskInTodoList(
       todoListId,
-      mapITaskDTOToITask(body),
+      parseTaskDateFields(body),
       currentUser.id
     );
 

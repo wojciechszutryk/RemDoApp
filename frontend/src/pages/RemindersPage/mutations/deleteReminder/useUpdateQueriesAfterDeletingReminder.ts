@@ -11,7 +11,7 @@ const useUpdateQueriesAfterDeletingReminder = () => {
     (updatedReminder: IReminderAttached) => {
       // update reminder query for month when deleted reminder is supposed to start
       queryClient.setQueryData(
-        getRemindersQueryKey(updatedReminder.whenShouldBeStarted),
+        getRemindersQueryKey(updatedReminder.startDate),
         (prev?: IRemindersQueryData): IRemindersQueryData => {
           if (!prev) return new Map();
 

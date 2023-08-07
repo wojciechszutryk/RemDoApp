@@ -69,10 +69,9 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "Zadanie zostało zapisane jako zakończone z datą:",
   [TranslationKeys.TaskIsOnFinishedList]:
     "Jest ono widoczne na liście zadań zakończonych.",
-  [TranslationKeys.PlannedStartDate]: "Planowana data rozpoczęcia",
-  [TranslationKeys.PlannedFinishDate]: "Planowana data zakończenia",
-  [TranslationKeys.StartDate]: "Data rozpoczęcia",
-  [TranslationKeys.FinishDate]: "Data zakończenia",
+  [TranslationKeys.StartDate]: "Planowana data rozpoczęcia",
+  [TranslationKeys.FinishDate]: "Planowana data zakończenia",
+  [TranslationKeys.CompletionDate]: "Data ukończenia",
   [TranslationKeys.Creator]: "Twórca",
   [TranslationKeys.Days]: "dni",
   [TranslationKeys.Hours]: "godzin",

@@ -26,17 +26,17 @@ const TodoListCard = ({
 }: Props): JSX.Element => {
   const [expanded, setExpanded] = React.useState(false);
 
-  const { activeTasks, finishedTasks } = React.useMemo(() => {
+  const { activeTasks, completedTasks } = React.useMemo(() => {
     const activeTasks: IExtendedTaskDto[] = [];
-    const finishedTasks: IExtendedTaskDto[] = [];
+    const completedTasks: IExtendedTaskDto[] = [];
     todoList.tasks.forEach((task) => {
-      if (!!task.finishDate) {
-        finishedTasks.push(task);
+      if (!!task.completionDate) {
+        completedTasks.push(task);
       } else {
         activeTasks.push(task);
       }
     });
-    return { activeTasks, finishedTasks };
+    return { activeTasks, completedTasks };
   }, [todoList.tasks]);
 
   return (
@@ -49,14 +49,14 @@ const TodoListCard = ({
       <CardContent
         scrollable={scrollableContent}
         activeTasks={activeTasks}
-        finishedTasks={finishedTasks}
+        completedTasks={completedTasks}
         expanded={expanded}
       />
       <CardActions
         actionsVariant={actionsVariant}
         showExpandIcon={
           !scrollableContent &&
-          finishedTasks.length > 0 &&
+          completedTasks.length > 0 &&
           activeTasks.length !== 0
         }
         setExpanded={setExpanded}

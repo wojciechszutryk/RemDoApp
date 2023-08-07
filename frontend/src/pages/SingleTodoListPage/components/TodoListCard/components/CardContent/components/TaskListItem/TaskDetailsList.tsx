@@ -1,13 +1,12 @@
 import FlagCircleIcon from "@mui/icons-material/FlagCircle";
-import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
-import HourglassFullIcon from "@mui/icons-material/HourglassFull";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { List, ListItem, ListItemText } from "@mui/material";
 import UserAvatar from "atomicComponents/molecules/UserAvatar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
+import { StyledListItemIcon } from "./styles";
 import { dateDiffText } from "./utils";
 
 interface Props {
@@ -16,38 +15,15 @@ interface Props {
 
 const TaskDetailsList = ({ task }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const { whenShouldBeFinished, whenShouldBeStarted, startDate, finishDate } =
-    task;
+  const { startDate, finishDate, completionDate } = task;
 
   return (
     <List disablePadding>
-      {whenShouldBeStarted && (
-        <ListItem>
-          <ListItemIcon>
-            <HourglassEmptyIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary={dateDiffText(t, whenShouldBeStarted)}
-            secondary={t(TranslationKeys.PlannedStartDate)}
-          />
-        </ListItem>
-      )}
-      {whenShouldBeFinished && (
-        <ListItem>
-          <ListItemIcon>
-            <HourglassFullIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary={dateDiffText(t, whenShouldBeFinished)}
-            secondary={t(TranslationKeys.PlannedFinishDate)}
-          />
-        </ListItem>
-      )}
       {startDate && (
         <ListItem>
-          <ListItemIcon>
+          <StyledListItemIcon>
             <PlayCircleOutlineIcon />
-          </ListItemIcon>
+          </StyledListItemIcon>
           <ListItemText
             primary={dateDiffText(t, startDate)}
             secondary={t(TranslationKeys.StartDate)}
@@ -56,23 +32,34 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
       )}
       {finishDate && (
         <ListItem>
-          <ListItemIcon>
+          <StyledListItemIcon>
             <FlagCircleIcon />
-          </ListItemIcon>
+          </StyledListItemIcon>
           <ListItemText
             primary={dateDiffText(t, finishDate)}
             secondary={t(TranslationKeys.FinishDate)}
           />
         </ListItem>
       )}
+      {completionDate && (
+        <ListItem>
+          <StyledListItemIcon>
+            <FlagCircleIcon />
+          </StyledListItemIcon>
+          <ListItemText
+            primary={dateDiffText(t, completionDate)}
+            secondary={t(TranslationKeys.CompletionDate)}
+          />
+        </ListItem>
+      )}
       {task.creator && (
         <ListItem>
-          <ListItemIcon>
+          <StyledListItemIcon>
             <UserAvatar
               userId={task.creator.id}
               fallback={task.creator.displayName[0].toUpperCase()}
             />
-          </ListItemIcon>
+          </StyledListItemIcon>
           <ListItemText
             primary={task.creator.displayName}
             secondary={t(TranslationKeys.Creator)}
