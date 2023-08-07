@@ -56,8 +56,8 @@ export class RemindersController extends BaseHttpController {
     try {
       const reminderData = {
         ...body,
-        whenShouldBeStarted: new Date(body.whenShouldBeStarted),
-        whenShouldBeFinished: new Date(body.whenShouldBeFinished),
+        startDate: new Date(body.startDate),
+        finishDate: new Date(body.finishDate),
       } as ICreateReminder;
       if (body.startDate) reminderData.startDate = new Date(body.startDate);
       if (body.finishDate) reminderData.finishDate = new Date(body.finishDate);

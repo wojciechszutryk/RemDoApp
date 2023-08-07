@@ -32,9 +32,9 @@ export class ReminderService {
     todoList: ITodoListWithMembersDto,
     task: ITaskAttached
   ): IReminderAttached {
-    if (!task.whenShouldBeStarted || !task.whenShouldBeFinished)
+    if (!task.startDate || !task.finishDate)
       throw new Error(
-        "Task should have whenShouldBeStarted and whenShouldBeFinished"
+        "Task should have startDate and finishDate defined to be a reminder"
       );
     return {
       name: todoList.name,
@@ -43,8 +43,6 @@ export class ReminderService {
       finishDate: task.finishDate,
       whenCreated: todoList.whenCreated,
       whenUpdated: task.whenUpdated,
-      whenShouldBeStarted: task.whenShouldBeStarted,
-      whenShouldBeFinished: task.whenShouldBeFinished,
       creator: todoList.creator,
       assignedUsers: todoList.assignedUsers,
       assignedOwners: todoList.assignedOwners,
@@ -68,8 +66,8 @@ export class ReminderService {
     return {
       ...task,
       taskId: task.id,
-      whenShouldBeStarted: task.whenShouldBeStarted!,
-      whenShouldBeFinished: task.whenShouldBeFinished!,
+      startDate: task.startDate!,
+      finishDate: task.finishDate!,
       creator,
       name: todoList.name,
       assignedUsers: todoList.assignedUsers,
@@ -102,14 +100,14 @@ export class ReminderService {
     const reminders: IReminderAttached[] = [];
 
     for (const task of tasks) {
-      if (!!task.whenShouldBeStarted && !!task.whenShouldBeFinished) {
+      if (!!task.startDate && !!task.finishDate) {
         const todoList = todoListMap.get(task.todoListId);
         if (!todoList) continue;
 
         reminders.push({
           ...task,
-          whenShouldBeStarted: task.whenShouldBeStarted,
-          whenShouldBeFinished: task.whenShouldBeFinished,
+          startDate: task.startDate,
+          finishDate: task.finishDate,
           taskId: task.id,
           creator: userMap.get(task.creatorId),
           name: todoList.name,
@@ -144,8 +142,8 @@ export class ReminderService {
 
     const newTaskToCreate: ITask = {
       text: reminderData.text,
-      whenShouldBeStarted: reminderData.whenShouldBeStarted,
-      whenShouldBeFinished: reminderData.whenShouldBeFinished,
+      startDate: reminderData.startDate,
+      finishDate: reminderData.finishDate,
     };
 
     const newTask = await this.taskService.createTaskInTodoList(
@@ -194,8 +192,8 @@ export class ReminderService {
       "finishDate",
       "startDate",
       "important",
-      "whenShouldBeStarted",
-      "whenShouldBeFinished",
+      "startDate",
+      "finishDate",
     ];
 
     const taskDataToEdit = extractPropertiesToUpdate(
@@ -209,8 +207,6 @@ export class ReminderService {
         convertObjectDateFieldsToString(taskDataToEdit, [
           "finishDate",
           "startDate",
-          "whenShouldBeStarted",
-          "whenShouldBeFinished",
         ]),
         creatorId,
         false

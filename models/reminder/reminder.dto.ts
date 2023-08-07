@@ -3,24 +3,24 @@ import { ITodoList } from "linked-models/todoList/todoList.model";
 import { ITask } from "../task/task.model";
 
 /**
- * sum of ITask (with required whenShouldBeStarted and whenShouldBeFinished) and ITodoList
+ * sum of ITask (with required startDate and finishDate) and ITodoList
  */
 export interface ICreateReminder
-  extends Omit<ITask, "whenShouldBeStarted" | "whenShouldBeFinished">,
+  extends Omit<ITask, "startDate" | "finishDate">,
     ITodoList {
-  whenShouldBeStarted: Date;
-  whenShouldBeFinished: Date;
+  startDate: Date;
+  finishDate: Date;
 }
 
 /**
- * DTO for create reminder - sum of ITaskDTO (with required whenShouldBeStarted and whenShouldBeFinished) and ITodoList
+ * DTO for create reminder - sum of ITaskDTO (with required startDate and finishDate) and ITodoList
  * all dates are strings to transfer over HTTP correctly
  */
 export interface ICreateReminderDTO
-  extends Omit<ITaskDTO, "whenShouldBeStarted" | "whenShouldBeFinished">,
+  extends Omit<ITaskDTO, "startDate" | "finishDate">,
     ITodoList {
-  whenShouldBeStarted: string;
-  whenShouldBeFinished: string;
+  startDate: string;
+  finishDate: string;
 }
 
 /**

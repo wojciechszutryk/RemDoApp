@@ -6,8 +6,7 @@ import { ITodoList } from "linked-models/todoList/todoList.model";
 describe(`extractPropertiesToUpdate helper`, () => {
   interface IRandomData extends ITodoList {
     text: string;
-    whenShouldBeStarted: Date;
-    whenShouldBeFinished: Date;
+    completionDate: Date;
     finishDate: Date;
     startDate: Date;
     todoListId: string;
@@ -19,8 +18,7 @@ describe(`extractPropertiesToUpdate helper`, () => {
     assignedOwners: ["owner1"],
     assignedUsers: ["user1"],
     text: "task1",
-    whenShouldBeStarted: new Date(),
-    whenShouldBeFinished: new Date(),
+    completionDate: new Date(),
     finishDate: new Date(),
     startDate: new Date(),
     todoListId: "todoListId",

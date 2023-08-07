@@ -42,14 +42,14 @@ export class TaskService {
 
   public async getTasksByTodoListIDs(
     todoListIDs: string[],
-    minWhenShouldBeStartedDate?: Date,
-    maxWhenShouldBeStartedDate?: Date
+    minStartDate?: Date,
+    maxStartDate?: Date
   ): Promise<ITaskAttached[]> {
     const foundTasks = await this.taskCollection.find({
       todoListId: { $in: todoListIDs },
-      whenShouldBeStarted: {
-        $gte: minWhenShouldBeStartedDate,
-        $lte: maxWhenShouldBeStartedDate,
+      startDate: {
+        $gte: minStartDate,
+        $lte: maxStartDate,
       },
     });
 
@@ -64,10 +64,9 @@ export class TaskService {
   ): Promise<ITaskAttached> {
     const newTask: ITaskWithReadonlyProperties = {
       text: task.text,
-      whenShouldBeStarted: task.whenShouldBeStarted,
-      whenShouldBeFinished: task.whenShouldBeFinished,
-      finishDate: task.finishDate,
       startDate: task.startDate,
+      finishDate: task.finishDate,
+      completionDate: task.completionDate,
       important: task.important ?? false,
       todoListId,
       creatorId,

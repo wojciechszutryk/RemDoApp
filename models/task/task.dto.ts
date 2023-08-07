@@ -2,14 +2,10 @@ import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { ITask, ITaskAttached } from "./task.model";
 
 export interface ITaskDTO
-  extends Omit<
-    ITask,
-    "whenShouldBeStarted" | "whenShouldBeFinished" | "finishDate" | "startDate"
-  > {
-  whenShouldBeStarted?: string | null;
-  whenShouldBeFinished?: string | null;
+  extends Omit<ITask, "completionDate" | "finishDate" | "startDate"> {
   finishDate?: string | null;
   startDate?: string | null;
+  completionDate?: string | null;
 }
 
 /**
@@ -25,14 +21,9 @@ export function parseTaskDateFields<T extends Partial<ITaskDTO>>(task: T) {
 
   return {
     ...task,
-    whenShouldBeStarted: converStringifiedDateProperty(
-      task.whenShouldBeStarted
-    ),
-    whenShouldBeFinished: converStringifiedDateProperty(
-      task.whenShouldBeFinished
-    ),
     finishDate: converStringifiedDateProperty(task.finishDate),
     startDate: converStringifiedDateProperty(task.startDate),
+    completionDate: converStringifiedDateProperty(task.completionDate),
   };
 }
 
@@ -41,9 +32,8 @@ export function stringifyTaskDateFields<T extends Partial<ITask>>(task: T) {
     value instanceof Date ? value.toString() : value;
   return {
     ...task,
-    whenShouldBeStarted: converDateProperty(task.whenShouldBeStarted),
-    whenShouldBeFinished: converDateProperty(task.whenShouldBeFinished),
     finishDate: converDateProperty(task.finishDate),
     startDate: converDateProperty(task.startDate),
+    completionDate: converDateProperty(task.completionDate),
   };
 }

@@ -49,14 +49,8 @@ export class ReminderController extends BaseHttpController {
 
     try {
       const reminderData = { ...body } as IEditReminder;
-      if (body.whenShouldBeStarted)
-        reminderData.whenShouldBeStarted = new Date(body.whenShouldBeStarted);
-      if (body.whenShouldBeFinished)
-        reminderData.whenShouldBeFinished = new Date(body.whenShouldBeFinished);
-      if (body.startDate)
-        reminderData.whenShouldBeFinished = new Date(body.startDate);
-      if (body.finishDate)
-        reminderData.whenShouldBeFinished = new Date(body.finishDate);
+      if (body.startDate) reminderData.startDate = new Date(body.startDate);
+      if (body.finishDate) reminderData.finishDate = new Date(body.finishDate);
 
       const reminder = await this.reminderService.editReminder(
         reminderData,

@@ -5,27 +5,17 @@ export interface ITask {
   text: string;
 
   /** Date when task should be started */
-  whenShouldBeStarted?: Date | null;
+  startDate?: Date | null;
 
   /** Date when task should be finished */
-  whenShouldBeFinished?: Date | null;
-
-  /** Date when task was finished */
   finishDate?: Date | null;
 
-  /** Date when task was started */
-  startDate?: Date | null;
+  /** Optional Date when task was finished */
+  completionDate?: Date | null;
 
   /** Boolean to determine if task is important */
   important?: boolean;
 }
-
-export const taskModifiableDateFields: (keyof ITask)[] = [
-  "whenShouldBeStarted",
-  "whenShouldBeFinished",
-  "finishDate",
-  "startDate",
-];
 
 export interface ITaskWithReadonlyProperties extends ITask {
   /** Id of tododolist which task is part of. */
