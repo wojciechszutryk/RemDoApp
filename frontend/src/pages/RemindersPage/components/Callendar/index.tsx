@@ -1,6 +1,5 @@
 import dayjs, { Ls } from "dayjs";
 import useCheckLoader from "hooks/useCheckLoader";
-import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import { CalendarAnimation } from "pages/RemindersPage/helpers/enums";
 import { ICallendarEvent } from "pages/RemindersPage/helpers/models";
 import useOnEventResize from "pages/RemindersPage/hooks/useOnEventResize";
@@ -161,6 +160,8 @@ const BigCallendar = (): JSX.Element => {
     [dateRange.end, dateRange.start]
   );
 
+  console.log(getUserRemindersForDateRange);
+
   return (
     <StyledCallendarWrapper contentAnimation={contentAnimation}>
       {!!isLoading && <CallendarLoader />}
@@ -169,11 +170,10 @@ const BigCallendar = (): JSX.Element => {
         components={{
           agenda: {
             event: (a) => {
-              const reminder = getUserRemindersForDateRange.data?.get(
-                a.event.id
-              );
-              if (!reminder) return null;
-              return <CollapsableReminder reminder={reminder} />;
+              console.log(a.event);
+              
+              if (!a.event) return null;
+              return <CollapsableReminder reminder={a.event} />;
             },
           },
           week: {

@@ -71,6 +71,16 @@ export const StyledCallendarWrapper = styled("div", {
   "& *": {
     borderColor: theme.palette.primary.main + " !important",
   },
+  "& .rbc-today": {
+    backgroundColor: theme.palette.primary.light,
+  },
+  "& .rbc-current-time-indicator": {
+    backgroundColor: theme.palette.primary.contrastText,
+    height: 2,
+  },
+  "& .rbc-event": {
+    backgroundColor: theme.palette.secondary.main,
+  },
   "& .rbc-calendar": {
     position: "relative",
     margin: "0 auto",
