@@ -34,6 +34,22 @@ export enum TranslationKeys {
   ScopeChoose = "ScopeChoose",
   OrChooseTodoList = "OrChooseTodoList",
 
+  //callendar
+  Week = "Week",
+  WorkWeek = "WorkWeek",
+  Day = "Day",
+  Month = "Month",
+  Previous = "Previous",
+  Next = "Next",
+  Today = "Today",
+  Agenda = "Agenda",
+  NoEventsInRange = "NoEventsInRange",
+  AllDay = "AllDay",
+  More = "More",
+  Date = "Date",
+  Time = "Time",
+  Event = "Event",
+
   PageTitleTodoLists = "PageTitleTodoLists",
   EmptyTodoLists = "EmptyTodoLists",
   CreateNewTodoList = "CreateNewTodoList",
