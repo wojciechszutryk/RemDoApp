@@ -1,6 +1,6 @@
 import { withDragAndDropProps } from "react-big-calendar/lib/addons/dragAndDrop";
-import { ICallendarEvent } from "../helpers/models";
-import { useEditReminderMutation } from "../mutations/editReminder/editReminder.mutation";
+import { ICallendarEvent } from "../../../helpers/models";
+import { useEditReminderMutation } from "../../../mutations/editReminder/editReminder.mutation";
 
 const useOnEventResize = () => {
   const editReminderMutation = useEditReminderMutation();
@@ -21,13 +21,6 @@ const useOnEventResize = () => {
           finishDate: new Date(end),
         },
       });
-      // setEvents((currentEvents) => {
-      //   const firstEvent = {
-      //     start: new Date(start),
-      //     end: new Date(end),
-      //   };
-      //   return [...currentEvents, firstEvent];
-      // });
     };
 
   return onEventResize;

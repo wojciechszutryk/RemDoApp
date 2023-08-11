@@ -1,28 +1,25 @@
 import dayjs, { Ls } from "dayjs";
 import useCheckLoader from "hooks/useCheckLoader";
+import useOnEventResize from "pages/RemindersPage/components/Callendar/hooks/useOnEventResize";
 import { CalendarAnimation } from "pages/RemindersPage/helpers/enums";
 import { ICallendarEvent } from "pages/RemindersPage/helpers/models";
-import useOnEventResize from "pages/RemindersPage/hooks/useOnEventResize";
 import { useGetUserRemindersForDateRange } from "pages/RemindersPage/queries/getUserRemindersForDateRange.query";
 import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
-import { memo, useCallback, useState } from "react";
-import {
-  Calendar,
-  DateRange,
-  Event,
-  EventPropGetter,
-  NavigateAction,
-  View,
-} from "react-big-calendar";
-import withDragAndDrop, {
-  withDragAndDropProps,
-} from "react-big-calendar/lib/addons/dragAndDrop";
+import { memo, useMemo, useState } from "react";
+import { Calendar, DateRange } from "react-big-calendar";
+import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CallendarLoader from "../CallendarLoader";
 import CollapsableReminder from "../CollapsableReminder";
+import useCallendarConfig from "./hooks/useCallendarConfig";
+import useOnEventDrop from "./hooks/useOnEventDrop";
+import useOnNavigate from "./hooks/useOnNavigate";
+import useOnRangeChange from "./hooks/useOnRangeChange";
+import useOnSelectEvent from "./hooks/useOnSelectEvent";
+import useOnSelectSlot from "./hooks/useOnSelectSlot";
+import useOnView from "./hooks/useOnView";
 import { StyledCallendarWrapper } from "./styles";
-import useCallendarConfig from "./useCallendarConfig";
 
 Ls.en.weekStart = 1;
 
@@ -36,131 +33,34 @@ const BigCallendar = (): JSX.Element => {
   const [contentAnimation, setContentAnimation] = useState<CalendarAnimation>(
     CalendarAnimation.FADE_IN
   );
-  const propsConfig = useCallendarConfig();
-  const onEventResize = useOnEventResize();
-
-  const getUserRemindersForDateRange = useGetUserRemindersForDateRange(
-    dateRange,
-    {
-      onSuccess: (data) => {
-        const eventsArr: ICallendarEvent[] = [];
-
-        data.forEach((reminder) => {
-          eventsArr.push({
-            ...reminder,
-            id: reminder.taskId,
-            title: reminder.text,
-            start: new Date(reminder.startDate),
-            end: new Date(reminder.finishDate),
-          });
-        });
-
-        setEvents(eventsArr);
-      },
-    }
-  );
+  const getUserRemindersForDateRange =
+    useGetUserRemindersForDateRange(dateRange);
   const isLoading = useCheckLoader(getUserRemindersForDateRange.isLoading);
 
-  const [events, setEvents] = useState<ICallendarEvent[]>([]);
-  const [backgroundEvents, setBackgroundEvents] = useState<Event[]>([]);
+  const propsConfig = useCallendarConfig();
+  const onEventResize = useOnEventResize();
+  const onSelectEvent = useOnSelectEvent();
+  const onSelectSlot = useOnSelectSlot();
+  const onEventDrop = useOnEventDrop();
+  const onNavigate = useOnNavigate(setContentAnimation);
+  const onView = useOnView(setContentAnimation);
+  const onRangeChange = useOnRangeChange(dateRange, setDateRange);
 
-  const onSelectEvent = useCallback((event: ICallendarEvent) => {
-    // window.alert(event.title);
-  }, []);
+  const events = useMemo(() => {
+    const eventsArr: ICallendarEvent[] = [];
 
-  const onSelectSlot = useCallback(
-    ({ start, end }: Event) => {
-      const title = window.prompt("New Event Name");
+    getUserRemindersForDateRange.data?.forEach((reminder) => {
+      eventsArr.push({
+        ...reminder,
+        id: reminder.taskId,
+        title: reminder.text,
+        start: new Date(reminder.startDate),
+        end: new Date(reminder.finishDate),
+      });
+    });
 
-      if (title) {
-        // setEvents((prev) => [...prev, { start, end, title }]);
-      }
-    },
-    [setEvents]
-  );
-
-  const onEventDrop: withDragAndDropProps["onEventDrop"] = (data) => {
-    console.log(data);
-  };
-
-  const eventPropGetter: EventPropGetter<ICallendarEvent> = useCallback(
-    (event, start, end, isSelected) => ({
-      ...(isSelected && {
-        style: {
-          // backgroundColor: "red",
-        },
-      }),
-      ...(dayjs(start).hour() < 12 && {
-        className: "powderBlue",
-      }),
-      // ...(event.title?.includes("Meeting") && {
-      //   className: "darkGreen",
-      // }),
-    }),
-    []
-  );
-
-  const onNavigate = useCallback(
-    (newDate: Date, view: View, action: NavigateAction) => {
-      if (action === "PREV") {
-        if (contentAnimation === CalendarAnimation.SLIDE_LEFT) {
-          setContentAnimation(CalendarAnimation.SLIDE_LEFT_ALT);
-        } else {
-          setContentAnimation(CalendarAnimation.SLIDE_LEFT);
-        }
-      } else if (action === "NEXT") {
-        if (contentAnimation === CalendarAnimation.SLIDE_RIGHT) {
-          setContentAnimation(CalendarAnimation.SLIDE_RIGHT_ALT);
-        } else {
-          setContentAnimation(CalendarAnimation.SLIDE_RIGHT);
-        }
-      }
-    },
-    [contentAnimation]
-  );
-
-  const onView = useCallback(() => {
-    if (contentAnimation === CalendarAnimation.FADE_IN) {
-      setContentAnimation(CalendarAnimation.FADE_IN_ALT);
-    } else {
-      setContentAnimation(CalendarAnimation.FADE_IN);
-    }
-  }, [contentAnimation]);
-
-  const onRangeChange = useCallback(
-    (
-      range:
-        | Date[]
-        | {
-            start: Date;
-            end: Date;
-          }
-    ) => {
-      let newRangeStart = undefined;
-      let newRangeEnd = undefined;
-
-      if (Array.isArray(range)) {
-        newRangeStart = range[0];
-        newRangeEnd = range[range.length - 1];
-      } else {
-        newRangeStart = range.start;
-        newRangeEnd = range.end;
-      }
-
-      if (
-        newRangeStart.getTime() < dateRange.start.getTime() ||
-        newRangeEnd.getTime() > dateRange.end.getTime()
-      ) {
-        setDateRange({
-          start: dayjs(newRangeStart).startOf("month").toDate(),
-          end: dayjs(newRangeEnd).endOf("month").toDate(),
-        });
-      }
-    },
-    [dateRange.end, dateRange.start]
-  );
-
-  console.log(getUserRemindersForDateRange);
+    return eventsArr;
+  }, [getUserRemindersForDateRange.data]);
 
   return (
     <StyledCallendarWrapper contentAnimation={contentAnimation}>
@@ -170,8 +70,6 @@ const BigCallendar = (): JSX.Element => {
         components={{
           agenda: {
             event: (a) => {
-              console.log(a.event);
-              
               if (!a.event) return null;
               return <CollapsableReminder reminder={a.event} />;
             },
@@ -200,7 +98,6 @@ const BigCallendar = (): JSX.Element => {
         onNavigate={onNavigate}
         onView={onView}
         onRangeChange={onRangeChange}
-        eventPropGetter={eventPropGetter}
         onSelectEvent={onSelectEvent}
         onSelectSlot={onSelectSlot}
         onEventDrop={onEventDrop}
