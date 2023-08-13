@@ -7,4 +7,11 @@ export enum EventName {
   TodoListDeleted = "TODOLIST_DELETED",
   TodoListMemberAdded = "TODOLIST_MEMBER_ADDED",
   TodoListMemberRemoved = "TODOLIST_MEMBER_REMOVED",
+  CollaboartionRequested = "COLLABOARTION_REQUESTED",
+}
+
+export enum EventSubject {
+  Task = "TASK",
+  TodoList = "TODOLIST",
+  Collaboration = "COLLABORATION",
 }

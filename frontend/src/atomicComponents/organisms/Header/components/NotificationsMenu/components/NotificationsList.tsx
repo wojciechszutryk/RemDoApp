@@ -76,8 +76,7 @@ const NotificationsList = ({
                     state,
                     action,
                     actionCreatorId,
-                    todoListId,
-                    taskId,
+                    additionalParam,
                   }) => (
                     <SwippableItem
                       key={userNotificationId}
@@ -120,8 +119,10 @@ const NotificationsList = ({
                         )}
                         <StyledListItemText
                           onClick={(e) => {
-                            if (taskId)
-                              navigate(Pages.TaskPage.path(todoListId, taskId));
+                            if (additionalParam)
+                              navigate(
+                                Pages.TaskPage.path(todoListId, additionalParam)
+                              );
                             else {
                               navigate(Pages.TodoListPage.path(todoListId));
                             }
@@ -135,7 +136,8 @@ const NotificationsList = ({
                             todoListName: todoListsMap.get(todoListId)?.name,
                             taskName: todoListsMap
                               .get(todoListId)
-                              ?.tasks.find((t) => t.id === taskId)?.text,
+                              ?.tasks.find((t) => t.id === additionalParam)
+                              ?.text,
                           })}
                         />
                       </StyledListItem>

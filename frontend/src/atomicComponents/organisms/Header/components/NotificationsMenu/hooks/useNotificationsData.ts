@@ -25,7 +25,8 @@ const useNotificationsData = () => {
     notifications.forEach((n) => {
       if (n.state === UserNotificationState.Archived) {
         archivedNotificationIDs.push(n.userNotificationId);
-        const todoListId = n.todoListId || t(TranslationKeys.Other);
+        if (n.action.includes("todoList") || n.action.includes("task"))
+          const todoListId = n.actionParam || t(TranslationKeys.Other);
         const notificationsForTodoList =
           todoListIdToArchivedNotificationsMap.get(todoListId);
 
@@ -39,7 +40,7 @@ const useNotificationsData = () => {
           readNotificationIDs.push(n.userNotificationId);
         else freshNotificationIDs.push(n.userNotificationId);
 
-        const todoListId = n.todoListId || t(TranslationKeys.Other);
+        const todoListId = n.actionParam || t(TranslationKeys.Other);
         const notificationsForTodoList =
           todoListIdToActiveNotificationsMap.get(todoListId);
 
