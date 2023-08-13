@@ -1,3 +1,4 @@
+import GroupsIcon from "@mui/icons-material/Groups";
 import Logout from "@mui/icons-material/Logout";
 import Settings from "@mui/icons-material/Settings";
 import { IconButton } from "@mui/material";
@@ -6,6 +7,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import { Avatar } from "atomicComponents/atoms/Avatar";
 import UserAvatar from "atomicComponents/molecules/UserAvatar";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
+import { useDialogs } from "framework/dialogs";
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import * as React from "react";
@@ -21,6 +23,9 @@ const SettingsMenu = (): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
   const { t } = useTranslation();
+  const {
+    dialogsActions: { updateCollaborantsDrawer },
+  } = useDialogs();
 
   const handleClickAvatar = (event: React.MouseEvent<HTMLElement>) => {
     if (!!anchorEl) handleClose();
@@ -57,8 +62,23 @@ const SettingsMenu = (): JSX.Element => {
         {currentUser && [
           <Divider key={"divider"} />,
           <StyledMenuItem
+            key={"collaborants"}
+            onClick={() => {
+              updateCollaborantsDrawer({ visible: true });
+              handleClose();
+            }}
+          >
+            <ListItemIcon>
+              <GroupsIcon fontSize="small" />
+            </ListItemIcon>
+            {t(TranslationKeys.ShowMyCollaborations)}
+          </StyledMenuItem>,
+          <StyledMenuItem
             key={"userSettings"}
-            onClick={() => navigate(Pages.UserPage.path)}
+            onClick={() => {
+              handleClose();
+              navigate(Pages.UserPage.path);
+            }}
           >
             <ListItemIcon>
               <Settings fontSize="small" />
@@ -70,6 +90,7 @@ const SettingsMenu = (): JSX.Element => {
             onClick={() => {
               setCurrentUser(undefined);
               navigate(Pages.HomePage.path);
+              handleClose();
             }}
           >
             <ListItemIcon>

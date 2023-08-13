@@ -14,6 +14,10 @@ export const initialState = {
     visible: false,
     onClose: () => {},
   },
+  collaborantsDrawer: {
+    visible: false,
+    onClose: () => {},
+  },
   shareTodoListDialog: {
     ...initialShareTodoListDialog,
     onClose: () => {},
@@ -31,6 +35,7 @@ export const initialState = {
 export const Context = createContext<BaseContextProps & ContextProps>({
   dialogsState: initialState,
   dialogsActions: {
+    updateCollaborantsDrawer: () => null,
     updateTodoListDialog: () => null,
     updateShareTodoListDialog: () => null,
     updateDeleteTodoListDialog: () => null,

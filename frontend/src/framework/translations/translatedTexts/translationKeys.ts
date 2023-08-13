@@ -84,6 +84,9 @@ export enum TranslationKeys {
   Hours = "Hours",
   Ago = "ago",
 
+  //collaboration
+  ShowMyCollaborations = "ShowMyCollaborations",
+
   Notifications = "Notifications",
   ArchivedNotifications = "ArchivedNotifications",
   ArchiveAll = "ArchiveAll",

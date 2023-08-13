@@ -1,5 +1,6 @@
 import { useContext, useReducer } from "react";
 import {
+  updateCollaborantsDrawerAction,
   updateDeleteTaskDialogAction,
   updateDeleteTodoListDialogAction,
   updateReminderDialogAction,
@@ -29,6 +30,8 @@ function DialogsProvider({ children }: Props): JSX.Element {
   const [dialogsState, dialogsDispatch] = useReducer(Reducer, initialState);
 
   const dialogsActions = {
+    updateCollaborantsDrawer: (actionPayload: { visible: boolean }) =>
+      dialogsDispatch(updateCollaborantsDrawerAction(actionPayload)),
     updateTodoListDialog: (actionPayload: ITodoListDialog) =>
       dialogsDispatch(updateTodoListDialogAction(actionPayload)),
     updateShareTodoListDialog: (actionPayload: IShareTodoListDialog) =>

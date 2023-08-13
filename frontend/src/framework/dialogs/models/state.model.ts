@@ -43,6 +43,7 @@ export interface IReminderListDialog {
 }
 
 export interface IDialogsState {
+  collaborantsDrawer: { visible: boolean };
   todoListDialog: ITodoListDialog;
   shareTodoListDialog: IShareTodoListDialog;
   deleteTodoListDialog: IDeleteTodoListDialog;

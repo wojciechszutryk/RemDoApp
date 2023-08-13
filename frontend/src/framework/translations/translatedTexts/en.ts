@@ -53,6 +53,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Time]: "Time",
   [TranslationKeys.Event]: "Event",
 
+  [TranslationKeys.ShowMyCollaborations]: "Show my collaborations",
+
   [TranslationKeys.PageTitleTodoLists]: "TodoLists",
   [TranslationKeys.EmptyTodoLists]: "There are no todo lists. Create one!",
   [TranslationKeys.CreateNewTodoList]: "Create new todo list",

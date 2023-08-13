@@ -54,6 +54,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Time]: "Czas",
   [TranslationKeys.Event]: "Wydarzenie",
 
+  [TranslationKeys.ShowMyCollaborations]: "Pokaż moje współprace",
+
   [TranslationKeys.PageTitleTodoLists]: "Listy zadań",
   [TranslationKeys.EmptyTodoLists]: "Brak list zadań. Utwórz nową listę!",
   [TranslationKeys.CreateNewTodoList]: "Utwórz nową listę zadań",
