@@ -1,7 +1,7 @@
-import { IReminder } from "linked-models/reminder/reminder.dto";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { ITask } from "linked-models/task/task.model";
 import { ITodoList } from "linked-models/todoList/todoList.model";
+import { IReminderDialogState } from "../components/ReminderDialog/helpers/IReminderDialogState";
 import { IBaseDialogProps } from "./baseModalProps.model";
 
 export interface ITodoListDialog extends IBaseDialogProps {
@@ -34,11 +34,7 @@ export interface IDeleteTaskDialog {
 
 export interface IReminderDialog {
   visible: boolean;
-  editReminderData?: {
-    data: Partial<IReminder>;
-    taskId: string;
-    todoListId: string;
-  };
+  editReminderData?: IReminderDialogState;
 }
 
 export interface IReminderListDialog {
