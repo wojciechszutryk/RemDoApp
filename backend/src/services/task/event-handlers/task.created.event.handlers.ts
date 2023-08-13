@@ -1,7 +1,7 @@
 import { EventHandler } from "framework/events/event.handler.decorator";
 import { SocketService } from "framework/sockets/socket.service";
 import { inject } from "inversify";
-import { EventName } from "linked-models/event/event.enum";
+import { EventName, EventSubject } from "linked-models/event/event.enum";
 import { TypedEventHandler } from "linked-models/event/event.handler.interface";
 import { TypedEvent } from "linked-models/event/event.interface";
 import { TaskCreatedEvent } from "linked-models/event/implementation/task.events";
@@ -29,7 +29,6 @@ export class TaskCreatedEventHandler
     eventCreatorId: string,
     createdTask: ITaskAttached
   ) {
-
     const todoListMembers = await this.todoListService.getTodoListMemberIDs(
       createdTask.todoListId
     );
@@ -37,6 +36,7 @@ export class TaskCreatedEventHandler
       await this.notificationService.createNotificationForUsers(
         todoListMembers,
         EventName.TaskCreated,
+        EventSubject.Task,
         eventCreatorId,
         createdTask.todoListId,
         createdTask.id

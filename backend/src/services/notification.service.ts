@@ -8,7 +8,7 @@ import {
   mapUserNotificationToAttachedUserNotification,
 } from "dbSchemas/userNotification.schema";
 import { inject, injectable } from "inversify";
-import { EventName } from "linked-models/event/event.enum";
+import { EventName, EventSubject } from "linked-models/event/event.enum";
 import {
   INotificationDto,
   IUpdateUserNotificationDto,
@@ -110,15 +110,17 @@ export class NotificationService {
   public async createNotificationForUsers(
     userIDs: string[],
     action: EventName,
+    actionSubject: EventSubject,
     actionCreatorId: string,
-    todoListId: string,
-    taskId?: string
+    actionParam: string,
+    additionalParam?: string
   ): Promise<INotificationDto[]> {
     const notification = await this.notificationCollection.create({
       action,
+      actionSubject,
       actionCreatorId,
-      todoListId,
-      taskId,
+      actionParam,
+      additionalParam,
       whenCreated: new Date(),
     });
 
@@ -137,9 +139,10 @@ export class NotificationService {
       userId: un.userId,
       state: un.state,
       action: notification.action,
+      actionSubject: notification.actionSubject,
       actionCreatorId: notification.actionCreatorId,
-      todoListId: notification.todoListId,
-      taskId: notification.taskId,
+      actionParam: notification.actionParam,
+      additionalParam: notification.additionalParam,
     }));
   }
 

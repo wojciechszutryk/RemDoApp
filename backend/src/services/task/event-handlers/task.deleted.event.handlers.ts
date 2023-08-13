@@ -1,7 +1,7 @@
 import { EventHandler } from "framework/events/event.handler.decorator";
 import { SocketService } from "framework/sockets/socket.service";
 import { inject } from "inversify";
-import { EventName } from "linked-models/event/event.enum";
+import { EventName, EventSubject } from "linked-models/event/event.enum";
 import { TypedEventHandler } from "linked-models/event/event.handler.interface";
 import { TypedEvent } from "linked-models/event/event.interface";
 import { TaskDeletedEvent } from "linked-models/event/implementation/task.events";
@@ -36,6 +36,7 @@ export class TaskDeletedEventHandler
       await this.notificationService.createNotificationForUsers(
         todoListMembers,
         EventName.TaskDeleted,
+        EventSubject.Task,
         eventCreatorId,
         deletedTask.todoListId,
         deletedTask.id
