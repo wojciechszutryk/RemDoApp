@@ -1,15 +1,13 @@
+import { currentUser } from "decorators/currentUser.decorator";
 import { inject } from "inversify";
 import {
   BaseHttpController,
   controller,
   httpGet,
-  requestParam,
 } from "inversify-express-utils";
-import {
-  URL_COLLABORANTS,
-  URL_USERS,
-  USER_PARAM,
-} from "linked-models/user/user.urls";
+import { URL_COLLABORANTS } from "linked-models/collaboration/collaboration.urls";
+import { IUserAttached } from "linked-models/user/user.model";
+import { URL_USERS } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { CollaborantsService } from "services/collaboration/collaborants.service";
 
@@ -23,10 +21,10 @@ export class UserCollaborationController extends BaseHttpController {
   }
 
   @httpGet("")
-  async getUserCollaborants(@requestParam(USER_PARAM) userId: string) {
+  async getUserCollaborants(@currentUser() currentUser: IUserAttached) {
     try {
       const collaborants =
-        await this.collaborantsService.getCollaborantsForUser(userId);
+        await this.collaborantsService.getCollaborantsForUser(currentUser.id);
 
       return this.ok(collaborants);
     } catch (error) {
