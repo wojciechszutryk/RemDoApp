@@ -14,7 +14,7 @@ import {
   setUpTestDB,
 } from "../db.testSetup.helpers";
 
-import { UserAuthController } from "controllers/user.auth.controller";
+import { UserAuthController } from "controllers/user/user.auth.controller";
 import { getUserCollection } from "dbSchemas/user.schema";
 import { ILoginUserDTO, IRegisterUserDTO } from "linked-models/user/user.dto";
 import { UserAuthService } from "services/user.auth.service";

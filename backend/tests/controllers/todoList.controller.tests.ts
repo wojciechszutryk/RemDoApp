@@ -7,7 +7,7 @@ import {
   expect,
   it,
 } from "@jest/globals";
-import { TodoListController } from "controllers/todoList.controller";
+import { TodoListController } from "controllers/todoList/todoList.controller";
 import { getTaskCollection } from "dbSchemas/task.schema";
 import { getTodoListCollection } from "dbSchemas/todoList.schema";
 import { ITodoList } from "linked-models/todoList/todoList.model";
