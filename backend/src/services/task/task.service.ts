@@ -33,6 +33,14 @@ export class TaskService {
     return mapTaskToAttachedTask(foundTask);
   }
 
+  public async getTasksByIDs(taskIDs: string[]): Promise<ITaskAttached[]> {
+    const foundTasks = await this.taskCollection.find({
+      _id: { $in: taskIDs },
+    });
+
+    return foundTasks.map((t) => mapTaskToAttachedTask(t));
+  }
+
   public async getTasksByTodoListId(
     todoListId: string
   ): Promise<ITaskAttached[]> {

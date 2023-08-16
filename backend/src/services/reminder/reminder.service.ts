@@ -53,9 +53,9 @@ export class ReminderService {
   ): Promise<IReminderAttached | undefined> {
     const task = await this.taskService.getTaskById(taskId);
     if (!task) return undefined;
-    const [todoList, [creator]] = await Promise.all([
+    const [todoList, creator] = await Promise.all([
       this.todoListService.getTodoListWithMembersById(task.todoListId),
-      this.userService.getUsersPublicDataByIDs([task.creatorId]),
+      this.userService.getUserPublicData(task.creatorId),
     ]);
     if (!todoList || !creator) return undefined;
 

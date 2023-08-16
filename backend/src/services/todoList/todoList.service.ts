@@ -46,6 +46,16 @@ export class TodoListService {
     return mapTodoListToAttachedTodoList(todoList);
   }
 
+  public async getTodoListByIDs(
+    todoListIDs: string[]
+  ): Promise<ITodoListAttached[]> {
+    const todoList = await this.todoListCollection.find({
+      _id: { $in: todoListIDs },
+    });
+
+    return todoList.map((td) => mapTodoListToAttachedTodoList(td));
+  }
+
   public async getTodoListsForUser(
     userId: string
   ): Promise<ITodoListAttached[]> {
@@ -68,15 +78,17 @@ export class TodoListService {
     const todoList = await this.getTodoListById(todoListId);
     if (!todoList) return undefined;
 
-    const [users, owners, [creator]] = await Promise.all([
+    const [users, owners, creator] = await Promise.all([
       todoList.assignedUsers
         ? this.userService.getUsersPublicDataByIDs(todoList.assignedUsers)
         : [],
       todoList.assignedOwners
         ? this.userService.getUsersPublicDataByIDs(todoList.assignedOwners)
         : [],
-      this.userService.getUsersPublicDataByIDs([todoList.creatorId]),
+      this.userService.getUserPublicData(todoList.creatorId),
     ]);
+
+    if (!creator) return undefined;
 
     return {
       ...todoList,

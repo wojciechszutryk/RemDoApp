@@ -23,6 +23,23 @@ export class UserService {
     return foundUsers.map((u) => mapUserToAttachedUser(u));
   }
 
+  public async getUserPublicData(
+    userId: string
+  ): Promise<IUserPublicDataDTO | undefined> {
+    const foundUser = await this.userCollection.findById(userId);
+
+    if (!foundUser) {
+      return undefined;
+    }
+
+    return {
+      id: foundUser.id,
+      displayName: foundUser.displayName,
+      email: foundUser.email,
+      whenCreated: foundUser.whenCreated,
+    };
+  }
+
   public async getUsersPublicDataByIDs(
     userIDs: string[]
   ): Promise<IUserPublicDataDTO[]> {
