@@ -107,6 +107,7 @@ export enum TranslationKeys {
   NotificationWasDeletedPart = "NotificationWasDeletedPart",
   NotificationUserInvitedPart = "NotificationUserInvitedPart",
   NotificationUserRemovedPart = "NotificationUserRemovedPart",
+  NotificationCollaborationRequestedPart = "NotificationCollaborationRequestedPart",
   NotificationUnknownAction = "NotificationUnknownAction",
 
   PageTitleUserSettings = "PageTitleUserSettings",

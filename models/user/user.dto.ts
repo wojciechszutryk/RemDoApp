@@ -1,4 +1,3 @@
-import { INotificationDto } from "linked-models/notification/notification.dto";
 import { IUserAttached } from "./user.model";
 
 /**
@@ -18,9 +17,6 @@ export interface ILoginUserResponseDTO extends Omit<IUserAttached, "password"> {
   token: string;
 }
 
-export interface IExtendedLoginUserResponseDTO extends ILoginUserResponseDTO {
-  notifications: INotificationDto[];
-}
 export type IChangePasswordDTO = {
   currentPassword: string;
   newPassword: string;

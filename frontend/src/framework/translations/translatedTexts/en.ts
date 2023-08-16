@@ -116,6 +116,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
     "You've been invited to todo list ",
   [TranslationKeys.NotificationUserRemovedPart]:
     "You've been removed from members of todo list ",
+  [TranslationKeys.NotificationCollaborationRequestedPart]:
+    "You have new collaboration request sent",
   [TranslationKeys.NotificationUnknownAction]: "Unknown action was done",
 
   [TranslationKeys.PageTitleUserSettings]: "User settings",

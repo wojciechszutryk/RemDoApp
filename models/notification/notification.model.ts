@@ -8,10 +8,10 @@ export interface INotification {
   actionSubject: EventSubject;
   /** User who caused action */
   actionCreatorId: string;
-  /** Id/url of object that action was performed on e.g. todoListId */
-  actionParam: string;
-  /** Additional param of action e.g. taskId*/
-  additionalParam?: string;
+  /** Id of todoList that action was performed on */
+  todoListId?: string;
+  /** Id of task that action was performed on */
+  taskId?: string;
 }
 
 export interface INotificationWithReadonlyProperties extends INotification {

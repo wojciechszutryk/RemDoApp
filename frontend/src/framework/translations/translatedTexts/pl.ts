@@ -117,6 +117,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "Zostałeś zaproszony do listy zadań ",
   [TranslationKeys.NotificationUserRemovedPart]:
     "Zostałeś usunięty z listy zadań ",
+  [TranslationKeys.NotificationCollaborationRequestedPart]:
+    "Dostałeś zaproszenie do współpracy wysłane",
   [TranslationKeys.NotificationUnknownAction]: "Nieznana akcja ",
 
   [TranslationKeys.PageTitleUserSettings]: "Ustawienia użytkownika",

@@ -1,6 +1,7 @@
-import { ICollaborationAttached } from "linked-models/collaboration/collaboration.model";
+import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { EventName } from "../event.enum";
 import { TypedEvent } from "../event.interface";
 
-export const CollaborationRequestedEvent =
-  new TypedEvent<ICollaborationAttached>(EventName.CollaboartionRequested);
+export const CollaborationRequestedEvent = new TypedEvent<IUserPublicDataDTO>(
+  EventName.CollaboartionRequested
+);
