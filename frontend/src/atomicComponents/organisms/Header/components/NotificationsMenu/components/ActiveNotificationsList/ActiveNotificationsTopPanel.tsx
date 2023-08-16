@@ -1,6 +1,6 @@
 import ArchiveIcon from "@mui/icons-material/Archive";
 import { IconButton, Tooltip, Typography } from "@mui/material";
-import { useEditUserNotificationsMutation } from "atomicComponents/organisms/Header/mutations/editUserNotification.mutation";
+import { useEditUserNotificationsMutation } from "framework/notifications/mutations/editUserNotification.mutation";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { UserNotificationState } from "linked-models/notification/notification.enum";
 import { memo } from "react";
@@ -11,7 +11,9 @@ interface Props {
   notificationIDs: string[];
 }
 
-const NewNotificationsTopPanel = ({ notificationIDs }: Props): JSX.Element => {
+const ActiveNotificationsTopPanel = ({
+  notificationIDs,
+}: Props): JSX.Element => {
   const { t } = useTranslation();
   const editUserNotificationMutation = useEditUserNotificationsMutation();
   return (
@@ -37,4 +39,4 @@ const NewNotificationsTopPanel = ({ notificationIDs }: Props): JSX.Element => {
   );
 };
 
-export default memo(NewNotificationsTopPanel);
+export default memo(ActiveNotificationsTopPanel);

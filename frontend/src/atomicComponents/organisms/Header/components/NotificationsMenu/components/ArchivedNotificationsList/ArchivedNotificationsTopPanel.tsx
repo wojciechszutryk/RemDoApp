@@ -1,11 +1,11 @@
 import FolderDeleteIcon from "@mui/icons-material/FolderDelete";
 import UnarchiveIcon from "@mui/icons-material/Unarchive";
 import { IconButton, Tooltip, Typography } from "@mui/material";
-import { useDeleteUserNotificationsMutation } from "atomicComponents/organisms/Header/mutations/deleteUserNotification.mutation";
-import { useEditUserNotificationsMutation } from "atomicComponents/organisms/Header/mutations/editUserNotification.mutation";
+import { useDeleteUserNotificationsMutation } from "framework/notifications/mutations/deleteUserNotification.mutation";
+import { useEditUserNotificationsMutation } from "framework/notifications/mutations/editUserNotification.mutation";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { UserNotificationState } from "linked-models/notification/notification.enum";
-import { Dispatch, SetStateAction, memo } from "react";
+import { Dispatch, memo, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledTopPanelWrapper } from "../styles";
 
