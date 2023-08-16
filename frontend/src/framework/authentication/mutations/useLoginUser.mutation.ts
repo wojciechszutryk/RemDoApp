@@ -2,9 +2,7 @@ import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
-import { useNotifications } from "framework/notificationSocket/useNotifications";
 import {
-  IExtendedLoginUserResponseDTO,
   ILoginUserDTO,
   ILoginUserResponseDTO,
 } from "linked-models/user/user.dto";
@@ -18,23 +16,21 @@ export const useLoginUserMutation = (): UseMutationResult<
   unknown
 > => {
   const { setCurrentUser } = useCurrentUser();
-  const { setNotifications } = useNotifications();
 
   const url = FRONTIFY_URL(URL_USERS, URL_LOGIN);
 
   const loginUser = async (
     userData: ILoginUserDTO
-  ): Promise<IExtendedLoginUserResponseDTO> => {
-    return await apiPost<ILoginUserDTO, IExtendedLoginUserResponseDTO>(
+  ): Promise<ILoginUserResponseDTO> => {
+    return await apiPost<ILoginUserDTO, ILoginUserResponseDTO>(
       url,
       userData
     ).then((res) => res.data);
   };
 
   return useMutation(loginUser, {
-    onSuccess: ({ notifications, ...user }: IExtendedLoginUserResponseDTO) => {
+    onSuccess: (user: ILoginUserResponseDTO) => {
       setCurrentUser(user);
-      setNotifications(notifications);
     },
   });
 };
