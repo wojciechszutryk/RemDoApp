@@ -10,11 +10,11 @@ const NotificationSchema = new mongoose.Schema({
   action: { type: String, required: true },
   actionSubject: { type: String, required: true },
   actionCreatorId: { type: String, required: true },
-  actionParam: {
+  todoListId: {
     type: String,
-    required: true,
+    required: false,
   },
-  additionalParam: {
+  taskId: {
     type: String,
     required: false,
   },
@@ -43,8 +43,8 @@ export const mapNotificationToAttachedNotification = (
     action: notification.action,
     actionSubject: notification.actionSubject,
     actionCreatorId: notification.actionCreatorId,
-    actionParam: notification.actionParam,
-    additionalParam: notification.additionalParam,
+    todoListId: notification.todoListId,
+    taskId: notification.taskId,
     whenCreated: notification.whenCreated,
   };
 };

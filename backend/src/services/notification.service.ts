@@ -11,14 +11,24 @@ import { inject, injectable } from "inversify";
 import { EventName, EventSubject } from "linked-models/event/event.enum";
 import {
   INotificationDto,
+  INotificationResponseDto,
   IUpdateUserNotificationDto,
 } from "linked-models/notification/notification.dto";
 import { UserNotificationState } from "linked-models/notification/notification.enum";
 import { IUserNotificationAttached } from "linked-models/notification/userNotification.model";
+import { TaskService } from "./task/task.service";
+import { TodoListService } from "./todoList/todoList.service";
+import { UserService } from "./user/user.service";
 
 @injectable()
 export class NotificationService {
   constructor(
+    @inject(UserService)
+    private readonly userService: UserService,
+    @inject(TaskService)
+    private readonly taskService: TaskService,
+    @inject(TodoListService)
+    private readonly todoListService: TodoListService,
     @inject(NotificationCollectionName)
     private readonly notificationCollection: NotificationCollectionType,
     @inject(UserNotificationCollectionName)
@@ -64,8 +74,19 @@ export class NotificationService {
 
   public async getNotificationsForUser(
     userId: string
-  ): Promise<INotificationDto[]> {
-    const notifications = await this.userNotificationCollection.aggregate([
+  ): Promise<INotificationResponseDto> {
+    const notifications: {
+      userNotificationId: string;
+      notificationId: string;
+      userId: string;
+      state: UserNotificationState;
+      action: EventName;
+      actionSubject: EventSubject;
+      actionCreatorId: string;
+      todoListId: string;
+      taskId: string;
+      whenCreated: Date;
+    }[] = await this.userNotificationCollection.aggregate([
       {
         $match: {
           userId: userId,
@@ -96,6 +117,7 @@ export class NotificationService {
           userId: 1,
           state: 1,
           action: "$notification.action",
+          actionSubject: "$notification.actionSubject",
           actionCreatorId: "$notification.actionCreatorId",
           todoListId: "$notification.todoListId",
           taskId: "$notification.taskId",
@@ -104,7 +126,22 @@ export class NotificationService {
       },
     ]);
 
-    return notifications;
+    const todoListIds = notifications.map((n) => n.todoListId);
+    const taskIds = notifications.map((n) => n.taskId);
+    const creatorIds = notifications.map((n) => n.actionCreatorId);
+
+    const [todoLists, tasks, creators] = await Promise.all([
+      this.todoListService.getTodoListByIDs(todoListIds),
+      this.taskService.getTasksByIDs(taskIds),
+      this.userService.getUsersPublicDataByIDs(creatorIds),
+    ]);
+
+    return {
+      notifications: notifications,
+      todoLists: todoLists,
+      tasks: tasks,
+      creators: creators,
+    };
   }
 
   public async createNotificationForUsers(
@@ -112,17 +149,20 @@ export class NotificationService {
     action: EventName,
     actionSubject: EventSubject,
     actionCreatorId: string,
-    actionParam: string,
-    additionalParam?: string
+    todoListId?: string,
+    taskId?: string
   ): Promise<INotificationDto[]> {
-    const notification = await this.notificationCollection.create({
-      action,
-      actionSubject,
-      actionCreatorId,
-      actionParam,
-      additionalParam,
-      whenCreated: new Date(),
-    });
+    const [notification, actionCreator] = await Promise.all([
+      this.notificationCollection.create({
+        action,
+        actionSubject,
+        actionCreatorId,
+        todoListId,
+        taskId,
+        whenCreated: new Date(),
+      }),
+      this.userService.getUserPublicData(actionCreatorId),
+    ]);
 
     const userNotifications = await this.userNotificationCollection.create(
       userIDs.map((userId) => ({
@@ -133,6 +173,8 @@ export class NotificationService {
       }))
     );
 
+    if (!actionCreator) throw new Error("Action creator could not be found.");
+
     return userNotifications.map((un) => ({
       notificationId: notification._id,
       userNotificationId: un._id,
@@ -141,8 +183,9 @@ export class NotificationService {
       action: notification.action,
       actionSubject: notification.actionSubject,
       actionCreatorId: notification.actionCreatorId,
-      actionParam: notification.actionParam,
-      additionalParam: notification.additionalParam,
+      todoListId: notification.todoListId,
+      taskId: notification.taskId,
+      actionCreator,
     }));
   }
 
