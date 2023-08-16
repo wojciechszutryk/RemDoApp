@@ -1,7 +1,7 @@
 import PageTemplate from "atomicComponents/molecules/PageTemplate";
 import { RequireAuthPageWrapper } from "atomicComponents/organisms/RequireAuthPageWrapper";
 import useAutoLogin from "framework/authentication/useAutoLogin";
-import useNotificationSocket from "framework/notificationSocket/useNotificationSocket";
+import useNotificationSocket from "framework/notifications/useNotificationSocket";
 
 import { Pages } from "framework/routing/pages";
 import "framework/translations/i18.config/resources";
