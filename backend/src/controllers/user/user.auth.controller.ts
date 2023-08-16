@@ -71,21 +71,17 @@ export class UserAuthController extends BaseHttpController {
       return this.json("Invalid Credentials", 400);
     }
 
-    const notifications =
-      await this.notificationService.getNotificationsForUser(signedUser.id);
-
-    return this.ok({ ...signedUser, notifications });
+    return this.ok(signedUser);
   }
 
   @httpPost(URL_LOGIN + URL_WITH_TOKEN, SetCurrentUser)
   async loginUserWithToken(
     @currentUser() currentUser: IUserAttached
   ): Promise<OkResult> {
-    const [userWithRefreshedToken, notifications] = await Promise.all([
-      this.userService.refreshUserToken(currentUser),
-      this.notificationService.getNotificationsForUser(currentUser.id),
-    ]);
+    const userWithRefreshedToken = await this.userService.refreshUserToken(
+      currentUser
+    );
 
-    return this.ok({ ...userWithRefreshedToken, notifications });
+    return this.ok(userWithRefreshedToken);
   }
 }
