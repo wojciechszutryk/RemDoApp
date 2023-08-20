@@ -9,5 +9,5 @@ export const URL_LOGIN = `/login`;
 
 export const URL_WITH_TOKEN = `/withToken`;
 export const URL_PASSWORD = `/password`;
-export const URL_DISPLAYNAME = `/displayName`;
+export const URL_PUBLIC_DATA = `/publicData`;
 export const URL_AVATAR = `/avatar`;

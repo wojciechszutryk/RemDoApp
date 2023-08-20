@@ -3,6 +3,7 @@ import {
   UserCollectionType,
   mapUserToAttachedUser,
 } from "dbSchemas/user.schema";
+import { extractPropertiesToUpdate } from "helpers/extractPropertiesToUpdate";
 import { inject, injectable } from "inversify";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
@@ -56,21 +57,22 @@ export class UserService {
   }
 
   /**
-   * Warning this service doesn't check if user can update displayName. It is assumed that proper check is done before using this service
+   * Warning this service doesn't check if can be updated. It is assumed that proper check is done before using this service
    */
-  public async updateDisplayName(
+  public async updateUserPublicData(
     userId: string,
-    newDisplayName: string
+    data: Partial<IUserPublicDataDTO>
   ): Promise<void> {
     //only valid properties
-    const update = {
-      displayName: newDisplayName,
-      whenUpdated: new Date(),
-    };
+    const update = extractPropertiesToUpdate(data, [
+      "displayName",
+      "email",
+      "hasAvatar",
+    ]);
 
     const updatedUser = await this.userCollection.findByIdAndUpdate(
       userId,
-      update,
+      { ...update, whenUpdated: new Date() },
       { new: true }
     );
 

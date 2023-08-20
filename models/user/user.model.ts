@@ -12,6 +12,9 @@ export interface IUserWithReadonlyProperties extends IUser {
   /** Date when user created his account. */
   readonly whenCreated: Date;
 
+  /** Date when user created his account. */
+  readonly hasAvatar?: boolean;
+
   /** User's password */
   readonly password: string;
 }

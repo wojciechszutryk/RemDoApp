@@ -9,6 +9,7 @@ export const UserCollectionName = "Users";
 const UserSchema = new mongoose.Schema({
   displayName: { type: String, default: null },
   email: { type: String, unique: true },
+  hasAvatar: { type: Boolean, default: false },
   password: { type: String },
   whenCreated: {
     type: Date,
@@ -26,6 +27,7 @@ export const mapUserToAttachedUser = (user: IUserDocument): IUserAttached => {
   return {
     id: user.id,
     displayName: user.displayName,
+    hasAvatar: user.hasAvatar,
     email: user.email,
     password: user.password,
     whenCreated: user.whenCreated,

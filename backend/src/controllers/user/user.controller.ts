@@ -15,14 +15,14 @@ import {
 import { OkResult } from "inversify-express-utils/lib/results";
 import { AVATAR_FILENAME } from "linked-models/images/avatar";
 import {
-  IChangeDisplayNameDTO,
   IChangePasswordDTO,
+  IUserPublicDataDTO,
 } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
 import {
   URL_AVATAR,
-  URL_DISPLAYNAME,
   URL_PASSWORD,
+  URL_PUBLIC_DATA,
   URL_USER,
   URL_USERS,
   USER_PARAM,
@@ -73,8 +73,12 @@ export class UserController extends BaseHttpController {
       });
 
       downloadStream.on("end", () => {
-        return res.end();
+        res.end();
       });
+
+      // return res.status(404).send({
+      //   message: "User avatar not found",
+      // });
     } catch (error) {
       res.status(500).send({
         message: "Error Something went wrong",
@@ -89,26 +93,32 @@ export class UserController extends BaseHttpController {
     DeleteUserAvatar,
     upload.single(AVATAR_FILENAME)
   )
-  async uploadUserAvatar(@request() req: express.Request): Promise<OkResult> {
+  async uploadUserAvatar(
+    @request() req: express.Request,
+    @currentUser() currentUser: IUserAttached
+  ): Promise<OkResult> {
     const file = req.file;
 
     if (!file) {
       return this.badRequest();
     }
 
+    if (!currentUser.hasAvatar) {
+      await this.userService.updateUserPublicData(currentUser.id, {
+        hasAvatar: true,
+      });
+    }
+
     return this.ok(file);
   }
 
-  @httpPut(URL_DISPLAYNAME, SetCurrentUser)
+  @httpPut(URL_PUBLIC_DATA, SetCurrentUser)
   async changeDisplayName(
     @currentUser() currentUser: IUserAttached,
-    @requestBody() body: IChangeDisplayNameDTO
+    @requestBody() body: Partial<IUserPublicDataDTO>
   ): Promise<OkResult> {
     try {
-      await this.userService.updateDisplayName(
-        currentUser.id,
-        body.newDisplayName
-      );
+      await this.userService.updateUserPublicData(currentUser.id, body);
       return this.ok();
     } catch (error) {
       if (error instanceof Error) {
