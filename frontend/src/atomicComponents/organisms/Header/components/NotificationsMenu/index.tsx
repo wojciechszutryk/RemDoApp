@@ -1,14 +1,12 @@
 import { Divider, Drawer, Skeleton } from "@mui/material";
-import {
-  IUserNotificationsQueryData,
-  useGetUserNotificationsQuery,
-} from "framework/notifications/queries/getUserNotifications.query";
-import { UserNotificationState } from "linked-models/notification/notification.enum";
-import { memo, useMemo, useState } from "react";
+import { useGetUserNotificationsQuery } from "framework/notifications/queries/getUserNotifications.query";
+import { memo, useState } from "react";
 import ActiveNotificationsList from "./components/ActiveNotificationsList";
 import ArchivedNotificationsList from "./components/ArchivedNotificationsList";
+import EmptyNotificationsInfo from "./components/EmptyNotificationsInfo";
 import NotificationIcon from "./components/NotificationIcon";
 import NotificationsLoader from "./components/NotificationsLoader";
+import useGetNotificationsData from "./hooks/useGetNotificationsData";
 import useMarkFreshNotificationsAsRead from "./hooks/useMarkFreshNotificationsAsRead";
 import useToggleDrawer from "./hooks/useToggleDrawer";
 import { StyledDrawerListWrapper, StyledNotificationButton } from "./styles";
@@ -22,41 +20,7 @@ const NotificationsMenu = (): JSX.Element => {
     activeNotificationsData,
     archivedNotificationsData,
     freshNotificationIDs,
-  ]: [
-    IUserNotificationsQueryData | null,
-    IUserNotificationsQueryData | null,
-    string[]
-  ] = useMemo(() => {
-    if (!getUserNotificationsQuery.data) return [null, null, []];
-
-    const activeNotifications =
-      getUserNotificationsQuery.data.notifications.filter(
-        (notification) => notification.state !== UserNotificationState.Archived
-      );
-
-    const archivedNotifications =
-      getUserNotificationsQuery.data.notifications.filter(
-        (notification) => notification.state === UserNotificationState.Archived
-      );
-
-    const freshNotificationIDs = activeNotifications
-      .filter(
-        (notification) => notification.state === UserNotificationState.Fresh
-      )
-      .map((notification) => notification.userNotificationId);
-
-    return [
-      {
-        ...getUserNotificationsQuery.data,
-        notifications: activeNotifications,
-      },
-      {
-        ...getUserNotificationsQuery.data,
-        notifications: archivedNotifications,
-      },
-      freshNotificationIDs,
-    ];
-  }, [getUserNotificationsQuery.data]);
+  ] = useGetNotificationsData(getUserNotificationsQuery.data);
 
   const markFreshNotificationsAsRead =
     useMarkFreshNotificationsAsRead(freshNotificationIDs);
@@ -83,11 +47,13 @@ const NotificationsMenu = (): JSX.Element => {
           onKeyDown={toggleDrawer(false)}
         >
           <NotificationsLoader />
-          {!!activeNotificationsData?.notifications.length && (
+          {!!activeNotificationsData?.notifications.length ? (
             <ActiveNotificationsList
               notificationsData={activeNotificationsData}
               hideNotificationMenu={toggleDrawer(false)}
             />
+          ) : (
+            <EmptyNotificationsInfo />
           )}
           {!!archivedNotificationsData?.notifications.length && (
             <>

@@ -8,8 +8,8 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  ListSubheader,
   Popover,
+  Typography,
 } from "@mui/material";
 import { Avatar } from "atomicComponents/atoms/Avatar";
 import dayjs from "dayjs";
@@ -76,10 +76,16 @@ const ExtendableUserAvatar = ({
         >
           <CloseIcon
             onClick={handleClose}
-            sx={{ position: "absolute", top: 5, right: 5 }}
+            sx={{
+              position: "absolute",
+              top: 5,
+              right: 5,
+              transition: "all 0.1s ease-in-out",
+              "&:hover": { cursor: "pointer", opacity: 0.7 },
+            }}
           />
           {currentUser?.id === id && (
-            <ListSubheader>{t(TranslationKeys.DisplayName)}</ListSubheader>
+            <Typography p={2}>{t(TranslationKeys.CurrentAccount)}</Typography>
           )}
           <ListItem>
             <ListItemAvatar>

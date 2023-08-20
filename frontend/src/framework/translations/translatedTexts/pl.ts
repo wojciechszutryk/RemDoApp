@@ -30,6 +30,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PasswordsNoMatch]: "hasła nie są identyczne",
   [TranslationKeys.LoginSuccess]: "Zalogowano pomyślnie.",
   [TranslationKeys.InvalidCredentials]: "niepoprawne dane, spróbuj ponownie",
+  [TranslationKeys.CurrentAccount]: "Twoje konto",
 
   [TranslationKeys.PageTitleFeatures]: "Funkcje",
 

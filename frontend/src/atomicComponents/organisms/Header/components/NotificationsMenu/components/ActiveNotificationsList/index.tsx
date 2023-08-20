@@ -3,12 +3,11 @@ import { IUserNotificationsQueryData } from "framework/notifications/queries/get
 import { INotificationDto } from "linked-models/notification/notification.dto";
 import { UserNotificationState } from "linked-models/notification/notification.enum";
 import { memo, useMemo } from "react";
-import EmptyNotificationsInfo from "../EmptyNotificationsInfo";
 import NotificationsList from "../NotificationsList";
 import ActiveNotificationsTopPanel from "./ActiveNotificationsTopPanel";
 
 interface Props {
-  notificationsData: IUserNotificationsQueryData | null;
+  notificationsData: IUserNotificationsQueryData;
   hideNotificationMenu: (event: React.KeyboardEvent | React.MouseEvent) => void;
 }
 
@@ -36,7 +35,6 @@ const ActiveNotificationsList = ({
       ];
     }, [notificationsData]);
 
-  if (!notificationsData) return <EmptyNotificationsInfo />;
   return (
     <>
       <ActiveNotificationsTopPanel notificationIDs={notificationIDs} />

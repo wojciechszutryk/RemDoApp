@@ -29,6 +29,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PasswordsNoMatch]: "passwords don't match",
   [TranslationKeys.LoginSuccess]: "Logged in successfully.",
   [TranslationKeys.InvalidCredentials]: "Invalid credentials, try again",
+  [TranslationKeys.CurrentAccount]: "Your account",
 
   [TranslationKeys.PageTitleFeatures]: "Features",
 
