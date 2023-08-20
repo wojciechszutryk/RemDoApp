@@ -3,35 +3,34 @@ import { AxiosError } from "axios";
 import { apiPut } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
-import { IChangeDisplayNameDTO } from "linked-models/user/user.dto";
-import { URL_DISPLAYNAME, URL_USERS } from "linked-models/user/user.urls";
+import { IUserPublicDataDTO } from "linked-models/user/user.dto";
+import { URL_PUBLIC_DATA, URL_USERS } from "linked-models/user/user.urls";
 
-export const useChangeDisplayNameMutation = (): UseMutationResult<
+export const useChangeUserPublicData = (): UseMutationResult<
   void,
   AxiosError<string>,
-  IChangeDisplayNameDTO,
+  Partial<IUserPublicDataDTO>,
   unknown
 > => {
   const { setCurrentUser, currentUser } = useCurrentUser();
-  const url = FRONTIFY_URL(URL_USERS, URL_DISPLAYNAME);
+  const url = FRONTIFY_URL(URL_USERS, URL_PUBLIC_DATA);
 
-  const changeDisplayName = async (
-    displayNameData: IChangeDisplayNameDTO
+  const changePublicData = async (
+    data: Partial<IUserPublicDataDTO>
   ): Promise<void> => {
-    return await apiPut<IChangeDisplayNameDTO, void>(url, displayNameData).then(
+    return await apiPut<Partial<IUserPublicDataDTO>, void>(url, data).then(
       (res) => res.data
     );
   };
 
   return useMutation(
-    (displayNameData: IChangeDisplayNameDTO) =>
-      changeDisplayName(displayNameData),
+    (data: Partial<IUserPublicDataDTO>) => changePublicData(data),
     {
       onSuccess: (_, reqData) => {
         if (currentUser)
           setCurrentUser({
             ...currentUser,
-            displayName: reqData.newDisplayName,
+            ...reqData,
           });
       },
     }
