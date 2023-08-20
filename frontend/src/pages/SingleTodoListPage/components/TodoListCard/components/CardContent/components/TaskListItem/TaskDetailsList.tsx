@@ -1,7 +1,7 @@
 import FlagCircleIcon from "@mui/icons-material/FlagCircle";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { List, ListItem, ListItemText } from "@mui/material";
-import UserAvatar from "atomicComponents/molecules/UserAvatar";
+import ExtendableUserAvatar from "atomicComponents/organisms/UserAvatar/ExtendableUserAvatar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { memo } from "react";
@@ -55,10 +55,7 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
       {task.creator && (
         <ListItem>
           <StyledListItemIcon>
-            <UserAvatar
-              userId={task.creator.id}
-              fallback={task.creator.displayName[0].toUpperCase()}
-            />
+            <ExtendableUserAvatar userData={task.creator} />
           </StyledListItemIcon>
           <ListItemText
             primary={task.creator.displayName}

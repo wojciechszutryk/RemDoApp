@@ -2,7 +2,13 @@ import { TranslationKeys } from "framework/translations/translatedTexts/translat
 import { EventName } from "linked-models/event/event.enum";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { INotificationMessage } from "./notificationMessage.model";
+
+export interface ICreateNotificationMessage {
+  action: EventName;
+  actionCreatorDisplayName?: string;
+  todoListName?: string;
+  taskName?: string;
+}
 
 const useCreateNotificationMessage = () => {
   const { t } = useTranslation();
@@ -12,7 +18,7 @@ const useCreateNotificationMessage = () => {
       actionCreatorDisplayName,
       todoListName,
       taskName,
-    }: INotificationMessage) => {
+    }: ICreateNotificationMessage) => {
       const actionCreatorPart = `${
         actionCreatorDisplayName
           ? t(TranslationKeys.NotificationByUserPart) +

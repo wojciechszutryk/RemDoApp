@@ -16,6 +16,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.LoginPanelHeaderDescription]:
     "Zaloguj się za pomocą google:",
   [TranslationKeys.Email]: "email",
+  [TranslationKeys.JoinDate]: "data dołączenia",
   [TranslationKeys.DisplayName]: "nazwa użytkownika",
   [TranslationKeys.Password]: "hasło",
   [TranslationKeys.PasswordRepeat]: "powtórzenie hasła",

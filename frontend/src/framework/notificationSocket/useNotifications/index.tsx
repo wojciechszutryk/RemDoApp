@@ -2,7 +2,6 @@ import useCreateNotificationMessage from "framework/notificationSocket/useCreate
 import { useSnackbar } from "framework/snackBar";
 import { INotificationDto } from "linked-models/notification/notification.dto";
 import { ReactNode, useContext, useState } from "react";
-import { INotificationMessage } from "../useCreateNotificationMessage/notificationMessage.model";
 import { Context } from "./context";
 import { ContextProps } from "./useNotifications.models";
 
@@ -14,14 +13,12 @@ function NotificationsProvider({ children }: Props): JSX.Element {
   const [notifications, setNotifications] = useState<INotificationDto[]>([]);
   const { setSnackbar } = useSnackbar();
 
-  const createNotificationMessage = useCreateNotificationMessage();
-
   const handleSocketNotification = (
     notification: INotificationDto,
-    notificationMessageData: INotificationMessage
+    notificationMessageData: string
   ) => {
     setSnackbar({
-      message: createNotificationMessage(notificationMessageData),
+      message: notificationMessageData,
     });
     setNotifications((prev) => [...prev, notification]);
   };

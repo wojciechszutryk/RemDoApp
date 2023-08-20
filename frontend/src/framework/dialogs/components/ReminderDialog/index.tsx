@@ -167,7 +167,7 @@ const ReminderDialog = (): JSX.Element => {
         <AccordionDetails>
           <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
             <FormProvider {...methods}>
-              <Typography variant="h4">
+              {/* <Typography variant="h4">
                 {t(TranslationKeys.ShareTodoList)}: {todoListName}
               </Typography>
               <StyledAutocompleteLabel>
@@ -183,7 +183,7 @@ const ReminderDialog = (): JSX.Element => {
               <EmailAutocomplete
                 name="assignedUsers"
                 defaultValues={defaultFormValues.assignedUsers}
-              />
+              /> */}
               <Button type="submit">{t(TranslationKeys.Save)}</Button>
             </FormProvider>
           </StyledForm>

@@ -18,6 +18,7 @@ import { TranslationKeys } from "framework/translations/translatedTexts/translat
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import UserAvatar from ".";
 
 interface Props {
   userData: IUserPublicDataDTO;
@@ -46,7 +47,7 @@ const ExtendableUserAvatar = ({
 
   return (
     <>
-      <ExtendableUserAvatar
+      <UserAvatar
         userData={userData}
         avatarProps={{ onClick: handleClick }}
         {...avatarProps}

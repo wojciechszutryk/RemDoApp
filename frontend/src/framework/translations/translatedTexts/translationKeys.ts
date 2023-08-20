@@ -12,6 +12,7 @@ export enum TranslationKeys {
   LoginPanelHeader = "LoginPanelHeader",
   LoginPanelHeaderDescription = "LoginPanelHeaderDescription",
   Email = "Email",
+  JoinDate = "JoinDate",
   DisplayName = "DisplayName",
   Password = "Password",
   PasswordRepeat = "PasswordRepeat",

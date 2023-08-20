@@ -5,7 +5,7 @@ import {
   CardHeader as MuiCardHeader,
   Tooltip,
 } from "@mui/material";
-import UserAvatar from "atomicComponents/molecules/UserAvatar";
+import ExtendableUserAvatar from "atomicComponents/organisms/UserAvatar/ExtendableUserAvatar";
 import { Pages } from "framework/routing/pages";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import { memo } from "react";
@@ -40,11 +40,10 @@ const CardHeader = ({
       avatar={
         <AvatarGroup max={3}>
           {Array.from(new Set(allMembers)).map((user) => (
-            <UserAvatar
+            <ExtendableUserAvatar
               avatarProps={{ sx: { width: 26, height: 26 } }}
               key={user.id}
-              userId={user.id}
-              fallback={user.displayName[0].toUpperCase()}
+              userData={user}
             />
           ))}
         </AvatarGroup>

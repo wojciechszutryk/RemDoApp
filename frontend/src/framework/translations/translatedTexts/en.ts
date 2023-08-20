@@ -15,6 +15,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.LoginPanelHeader]: "Sign in or Sign up",
   [TranslationKeys.LoginPanelHeaderDescription]: "Sign in with google:",
   [TranslationKeys.Email]: "email",
+  [TranslationKeys.JoinDate]: "date of joining",
   [TranslationKeys.DisplayName]: "nick name",
   [TranslationKeys.Password]: "password",
   [TranslationKeys.PasswordRepeat]: "password repeat",
