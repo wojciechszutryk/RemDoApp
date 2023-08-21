@@ -1,11 +1,12 @@
-import { Drawer } from "@mui/material";
-import { SunImage } from "atomicComponents/atoms/SVGImages/Sun";
-import InformationTemplate from "atomicComponents/molecules/InformationTemplate";
+import { Box, Drawer, Tabs } from "@mui/material";
+import { Tab } from "atomicComponents/atoms/Tab";
+import { AnimatePresence } from "framer-motion";
 import { useDialogs } from "framework/dialogs";
 import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
-import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { memo } from "react";
-import { useTranslation } from "react-i18next";
+import { memo, useState } from "react";
+import TabWrapper from "./components/TabWrapper";
+import UserCollaborantsTabContent from "./components/UserCollaborantsTabContent";
+import UserSearch from "./components/UserSearch";
 
 const CollaborantsDrawer = (): JSX.Element => {
   const {
@@ -17,23 +18,31 @@ const CollaborantsDrawer = (): JSX.Element => {
   const [open, onClose] = useAppDialogState(visible, () =>
     updateCollaborantsDrawer({ visible: false })
   );
-  const { t } = useTranslation();
+
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const handleChangeTabIndex = (_: React.SyntheticEvent, newValue: number) => {
+    setTabIndex(newValue);
+  };
 
   return (
     <Drawer open={open} onClose={onClose} anchor={"right"}>
-      <InformationTemplate
-        image={<SunImage />}
-        imageStylesOverride={{
-          width: { xs: 150 },
-          height: { xs: 100 },
-        }}
-        headerText={t(TranslationKeys.DelteTaskWarning)}
-        actionButton={{
-          children: t(TranslationKeys.DelteTask),
-          // onClick: onDelete,
-        }}
-        reversed
-      />
+      <Box sx={{ borderBottom: 1, borderColor: "divider", width: 300 }}>
+        <Tabs value={tabIndex} onChange={handleChangeTabIndex}>
+          <Tab label="Item One" value={0} id={`tab-0`} />
+          <Tab label="Item Two" value={1} id={`tab-1`} />
+        </Tabs>
+      </Box>
+      <AnimatePresence>
+        <TabWrapper value={0} index={tabIndex} key={`${tabIndex}-0`}>
+          <UserCollaborantsTabContent
+            handleOpenInviteTab={() => setTabIndex(1)}
+          />
+        </TabWrapper>
+        <TabWrapper value={1} index={tabIndex} key={`${tabIndex}-1`}>
+          <UserSearch />
+        </TabWrapper>
+      </AnimatePresence>
     </Drawer>
   );
 };
