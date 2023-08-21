@@ -7,6 +7,7 @@ import {
   controller,
   httpGet,
   httpPut,
+  queryParam,
   request,
   requestBody,
   requestParam,
@@ -14,6 +15,7 @@ import {
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { AVATAR_FILENAME } from "linked-models/images/avatar";
+import { SEARCH_PHRASE } from "linked-models/search/search.urls";
 import {
   IChangePasswordDTO,
   IUserPublicDataDTO,
@@ -34,6 +36,7 @@ import { GridFSBucket } from "mongodb";
 import mongoose from "mongoose";
 import multer from "multer";
 import { UserAuthService } from "services/user/user.auth.service";
+import { UserSearchService } from "services/user/user.search.service";
 import { UserService } from "services/user/user.service";
 
 const upload = multer(multerConfig);
@@ -42,9 +45,30 @@ const upload = multer(multerConfig);
 export class UserController extends BaseHttpController {
   constructor(
     @inject(UserService) private readonly userService: UserService,
+    @inject(UserSearchService)
+    private readonly userSearchService: UserSearchService,
     @inject(UserAuthService) private readonly userAuthService: UserAuthService
   ) {
     super();
+  }
+
+  @httpGet("")
+  async searchForUsers(
+    @queryParam(SEARCH_PHRASE) searchPhrase: string,
+    @response() res: express.Response
+  ) {
+    try {
+      const searchResults = await this.userSearchService.searchForUsers(
+        searchPhrase,
+        20
+      );
+      return this.ok(searchResults);
+    } catch (error) {
+      res.status(500).send({
+        message: "Error Something went wrong",
+        error,
+      });
+    }
   }
 
   @httpGet(URL_USER() + URL_AVATAR)
