@@ -7,6 +7,7 @@ import { memo, useState } from "react";
 import TabWrapper from "./components/TabWrapper";
 import UserCollaborantsTabContent from "./components/UserCollaborantsTabContent";
 import UserSearch from "./components/UserSearch";
+import { useGetUserCollaborantsQuery } from "./queries/getUserCollaborants.query.";
 
 const CollaborantsDrawer = (): JSX.Element => {
   const {
@@ -20,13 +21,18 @@ const CollaborantsDrawer = (): JSX.Element => {
   );
 
   const [tabIndex, setTabIndex] = useState(0);
+  const getUserCollaborantsQuery = useGetUserCollaborantsQuery();
+
+  if (getUserCollaborantsQuery.isLoading) {
+    return <>{"loading"}</>;
+  }
 
   const handleChangeTabIndex = (_: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
   };
 
   return (
-    <Drawer open={open} onClose={onClose} anchor={"right"}>
+    <Drawer open={open} onClose={onClose} anchor={"right"} sx={{ padding: 10 }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider", width: 300 }}>
         <Tabs value={tabIndex} onChange={handleChangeTabIndex}>
           <Tab label="Item One" value={0} id={`tab-0`} />
@@ -36,11 +42,12 @@ const CollaborantsDrawer = (): JSX.Element => {
       <AnimatePresence>
         <TabWrapper value={0} index={tabIndex} key={`${tabIndex}-0`}>
           <UserCollaborantsTabContent
+            userCollaborants={getUserCollaborantsQuery.data || []}
             handleOpenInviteTab={() => setTabIndex(1)}
           />
         </TabWrapper>
         <TabWrapper value={1} index={tabIndex} key={`${tabIndex}-1`}>
-          <UserSearch />
+          <UserSearch userCollaborants={getUserCollaborantsQuery.data || []} />
         </TabWrapper>
       </AnimatePresence>
     </Drawer>

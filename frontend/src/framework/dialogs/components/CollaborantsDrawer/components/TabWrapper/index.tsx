@@ -30,7 +30,7 @@ const TabWrapper = ({
     >
       <div
         role="tabpanel"
-        style={{ width: 300 }}
+        style={{ width: 300, padding: 15 }}
         hidden={value !== index}
         id={`tabpanel-${index}`}
         {...other}

@@ -12,8 +12,6 @@ const UserCollaborantsTabContent = ({
 }: Props): JSX.Element => {
   const getUserCollaborantsQuery = useGetUserCollaborantsQuery();
 
-  console.log("getUserCollaborantsQuery", getUserCollaborantsQuery.data);
-
   if (getUserCollaborantsQuery.isLoading) return <div>Loading...</div>;
   if (
     !getUserCollaborantsQuery.data ||

@@ -17,9 +17,9 @@ const EmptyCollaborantsList = ({ handleOpenInviteTab }: Props): JSX.Element => {
         width: { xs: 150 },
         height: { xs: 100 },
       }}
-      headerText={t(TranslationKeys.DelteTaskWarning)}
+      headerText={t(TranslationKeys.YouHaveNoCollaborants)}
       actionButton={{
-        children: t(TranslationKeys.DelteTask),
+        children: t(TranslationKeys.InviteCollaborants),
         onClick: () => handleOpenInviteTab(),
       }}
       reversed
