@@ -56,7 +56,12 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Event]: "Event",
 
   [TranslationKeys.ShowMyCollaborations]: "Show my collaborations",
-
+  [TranslationKeys.SearchForUser]: "Search for user",
+  [TranslationKeys.InviteCollaborants]: "Invite someone",
+  [TranslationKeys.YouHaveNoCollaborants]: "You have no collaborators",
+  [TranslationKeys.EmptySearchResults]: "No search results for given criteria",
+  [TranslationKeys.InviteUser]: "Invite user to collaborate",
+  
   [TranslationKeys.PageTitleTodoLists]: "TodoLists",
   [TranslationKeys.EmptyTodoLists]: "There are no todo lists. Create one!",
   [TranslationKeys.CreateNewTodoList]: "Create new todo list",

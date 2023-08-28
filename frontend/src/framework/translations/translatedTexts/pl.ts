@@ -57,6 +57,12 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Event]: "Wydarzenie",
 
   [TranslationKeys.ShowMyCollaborations]: "Pokaż moje współprace",
+  [TranslationKeys.SearchForUser]: "Wyszukaj użytkownika",
+  [TranslationKeys.InviteCollaborants]: "Zaproś kogoś",
+  [TranslationKeys.YouHaveNoCollaborants]: "Nie masz współpracowników",
+  [TranslationKeys.EmptySearchResults]:
+    "Brak wyników wyszukiwania dla podanej frazy",
+    [TranslationKeys.InviteUser]: "Zaproś użytkownika do współpracy",
 
   [TranslationKeys.PageTitleTodoLists]: "Listy zadań",
   [TranslationKeys.EmptyTodoLists]: "Brak list zadań. Utwórz nową listę!",
