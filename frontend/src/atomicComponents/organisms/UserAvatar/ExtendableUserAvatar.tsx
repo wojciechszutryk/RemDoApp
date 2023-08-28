@@ -1,6 +1,5 @@
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import CakeIcon from "@mui/icons-material/Cake";
-import CloseIcon from "@mui/icons-material/Close";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import {
   AvatarProps,
@@ -74,16 +73,6 @@ const ExtendableUserAvatar = ({
             position: "relative",
           }}
         >
-          <CloseIcon
-            onClick={handleClose}
-            sx={{
-              position: "absolute",
-              top: 5,
-              right: 5,
-              transition: "all 0.1s ease-in-out",
-              "&:hover": { cursor: "pointer", opacity: 0.7 },
-            }}
-          />
           {currentUser?.id === id && (
             <Typography p={2}>{t(TranslationKeys.CurrentAccount)}</Typography>
           )}

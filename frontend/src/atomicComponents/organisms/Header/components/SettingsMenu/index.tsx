@@ -5,7 +5,7 @@ import { IconButton } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { Avatar } from "atomicComponents/atoms/Avatar";
-import ExtendableUserAvatar from "atomicComponents/organisms/UserAvatar/ExtendableUserAvatar";
+import UserAvatar from "atomicComponents/organisms/UserAvatar";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useDialogs } from "framework/dialogs";
 import { Pages } from "framework/routing/pages";
@@ -40,7 +40,7 @@ const SettingsMenu = (): JSX.Element => {
     <>
       <IconButton onClick={handleClickAvatar} size="small">
         {currentUser ? (
-          <ExtendableUserAvatar userData={currentUser} />
+          <UserAvatar userData={currentUser} />
         ) : (
           <Avatar>
             <Settings />
@@ -61,8 +61,8 @@ const SettingsMenu = (): JSX.Element => {
           <StyledMenuItem
             key={"collaborants"}
             onClick={() => {
-              updateCollaborantsDrawer({ visible: true });
               handleClose();
+              updateCollaborantsDrawer({ visible: true });
             }}
           >
             <ListItemIcon>
