@@ -15,5 +15,5 @@ export const useSearchForUsersQuery = (
     ).then((res) => res.data);
   };
 
-  return useQuery([URL_USERS], getUsersPublicData, options);
+  return useQuery([URL_USERS, searchPhrase], getUsersPublicData, options);
 };
