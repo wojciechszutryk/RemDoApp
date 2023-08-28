@@ -14,18 +14,36 @@ export class UserSearchService {
     searchPhrase: string,
     limit: number
   ): Promise<IUserPublicDataDTO[]> {
-    const foundUsers = await this.userCollection
-      .find(
-        {
+    const foundUsers = await this.userCollection.aggregate([
+      {
+        $match: {
           $or: [
             { displayName: { $regex: searchPhrase, $options: "i" } },
             { email: { $regex: searchPhrase, $options: "i" } },
           ],
         },
-        { score: { $meta: "textScore" } }
-      )
-      .sort({ score: { $meta: "textScore" } })
-      .limit(limit);
+      },
+      {
+        $project: {
+          _id: 1,
+          displayName: 1,
+          email: 1,
+          similarityScore: {
+            $sum: [
+              { $cond: [{ $eq: ["$displayName", searchPhrase] }, 10, 0] },
+              { $cond: [{ $eq: ["$email", searchPhrase] }, 5, 0] },
+            ],
+          },
+        },
+      },
+      {
+        $sort: { similarityScore: -1 },
+      },
+      {
+        $limit: limit,
+      },
+    ]);
+    
     return foundUsers.map((u) => mapUserToUserPublicData(u));
   }
 }
