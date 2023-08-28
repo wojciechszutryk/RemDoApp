@@ -1,3 +1,4 @@
+import "controllers/collaboration/collaboration.invintation.controller";
 import "controllers/collaboration/user.collaborants.controller";
 import "controllers/reminder/reminder.controller";
 import "controllers/reminder/reminders.controller";

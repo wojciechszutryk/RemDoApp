@@ -5,7 +5,7 @@ export const mapUserToUserPublicData = (
   user: IUserDocument
 ): IUserPublicDataDTO => {
   return {
-    id: user.id,
+    id: user._id,
     displayName: user.displayName,
     hasAvatar: user.hasAvatar,
     email: user.email,
