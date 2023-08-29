@@ -10,7 +10,7 @@ export enum TranslationKeys {
   LoginPanelSeparatorText = "LoginPanelSeparatorText",
   GoToFeaturesButtonText = "GoToFeaturesButtonText",
   LoginPanelHeader = "LoginPanelHeader",
-  LoginPanelHeaderDescription = "LoginPanelHeaderDescription",
+  SignInGoogle = "SignInGoogle",
   Email = "Email",
   JoinDate = "JoinDate",
   DisplayName = "DisplayName",

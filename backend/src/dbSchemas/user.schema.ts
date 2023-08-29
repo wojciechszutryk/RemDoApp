@@ -7,6 +7,7 @@ import mongoose, { Document } from "mongoose";
 export const UserCollectionName = "Users";
 
 const UserSchema = new mongoose.Schema({
+  authId: String,
   displayName: { type: String, default: null },
   email: { type: String, unique: true },
   hasAvatar: { type: Boolean, default: false },
@@ -26,6 +27,7 @@ export const getUserCollection = () =>
 export const mapUserToAttachedUser = (user: IUserDocument): IUserAttached => {
   return {
     id: user.id,
+    authId: user.authId,
     displayName: user.displayName,
     hasAvatar: user.hasAvatar,
     email: user.email,

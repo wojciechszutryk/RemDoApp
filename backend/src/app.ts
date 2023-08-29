@@ -1,4 +1,7 @@
+import "framework/thirdPartAuth/passport";
 import "reflect-metadata";
+//
+import cookieSession from "cookie-session";
 import { container } from "di/container.init";
 import { registerBindings } from "di/di.config";
 import { json, Router, urlencoded } from "express";
@@ -7,8 +10,9 @@ import { buildProviderModule } from "inversify-binding-decorators";
 import { InversifyExpressServer } from "inversify-express-utils";
 import mongoose from "mongoose";
 
+import passport from "passport";
+
 import cors from "cors";
-import { SocketService } from "framework/sockets/socket.service";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
@@ -17,10 +21,25 @@ const customRouter = Router({ mergeParams: true });
 const server = new InversifyExpressServer(container, customRouter);
 
 server.setConfig((app) => {
+  app.set("trust proxy", true);
+  app.use(
+    cookieSession({
+      maxAge: 24 * 60 * 60 * 1000,
+      keys: [process.env.COOKIE_KEY!],
+    })
+  );
+
+  app.use(passport.initialize());
+  app.use(passport.session());
   app.use(json({ limit: "100mb" }));
   app.use(urlencoded({ extended: true }));
-  app.use(cors());
-  app.set("trust proxy", true);
+  app.use(
+    cors({
+      origin: process.env.CLIENT_URL,
+      methods: "GET,POST,PUT,DELETE",
+      credentials: true,
+    })
+  );
 });
 
 //Connect to MongoDb
@@ -44,7 +63,7 @@ mongoose.connection.on("open", () => {
 
   // const socketService = new SocketService(httpServer);
   // container.bind(SocketService).toConstantValue(socketService);
- 
+
   const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 
   httpServer.listen(port, () => {

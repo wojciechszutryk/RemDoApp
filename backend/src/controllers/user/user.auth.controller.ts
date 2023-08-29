@@ -1,32 +1,79 @@
 import { currentUser } from "decorators/currentUser.decorator";
+import * as express from "express";
 import { inject } from "inversify";
 import {
   BaseHttpController,
   controller,
+  httpGet,
   httpPost,
+  request,
   requestBody,
+  response,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { ILoginUserDTO, IRegisterUserDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
 import {
+  URL_GOOGLE,
   URL_LOGIN,
+  URL_LOGOUT,
+  URL_REDIRECT,
   URL_REGISTER,
   URL_USERS,
   URL_WITH_TOKEN,
 } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
-import { NotificationService } from "services/notification.service";
+import passport from "passport";
 import { UserAuthService } from "services/user/user.auth.service";
 
 @controller(URL_USERS)
 export class UserAuthController extends BaseHttpController {
   constructor(
-    @inject(UserAuthService) private readonly userService: UserAuthService,
-    @inject(NotificationService)
-    private readonly notificationService: NotificationService
+    @inject(UserAuthService) private readonly userService: UserAuthService
   ) {
     super();
+  }
+
+  @httpGet("/login/success")
+  async googleAuth(
+    @request() req: express.Request,
+    @response() res: express.Response
+  ) {
+    if (req.user) {
+      res.status(200).json({
+        success: true,
+        message: "successful",
+        user: req.user,
+        //cookies: req.cookies
+      });
+    }
+  }
+
+  @httpGet(
+    URL_GOOGLE,
+    passport.authenticate("google", {
+      scope: ["profile"],
+    })
+  )
+  @httpGet(
+    URL_GOOGLE + URL_REDIRECT,
+    passport.authenticate("google", {
+      // successReturnToOrRedirect: process.env.CLIENT_URL!,
+      successRedirect: process.env.CLIENT_URL!,
+      failureRedirect: process.env.CLIENT_URL!,
+      passReqToCallback: true,
+      pauseStream: true,
+    })
+  )
+  @httpGet(URL_LOGOUT, passport.authenticate("google"))
+  async logout(
+    @request() req: express.Request,
+    @response() res: express.Response
+  ) {
+    req.logout({ keepSessionInfo: false }, (err) => {
+      console.log("err", err);
+    });
+    res.redirect(process.env.CLIENT_URL!);
   }
 
   @httpPost(URL_REGISTER)

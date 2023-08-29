@@ -9,6 +9,9 @@ export interface IUser {
 }
 
 export interface IUserWithReadonlyProperties extends IUser {
+  /** Id of third party auth provider */
+  readonly authId?: string;
+  
   /** Date when user created his account. */
   readonly whenCreated: Date;
 
@@ -17,6 +20,7 @@ export interface IUserWithReadonlyProperties extends IUser {
 
   /** User's password */
   readonly password: string;
+
 }
 
 export type IUserAttached = IUserWithReadonlyProperties & IBaseModelAttached;

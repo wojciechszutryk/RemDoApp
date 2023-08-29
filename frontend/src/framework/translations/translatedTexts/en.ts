@@ -13,7 +13,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.LoginPanelSeparatorText]: "or",
   [TranslationKeys.GoToFeaturesButtonText]: "Explore features",
   [TranslationKeys.LoginPanelHeader]: "Sign in or Sign up",
-  [TranslationKeys.LoginPanelHeaderDescription]: "Sign in with google:",
+  [TranslationKeys.SignInGoogle]: "With google:",
   [TranslationKeys.Email]: "email",
   [TranslationKeys.JoinDate]: "date of joining",
   [TranslationKeys.DisplayName]: "nick name",

@@ -41,13 +41,13 @@ const CollaborantsDrawer = (): JSX.Element => {
       </Box>
       <AnimatePresence>
         <TabWrapper value={0} index={tabIndex} key={`${tabIndex}-0`}>
-          <UserCollaborantsTabContent
+          {/* <UserCollaborantsTabContent
             userCollaborants={getUserCollaborantsQuery.data || []}
             handleOpenInviteTab={() => setTabIndex(1)}
-          />
+          /> */}
         </TabWrapper>
         <TabWrapper value={1} index={tabIndex} key={`${tabIndex}-1`}>
-          <UserSearch userCollaborants={getUserCollaborantsQuery.data || []} />
+          {/* <UserSearch userCollaborants={getUserCollaborantsQuery.data || []} /> */}
         </TabWrapper>
       </AnimatePresence>
     </Drawer>

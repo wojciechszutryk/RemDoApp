@@ -13,8 +13,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.LoginPanelSeparatorText]: "lub",
   [TranslationKeys.GoToFeaturesButtonText]: "Poznaj funkcje",
   [TranslationKeys.LoginPanelHeader]: "Zaloguj się lub zarejestruj",
-  [TranslationKeys.LoginPanelHeaderDescription]:
-    "Zaloguj się za pomocą google:",
+  [TranslationKeys.SignInGoogle]:
+    "Za pomocą google",
   [TranslationKeys.Email]: "email",
   [TranslationKeys.JoinDate]: "data dołączenia",
   [TranslationKeys.DisplayName]: "nazwa użytkownika",
