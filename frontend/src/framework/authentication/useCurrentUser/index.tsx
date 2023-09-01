@@ -1,4 +1,4 @@
-import { ILoginUserResponseDTO } from "linked-models/user/user.dto";
+import { IUserAttached } from "linked-models/user/user.model";
 import { ReactNode, useContext, useState } from "react";
 import { Context } from "./context";
 import { ContextProps } from "./useCurrentUser.models";
@@ -8,18 +8,12 @@ interface Props {
 }
 
 function CurrentUserProvider({ children }: Props): JSX.Element {
-  const [currentUserState, setCurrentUserState] = useState<
-    ILoginUserResponseDTO | undefined
-  >(undefined);
-
-  const setCurrentUser = (user: ILoginUserResponseDTO | undefined) => {
-    setCurrentUserState(user);
-    if (user) localStorage.setItem("todoListToken", user.token);
-    else localStorage.removeItem("todoListToken");
-  };
+  const [currentUser, setCurrentUser] = useState<IUserAttached | undefined>(
+    undefined
+  );
 
   const value = {
-    currentUser: currentUserState,
+    currentUser,
     setCurrentUser,
     initialized: true,
   };

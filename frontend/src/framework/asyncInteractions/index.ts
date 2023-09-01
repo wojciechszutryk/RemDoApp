@@ -4,26 +4,25 @@ import axios, {
   AxiosResponse,
 } from "axios";
 
-const getHeaders = (
-  additionalHeaders?: Partial<AxiosRequestHeaders>
+const getAxiosSettings = (
+  additionalSettings?: Partial<AxiosRequestHeaders>
 ): Partial<AxiosRequestHeaders> => {
-  const token = localStorage.getItem("todoListToken");
-  const headers = {
-    Authorization: `Bearer ${token}` || "",
-    ...additionalHeaders,
+  const settings = {
+    withCredentials: true,
+    Cookie: document.cookie || "",
+    ...additionalSettings,
   };
 
-  return headers;
+  return settings;
 };
 
 export const apiGet = async <T>(
   url: string,
   axiosSettings?: Partial<AxiosRequestConfig>
 ): Promise<AxiosResponse<T>> => {
-  const headers = getHeaders(
-    axiosSettings?.headers as Partial<AxiosRequestHeaders>
-  );
-  return axios.get<T>(url, { ...axiosSettings, headers } as AxiosRequestConfig);
+  return axios.get<T>(url, {
+    ...getAxiosSettings(axiosSettings),
+  } as AxiosRequestConfig);
 };
 
 export const apiPut = async <T, K>(
@@ -31,12 +30,8 @@ export const apiPut = async <T, K>(
   payload: T,
   axiosSettings?: AxiosRequestConfig
 ): Promise<AxiosResponse<K>> => {
-  const headers = getHeaders(
-    axiosSettings?.headers as Partial<AxiosRequestHeaders>
-  );
   return axios.put<K>(url, payload, {
-    ...axiosSettings,
-    headers,
+    ...getAxiosSettings(axiosSettings),
   } as AxiosRequestConfig);
 };
 
@@ -45,12 +40,8 @@ export const apiPost = async <T, K>(
   payload: T,
   axiosSettings?: AxiosRequestConfig
 ): Promise<AxiosResponse<K>> => {
-  const headers = getHeaders(
-    axiosSettings?.headers as Partial<AxiosRequestHeaders>
-  );
   return axios.post<K>(url, payload, {
-    ...axiosSettings,
-    headers,
+    ...getAxiosSettings(axiosSettings),
   } as AxiosRequestConfig);
 };
 
@@ -58,11 +49,7 @@ export const apiDelete = async <T>(
   url: string,
   axiosSettings?: AxiosRequestConfig
 ): Promise<AxiosResponse<T>> => {
-  const headers = getHeaders(
-    axiosSettings?.headers as Partial<AxiosRequestHeaders>
-  );
   return axios.delete<T>(url, {
-    ...axiosSettings,
-    headers,
+    ...getAxiosSettings(axiosSettings),
   } as AxiosRequestConfig);
 };

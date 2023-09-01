@@ -1,26 +1,26 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
-import { ILoginUserResponseDTO } from "linked-models/user/user.dto";
+import { IUserAttached } from "linked-models/user/user.model";
 import {
   URL_LOGIN,
   URL_USERS,
-  URL_WITH_TOKEN,
+  URL_WITH_COOKIE,
 } from "linked-models/user/user.urls";
 import { useCurrentUser } from "../useCurrentUser";
 
-export const useLoginUserWithTokenMutation = () => {
+export const useLoginUserWithCookieMutation = () => {
   const { setCurrentUser } = useCurrentUser();
 
-  const url = FRONTIFY_URL(URL_USERS, `${URL_LOGIN}${URL_WITH_TOKEN}`);
+  const url = FRONTIFY_URL(URL_USERS, `${URL_LOGIN}${URL_WITH_COOKIE}`);
 
-  const loginUserWithToken = async (): Promise<ILoginUserResponseDTO> => {
-    return await apiPost<undefined, ILoginUserResponseDTO>(url, undefined).then(
+  const loginUserWithCookie = async (): Promise<IUserAttached> => {
+    return await apiPost<undefined, IUserAttached>(url, undefined).then(
       (res) => res.data
     );
   };
 
-  return useMutation(loginUserWithToken, {
+  return useMutation(loginUserWithCookie, {
     onSuccess: (user) => {
       setCurrentUser(user);
     },
