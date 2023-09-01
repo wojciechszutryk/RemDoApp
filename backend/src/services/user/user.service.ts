@@ -16,6 +16,18 @@ export class UserService {
     private readonly userCollection: UserCollectionType
   ) {}
 
+  public async getUserByAuthId(
+    authId: string
+  ): Promise<IUserAttached | undefined> {
+    const foundUser = await this.userCollection.findOne({ authId });
+
+    if (!foundUser) {
+      return undefined;
+    }
+
+    return mapUserToAttachedUser(foundUser);
+  }
+
   public async getUsersByEmails(emails: string[]): Promise<IUserAttached[]> {
     const foundUsers = await this.userCollection.find({
       email: { $in: emails },

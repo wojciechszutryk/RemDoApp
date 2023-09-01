@@ -1,4 +1,4 @@
-import "framework/thirdPartAuth/passport";
+import "framework/auth/passport";
 import "reflect-metadata";
 //
 import cookieSession from "cookie-session";
@@ -24,6 +24,7 @@ server.setConfig((app) => {
   app.set("trust proxy", true);
   app.use(
     cookieSession({
+      httpOnly: false,
       maxAge: 24 * 60 * 60 * 1000,
       keys: [process.env.COOKIE_KEY!],
     })
@@ -38,6 +39,7 @@ server.setConfig((app) => {
       origin: process.env.CLIENT_URL,
       methods: "GET,POST,PUT,DELETE",
       credentials: true,
+      exposedHeaders: ['set-cookie'],
     })
   );
 });
