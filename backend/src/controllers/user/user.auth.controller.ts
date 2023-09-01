@@ -11,7 +11,8 @@ import {
   response,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
-import { ILoginUserDTO, IRegisterUserDTO } from "linked-models/user/user.dto";
+import { IRegisterUserDTO } from "linked-models/user/user.dto";
+import { UserLoginStrategy } from "linked-models/user/user.enum";
 import { IUserAttached } from "linked-models/user/user.model";
 import {
   URL_GOOGLE,
@@ -20,7 +21,7 @@ import {
   URL_REDIRECT,
   URL_REGISTER,
   URL_USERS,
-  URL_WITH_TOKEN,
+  URL_WITH_COOKIE,
 } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import passport from "passport";
@@ -34,46 +35,44 @@ export class UserAuthController extends BaseHttpController {
     super();
   }
 
-  @httpGet("/login/success")
-  async googleAuth(
+  @httpPost(URL_LOGIN, passport.authenticate(UserLoginStrategy.Local))
+  async loginUser(
     @request() req: express.Request,
     @response() res: express.Response
   ) {
-    if (req.user) {
-      res.status(200).json({
-        success: true,
-        message: "successful",
-        user: req.user,
-        //cookies: req.cookies
-      });
-    }
+    res.setHeader("Access-Control-Allow-Origin", process.env.CLIENT_URL!);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET,HEAD,OPTIONS,POST,PUT,DELETE"
+    );
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, *");
+
+    return this.ok(req.user);
   }
 
   @httpGet(
     URL_GOOGLE,
-    passport.authenticate("google", {
+    passport.authenticate(UserLoginStrategy.Google, {
       scope: ["profile"],
     })
   )
   @httpGet(
     URL_GOOGLE + URL_REDIRECT,
-    passport.authenticate("google", {
-      // successReturnToOrRedirect: process.env.CLIENT_URL!,
+    passport.authenticate(UserLoginStrategy.Google, {
       successRedirect: process.env.CLIENT_URL!,
       failureRedirect: process.env.CLIENT_URL!,
       passReqToCallback: true,
       pauseStream: true,
     })
   )
-  @httpGet(URL_LOGOUT, passport.authenticate("google"))
-  async logout(
-    @request() req: express.Request,
-    @response() res: express.Response
-  ) {
+  
+  @httpGet(URL_LOGOUT)
+  async logout(@request() req: express.Request) {
     req.logout({ keepSessionInfo: false }, (err) => {
-      console.log("err", err);
+      return this.json(err, 400);
     });
-    res.redirect(process.env.CLIENT_URL!);
+    return this.ok();
   }
 
   @httpPost(URL_REGISTER)
@@ -95,40 +94,13 @@ export class UserAuthController extends BaseHttpController {
       displayName,
       password
     );
-    return this.ok({ ...user, notifications: [] });
+    return this.ok(user);
   }
 
-  @httpPost(URL_LOGIN)
-  async loginUser(@requestBody() body: ILoginUserDTO): Promise<OkResult> {
-    const { email, password } = body;
-
-    if (!(email && password)) {
-      return this.json("All input is required", 400);
-    }
-
-    const user = await this.userService.getUserByEmail(email);
-
-    if (!user) {
-      return this.json(`User with email: ${email} doesn't exist.`, 400);
-    }
-
-    const signedUser = await this.userService.signTokenToUser(user, password);
-
-    if (!signedUser) {
-      return this.json("Invalid Credentials", 400);
-    }
-
-    return this.ok(signedUser);
-  }
-
-  @httpPost(URL_LOGIN + URL_WITH_TOKEN, SetCurrentUser)
-  async loginUserWithToken(
+  @httpPost(URL_LOGIN + URL_WITH_COOKIE, SetCurrentUser)
+  async loginUserWithCookie(
     @currentUser() currentUser: IUserAttached
   ): Promise<OkResult> {
-    const userWithRefreshedToken = await this.userService.refreshUserToken(
-      currentUser
-    );
-
-    return this.ok(userWithRefreshedToken);
+    return this.ok(currentUser);
   }
 }

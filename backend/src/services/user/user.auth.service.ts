@@ -5,10 +5,8 @@ import {
   UserCollectionType,
 } from "dbSchemas/user.schema";
 import { inject, injectable } from "inversify";
-import jwt from "jsonwebtoken";
-import { ILoginUserResponseDTO } from "linked-models/user/user.dto";
+import { UserLoginStrategy } from "linked-models/user/user.enum";
 import { IUserAttached } from "linked-models/user/user.model";
-import { IToken } from "models/authentication.model";
 
 @injectable()
 export class UserAuthService {
@@ -31,7 +29,7 @@ export class UserAuthService {
     email: string,
     displayName: string,
     password: string
-  ): Promise<ILoginUserResponseDTO> {
+  ): Promise<IUserAttached> {
     const encryptedPassword = await bcrypt.hash(password, 10);
 
     const user = await this.userCollection.create({
@@ -39,53 +37,15 @@ export class UserAuthService {
       email: email.toLowerCase(),
       password: encryptedPassword,
       whenCreated: new Date(),
+      loginStrategy: UserLoginStrategy.Local,
+      authId: "",
+    });
+    this.userCollection.findByIdAndUpdate(user._id, {
+      authId: user._id,
     });
     const attachedUser = mapUserToAttachedUser(user);
 
-    const token = jwt.sign(
-      { user_id: user._id, email },
-      process.env.TOKEN_KEY!,
-      {
-        expiresIn: "2h",
-      }
-    );
-
-    return { ...attachedUser, token };
-  }
-
-  public async signTokenToUser(
-    user: IUserAttached,
-    password: string
-  ): Promise<ILoginUserResponseDTO | undefined> {
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-
-    if (user && isPasswordCorrect) {
-      const token = jwt.sign(
-        { userId: user.id, email: user.email } as IToken,
-        process.env.TOKEN_KEY!,
-        {
-          expiresIn: "2days",
-        }
-      );
-
-      return { ...user, token };
-    }
-  }
-
-  public async refreshUserToken(
-    user: IUserAttached
-  ): Promise<ILoginUserResponseDTO | undefined> {
-    if (user) {
-      const token = jwt.sign(
-        { userId: user.id, email: user.email } as IToken,
-        process.env.TOKEN_KEY!,
-        {
-          expiresIn: "2days",
-        }
-      );
-
-      return { ...user, token };
-    }
+    return { ...attachedUser, authId: attachedUser.id };
   }
 
   public async changePassword(
@@ -103,9 +63,8 @@ export class UserAuthService {
     }
 
     const encryptedPassword = await bcrypt.hash(newPassword, 10);
-    await this.userCollection.findOneAndUpdate(
-      { _id: user.id },
-      { password: encryptedPassword }
-    );
+    await this.userCollection.findByIdAndUpdate(user.id, {
+      password: encryptedPassword,
+    });
   }
 }
