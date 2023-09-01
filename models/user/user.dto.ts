@@ -1,9 +1,9 @@
 import { IUserAttached } from "./user.model";
 
-/**
- * user without password
- */
-export type IUserPublicDataDTO = Omit<IUserAttached, "password">;
+export type IUserPublicDataDTO = Omit<
+  IUserAttached,
+  "password" | "loginStrategy" | "authId"
+>;
 
 export type IRegisterUserDTO = {
   email: string;
@@ -12,10 +12,6 @@ export type IRegisterUserDTO = {
 };
 
 export type ILoginUserDTO = Omit<IRegisterUserDTO, "displayName">;
-
-export interface ILoginUserResponseDTO extends Omit<IUserAttached, "password"> {
-  token: string;
-}
 
 export type IChangePasswordDTO = {
   currentPassword: string;

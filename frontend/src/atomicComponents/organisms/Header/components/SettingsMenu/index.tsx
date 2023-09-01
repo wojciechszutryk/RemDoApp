@@ -6,10 +6,13 @@ import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { Avatar } from "atomicComponents/atoms/Avatar";
 import UserAvatar from "atomicComponents/organisms/UserAvatar";
+import { apiGet } from "framework/asyncInteractions";
+import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useDialogs } from "framework/dialogs";
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
+import { URL_LOGOUT, URL_USERS } from "linked-models/user/user.urls";
 import * as React from "react";
 import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -84,10 +87,11 @@ const SettingsMenu = (): JSX.Element => {
           </StyledMenuItem>,
           <StyledMenuItem
             key={"logout"}
-            onClick={() => {
+            onClick={async () => {
+              await apiGet(FRONTIFY_URL(URL_USERS, URL_LOGOUT));
               setCurrentUser(undefined);
-              navigate(Pages.HomePage.path);
               handleClose();
+              navigate(Pages.HomePage.path);
             }}
           >
             <ListItemIcon>

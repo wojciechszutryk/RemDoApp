@@ -1,14 +1,14 @@
 import { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
-import { ILoginUserResponseDTO } from "linked-models/user/user.dto";
+import { IUserAttached } from "linked-models/user/user.model";
 import { SetStateAction, useCallback } from "react";
 import { getTodoListsOrderLSKey } from "./helpers";
 
 interface Args {
   setOrderedTodoLists: (value: SetStateAction<IExtendedTodoListDto[]>) => void;
   setActiveId: (value: SetStateAction<string | null>) => void;
-  currentUser: ILoginUserResponseDTO | undefined;
+  currentUser: IUserAttached | undefined;
 }
 
 const useHandleDrag = ({

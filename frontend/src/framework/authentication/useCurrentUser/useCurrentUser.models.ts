@@ -1,6 +1,6 @@
-import { ILoginUserResponseDTO } from "linked-models/user/user.dto";
+import { IUserAttached } from "linked-models/user/user.model";
 
 export interface ContextProps {
-  currentUser: ILoginUserResponseDTO | undefined;
-  setCurrentUser: (user: ILoginUserResponseDTO | undefined) => void;
+  currentUser: IUserAttached | undefined;
+  setCurrentUser: (user: IUserAttached | undefined) => void;
 }

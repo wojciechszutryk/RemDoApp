@@ -61,35 +61,6 @@ export const UserPanel = (): JSX.Element => {
       >
         {t(TranslationKeys.SignInGoogle)}
       </Button>
-      <Button
-        onClick={() => {
-          const getUser = () => {
-            fetch("http://localhost:3001/users/login/success", {
-              method: "GET",
-              credentials: "include",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": true,
-              },
-            })
-              .then((response) => {
-                if (response.status === 200) return response.json();
-                throw new Error("authentication has been failed!");
-              })
-              .then((resObject) => {
-                console.log(resObject);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          };
-
-          getUser();
-        }}
-      >
-        {"po zalogowaniu"}
-      </Button>
     </StyledWrapper>
   );
 };
