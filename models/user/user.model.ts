@@ -19,11 +19,17 @@ export interface IUserWithReadonlyProperties extends IUser {
   /** Date when user created his account. */
   readonly whenCreated: Date;
 
-  /** Date when user created his account. */
-  readonly hasAvatar?: boolean;
+  /** Url to user's avatar - can be null */
+  readonly avatarUrl?: string;
 
   /** User's password */
   readonly password: string;
+
+  /** Google access token - applicable for users who are integrated with google */
+  readonly googleAccessToken: string;
+
+  /** Google refresh token - applicable for users who are integrated with google */
+  readonly googleRefreshToken: string;
 }
 
 export type IUserAttached = IUserWithReadonlyProperties & IBaseModelAttached;

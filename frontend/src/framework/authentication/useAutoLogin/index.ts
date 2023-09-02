@@ -22,17 +22,13 @@ function getCookie(cname: string) {
   return "";
 }
 
-console.log(document.cookie);
-
 const useAutoLogin = () => {
   const { currentUser } = useCurrentUser();
-  const loginUserWithTokenMutation = useLoginUserWithCookieMutation();
+  const loginUserWithCookieMutation = useLoginUserWithCookieMutation();
   const sessionCookie = getCookie("session");
   useEffect(() => {
     if (!!getCookie("session") && !currentUser) {
-      console.log("auto login", getCookie("session"));
-
-      loginUserWithTokenMutation.mutate();
+      loginUserWithCookieMutation.mutate();
     }
   }, [currentUser, sessionCookie]);
 };

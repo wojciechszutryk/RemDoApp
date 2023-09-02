@@ -81,8 +81,6 @@ const UserSearch = (): JSX.Element => {
                   <SendRounded
                     sx={{ cursor: "pointer" }}
                     onClick={() => {
-                      console.log(u);
-
                       inviteUserToCollaborationMutation.mutate(u.id);
                     }}
                   />

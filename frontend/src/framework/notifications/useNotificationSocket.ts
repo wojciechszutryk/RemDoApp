@@ -1,5 +1,4 @@
 import { useNotifications } from "framework/notificationSocket/useNotifications";
-import { CollaborationRequestedEvent } from "linked-models/event/implementation/collaboartion.events";
 import {
   TaskCreatedEvent,
   TaskDeletedEvent,

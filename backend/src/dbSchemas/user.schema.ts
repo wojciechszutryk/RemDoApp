@@ -9,10 +9,12 @@ export const UserCollectionName = "Users";
 const UserSchema = new mongoose.Schema({
   authId: String,
   loginStrategy: String,
-  displayName: { type: String, default: null },
-  email: { type: String, unique: true },
-  hasAvatar: { type: Boolean, default: false },
-  password: { type: String },
+  displayName: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  avatarUrl: { type: String, default: null },
+  password: { type: String, required: false },
+  googleAccessToken: { type: String, default: null },
+  googleRefreshToken: { type: String, default: null },
   whenCreated: {
     type: Date,
     required: true,
@@ -31,9 +33,11 @@ export const mapUserToAttachedUser = (user: IUserDocument): IUserAttached => {
     authId: user.authId,
     loginStrategy: user.loginStrategy,
     displayName: user.displayName,
-    hasAvatar: user.hasAvatar,
+    avatarUrl: user.avatarUrl,
     email: user.email,
     password: user.password,
+    googleAccessToken: user.googleAccessToken,
+    googleRefreshToken: user.googleRefreshToken,
     whenCreated: user.whenCreated,
   };
 };

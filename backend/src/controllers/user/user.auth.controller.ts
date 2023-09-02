@@ -39,10 +39,9 @@ export class UserAuthController extends BaseHttpController {
   @httpGet(
     URL_GOOGLE,
     passport.authenticate(UserLoginStrategy.Google, {
-      scope: ["profile"],
+      accessType: "offline",
     })
   )
-  
   @httpGet(
     URL_GOOGLE + URL_REDIRECT,
     passport.authenticate(UserLoginStrategy.Google, {
@@ -50,9 +49,9 @@ export class UserAuthController extends BaseHttpController {
       failureRedirect: process.env.CLIENT_URL!,
       passReqToCallback: true,
       pauseStream: true,
+      accessType: "offline",
     })
   )
-  
   @httpGet(URL_LOGOUT)
   async logout(@request() req: express.Request) {
     req.logout({ keepSessionInfo: false }, (err) => {
