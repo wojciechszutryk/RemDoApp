@@ -7,7 +7,7 @@ export const mapUserToUserPublicData = (
   return {
     id: user._id,
     displayName: user.displayName,
-    hasAvatar: user.hasAvatar,
+    avatarUrl: user.avatarUrl,
     email: user.email,
     whenCreated: user.whenCreated,
   };

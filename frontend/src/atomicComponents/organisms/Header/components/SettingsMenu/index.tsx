@@ -89,6 +89,7 @@ const SettingsMenu = (): JSX.Element => {
             key={"logout"}
             onClick={async () => {
               await apiGet(FRONTIFY_URL(URL_USERS, URL_LOGOUT));
+              document.cookie = "";
               setCurrentUser(undefined);
               handleClose();
               navigate(Pages.HomePage.path);

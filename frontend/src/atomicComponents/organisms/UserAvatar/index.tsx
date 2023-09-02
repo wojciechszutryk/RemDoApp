@@ -9,19 +9,11 @@ interface Props {
 }
 
 const UserAvatar = ({
-  userData: { id, displayName, hasAvatar },
+  userData: { displayName, avatarUrl },
   avatarProps,
 }: Props): JSX.Element => {
   return (
-    <Avatar
-      {...avatarProps}
-      alt={displayName}
-      src={
-        hasAvatar
-          ? `${process.env.REACT_APP_API_URL}/users/${id}/avatar`
-          : undefined
-      }
-    >
+    <Avatar {...avatarProps} alt={displayName} src={avatarUrl}>
       {displayName[0].toUpperCase()}
     </Avatar>
   );

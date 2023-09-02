@@ -127,11 +127,13 @@ export class UserController extends BaseHttpController {
       return this.badRequest();
     }
 
-    if (!currentUser.hasAvatar) {
-      await this.userService.updateUserPublicData(currentUser.id, {
-        hasAvatar: true,
-      });
-    }
+    await this.userService.updateUserPublicData(currentUser.id, {
+      avatarUrl:
+        process.env.SERVER_URL +
+        URL_USERS +
+        URL_USER(currentUser.id) +
+        URL_AVATAR,
+    });
 
     return this.ok(file);
   }

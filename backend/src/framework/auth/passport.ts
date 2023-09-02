@@ -24,7 +24,6 @@ passport.use(
       passReqToCallback: true,
     },
     async function (req, _, __, done) {
-      // User.findOne won't fire unless data is sent back
       const { displayName, email, password } = req.body;
 
       if (!(email && password && displayName)) {
@@ -54,30 +53,6 @@ passport.use(
       if (!user) return done("Registration failed", false);
       const attachedUser = mapUserToAttachedUser(user);
       done(null, { ...attachedUser, authId: attachedUser.id });
-
-      // find a user whose email is the same as the forms email
-      // User.findOne({ "local.email": email }, function (err, user) {
-      //   if (err) return done(err);
-
-      //   if (user) {
-      //     return done(
-      //       null,
-      //       false,
-      //       req.flash("signupMessage", "That email is already taken.")
-      //     );
-      //   } else {
-      //     // if there is no user with that email -create the user
-      //     const newUser = new User();
-      //     // set the user's local credentials
-      //     newUser.local.email = email;
-      //     newUser.local.password = newUser.generateHash(password);
-      //     // save the user
-      //     newUser.save(function (err) {
-      //       if (err) throw err;
-      //       return done(null, newUser);
-      //     });
-      //   }
-      // });
     }
   )
 );
@@ -90,10 +65,16 @@ passport.use(
     },
     async function (email, password, done) {
       if (!email || !password)
-        done({ message: "Username or password is empty" }, false);
+        done({ message: "Email or password is empty" }, false);
       const foundUser = await getUserCollection().findOne({ email });
 
       if (!foundUser) return done("Email or password is incorrect", false);
+
+      if (!foundUser.password)
+        return done(
+          "User was registered with third party service and can't be logged in with password. Please use third party service to log in.",
+          false
+        );
 
       const isPasswordCorrect = await compare(password, foundUser.password);
 
@@ -111,20 +92,42 @@ passport.use(
     {
       clientID: process.env.GOOGLE_AUTH_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET!,
-      callbackURL: `http://localhost:3001${URL_USERS}${URL_GOOGLE}${URL_REDIRECT}`,
+      callbackURL: `${process.env.SERVER_URL}${URL_USERS}${URL_GOOGLE}${URL_REDIRECT}`,
+      scope: [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+      ],
     },
-    async function (_, __, profile, done) {
-      const foundUser = await getUserCollection().findOne({
-        authId: profile.id,
-      });
+    async function (accessToken, refreshToken, profile, done) {
+      const [encryptedAccessToken, encryptedRefreshToken] = await Promise.all([ 
+        hash(accessToken, 10),
+        refreshToken ? hash(refreshToken, 10) : null,
+      ]);
+
+      const foundUser = await getUserCollection().findOneAndUpdate(
+        {
+          authId: profile.id,
+        },
+        {
+          googleAccessToken: encryptedAccessToken,
+          googleRefreshToken: encryptedRefreshToken,
+        },
+        {
+          new: true,
+        }
+      );
 
       if (foundUser) done(null, mapUserToAttachedUser(foundUser));
       else {
+        const email = profile.emails ? profile.emails[0].value : "email"; //TODO: fetch email from google api
         const newUser = await getUserCollection().create({
           authId: profile.id,
           loginStrategy: UserLoginStrategy.Google,
           displayName: profile.displayName,
-          email: profile.emails![0].value,
+          email,
+          avatarUrl: profile.photos ? profile.photos[0].value : null,
+          googleAccessToken: encryptedAccessToken,
+          googleRefreshToken: encryptedRefreshToken,
           whenCreated: new Date(),
         });
         done(null, mapUserToAttachedUser(newUser));

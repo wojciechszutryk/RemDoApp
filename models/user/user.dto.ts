@@ -1,8 +1,8 @@
 import { IUserAttached } from "./user.model";
 
-export type IUserPublicDataDTO = Omit<
+export type IUserPublicDataDTO = Pick<
   IUserAttached,
-  "password" | "loginStrategy" | "authId"
+  "avatarUrl" | "whenCreated" | "displayName" | "email" | "id"
 >;
 
 export type IRegisterUserDTO = {

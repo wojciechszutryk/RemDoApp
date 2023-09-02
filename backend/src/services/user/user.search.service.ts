@@ -27,6 +27,7 @@ export class UserSearchService {
         $project: {
           _id: 1,
           displayName: 1,
+          avatarUrl: 1,
           email: 1,
           similarityScore: {
             $sum: [

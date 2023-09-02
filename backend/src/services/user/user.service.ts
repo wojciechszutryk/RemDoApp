@@ -50,6 +50,7 @@ export class UserService {
       displayName: foundUser.displayName,
       email: foundUser.email,
       whenCreated: foundUser.whenCreated,
+      avatarUrl: foundUser.avatarUrl,
     };
   }
 
@@ -62,6 +63,7 @@ export class UserService {
 
     return foundUsers.map((u) => ({
       id: u.id,
+      avatarUrl: u.avatarUrl,
       displayName: u.displayName,
       email: u.email,
       whenCreated: u.whenCreated,
@@ -79,7 +81,7 @@ export class UserService {
     const update = extractPropertiesToUpdate(data, [
       "displayName",
       "email",
-      "hasAvatar",
+      "avatarUrl",
     ]);
 
     const updatedUser = await this.userCollection.findByIdAndUpdate(
