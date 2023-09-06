@@ -1,5 +1,6 @@
 import { getTaskCollection, TaskCollectionName } from "dbSchemas/task.schema";
 import { Container } from "inversify";
+import { GoogleEventService } from "services/googleEvent/googleEvent.service";
 import { TaskCreatedEventHandler } from "services/task/event-handlers/task.created.event.handlers";
 import { TaskDeletedEventHandler } from "services/task/event-handlers/task.deleted.event.handlers";
 import { TaskUpdatedEventHandler } from "services/task/event-handlers/task.updated.event.handlers";
@@ -11,4 +12,5 @@ export const registerTaskBindings = (container: Container) => {
   container.bind(TaskCreatedEventHandler).toSelf();
   container.bind(TaskUpdatedEventHandler).toSelf();
   container.bind(TaskDeletedEventHandler).toSelf();
+  container.bind(GoogleEventService).toSelf();
 };
