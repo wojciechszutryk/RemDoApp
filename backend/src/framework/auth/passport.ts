@@ -96,21 +96,17 @@ passport.use(
       scope: [
         "https://www.googleapis.com/auth/userinfo.profile",
         "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/calendar.events.owned"
       ],
     },
     async function (accessToken, refreshToken, profile, done) {
-      const [encryptedAccessToken, encryptedRefreshToken] = await Promise.all([ 
-        hash(accessToken, 10),
-        refreshToken ? hash(refreshToken, 10) : null,
-      ]);
-
       const foundUser = await getUserCollection().findOneAndUpdate(
         {
           authId: profile.id,
         },
         {
-          googleAccessToken: encryptedAccessToken,
-          googleRefreshToken: encryptedRefreshToken,
+          googleAccessToken: accessToken,
+          googleRefreshToken: refreshToken,
         },
         {
           new: true,
@@ -119,15 +115,17 @@ passport.use(
 
       if (foundUser) done(null, mapUserToAttachedUser(foundUser));
       else {
-        const email = profile.emails ? profile.emails[0].value : "email"; //TODO: fetch email from google api
+        const email = profile.emails && profile.emails[0].value;
+        if (!email) return done("Email not provided", undefined);
         const newUser = await getUserCollection().create({
           authId: profile.id,
           loginStrategy: UserLoginStrategy.Google,
           displayName: profile.displayName,
           email,
+          integratedWithGoogle: true,
           avatarUrl: profile.photos ? profile.photos[0].value : null,
-          googleAccessToken: encryptedAccessToken,
-          googleRefreshToken: encryptedRefreshToken,
+          googleAccessToken: accessToken,
+          googleRefreshToken: refreshToken,
           whenCreated: new Date(),
         });
         done(null, mapUserToAttachedUser(newUser));

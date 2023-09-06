@@ -22,6 +22,9 @@ export interface IUserWithReadonlyProperties extends IUser {
   /** Url to user's avatar - can be null */
   readonly avatarUrl?: string;
 
+  /** Is user integrated with google's callendar */
+  readonly integratedWithGoogle: boolean;
+
   /** User's password */
   readonly password: string;
 
