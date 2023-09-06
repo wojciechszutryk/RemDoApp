@@ -21,7 +21,7 @@ import {
 } from "linked-models/todoList/todoList.urls";
 import { IUserAttached } from "linked-models/user/user.model";
 import { CheckPermission } from "middlewares/permissions/checkPermission.middleware";
-import { SetPermissions } from "middlewares/permissions/setPermissions.middleware";
+import { SetPermissionsAndScopes } from "middlewares/permissions/setPermissionsAndScopes.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { ReminderService } from "services/reminder/reminder.service";
 
@@ -36,7 +36,11 @@ export class ReminderController extends BaseHttpController {
     super();
   }
 
-  @httpPut("", SetPermissions, CheckPermission(TodoListPermissions.CanEditTask))
+  @httpPut(
+    "",
+    SetPermissionsAndScopes,
+    CheckPermission(TodoListPermissions.CanEditTask)
+  )
   async editReminder(
     @requestParam(TODO_LIST_PARAM) todoListId: string,
     @requestParam(TASK_PARAM) taskId: string,
@@ -65,7 +69,7 @@ export class ReminderController extends BaseHttpController {
 
   @httpDelete(
     "",
-    SetPermissions,
+    SetPermissionsAndScopes,
     CheckPermission(TodoListPermissions.CanDeleteTask)
   )
   async deleteReminder(

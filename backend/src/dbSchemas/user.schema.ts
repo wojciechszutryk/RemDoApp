@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: false },
   googleAccessToken: { type: String, default: null },
   googleRefreshToken: { type: String, default: null },
+  integratedWithGoogle: { type: Boolean, default: false },
   whenCreated: {
     type: Date,
     required: true,
@@ -38,6 +39,7 @@ export const mapUserToAttachedUser = (user: IUserDocument): IUserAttached => {
     password: user.password,
     googleAccessToken: user.googleAccessToken,
     googleRefreshToken: user.googleRefreshToken,
+    integratedWithGoogle: user.integratedWithGoogle,
     whenCreated: user.whenCreated,
   };
 };

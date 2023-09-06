@@ -87,6 +87,7 @@ describe(`TodoList permissions service`, () => {
   it(`should return all permissions when user is owner of todoList`, async () => {
     const permissions = await todoListPermissionsService.getPermissionsForUser(
       todoListOwnerId,
+      false,
       MOCKED_TODO_ID
     );
 
@@ -96,6 +97,7 @@ describe(`TodoList permissions service`, () => {
   it(`should return all permissions when user is one of assignedOwners of todoList`, async () => {
     const permissions = await todoListPermissionsService.getPermissionsForUser(
       assignedOwnerId,
+      false,
       MOCKED_TODO_ID
     );
 
@@ -105,6 +107,7 @@ describe(`TodoList permissions service`, () => {
   it(`should return AssignedToTodoListAndTaskCreatorPermissions when user is one of assignedUsers of todoList and is creator of task`, async () => {
     const permissions = await todoListPermissionsService.getPermissionsForUser(
       assignedUserId,
+      false,
       MOCKED_TODO_ID,
       MOCKED_TASK_ID
     );
@@ -115,6 +118,7 @@ describe(`TodoList permissions service`, () => {
   it(`should return AssignedToTodoListAndTaskCreatorPermissions when user is one of assignedUsers of todoList and is creator of task`, async () => {
     const permissions = await todoListPermissionsService.getPermissionsForUser(
       assignedUserId,
+      false,
       MOCKED_TODO_ID,
       MOCKED_TASK_ID
     );
@@ -125,6 +129,7 @@ describe(`TodoList permissions service`, () => {
   it(`should return AssignedToTodoListPermissions when user is one of assignedUsers of todoList and is not creator of task`, async () => {
     const permissions = await todoListPermissionsService.getPermissionsForUser(
       assignedUserId,
+      false,
       MOCKED_TODO_ID,
       "othertaskId_"
     );
@@ -135,6 +140,7 @@ describe(`TodoList permissions service`, () => {
   it(`should return empty array when user neither owner nor assigned user of todoList`, async () => {
     const permissions = await todoListPermissionsService.getPermissionsForUser(
       "some user",
+      false,
       MOCKED_TODO_ID,
       "othertaskId_"
     );

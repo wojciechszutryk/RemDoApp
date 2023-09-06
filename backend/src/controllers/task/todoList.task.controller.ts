@@ -14,7 +14,7 @@ import { ITaskDTO, parseTaskDateFields } from "linked-models/task/task.dto";
 import { TASK_PARAM, URL_TODO_LIST_TASK } from "linked-models/task/task.urls";
 import { IUserAttached } from "linked-models/user/user.model";
 import { CheckPermission } from "middlewares/permissions/checkPermission.middleware";
-import { SetPermissions } from "middlewares/permissions/setPermissions.middleware";
+import { SetPermissionsAndScopes } from "middlewares/permissions/setPermissionsAndScopes.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { TaskService } from "services/task/task.service";
 
@@ -24,7 +24,11 @@ export class TodoListTaskController extends BaseHttpController {
     super();
   }
 
-  @httpPut("", SetPermissions, CheckPermission(TodoListPermissions.CanEditTask))
+  @httpPut(
+    "",
+    SetPermissionsAndScopes,
+    CheckPermission(TodoListPermissions.CanEditTask)
+  )
   async editTaskInTodoList(
     @requestParam(TASK_PARAM) taskId: string,
     @currentUser() currentUser: IUserAttached,
@@ -51,7 +55,7 @@ export class TodoListTaskController extends BaseHttpController {
 
   @httpDelete(
     "",
-    SetPermissions,
+    SetPermissionsAndScopes,
     CheckPermission(TodoListPermissions.CanDeleteTask)
   )
   async deleteTaskInTodoList(

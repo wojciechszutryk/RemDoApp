@@ -21,7 +21,7 @@ import {
 } from "linked-models/todoList/todoList.urls";
 import { IUserAttached } from "linked-models/user/user.model";
 import { CheckPermission } from "middlewares/permissions/checkPermission.middleware";
-import { SetPermissions } from "middlewares/permissions/setPermissions.middleware";
+import { SetPermissionsAndScopes } from "middlewares/permissions/setPermissionsAndScopes.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { TaskService } from "services/task/task.service";
 import { TodoListService } from "services/todoList/todoList.service";
@@ -37,7 +37,7 @@ export class TodoListController extends BaseHttpController {
 
   @httpGet(
     "",
-    SetPermissions,
+    SetPermissionsAndScopes,
     CheckPermission(TodoListPermissions.CanReadTodoList)
   )
   async getTodoList(
@@ -67,7 +67,7 @@ export class TodoListController extends BaseHttpController {
 
   @httpPut(
     "",
-    SetPermissions,
+    SetPermissionsAndScopes,
     CheckPermission(TodoListPermissions.CanEditTodoList)
   )
   async updateTodoList(
@@ -93,7 +93,7 @@ export class TodoListController extends BaseHttpController {
 
   @httpDelete(
     "",
-    SetPermissions,
+    SetPermissionsAndScopes,
     CheckPermission(TodoListPermissions.CanDeleteTodoList)
   )
   async deleteTodoList(
