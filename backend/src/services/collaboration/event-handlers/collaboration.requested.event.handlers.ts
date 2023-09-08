@@ -34,7 +34,7 @@ export class CollaborationRequestedEventHandler
         [collaboration.userId],
         EventName.CollaboartionRequested,
         EventSubject.Collaboration,
-        eventCreatorId,
+        eventCreatorId
       );
     this.socketService.notifyUsers(
       createdNotifications,

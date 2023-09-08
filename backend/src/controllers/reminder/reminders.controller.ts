@@ -15,19 +15,26 @@ import {
   PARAM_START_DATE,
   URL_REMINDERS,
 } from "linked-models/reminder/reminder.urls";
+import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { IUserAttached } from "linked-models/user/user.model";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
+import { SetOAuth2Client } from "middlewares/user/setOAuth2Client";
+import { GoogleEventService } from "services/googleEvent/googleEvent.service";
 import { ReminderService } from "services/reminder/reminder.service";
+import { UserAuthService } from "services/user/user.auth.service";
 
 @controller(URL_REMINDERS, SetCurrentUser)
 export class RemindersController extends BaseHttpController {
   constructor(
-    @inject(ReminderService) private readonly reminderService: ReminderService
+    @inject(ReminderService) private readonly reminderService: ReminderService,
+    @inject(UserAuthService) private readonly userAuthService: UserAuthService,
+    @inject(GoogleEventService)
+    private readonly googleEventService: GoogleEventService
   ) {
     super();
   }
 
-  @httpGet("")
+  @httpGet("", SetOAuth2Client)
   async getTodoListsForUser(
     @currentUser() currentUser: IUserAttached,
     @queryParam(PARAM_START_DATE) startDateParam = undefined,
@@ -35,6 +42,67 @@ export class RemindersController extends BaseHttpController {
   ): Promise<OkResult> {
     const startDate = startDateParam ? new Date(startDateParam) : undefined;
     const endDate = endDateParam ? new Date(endDateParam) : undefined;
+
+    if (
+      currentUser.integratedWithGoogle &&
+      currentUser.googleAccessToken &&
+      startDate &&
+      endDate
+    ) {
+      const userOAuth2Client = await this.userAuthService.getUserOAuth2Client(
+        currentUser.googleAccessToken
+      );
+      const [googleEvents, reminders] = await Promise.all([
+        this.googleEventService.getGoogleEventsForDateRange(
+          userOAuth2Client,
+          startDate,
+          endDate
+        ),
+        this.reminderService.getUserRemindersForDateRange(
+          currentUser.id,
+          startDate,
+          endDate
+        ),
+      ]);
+
+      if (googleEvents && googleEvents.length > 0) {
+        googleEvents.forEach((event, index) => {
+          if (!reminders.find((reminder) => reminder.taskId === event.id)) {
+            reminders.push({
+              startDate: event.start?.dateTime
+                ? new Date(event.start.dateTime)
+                : event.start?.date
+                ? new Date(event.start.date)
+                : new Date(),
+              finishDate: event.end?.dateTime
+                ? new Date(event.end.dateTime)
+                : event.end?.date
+                ? new Date(event.end.date)
+                : new Date(),
+              text: event.summary || event.description || "Google Event",
+              name: event.description || event.summary || "Google Event",
+              creatorId: currentUser.id,
+              googleEventId: event.id,
+              whenCreated: event.created ? new Date(event.created) : new Date(),
+              whenUpdated: event.updated ? new Date(event.updated) : new Date(),
+              todoListId: `google-${index}`,
+              taskId: event.id || `google-${index}`,
+              assignedOwners:
+                event.attendees?.map((attendee) => ({
+                  id: attendee.id!,
+                  email: attendee.email!,
+                  displayName: attendee.displayName!,
+                  whenCreated: new Date(),
+                })) || [],
+              assignedUsers: [],
+              icon: TodoListIconEnum.Google,
+            });
+          }
+        });
+      }
+
+      return this.ok(reminders);
+    }
 
     const reminders = await this.reminderService.getUserRemindersForDateRange(
       currentUser.id,
@@ -61,7 +129,7 @@ export class RemindersController extends BaseHttpController {
 
       const createdReminder = await this.reminderService.createReminder(
         reminderData,
-        currentUser.id
+        currentUser
       );
 
       return this.ok(createdReminder);

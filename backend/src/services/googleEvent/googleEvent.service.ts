@@ -7,6 +7,28 @@ const calendar = google.calendar("v3");
 
 @injectable()
 export class GoogleEventService {
+  public async getGoogleEventsForDateRange(
+    currentUserOAuth2Client: OAuth2Client,
+    startDate: Date,
+    endDate: Date
+  ): Promise<undefined | calendar_v3.Schema$Event[]> {
+    const listEventResp = await calendar.events.list({
+      auth: currentUserOAuth2Client,
+      calendarId: "primary",
+      timeMax: endDate.toISOString(),
+      timeMin: startDate.toISOString(),
+    });
+
+    if (listEventResp.status !== 200)
+      throw new Error(
+        `Cannot get events in google calendar. Status: ${listEventResp.status}`
+      );
+
+    if (listEventResp.data) {
+      return listEventResp.data.items;
+    }
+  }
+
   public async createEventInGoogleCallendar(
     currentUserOAuth2Client: OAuth2Client,
     data: calendar_v3.Schema$Event
@@ -14,7 +36,7 @@ export class GoogleEventService {
     const createdEventResponse = await calendar.events.insert({
       auth: currentUserOAuth2Client,
       calendarId: "primary",
-      requestBody: { ...data, attendees: [] },
+      requestBody: data,
     });
 
     if (createdEventResponse.status !== 200)

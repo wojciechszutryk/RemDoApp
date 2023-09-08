@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 import { UserCollectionName, UserCollectionType } from "dbSchemas/user.schema";
+import { OAuth2Client } from "google-auth-library";
+import { google } from "googleapis";
 import { inject, injectable } from "inversify";
 import { IUserAttached } from "linked-models/user/user.model";
 
@@ -9,6 +11,19 @@ export class UserAuthService {
     @inject(UserCollectionName)
     private readonly userCollection: UserCollectionType
   ) {}
+
+  public async getUserOAuth2Client(token: string): Promise<OAuth2Client> {
+    const oauth2Client = new google.auth.OAuth2(
+      process.env.GOOGLE_AUTH_CLIENT_ID,
+      process.env.GOOGLE_AUTH_CLIENT_SECRET
+    );
+
+    oauth2Client.setCredentials({
+      access_token: token,
+    });
+
+    return oauth2Client;
+  }
 
   public async changePassword(
     user: IUserAttached,
