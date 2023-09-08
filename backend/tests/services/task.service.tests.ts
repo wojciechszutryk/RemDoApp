@@ -15,6 +15,7 @@ import {
 } from "../db.testSetup.helpers";
 
 import { getTaskCollection } from "dbSchemas/task.schema";
+import { IUserAttached } from "linked-models/user/user.model";
 import { TaskService } from "services/task/task.service";
 import { ID_THAT_DOES_NOT_EXITS } from "../mocks/constants.mock";
 import { MOCKED_TASK_ID, mockedTask } from "../mocks/task.mock";
@@ -57,12 +58,12 @@ describe(`Task service`, () => {
       {
         text: "new task",
       },
-      "creatorId"
+      { id: "creatorId" } as IUserAttached
     );
 
     expect(task?.text).toEqual("new task");
     expect(task?.todoListId).toEqual("todoList1");
-    expect(task?.creator).toEqual("creatorId");
+    expect(task?.creatorId).toEqual("creatorId");
   });
 
   it(`should update and return task`, async () => {

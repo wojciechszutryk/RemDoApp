@@ -6,13 +6,21 @@ import { TypedEventHandler } from "linked-models/event/event.handler.interface";
 import { TypedEvent } from "linked-models/event/event.interface";
 import { TaskCreatedEvent } from "linked-models/event/implementation/task.events";
 import { ITaskAttached } from "linked-models/task/task.model";
+import { IUserAttached } from "linked-models/user/user.model";
+import { GoogleEventService } from "services/googleEvent/googleEvent.service";
 import { NotificationService } from "services/notification.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { TodoListService } from "services/todoList/todoList.service";
+import { UserAuthService } from "services/user/user.auth.service";
+
+export interface ITaskCreatedEventPayload {
+  eventCreator: IUserAttached;
+  createdTask: ITaskAttached;
+}
 
 @EventHandler(TaskCreatedEvent)
 export class TaskCreatedEventHandler
-  implements TypedEventHandler<ITaskAttached>
+  implements TypedEventHandler<ITaskCreatedEventPayload>
 {
   constructor(
     @inject(TodoListCacheService)
@@ -20,30 +28,81 @@ export class TaskCreatedEventHandler
     @inject(TodoListService)
     private readonly todoListService: TodoListService,
     @inject(SocketService) private readonly socketService: SocketService,
+    @inject(UserAuthService) private readonly userAuthService: UserAuthService,
+    @inject(GoogleEventService)
+    private readonly googleEventService: GoogleEventService,
     @inject(NotificationService)
     private readonly notificationService: NotificationService
   ) {}
 
   async handle(
-    event: TypedEvent<ITaskAttached>,
-    eventCreatorId: string,
-    createdTask: ITaskAttached
+    _: TypedEvent<ITaskCreatedEventPayload>,
+    __: string,
+    { createdTask, eventCreator }: ITaskCreatedEventPayload
   ) {
-    const todoListMembers = await this.todoListService.getTodoListMemberIDs(
-      createdTask.todoListId
-    );
+    const todoListWithMembers =
+      await this.todoListService.getTodoListWithMembersById(
+        createdTask.todoListId
+      );
+
+    if (!todoListWithMembers) return;
+
+    const todoListMembers = [
+      ...todoListWithMembers.assignedOwners,
+      ...todoListWithMembers.assignedUsers,
+      todoListWithMembers.creator,
+    ];
+
+    const uniqueTodoListMembersIDs = [
+      ...new Set(todoListMembers.map((member) => member.id)),
+    ];
+
+    //notify users
     const createdNotifications =
       await this.notificationService.createNotificationForUsers(
-        todoListMembers,
+        uniqueTodoListMembersIDs,
         EventName.TaskCreated,
         EventSubject.Task,
-        eventCreatorId,
+        eventCreator.id,
         createdTask.todoListId,
         createdTask.id
       );
     this.socketService.notifyUsers(createdNotifications, createdTask);
+
+    //invalidate cache
     this.todoListCacheService.invalidateExtendedTodoListCacheByUserIDs(
-      todoListMembers
+      uniqueTodoListMembersIDs
     );
+
+    //create google event
+    if (
+      !!createdTask.startDate &&
+      !!createdTask.finishDate &&
+      !!eventCreator.googleAccessToken
+    ) {
+      const userOAuth2Client = await this.userAuthService.getUserOAuth2Client(
+        eventCreator.googleAccessToken
+      );
+      this.googleEventService.createEventInGoogleCallendar(userOAuth2Client!, {
+        id: createdTask.id,
+        summary: createdTask.text,
+        description: todoListWithMembers.name,
+        attendees: todoListMembers.map((member) => {
+          return {
+            id: member.id,
+            email: member.email,
+            displayName: member.displayName,
+          };
+        }),
+        start: {
+          dateTime: new Date(createdTask.startDate).toISOString(),
+          timeZone: "UTC",
+        },
+        end: {
+          dateTime: new Date(createdTask.finishDate).toISOString(),
+          timeZone: "UTC",
+        },
+      });
+    }
   }
 }

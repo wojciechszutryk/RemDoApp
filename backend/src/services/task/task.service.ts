@@ -15,6 +15,7 @@ import {
   ITaskAttached,
   ITaskWithReadonlyProperties,
 } from "linked-models/task/task.model";
+import { IUserAttached } from "linked-models/user/user.model";
 import { FilterQuery } from "mongoose";
 
 @injectable()
@@ -67,7 +68,7 @@ export class TaskService {
   public async createTaskInTodoList(
     todoListId: string,
     task: ITask,
-    creatorId: string,
+    creator: IUserAttached,
     generateEvent = true
   ): Promise<ITaskAttached> {
     const newTask: ITaskWithReadonlyProperties = {
@@ -77,7 +78,7 @@ export class TaskService {
       completionDate: task.completionDate,
       important: task.important ?? false,
       todoListId,
-      creatorId,
+      creatorId: creator.id,
       whenCreated: new Date(),
       whenUpdated: new Date(),
     };
@@ -87,7 +88,10 @@ export class TaskService {
     const mappedCreatedTask = mapTaskToAttachedTask(createdTask);
 
     if (generateEvent)
-      this.eventService.emit(TaskCreatedEvent, creatorId, mappedCreatedTask);
+      this.eventService.emit(TaskCreatedEvent, creator.id, {
+        createdTask: mappedCreatedTask,
+        eventCreator: creator,
+      });
 
     return mapTaskToAttachedTask(createdTask);
   }

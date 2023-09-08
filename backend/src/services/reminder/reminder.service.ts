@@ -7,6 +7,7 @@ import { ITask, ITaskAttached } from "linked-models/task/task.model";
 import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
+import { IUserAttached } from "linked-models/user/user.model";
 import { TaskService } from "services/task/task.service";
 import { TodoListService } from "services/todoList/todoList.service";
 import { UserService } from "services/user/user.service";
@@ -123,7 +124,7 @@ export class ReminderService {
    */
   public async createReminder(
     reminderData: IReminder,
-    creatorId: string
+    creator: IUserAttached
   ): Promise<IReminderAttached> {
     const newTodoListToCreate: ITodoList = {
       name: reminderData.name,
@@ -131,7 +132,7 @@ export class ReminderService {
     };
     const newTodoList = await this.todoListService.createTodoList(
       newTodoListToCreate,
-      creatorId,
+      creator.id,
       true,
       false
     );
@@ -145,7 +146,7 @@ export class ReminderService {
     const newTask = await this.taskService.createTaskInTodoList(
       newTodoList.id,
       newTaskToCreate,
-      creatorId,
+      creator,
       false
     );
 
