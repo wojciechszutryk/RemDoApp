@@ -10,7 +10,12 @@ import {
   URL_USERS,
 } from "linked-models/user/user.urls";
 import passport from "passport";
-import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import {
+  GoogleCallbackParameters,
+  Strategy as GoogleStrategy,
+  Profile,
+  VerifyCallback,
+} from "passport-google-oauth20";
 import { Strategy as LocalStrategy } from "passport-local";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
@@ -96,10 +101,16 @@ passport.use(
       scope: [
         "https://www.googleapis.com/auth/userinfo.profile",
         "https://www.googleapis.com/auth/userinfo.email",
-        "https://www.googleapis.com/auth/calendar.events.owned"
+        "https://www.googleapis.com/auth/calendar.events.owned",
       ],
     },
-    async function (accessToken, refreshToken, profile, done) {
+    async function (
+      accessToken: string,
+      refreshToken: string,
+      params: GoogleCallbackParameters,
+      profile: Profile,
+      done: VerifyCallback
+    ) {
       const foundUser = await getUserCollection().findOneAndUpdate(
         {
           authId: profile.id,
@@ -107,6 +118,7 @@ passport.use(
         {
           googleAccessToken: accessToken,
           googleRefreshToken: refreshToken,
+          googleTokenExpiryDate: new Date().getTime() + params.expires_in * 1000,
         },
         {
           new: true,

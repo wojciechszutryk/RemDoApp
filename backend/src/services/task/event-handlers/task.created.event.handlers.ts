@@ -5,18 +5,11 @@ import { EventName, EventSubject } from "linked-models/event/event.enum";
 import { TypedEventHandler } from "linked-models/event/event.handler.interface";
 import { TypedEvent } from "linked-models/event/event.interface";
 import { TaskCreatedEvent } from "linked-models/event/implementation/task.events";
-import { ITaskAttached } from "linked-models/task/task.model";
-import { IUserAttached } from "linked-models/user/user.model";
 import { GoogleEventService } from "services/googleEvent/googleEvent.service";
 import { NotificationService } from "services/notification.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { TodoListService } from "services/todoList/todoList.service";
 import { UserAuthService } from "services/user/user.auth.service";
-
-export interface ITaskCreatedEventPayload {
-  eventCreator: IUserAttached;
-  createdTask: ITaskAttached;
-}
 
 @EventHandler(TaskCreatedEvent)
 export class TaskCreatedEventHandler
@@ -78,10 +71,12 @@ export class TaskCreatedEventHandler
     if (
       !!createdTask.startDate &&
       !!createdTask.finishDate &&
-      !!eventCreator.googleAccessToken
+      !!eventCreator.googleAccessToken &&
+      !!eventCreator.googleRefreshToken
     ) {
       const userOAuth2Client = await this.userAuthService.getUserOAuth2Client(
-        eventCreator.googleAccessToken
+        eventCreator.googleAccessToken,
+        eventCreator.refresh_token
       );
       this.googleEventService.createEventInGoogleCallendar(userOAuth2Client!, {
         id: createdTask.id,

@@ -46,18 +46,21 @@ export class RemindersController extends BaseHttpController {
     if (
       currentUser.integratedWithGoogle &&
       currentUser.googleAccessToken &&
+      currentUser.googleRefreshToken &&
       startDate &&
       endDate
     ) {
       const userOAuth2Client = await this.userAuthService.getUserOAuth2Client(
-        currentUser.googleAccessToken
+        currentUser
       );
       const [googleEvents, reminders] = await Promise.all([
-        this.googleEventService.getGoogleEventsForDateRange(
-          userOAuth2Client,
-          startDate,
-          endDate
-        ),
+        userOAuth2Client
+          ? this.googleEventService.getGoogleEventsForDateRange(
+              userOAuth2Client,
+              startDate,
+              endDate
+            )
+          : [],
         this.reminderService.getUserRemindersForDateRange(
           currentUser.id,
           startDate,
@@ -81,8 +84,7 @@ export class RemindersController extends BaseHttpController {
                 : new Date(),
               text: event.summary || event.description || "Google Event",
               name: event.description || event.summary || "Google Event",
-              creatorId: currentUser.id,
-              googleEventId: event.id,
+              creator: currentUser,
               whenCreated: event.created ? new Date(event.created) : new Date(),
               whenUpdated: event.updated ? new Date(event.updated) : new Date(),
               todoListId: `google-${index}`,
