@@ -108,7 +108,7 @@ const useNotificationSocket = () => {
           }
         );
 
-        on(TaskCreatedEvent, ({ notification, payload: createTask }) => {
+        on(TaskCreatedEvent, ({ notification, payload: { createdTask } }) => {
           handleSocketNotification(
             notification,
             createTodoListNotificationMessage({
@@ -117,12 +117,12 @@ const useNotificationSocket = () => {
                 notification.actionCreatorId
               )?.displayName,
               todoListName: todoLists?.find(
-                (td) => td.id === createTask.todoListId
+                (td) => td.id === createdTask.todoListId
               )?.name,
-              taskName: createTask.text,
+              taskName: createdTask.text,
             })
           );
-          updateQueriesAfterCreatingTask(createTask);
+          updateQueriesAfterCreatingTask(createdTask);
         });
         on(TaskUpdatedEvent, ({ notification, payload: updatedTask }) => {
           handleSocketNotification(

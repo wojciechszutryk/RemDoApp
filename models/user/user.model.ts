@@ -22,17 +22,20 @@ export interface IUserWithReadonlyProperties extends IUser {
   /** Url to user's avatar - can be null */
   readonly avatarUrl?: string;
 
-  /** Is user integrated with google's callendar */
-  readonly integratedWithGoogle: boolean;
-
   /** User's password */
   readonly password: string;
 
-  /** Google access token - applicable for users who are integrated with google */
-  readonly googleAccessToken: string;
+  /** Is user integrated with google's callendar */
+  readonly integratedWithGoogle: boolean;
 
-  /** Google refresh token - applicable for users who are integrated with google */
-  readonly googleRefreshToken: string;
+  /** Google access token - applicable for users who are integrated with google. Applicable only for users who are integrated with google */
+  readonly googleAccessToken?: string;
+
+  /** Google refresh token - applicable for users who are integrated with google. Applicable only for users who are integrated with google */
+  readonly googleRefreshToken?: string;
+
+  /** Google access token expiry time. Applicable only for users who are integrated with google */
+  readonly googleTokenExpiryDate?: number;
 }
 
 export type IUserAttached = IUserWithReadonlyProperties & IBaseModelAttached;
