@@ -4,7 +4,6 @@ import useOnEventResize from "pages/RemindersPage/components/Callendar/hooks/use
 import { CalendarAnimation } from "pages/RemindersPage/helpers/enums";
 import { ICallendarEvent } from "pages/RemindersPage/helpers/models";
 import { useGetUserRemindersForDateRange } from "pages/RemindersPage/queries/getUserRemindersForDateRange.query";
-import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
 import { memo, useMemo, useState } from "react";
 import { Calendar, DateRange } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
@@ -12,6 +11,7 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CallendarLoader from "../CallendarLoader";
 import CollapsableReminder from "../CollapsableReminder";
+import CallendarEvent from "./components/CalendarEvent";
 import useCallendarConfig from "./hooks/useCallendarConfig";
 import useOnEventDrop from "./hooks/useOnEventDrop";
 import useOnNavigate from "./hooks/useOnNavigate";
@@ -75,23 +75,19 @@ const BigCallendar = (): JSX.Element => {
             },
           },
           week: {
-            event: (a) => {
-              const icon = getUserRemindersForDateRange.data?.get(
-                a.event.id
-              )?.icon;
-
-              return (
-                <div style={{ display: "flex", flexWrap: "wrap" }}>
-                  {icon && (
-                    <TodoListIcon
-                      type={icon}
-                      sx={{ transform: "scale(0.8)" }}
-                    />
-                  )}
-                  {a.title}
-                </div>
-              );
-            },
+            event: (calendarEvent) => (
+              <CallendarEvent calendarEvent={calendarEvent} />
+            ),
+          },
+          month: {
+            event: (calendarEvent) => (
+              <CallendarEvent calendarEvent={calendarEvent} />
+            ),
+          },
+          day: {
+            event: (calendarEvent) => (
+              <CallendarEvent calendarEvent={calendarEvent} />
+            ),
           },
         }}
         events={events}

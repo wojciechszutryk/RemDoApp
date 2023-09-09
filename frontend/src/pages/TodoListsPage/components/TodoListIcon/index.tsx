@@ -4,6 +4,7 @@ import ChildFriendlyIcon from "@mui/icons-material/ChildFriendly";
 import EventIcon from "@mui/icons-material/Event";
 import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import GoogleIcon from "@mui/icons-material/Google";
 import LuggageIcon from "@mui/icons-material/Luggage";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import SchoolIcon from "@mui/icons-material/School";
@@ -61,6 +62,10 @@ const TodoListIcon = ({
 
       case TodoListIconEnum.Reminder: {
         return <EventIcon onClick={onClick} />;
+      }
+
+      case TodoListIconEnum.Google: {
+        return <GoogleIcon onClick={onClick} />;
       }
 
       default: {
