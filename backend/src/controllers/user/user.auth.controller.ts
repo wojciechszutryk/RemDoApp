@@ -10,7 +10,6 @@ import {
   response,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
-import { UserLoginStrategy } from "linked-models/user/user.enum";
 import { IUserAttached } from "linked-models/user/user.model";
 import {
   URL_GOOGLE,
@@ -38,13 +37,13 @@ export class UserAuthController extends BaseHttpController {
 
   @httpGet(
     URL_GOOGLE,
-    passport.authenticate(UserLoginStrategy.Google, {
+    passport.authenticate("google", {
       accessType: "offline",
     })
   )
   @httpGet(
     URL_GOOGLE + URL_REDIRECT,
-    passport.authenticate(UserLoginStrategy.Google, {
+    passport.authenticate("google", {
       successRedirect: process.env.CLIENT_URL!,
       failureRedirect: process.env.CLIENT_URL!,
       passReqToCallback: true,
@@ -60,7 +59,7 @@ export class UserAuthController extends BaseHttpController {
     return this.ok();
   }
 
-  @httpPost(URL_LOGIN, passport.authenticate(UserLoginStrategy.Local))
+  @httpPost(URL_LOGIN, passport.authenticate("local"))
   async loginUser(
     @request() req: express.Request,
     @response() res: express.Response

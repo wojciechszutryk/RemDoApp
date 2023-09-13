@@ -6,7 +6,7 @@ import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { URL_GOOGLE, URL_USERS } from "linked-models/user/user.urls";
 import { useTranslation } from "react-i18next";
-import { StyledWrapper } from "./styles";
+import { StyledWrapper } from "../AvatarChangeForm/styles";
 
 const GoogleIntegrationForm = (): JSX.Element => {
   const { t } = useTranslation();

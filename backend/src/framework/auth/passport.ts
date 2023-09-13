@@ -3,7 +3,6 @@ import {
   getUserCollection,
   mapUserToAttachedUser,
 } from "dbSchemas/user.schema";
-import { UserLoginStrategy } from "linked-models/user/user.enum";
 import {
   URL_GOOGLE,
   URL_REDIRECT,
@@ -48,7 +47,6 @@ passport.use(
         email: email.toLowerCase(),
         password: encryptedPassword,
         whenCreated: new Date(),
-        loginStrategy: UserLoginStrategy.Local,
         authId: "",
       });
       await getUserCollection().findByIdAndUpdate(user._id, {
@@ -113,12 +111,17 @@ passport.use(
     ) {
       const foundUser = await getUserCollection().findOneAndUpdate(
         {
-          authId: profile.id,
+          $or: [
+            { authId: profile.id },
+            { email: { $in: profile.emails?.map((e) => e.value) } },
+          ],
         },
         {
           googleAccessToken: accessToken,
           googleRefreshToken: refreshToken,
-          googleTokenExpiryDate: new Date().getTime() + params.expires_in * 1000,
+          googleTokenExpiryDate:
+            new Date().getTime() + params.expires_in * 1000,
+          integratedWithGoogle: true,
         },
         {
           new: true,
@@ -131,7 +134,6 @@ passport.use(
         if (!email) return done("Email not provided", undefined);
         const newUser = await getUserCollection().create({
           authId: profile.id,
-          loginStrategy: UserLoginStrategy.Google,
           displayName: profile.displayName,
           email,
           integratedWithGoogle: true,
