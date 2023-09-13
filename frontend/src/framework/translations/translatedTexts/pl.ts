@@ -13,8 +13,10 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.LoginPanelSeparatorText]: "lub",
   [TranslationKeys.GoToFeaturesButtonText]: "Poznaj funkcje",
   [TranslationKeys.LoginPanelHeader]: "Zaloguj się lub zarejestruj",
-  [TranslationKeys.SignInGoogle]:
-    "Za pomocą google",
+  [TranslationKeys.SignInGoogle]: "Za pomocą google",
+  [TranslationKeys.IntegrateWithGoogleDesc]: "Aby zintegrować się z google, musisz użyć tego samego adresu e-mail, co w aktualnym koncie. Jeśli używasz innego, zostanie utworzone nowe konto w serwisie. Po kliknięciu przycisku zostaniesz przekierowany na stronę logowania google. Po pomyślnym zalogowaniu zostaniesz przekierowany z powrotem do naszej aplikacji.",
+  [TranslationKeys.UserIntegratedWithGoogle]:
+    "Jesteś już zintegrowany/a z google.",
   [TranslationKeys.Email]: "email",
   [TranslationKeys.JoinDate]: "data dołączenia",
   [TranslationKeys.DisplayName]: "nazwa użytkownika",
@@ -62,7 +64,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.YouHaveNoCollaborants]: "Nie masz współpracowników",
   [TranslationKeys.EmptySearchResults]:
     "Brak wyników wyszukiwania dla podanej frazy",
-    [TranslationKeys.InviteUser]: "Zaproś użytkownika do współpracy",
+  [TranslationKeys.InviteUser]: "Zaproś użytkownika do współpracy",
 
   [TranslationKeys.PageTitleTodoLists]: "Listy zadań",
   [TranslationKeys.EmptyTodoLists]: "Brak list zadań. Utwórz nową listę!",
@@ -138,6 +140,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PasswordChanged]: "Ustawiono nowe hasło.",
   [TranslationKeys.ChangeDisplayName]: "Zmień nazwę użytkownika",
   [TranslationKeys.ChangeAvatar]: "Zmień zdjęcie profilowe",
+  [TranslationKeys.GoogleIntegration]: "Integracja z google",
   [TranslationKeys.AvatarChanged]: "Zdjęcie zapisane",
   [TranslationKeys.DispalyNameChanged]: "Zmieniono nazwę użytkownika.",
   [TranslationKeys.Logout]: "Wyloguj",

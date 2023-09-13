@@ -14,6 +14,9 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.GoToFeaturesButtonText]: "Explore features",
   [TranslationKeys.LoginPanelHeader]: "Sign in or Sign up",
   [TranslationKeys.SignInGoogle]: "With google:",
+  [TranslationKeys.IntegrateWithGoogleDesc]:
+    "To integrate with google you need to use same email as you current application email. If you use different new account will be created. After clicking button you will be redirected to google login page. After successful login you will be redirected back to our app.",
+  [TranslationKeys.UserIntegratedWithGoogle]: "You are integrated with google already.",
   [TranslationKeys.Email]: "email",
   [TranslationKeys.JoinDate]: "date of joining",
   [TranslationKeys.DisplayName]: "nick name",
@@ -61,7 +64,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.YouHaveNoCollaborants]: "You have no collaborators",
   [TranslationKeys.EmptySearchResults]: "No search results for given criteria",
   [TranslationKeys.InviteUser]: "Invite user to collaborate",
-  
+
   [TranslationKeys.PageTitleTodoLists]: "TodoLists",
   [TranslationKeys.EmptyTodoLists]: "There are no todo lists. Create one!",
   [TranslationKeys.CreateNewTodoList]: "Create new todo list",
@@ -135,6 +138,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PasswordChanged]: "New password set.",
   [TranslationKeys.ChangePassword]: "Change password",
   [TranslationKeys.ChangeAvatar]: "Change avatar",
+  [TranslationKeys.GoogleIntegration]: "Google integration",
   [TranslationKeys.AvatarChanged]: "Avatar saved",
   [TranslationKeys.DispalyNameChanged]: "New display name set.",
   [TranslationKeys.ChangeDisplayName]: "Change display name",
