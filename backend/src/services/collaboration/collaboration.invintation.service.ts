@@ -8,7 +8,13 @@ import { EventService } from "framework/events/event.service";
 import { inject, injectable } from "inversify";
 import { CollaborationState } from "linked-models/collaboration/collaboration.enum";
 import { ICollaborationAttached } from "linked-models/collaboration/collaboration.model";
-import { CollaborationRequestedEvent } from "linked-models/event/implementation/collaboartion.events";
+import {
+  CollaborationAcceptedEvent,
+  CollaborationBlockedEvent,
+  CollaborationRejectedEvent,
+  CollaborationReopenedEvent,
+  CollaborationRequestedEvent,
+} from "linked-models/event/implementation/collaboartion.events";
 import { FilterQuery } from "mongoose";
 import { UserService } from "../user/user.service";
 
@@ -72,7 +78,7 @@ export class CollaborationInvintationService {
     this.eventService.emit(
       CollaborationRequestedEvent,
       invintationSenderId,
-      collaborationAttached
+      undefined
     );
     return collaborationAttached;
   }
@@ -98,12 +104,36 @@ export class CollaborationInvintationService {
     const collaborationAttached =
       mapCollaborationToAttachedCollaboration(collaboration);
 
-    if (generateEvent)
-      this.eventService.emit(
-        CollaborationRequestedEvent,
-        collaborationAttached.creatorId,
-        collaborationAttached
-      );
+    if (generateEvent) {
+      let eventName = undefined;
+
+      switch (newState) {
+        case CollaborationState.Pending:
+          eventName = CollaborationRequestedEvent;
+          break;
+        case CollaborationState.Accepted:
+          eventName = CollaborationAcceptedEvent;
+          break;
+        case CollaborationState.Rejected:
+          eventName = CollaborationRejectedEvent;
+          break;
+        case CollaborationState.ReOpened:
+          eventName = CollaborationReopenedEvent;
+          break;
+        case CollaborationState.Blocked:
+          eventName = CollaborationBlockedEvent;
+          break;
+        default:
+          break;
+      }
+
+      if (eventName)
+        this.eventService.emit(
+          eventName,
+          collaborationAttached.creatorId,
+          undefined
+        );
+    }
 
     return collaborationAttached;
   }
