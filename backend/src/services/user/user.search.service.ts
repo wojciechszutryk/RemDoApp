@@ -1,5 +1,5 @@
 import { UserCollectionName, UserCollectionType } from "dbSchemas/user.schema";
-import { mapUserToUserPublicData } from "helpers/user/mapUserToUserPublicData.helper";
+import { mapUserDocumentToUserPublicData } from "helpers/user/mapUserToUserPublicData.helper";
 import { inject, injectable } from "inversify";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 
@@ -44,7 +44,7 @@ export class UserSearchService {
         $limit: limit,
       },
     ]);
-    
-    return foundUsers.map((u) => mapUserToUserPublicData(u));
+
+    return foundUsers.map((u) => mapUserDocumentToUserPublicData(u));
   }
 }

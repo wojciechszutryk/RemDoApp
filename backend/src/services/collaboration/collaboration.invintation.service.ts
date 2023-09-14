@@ -1,7 +1,6 @@
 import {
   CollaborationCollectionName,
   CollaborationCollectionType,
-  ICollaborationDocument,
   mapCollaborationToAttachedCollaboration,
 } from "dbSchemas/collaboration.schema";
 import { EventService } from "framework/events/event.service";
@@ -15,51 +14,16 @@ import {
   CollaborationReopenedEvent,
   CollaborationRequestedEvent,
 } from "linked-models/event/implementation/collaboartion.events";
-import { FilterQuery } from "mongoose";
-import { UserService } from "../user/user.service";
 
 @injectable()
 export class CollaborationInvintationService {
   constructor(
-    @inject(UserService) private readonly userService: UserService,
     @inject(CollaborationCollectionName)
     private readonly collaborationCollection: CollaborationCollectionType,
     @inject(EventService)
     private readonly eventService: EventService
   ) {}
-
-  public async getCollaboration(
-    filter: FilterQuery<ICollaborationDocument>
-  ): Promise<ICollaborationAttached | undefined> {
-    const collaboration = await this.collaborationCollection.findOne(filter);
-
-    return collaboration
-      ? mapCollaborationToAttachedCollaboration(collaboration)
-      : undefined;
-  }
-
-  public async getCollaborationBetweenUsers(
-    user1Id: string,
-    user2Id: string
-  ): Promise<ICollaborationAttached | undefined> {
-    const collaboration = await this.collaborationCollection.findOne({
-      $or: [
-        {
-          userId: user1Id,
-          creatorId: user2Id,
-        },
-        {
-          userId: user2Id,
-          creatorId: user1Id,
-        },
-      ],
-    });
-
-    return collaboration
-      ? mapCollaborationToAttachedCollaboration(collaboration)
-      : undefined;
-  }
-
+  
   public async inviteUserToCollaboration(
     invintationSenderId: string,
     invitationReceiverId: string

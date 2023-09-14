@@ -16,6 +16,14 @@ export class UserService {
     private readonly userCollection: UserCollectionType
   ) {}
 
+  public async getUsersByIDs(ids: string[]): Promise<IUserAttached[]> {
+    const foundUsers = await this.userCollection.find({
+      _id: { $in: ids.map((id) => new mongoose.Types.ObjectId(id)) },
+    });
+
+    return foundUsers.map((u) => mapUserToAttachedUser(u));
+  }
+
   public async getUserByAuthId(
     authId: string
   ): Promise<IUserAttached | undefined> {
