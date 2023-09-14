@@ -14,7 +14,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.GoToFeaturesButtonText]: "Poznaj funkcje",
   [TranslationKeys.LoginPanelHeader]: "Zaloguj się lub zarejestruj",
   [TranslationKeys.SignInGoogle]: "Za pomocą google",
-  [TranslationKeys.IntegrateWithGoogleDesc]: "Aby zintegrować się z google, musisz użyć tego samego adresu e-mail, co w aktualnym koncie. Jeśli używasz innego, zostanie utworzone nowe konto w serwisie. Po kliknięciu przycisku zostaniesz przekierowany na stronę logowania google. Po pomyślnym zalogowaniu zostaniesz przekierowany z powrotem do naszej aplikacji.",
+  [TranslationKeys.IntegrateWithGoogleDesc]:
+    "Aby zintegrować się z google, musisz użyć tego samego adresu e-mail, co w aktualnym koncie. Jeśli używasz innego, zostanie utworzone nowe konto w serwisie. Po kliknięciu przycisku zostaniesz przekierowany na stronę logowania google. Po pomyślnym zalogowaniu zostaniesz przekierowany z powrotem do naszej aplikacji.",
   [TranslationKeys.UserIntegratedWithGoogle]:
     "Jesteś już zintegrowany/a z google.",
   [TranslationKeys.Email]: "email",
@@ -65,6 +66,29 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.EmptySearchResults]:
     "Brak wyników wyszukiwania dla podanej frazy",
   [TranslationKeys.InviteUser]: "Zaproś użytkownika do współpracy",
+  [TranslationKeys.CollaborationPending]: "Współpraca oczekuje na akceptację",
+  [TranslationKeys.CollaborationAccepted]: "Współpraca zaakceptowana",
+  [TranslationKeys.CollaborationRejected]: "Współpraca odrzucona",
+  [TranslationKeys.CollaborationBlocked]:
+    "Współpraca z użytkownikiem zablokowana",
+  [TranslationKeys.CollaborationReOpened]:
+    "Zaproszenie do współpracy ponownie otwarte",
+  [TranslationKeys.WaitingForAcceptance]:
+    "Oczekiwanie na akceptację współpracy przez użytkownika",
+  [TranslationKeys.Accept]: "Akceptuj",
+  [TranslationKeys.Reject]: "Odrzuć",
+  [TranslationKeys.AlreadyCollaborant]:
+    "Jesteś współpracownikiem tego użytkownika",
+  [TranslationKeys.DeleteCollaboration]:
+    "Usuń użytkownika z listy współpracowników",
+  [TranslationKeys.UserRejectedCollaboration]: "Użytkownik odrzucił współpracę",
+  [TranslationKeys.InviteAgain]: "Zaproś ponownie",
+  [TranslationKeys.YouRejectedButCanAccept]:
+    "Odrzuciłeś zaproszenie, ale możesz je ponownie zaakceptować",
+  [TranslationKeys.YouBlockedButCanUnblock]:
+    "Zablokowałeś użytkownika, ale możesz go odblokować",
+  [TranslationKeys.Block]: "Zablokuj",
+  [TranslationKeys.Unblock]: "Odblokuj",
 
   [TranslationKeys.PageTitleTodoLists]: "Listy zadań",
   [TranslationKeys.EmptyTodoLists]: "Brak list zadań. Utwórz nową listę!",

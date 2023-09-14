@@ -16,7 +16,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.SignInGoogle]: "With google:",
   [TranslationKeys.IntegrateWithGoogleDesc]:
     "To integrate with google you need to use same email as you current application email. If you use different new account will be created. After clicking button you will be redirected to google login page. After successful login you will be redirected back to our app.",
-  [TranslationKeys.UserIntegratedWithGoogle]: "You are integrated with google already.",
+  [TranslationKeys.UserIntegratedWithGoogle]:
+    "You are integrated with google already.",
   [TranslationKeys.Email]: "email",
   [TranslationKeys.JoinDate]: "date of joining",
   [TranslationKeys.DisplayName]: "nick name",
@@ -64,6 +65,23 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.YouHaveNoCollaborants]: "You have no collaborators",
   [TranslationKeys.EmptySearchResults]: "No search results for given criteria",
   [TranslationKeys.InviteUser]: "Invite user to collaborate",
+  [TranslationKeys.CollaborationPending]: "Collaboration pending",
+  [TranslationKeys.CollaborationAccepted]: "Collaboration accepted",
+  [TranslationKeys.CollaborationRejected]: "Collaboration rejected",
+  [TranslationKeys.CollaborationBlocked]: "Collaboration with user is blocked",
+  [TranslationKeys.CollaborationReOpened]: "Collaboration re-opened",
+  [TranslationKeys.WaitingForAcceptance]:
+    "Waiting for user to accept invitation",
+  [TranslationKeys.Accept]: "Accept",
+  [TranslationKeys.Reject]: "Reject",
+  [TranslationKeys.AlreadyCollaborant]: "You and this user are collaborators",
+  [TranslationKeys.DeleteCollaboration]: "Delete user from collaborators list",
+  [TranslationKeys.UserRejectedCollaboration]: "User rejected collaboration",
+  [TranslationKeys.InviteAgain]: "Invite again",
+  [TranslationKeys.YouRejectedButCanAccept]: "You rejected invitation, but you can accept it again",
+  [TranslationKeys.YouBlockedButCanUnblock]: "You blocked user, but you can unblock him",
+  [TranslationKeys.Block]: "Block",
+  [TranslationKeys.Unblock]: "Unblock",
 
   [TranslationKeys.PageTitleTodoLists]: "TodoLists",
   [TranslationKeys.EmptyTodoLists]: "There are no todo lists. Create one!",
