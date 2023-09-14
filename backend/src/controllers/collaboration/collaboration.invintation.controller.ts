@@ -16,13 +16,16 @@ import {
 import { IUserAttached } from "linked-models/user/user.model";
 import { URL_USER, URL_USERS, USER_PARAM } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
+import { CollaborantsService } from "services/collaboration/collaborants.service";
 import { CollaborationInvintationService } from "services/collaboration/collaboration.invintation.service";
 
 @controller(URL_USERS + URL_USER() + URL_INVITE_COLLABORANT, SetCurrentUser)
 export class UserCollaborationInvintationController extends BaseHttpController {
   constructor(
     @inject(CollaborationInvintationService)
-    private readonly collaborationInvintationService: CollaborationInvintationService
+    private readonly collaborationInvintationService: CollaborationInvintationService,
+    @inject(CollaborantsService)
+    private readonly collaborantsService: CollaborantsService
   ) {
     super();
   }
@@ -33,7 +36,7 @@ export class UserCollaborationInvintationController extends BaseHttpController {
     @currentUser() currentUser: IUserAttached
   ) {
     const existingCollaboration =
-      await this.collaborationInvintationService.getCollaborationBetweenUsers(
+      await this.collaborantsService.getCollaborationBetweenUsers(
         userId,
         currentUser.id
       );
@@ -80,16 +83,10 @@ export class UserCollaborationInvintationController extends BaseHttpController {
     @currentUser() currentUser: IUserAttached
   ) {
     const existingCollaboration =
-      await this.collaborationInvintationService.getCollaborationBetweenUsers(
+      await this.collaborantsService.getCollaborationBetweenUsers(
         userId,
         currentUser.id
       );
-
-    if (existingCollaboration?.state === CollaborationState.Accepted) {
-      return this.badRequest(
-        `You are already collaborant with user: ${userId}`
-      );
-    }
 
     if (!existingCollaboration || existingCollaboration.creatorId !== userId) {
       return this.badRequest(
@@ -97,10 +94,14 @@ export class UserCollaborationInvintationController extends BaseHttpController {
       );
     }
 
-    if (existingCollaboration?.state === CollaborationState.Blocked) {
+    if (existingCollaboration?.state === CollaborationState.Accepted) {
       return this.badRequest(
-        `Collaboration with user: ${userId} is already blocked`
+        `You are already collaborant with user: ${userId}`
       );
+    }
+
+    if (existingCollaboration?.state === CollaborationState.Blocked) {
+      return this.badRequest(`Collaboration with user: ${userId} is blocked`);
     } else {
       const collaboration =
         await this.collaborationInvintationService.changeCollaborationState(
@@ -118,13 +119,15 @@ export class UserCollaborationInvintationController extends BaseHttpController {
     @currentUser() currentUser: IUserAttached
   ) {
     const existingCollaboration =
-      await this.collaborationInvintationService.getCollaborationBetweenUsers(
+      await this.collaborantsService.getCollaborationBetweenUsers(
         userId,
         currentUser.id
       );
 
     if (existingCollaboration?.state === CollaborationState.Accepted) {
-      return this.badRequest(`You are collaborant with user: ${userId}`);
+      return this.badRequest(
+        `You are collaborant with user: ${userId}, you can only delete collaboration`
+      );
     }
 
     if (!existingCollaboration || existingCollaboration.creatorId !== userId) {
