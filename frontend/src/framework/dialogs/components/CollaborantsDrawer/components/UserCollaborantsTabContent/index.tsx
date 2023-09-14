@@ -1,27 +1,29 @@
-import { Box, Typography } from "@mui/material";
+import { Divider, List } from "@mui/material";
+import { ICollaborantDTO } from "linked-models/collaboration/collaboration.dto";
 import { memo } from "react";
-import { useGetUserCollaborantsQuery } from "../../queries/getUserCollaborants.query.";
+import CollabrantListItem from "../CollaborantListItem";
 import EmptyCollaborantsList from "./EmptyCollaborantsList";
 
 interface Props {
   handleOpenInviteTab: () => void;
+  collaborants: ICollaborantDTO[];
 }
 
 const UserCollaborantsTabContent = ({
+  collaborants,
   handleOpenInviteTab,
 }: Props): JSX.Element => {
-  const getUserCollaborantsQuery = useGetUserCollaborantsQuery();
-
-  if (getUserCollaborantsQuery.isLoading) return <div>Loading...</div>;
-  if (
-    !getUserCollaborantsQuery.data ||
-    getUserCollaborantsQuery.data.length < 1
-  )
+  if (!collaborants || collaborants.length < 1)
     return <EmptyCollaborantsList handleOpenInviteTab={handleOpenInviteTab} />;
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography></Typography>
-    </Box>
+    <List>
+      {collaborants.map((collaborant, index) => (
+        <>
+          {index > 0 && index < collaborants.length - 1 && <Divider />}
+          <CollabrantListItem key={collaborant.id} collaborant={collaborant} />
+        </>
+      ))}
+    </List>
   );
 };
 

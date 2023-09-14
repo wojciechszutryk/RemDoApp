@@ -21,9 +21,9 @@ const CollaborantsDrawer = (): JSX.Element => {
   );
 
   const [tabIndex, setTabIndex] = useState(0);
-  const getUserCollaborantsQuery = useGetUserCollaborantsQuery();
+  const userCollaborantsQuery = useGetUserCollaborantsQuery();
 
-  if (getUserCollaborantsQuery.isLoading) {
+  if (userCollaborantsQuery.isLoading) {
     return <>{"loading"}</>;
   }
 
@@ -41,13 +41,13 @@ const CollaborantsDrawer = (): JSX.Element => {
       </Box>
       <AnimatePresence>
         <TabWrapper value={0} index={tabIndex} key={`${tabIndex}-0`}>
-          {/* <UserCollaborantsTabContent
-            userCollaborants={getUserCollaborantsQuery.data || []}
+          <UserCollaborantsTabContent
+            collaborants={userCollaborantsQuery.data || []}
             handleOpenInviteTab={() => setTabIndex(1)}
-          /> */}
+          />
         </TabWrapper>
         <TabWrapper value={1} index={tabIndex} key={`${tabIndex}-1`}>
-          {/* <UserSearch userCollaborants={getUserCollaborantsQuery.data || []} /> */}
+          <UserSearch userCollaborants={userCollaborantsQuery.data || []} />
         </TabWrapper>
       </AnimatePresence>
     </Drawer>
