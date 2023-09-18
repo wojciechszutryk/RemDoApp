@@ -66,6 +66,7 @@ export class UserCollaborationInvintationController extends BaseHttpController {
           await this.collaborationInvintationService.changeCollaborationState(
             existingCollaboration.id,
             CollaborationState.ReOpened,
+            existingCollaboration.userId,
             true
           );
         return this.ok(newCollaboration);
@@ -107,6 +108,9 @@ export class UserCollaborationInvintationController extends BaseHttpController {
         await this.collaborationInvintationService.changeCollaborationState(
           existingCollaboration.id,
           CollaborationState.Accepted,
+          existingCollaboration.userId === currentUser.id
+            ? existingCollaboration.creatorId
+            : existingCollaboration.userId,
           true
         );
       return this.ok(collaboration);
@@ -141,6 +145,9 @@ export class UserCollaborationInvintationController extends BaseHttpController {
         await this.collaborationInvintationService.changeCollaborationState(
           existingCollaboration.id,
           CollaborationState.Rejected,
+          existingCollaboration.userId === currentUser.id
+            ? existingCollaboration.creatorId
+            : existingCollaboration.userId,
           true
         );
       return this.ok(collaboration);
@@ -149,6 +156,9 @@ export class UserCollaborationInvintationController extends BaseHttpController {
         await this.collaborationInvintationService.changeCollaborationState(
           existingCollaboration.id,
           CollaborationState.Blocked,
+          existingCollaboration.userId === currentUser.id
+            ? existingCollaboration.creatorId
+            : existingCollaboration.userId,
           true
         );
       return this.ok(collaboration);

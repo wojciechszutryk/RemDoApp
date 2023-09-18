@@ -23,7 +23,7 @@ export class CollaborationInvintationService {
     @inject(EventService)
     private readonly eventService: EventService
   ) {}
-  
+
   public async inviteUserToCollaboration(
     invintationSenderId: string,
     invitationReceiverId: string
@@ -42,7 +42,7 @@ export class CollaborationInvintationService {
     this.eventService.emit(
       CollaborationRequestedEvent,
       invintationSenderId,
-      undefined
+      collaborationAttached
     );
     return collaborationAttached;
   }
@@ -50,6 +50,7 @@ export class CollaborationInvintationService {
   public async changeCollaborationState(
     collaborationId: string,
     newState: CollaborationState,
+    eventReceiverId: string,
     generateEvent = false
   ): Promise<ICollaborationAttached> {
     const collaboration = await this.collaborationCollection.findByIdAndUpdate(
@@ -69,33 +70,33 @@ export class CollaborationInvintationService {
       mapCollaborationToAttachedCollaboration(collaboration);
 
     if (generateEvent) {
-      let eventName = undefined;
+      let event = undefined;
 
       switch (newState) {
         case CollaborationState.Pending:
-          eventName = CollaborationRequestedEvent;
+          event = CollaborationRequestedEvent;
           break;
         case CollaborationState.Accepted:
-          eventName = CollaborationAcceptedEvent;
+          event = CollaborationAcceptedEvent;
           break;
         case CollaborationState.Rejected:
-          eventName = CollaborationRejectedEvent;
+          event = CollaborationRejectedEvent;
           break;
         case CollaborationState.ReOpened:
-          eventName = CollaborationReopenedEvent;
+          event = CollaborationReopenedEvent;
           break;
         case CollaborationState.Blocked:
-          eventName = CollaborationBlockedEvent;
+          event = CollaborationBlockedEvent;
           break;
         default:
           break;
       }
 
-      if (eventName)
+      if (event)
         this.eventService.emit(
-          eventName,
+          event,
           collaborationAttached.creatorId,
-          undefined
+          collaborationAttached
         );
     }
 

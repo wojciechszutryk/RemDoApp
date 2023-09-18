@@ -1,14 +1,13 @@
 import { EventHandler } from "framework/events/event.handler.decorator";
 import { SocketService } from "framework/sockets/socket.service";
 import { inject } from "inversify";
-import { ICollaborationAttached } from "linked-models/collaboration/collaboration.model";
 import { EventName, EventSubject } from "linked-models/event/event.enum";
 import { TypedEventHandler } from "linked-models/event/event.handler.interface";
 import { TypedEvent } from "linked-models/event/event.interface";
 import { CollaborationReopenedEvent } from "linked-models/event/implementation/collaboartion.events";
-import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { NotificationService } from "services/notification.service";
 import { UserService } from "../../user/user.service";
+import { ICollaborationAttached } from "linked-models/collaboration/collaboration.model";
 
 @EventHandler(CollaborationReopenedEvent)
 export class CollaborationReopenedEventHandler
@@ -22,23 +21,27 @@ export class CollaborationReopenedEventHandler
   ) {}
 
   async handle(
-    event: TypedEvent<IUserPublicDataDTO>,
+    event: TypedEvent<ICollaborationAttached>,
     eventCreatorId: string,
     collaboration: ICollaborationAttached
   ) {
-    const invitingUserPublicData = await this.userService.getUserPublicData(
-      eventCreatorId
-    );
     const createdNotifications =
       await this.notificationService.createNotificationForUsers(
-        [collaboration.userId],
+        [
+          collaboration.creatorId === eventCreatorId
+            ? collaboration.userId
+            : collaboration.creatorId,
+        ],
         EventName.CollaboartionReOpened,
         EventSubject.Collaboration,
         eventCreatorId
       );
+    const reopeningUserPublicData = await this.userService.getUserPublicData(
+      eventCreatorId
+    );
     this.socketService.notifyUsers(
       createdNotifications,
-      invitingUserPublicData
+      reopeningUserPublicData
     );
   }
 }
