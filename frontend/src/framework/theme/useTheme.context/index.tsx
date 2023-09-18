@@ -6,8 +6,8 @@ import {
 
 import { ReactNode, useContext, useMemo, useState } from "react";
 import { TodoListThemeLSKey } from "../models/theme.const";
-import { darkTheme } from "../palletes/dark";
-import { lightTheme } from "../palletes/light";
+import { darkTheme } from "../palletas/dark";
+import { lightTheme } from "../palletas/light";
 import { Context } from "./context";
 import { ContextProps } from "./models";
 

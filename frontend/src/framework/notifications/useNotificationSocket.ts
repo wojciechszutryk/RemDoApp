@@ -1,4 +1,5 @@
 import { useNotifications } from "framework/notificationSocket/useNotifications";
+import { CollaborationRequestedEvent } from "linked-models/event/implementation/collaboartion.events";
 import {
   TaskCreatedEvent,
   TaskDeletedEvent,
@@ -158,22 +159,22 @@ const useNotificationSocket = () => {
           );
           updateQueriesAfterDeletingTask(deletedTask);
         });
-        // on(
-        //   CollaborationRequestedEvent,
-        //   ({ notification, payload: invitingUserData }) => {
-        //     handleSocketNotification(notification, {
-        //       action: notification.action,
-        //       actionCreatorDisplayName: userIdToUserMap.get(
-        //         notification.actionCreatorId
-        //       )?.displayName,
-        //       todoListName: todoLists?.find(
-        //         (td) => td.id === deletedTask.todoListId
-        //       )?.name,
-        //       taskName: deletedTask.text,
-        //     });
-        //     updateQueriesAfterDeletingTask(deletedTask);
-        //   }
-        // );
+        on(
+          CollaborationRequestedEvent,
+          ({ notification, payload }) => {
+            handleSocketNotification(notification, {
+              action: notification.action,
+              actionCreatorDisplayName: userIdToUserMap.get(
+                notification.actionCreatorId
+              )?.displayName,
+              todoListName: todoLists?.find(
+                (td) => td.id === deletedTask.todoListId
+              )?.name,
+              taskName: deletedTask.text,
+            });
+            updateQueriesAfterDeletingTask(deletedTask);
+          }
+        );
       }
     },
     // disabled because dependencies 'todoLists' and 'userIdToUserMap' and 'handleSocketNotification' cause invocation of socket.on() many times

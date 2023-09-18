@@ -1,4 +1,3 @@
-import useCreateNotificationMessage from "framework/notificationSocket/useCreateNotificationMessage/useCreateNotificationMessage";
 import { useSnackbar } from "framework/snackBar";
 import { INotificationDto } from "linked-models/notification/notification.dto";
 import { ReactNode, useContext, useState } from "react";
@@ -15,10 +14,10 @@ function NotificationsProvider({ children }: Props): JSX.Element {
 
   const handleSocketNotification = (
     notification: INotificationDto,
-    notificationMessageData: string
+    notificationMessage: string
   ) => {
     setSnackbar({
-      message: notificationMessageData,
+      message: notificationMessage,
     });
     setNotifications((prev) => [...prev, notification]);
   };
