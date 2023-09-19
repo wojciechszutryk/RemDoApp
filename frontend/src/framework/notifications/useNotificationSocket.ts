@@ -1,5 +1,5 @@
 import { useNotifications } from "framework/notificationSocket/useNotifications";
-import { CollaborationRequestedEvent } from "linked-models/event/implementation/collaboartion.events";
+import { CollaborationAcceptedEvent, CollaborationBlockedEvent, CollaborationRejectedEvent, CollaborationReopenedEvent, CollaborationRequestedEvent } from "linked-models/event/implementation/collaboartion.events";
 import {
   TaskCreatedEvent,
   TaskDeletedEvent,
@@ -19,15 +19,16 @@ import useUpdateQueriesAfterEditingTodoList from "pages/SingleTodoListPage/mutat
 import useUpdateQueriesAfterCreatingTodoList from "pages/TodoListsPage/mutations/createTodoList/useUpdateQueriesAfterCreatingTodoList";
 import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
 import { useEffect, useMemo } from "react";
-import useCreateTodoListNotificationMessage from "./useCreateNotificationMessage/useCreateNotificationMessage";
+import { useTranslation } from "react-i18next";
+import { createCollaborationNotificationMsg } from "./helpers/createCollaborationNotificationMsg";
+import { createTodoNotificationMsg } from "./helpers/createTodoNotificationMsg";
 import { useInitializeNotificationSocket } from "./useInitializeNotificationSocket";
 
 const useNotificationSocket = () => {
   const { notificationSocketReady, on } = useInitializeNotificationSocket();
 
   const { handleSocketNotification } = useNotifications();
-  const createTodoListNotificationMessage =
-    useCreateTodoListNotificationMessage();
+  const { t } = useTranslation();
 
   const updateQueriesAfterCreatingTask = useUpdateQueriesAfterCreatingTask();
   const updateQueriesAfterDeletingTask = useUpdateQueriesAfterDeletingTask();
@@ -65,13 +66,16 @@ const useNotificationSocket = () => {
           ({ notification, payload: createdTodoList }) => {
             handleSocketNotification(
               notification,
-              createTodoListNotificationMessage({
-                action: notification.action,
-                actionCreatorDisplayName: createdTodoList.assignedOwners.find(
-                  (u) => u.id === notification.actionCreatorId
-                )?.displayName,
-                todoListName: createdTodoList.name,
-              })
+              createTodoNotificationMsg(
+                {
+                  action: notification.action,
+                  actionCreatorDisplayName: createdTodoList.assignedOwners.find(
+                    (u) => u.id === notification.actionCreatorId
+                  )?.displayName,
+                  todoListName: createdTodoList.name,
+                },
+                t
+              )
             );
             updateQueriesAfterCreatingTodoList(createdTodoList);
           }
@@ -81,13 +85,16 @@ const useNotificationSocket = () => {
           ({ notification, payload: updatedTodoList }) => {
             handleSocketNotification(
               notification,
-              createTodoListNotificationMessage({
-                action: notification.action,
-                actionCreatorDisplayName: updatedTodoList.assignedOwners.find(
-                  (u) => u.id === notification.actionCreatorId
-                )?.displayName,
-                todoListName: updatedTodoList.name,
-              })
+              createTodoNotificationMsg(
+                {
+                  action: notification.action,
+                  actionCreatorDisplayName: updatedTodoList.assignedOwners.find(
+                    (u) => u.id === notification.actionCreatorId
+                  )?.displayName,
+                  todoListName: updatedTodoList.name,
+                },
+                t
+              )
             );
             updateQueriesAfterEditingTodoList(updatedTodoList);
           }
@@ -97,13 +104,16 @@ const useNotificationSocket = () => {
           ({ notification, payload: deletedTodoList }) => {
             handleSocketNotification(
               notification,
-              createTodoListNotificationMessage({
-                action: notification.action,
-                actionCreatorDisplayName: userIdToUserMap.get(
-                  notification.actionCreatorId
-                )?.displayName,
-                todoListName: deletedTodoList.name,
-              })
+              createTodoNotificationMsg(
+                {
+                  action: notification.action,
+                  actionCreatorDisplayName: userIdToUserMap.get(
+                    notification.actionCreatorId
+                  )?.displayName,
+                  todoListName: deletedTodoList.name,
+                },
+                t
+              )
             );
             updateQueriesAfterDeletingTodoList(deletedTodoList);
           }
@@ -112,32 +122,38 @@ const useNotificationSocket = () => {
         on(TaskCreatedEvent, ({ notification, payload: { createdTask } }) => {
           handleSocketNotification(
             notification,
-            createTodoListNotificationMessage({
-              action: notification.action,
-              actionCreatorDisplayName: userIdToUserMap.get(
-                notification.actionCreatorId
-              )?.displayName,
-              todoListName: todoLists?.find(
-                (td) => td.id === createdTask.todoListId
-              )?.name,
-              taskName: createdTask.text,
-            })
+            createTodoNotificationMsg(
+              {
+                action: notification.action,
+                actionCreatorDisplayName: userIdToUserMap.get(
+                  notification.actionCreatorId
+                )?.displayName,
+                todoListName: todoLists?.find(
+                  (td) => td.id === createdTask.todoListId
+                )?.name,
+                taskName: createdTask.text,
+              },
+              t
+            )
           );
           updateQueriesAfterCreatingTask(createdTask);
         });
         on(TaskUpdatedEvent, ({ notification, payload: updatedTask }) => {
           handleSocketNotification(
             notification,
-            createTodoListNotificationMessage({
-              action: notification.action,
-              actionCreatorDisplayName: userIdToUserMap.get(
-                notification.actionCreatorId
-              )?.displayName,
-              todoListName: todoLists?.find(
-                (td) => td.id === updatedTask.todoListId
-              )?.name,
-              taskName: updatedTask.text,
-            })
+            createTodoNotificationMsg(
+              {
+                action: notification.action,
+                actionCreatorDisplayName: userIdToUserMap.get(
+                  notification.actionCreatorId
+                )?.displayName,
+                todoListName: todoLists?.find(
+                  (td) => td.id === updatedTask.todoListId
+                )?.name,
+                taskName: updatedTask.text,
+              },
+              t
+            )
           );
           updateQueriesAfterEditingTask(updatedTask, {
             todoListId: updatedTask.todoListId,
@@ -146,35 +162,67 @@ const useNotificationSocket = () => {
         on(TaskDeletedEvent, ({ notification, payload: deletedTask }) => {
           handleSocketNotification(
             notification,
-            createTodoListNotificationMessage({
-              action: notification.action,
-              actionCreatorDisplayName: userIdToUserMap.get(
-                notification.actionCreatorId
-              )?.displayName,
-              todoListName: todoLists?.find(
-                (td) => td.id === deletedTask.todoListId
-              )?.name,
-              taskName: deletedTask.text,
-            })
+            createTodoNotificationMsg(
+              {
+                action: notification.action,
+                actionCreatorDisplayName: userIdToUserMap.get(
+                  notification.actionCreatorId
+                )?.displayName,
+                todoListName: todoLists?.find(
+                  (td) => td.id === deletedTask.todoListId
+                )?.name,
+                taskName: deletedTask.text,
+              },
+              t
+            )
           );
           updateQueriesAfterDeletingTask(deletedTask);
         });
-        on(
-          CollaborationRequestedEvent,
-          ({ notification, payload }) => {
-            handleSocketNotification(notification, {
-              action: notification.action,
-              actionCreatorDisplayName: userIdToUserMap.get(
-                notification.actionCreatorId
-              )?.displayName,
-              todoListName: todoLists?.find(
-                (td) => td.id === deletedTask.todoListId
-              )?.name,
-              taskName: deletedTask.text,
-            });
-            updateQueriesAfterDeletingTask(deletedTask);
-          }
-        );
+        on(CollaborationRequestedEvent, ({ notification, payload }) => {
+          createCollaborationNotificationMsg(
+            notification.action,
+            payload.displayName,
+            t
+          );
+          //TODO:
+          updateQueriesAfterDeletingTask(deletedTask);
+        });
+        on(CollaborationAcceptedEvent, ({ notification, payload }) => {
+          createCollaborationNotificationMsg(
+            notification.action,
+            payload.displayName,
+            t
+          );
+          //TODO:
+          updateQueriesAfterDeletingTask(deletedTask);
+        });
+        on(CollaborationRejectedEvent, ({ notification, payload }) => {
+          createCollaborationNotificationMsg(
+            notification.action,
+            payload.displayName,
+            t
+          );
+          //TODO:
+          updateQueriesAfterDeletingTask(deletedTask);
+        });
+        on(CollaborationReopenedEvent, ({ notification, payload }) => {
+          createCollaborationNotificationMsg(
+            notification.action,
+            payload.displayName,
+            t
+          );
+          //TODO:
+          updateQueriesAfterDeletingTask(deletedTask);
+        });
+        on(CollaborationBlockedEvent, ({ notification, payload }) => {
+          createCollaborationNotificationMsg(
+            notification.action,
+            payload.displayName,
+            t
+          );
+          //TODO:
+          updateQueriesAfterDeletingTask(deletedTask);
+        });
       }
     },
     // disabled because dependencies 'todoLists' and 'userIdToUserMap' and 'handleSocketNotification' cause invocation of socket.on() many times

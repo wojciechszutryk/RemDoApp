@@ -1,20 +1,24 @@
-import { ICollaborationAttached } from "linked-models/collaboration/collaboration.model";
+import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { EventName } from "../event.enum";
 import { TypedEvent } from "../event.interface";
 
 //* responsible for PENDING state of collaboration */
-export const CollaborationRequestedEvent =
-  new TypedEvent<ICollaborationAttached>(EventName.CollaboartionRequested);
+export const CollaborationRequestedEvent = new TypedEvent<IUserPublicDataDTO>(
+  EventName.CollaboartionRequested
+);
 
-export const CollaborationAcceptedEvent =
-  new TypedEvent<ICollaborationAttached>(EventName.CollaboartionAccepted);
+export const CollaborationAcceptedEvent = new TypedEvent<IUserPublicDataDTO>(
+  EventName.CollaboartionAccepted
+);
 
-export const CollaborationReopenedEvent =
-  new TypedEvent<ICollaborationAttached>(EventName.CollaboartionReOpened);
+export const CollaborationReopenedEvent = new TypedEvent<IUserPublicDataDTO>(
+  EventName.CollaboartionReOpened
+);
 
-export const CollaborationRejectedEvent =
-  new TypedEvent<ICollaborationAttached>(EventName.CollaboartionRejected);
+export const CollaborationRejectedEvent = new TypedEvent<IUserPublicDataDTO>(
+  EventName.CollaboartionRejected
+);
 
-export const CollaborationBlockedEvent = new TypedEvent<ICollaborationAttached>(
+export const CollaborationBlockedEvent = new TypedEvent<IUserPublicDataDTO>(
   EventName.CollaboartionBlocked
 );

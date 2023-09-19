@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { apiPut } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
@@ -7,15 +7,16 @@ import { ICollaborantDTO } from "linked-models/collaboration/collaboration.dto";
 import { ICollaborationAttached } from "linked-models/collaboration/collaboration.model";
 import {
   URL_ACCEPT,
-  URL_COLLABORANTS,
   URL_INVITE_COLLABORANT,
 } from "linked-models/collaboration/collaboration.urls";
 import { URL_USER, URL_USERS } from "linked-models/user/user.urls";
+import useUpdateQueriesAfterAcceptingCollaboration from "./useUpdateQueriesAfterAcceptingCollaboration";
 
 export const useAcceptCollaborationMutation = () => {
-  const queryClient = useQueryClient();
   const { currentUser } = useCurrentUser();
   const { setSnackbar } = useSnackbar();
+  const updateQueriesAfterAcceptingCollaboration =
+    useUpdateQueriesAfterAcceptingCollaboration();
 
   if (!currentUser) throw new Error("No current user");
 
@@ -35,24 +36,7 @@ export const useAcceptCollaborationMutation = () => {
   return useMutation(
     (collaborant: ICollaborantDTO) => acceptCollaboration(collaborant),
     {
-      onSuccess: (newCollaboration, collaborant) => {
-        //update userCollaborants query
-        queryClient.setQueryData(
-          [URL_USERS + URL_COLLABORANTS],
-          (prev: ICollaborantDTO[] | undefined) => {
-            const acceptedCollaboration = {
-              ...collaborant,
-              ...newCollaboration,
-            };
-            if (!prev) return [acceptedCollaboration];
-            return prev.map((collaborant) =>
-              collaborant.id === acceptedCollaboration.id
-                ? acceptedCollaboration
-                : collaborant
-            );
-          }
-        );
-      },
+      onSuccess: updateQueriesAfterAcceptingCollaboration,
       onError: (e) => {
         //TODO: ADD PROPER ERROR MESSAGE
         setSnackbar({

@@ -15,7 +15,7 @@ import { ICollaborantDTO } from "linked-models/collaboration/collaboration.dto";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useInviteUserToCollaborationMutation } from "../../mutations/inviteUserToCollaboration.mutation";
+import { useInviteUserToCollaborationMutation } from "../../mutations/inviteUserToCollaboration/inviteUserToCollaboration.mutation";
 import { useSearchForUsersQuery } from "../../queries/searchForUsers.query";
 import CollaborantListItem from "../CollaborantListItem";
 import EmptySearchResults from "./EmptySearchResults";

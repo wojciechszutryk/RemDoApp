@@ -1,4 +1,4 @@
-import { Box, Drawer, Tabs } from "@mui/material";
+import { Box, CircularProgress, Drawer, Tabs } from "@mui/material";
 import { Tab } from "atomicComponents/atoms/Tab";
 import { AnimatePresence } from "framer-motion";
 import { useDialogs } from "framework/dialogs";
@@ -24,7 +24,7 @@ const CollaborantsDrawer = (): JSX.Element => {
   const userCollaborantsQuery = useGetUserCollaborantsQuery();
 
   if (userCollaborantsQuery.isLoading) {
-    return <>{"loading"}</>;
+    return <CircularProgress />;
   }
 
   const handleChangeTabIndex = (_: React.SyntheticEvent, newValue: number) => {

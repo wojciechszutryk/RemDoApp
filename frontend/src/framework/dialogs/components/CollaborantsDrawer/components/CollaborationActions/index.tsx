@@ -8,10 +8,10 @@ import { ICollaborantDTO } from "linked-models/collaboration/collaboration.dto";
 import { CollaborationState } from "linked-models/collaboration/collaboration.enum";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { useAcceptCollaborationMutation } from "../../mutations/acceptUserCollaboration.mutation";
-import { useDeleteCollaborationMutation } from "../../mutations/deleteUserCollaboration.mutation";
-import { useInviteUserToCollaborationMutation } from "../../mutations/inviteUserToCollaboration.mutation";
-import { useRejectCollaborationMutation } from "../../mutations/rejectUserCollaboration.mutation";
+import { useAcceptCollaborationMutation } from "../../mutations/acceptUserCollaboration/acceptUserCollaboration.mutation";
+import { useDeleteCollaborationMutation } from "../../mutations/deleteUserCollaboration/deleteUserCollaboration.mutation";
+import { useInviteUserToCollaborationMutation } from "../../mutations/inviteUserToCollaboration/inviteUserToCollaboration.mutation";
+import { useRejectCollaborationMutation } from "../../mutations/rejectUserCollaboration/rejectUserCollaboration.mutation";
 import CollaborationStateIcon from "../CollaborationStateIcon";
 
 interface Props {

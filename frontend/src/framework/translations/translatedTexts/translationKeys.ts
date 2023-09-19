@@ -134,6 +134,11 @@ export enum TranslationKeys {
   NotificationUserRemovedPart = "NotificationUserRemovedPart",
   NotificationCollaborationRequestedPart = "NotificationCollaborationRequestedPart",
   NotificationUnknownAction = "NotificationUnknownAction",
+  UserSendYouCollaborationRequest = "UserSendYouCollaborationRequest",
+  UserAcceptedYourCollaborationRequest = "UserAcceptedYourCollaborationRequest",
+  UserRejectedYourCollaborationRequest = "UserRejectedYourCollaborationRequest",
+  UserSendYouCollaborationSecondRequest = "UserSendYouCollaborationSecondRequest",
+  UserBlockedCollaborationWithYou = "UserBlockedCollaborationWithYou",
 
   PageTitleUserSettings = "PageTitleUserSettings",
   ChangePassword = "ChangePassword",
