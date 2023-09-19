@@ -14,6 +14,7 @@ import {
   CollaborationReopenedEvent,
   CollaborationRequestedEvent,
 } from "linked-models/event/implementation/collaboartion.events";
+import { IUserAttached } from "linked-models/user/user.model";
 
 @injectable()
 export class CollaborationInvintationService {
@@ -25,13 +26,13 @@ export class CollaborationInvintationService {
   ) {}
 
   public async inviteUserToCollaboration(
-    invintationSenderId: string,
+    invintationSender: IUserAttached,
     invitationReceiverId: string
   ): Promise<ICollaborationAttached> {
     const collaboration = await this.collaborationCollection.create({
       state: CollaborationState.Pending,
       userId: invitationReceiverId,
-      creatorId: invintationSenderId,
+      creatorId: invintationSender.id,
       whenCreated: new Date(),
       whenUpdated: new Date(),
     });
@@ -41,8 +42,10 @@ export class CollaborationInvintationService {
 
     this.eventService.emit(
       CollaborationRequestedEvent,
-      invintationSenderId,
-      collaborationAttached
+      collaboration.creatorId === invintationSender.id
+        ? collaboration.userId
+        : collaboration.creatorId,
+      invintationSender
     );
     return collaborationAttached;
   }
@@ -50,7 +53,7 @@ export class CollaborationInvintationService {
   public async changeCollaborationState(
     collaborationId: string,
     newState: CollaborationState,
-    eventReceiverId: string,
+    userWhoChangedState: IUserAttached,
     generateEvent = false
   ): Promise<ICollaborationAttached> {
     const collaboration = await this.collaborationCollection.findByIdAndUpdate(
@@ -95,8 +98,10 @@ export class CollaborationInvintationService {
       if (event)
         this.eventService.emit(
           event,
-          collaborationAttached.creatorId,
-          collaborationAttached
+          collaborationAttached.creatorId === userWhoChangedState.id
+            ? collaborationAttached.userId
+            : collaborationAttached.creatorId,
+          userWhoChangedState
         );
     }
 

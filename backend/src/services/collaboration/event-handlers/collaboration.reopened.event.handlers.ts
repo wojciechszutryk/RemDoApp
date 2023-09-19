@@ -5,43 +5,31 @@ import { EventName, EventSubject } from "linked-models/event/event.enum";
 import { TypedEventHandler } from "linked-models/event/event.handler.interface";
 import { TypedEvent } from "linked-models/event/event.interface";
 import { CollaborationReopenedEvent } from "linked-models/event/implementation/collaboartion.events";
+import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { NotificationService } from "services/notification.service";
-import { UserService } from "../../user/user.service";
-import { ICollaborationAttached } from "linked-models/collaboration/collaboration.model";
 
 @EventHandler(CollaborationReopenedEvent)
 export class CollaborationReopenedEventHandler
-  implements TypedEventHandler<ICollaborationAttached>
+  implements TypedEventHandler<IUserPublicDataDTO>
 {
   constructor(
-    @inject(UserService) private readonly userService: UserService,
     @inject(SocketService) private readonly socketService: SocketService,
     @inject(NotificationService)
     private readonly notificationService: NotificationService
   ) {}
 
   async handle(
-    event: TypedEvent<ICollaborationAttached>,
-    eventCreatorId: string,
-    collaboration: ICollaborationAttached
+    event: TypedEvent<IUserPublicDataDTO>,
+    eventReceiverId: string,
+    eventCreator: IUserPublicDataDTO
   ) {
     const createdNotifications =
       await this.notificationService.createNotificationForUsers(
-        [
-          collaboration.creatorId === eventCreatorId
-            ? collaboration.userId
-            : collaboration.creatorId,
-        ],
+        [eventReceiverId],
         EventName.CollaboartionReOpened,
         EventSubject.Collaboration,
-        eventCreatorId
+        eventCreator.id
       );
-    const reopeningUserPublicData = await this.userService.getUserPublicData(
-      eventCreatorId
-    );
-    this.socketService.notifyUsers(
-      createdNotifications,
-      reopeningUserPublicData
-    );
+    this.socketService.notifyUsers(createdNotifications, eventCreator);
   }
 }

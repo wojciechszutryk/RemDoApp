@@ -6,15 +6,14 @@ import { EventName, EventSubject } from "linked-models/event/event.enum";
 import { TypedEventHandler } from "linked-models/event/event.handler.interface";
 import { TypedEvent } from "linked-models/event/event.interface";
 import { CollaborationRequestedEvent } from "linked-models/event/implementation/collaboartion.events";
+import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { NotificationService } from "services/notification.service";
-import { UserService } from "../../user/user.service";
 
 @EventHandler(CollaborationRequestedEvent)
 export class CollaborationRequestedEventHandler
-  implements TypedEventHandler<ICollaborationAttached>
+  implements TypedEventHandler<IUserPublicDataDTO>
 {
   constructor(
-    @inject(UserService) private readonly userService: UserService,
     @inject(SocketService) private readonly socketService: SocketService,
     @inject(NotificationService)
     private readonly notificationService: NotificationService
@@ -22,27 +21,17 @@ export class CollaborationRequestedEventHandler
 
   async handle(
     event: TypedEvent<ICollaborationAttached>,
-    eventCreatorId: string,
-    collaboration: ICollaborationAttached
+    eventReceiverId: string,
+    eventCreator: IUserPublicDataDTO
   ) {
     const createdNotifications =
       await this.notificationService.createNotificationForUsers(
-        [
-          collaboration.creatorId === eventCreatorId
-            ? collaboration.userId
-            : collaboration.creatorId,
-        ],
+        [eventReceiverId],
         EventName.CollaboartionRequested,
         EventSubject.Collaboration,
-        eventCreatorId
+        eventCreator.id
       );
 
-    const invitingUserPublicData = await this.userService.getUserPublicData(
-      eventCreatorId
-    );
-    this.socketService.notifyUsers(
-      createdNotifications,
-      invitingUserPublicData
-    );
+    this.socketService.notifyUsers(createdNotifications, eventCreator);
   }
 }

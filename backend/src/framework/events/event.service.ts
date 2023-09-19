@@ -10,7 +10,7 @@ export class EventService {
     @injectHttpContext private readonly httpContext: interfaces.HttpContext
   ) {}
 
-  public async emit<T>(event: TypedEvent<T>, eventCreatorId: string, args: T) {
+  public async emit<T>(event: TypedEvent<T>, userId: string, args: T) {
     const finalArgs = { ...event.defaultArgs, ...args };
     const classes = privateEventHandlerMap[event.name];
 
@@ -21,7 +21,7 @@ export class EventService {
         ) as TypedEventHandler<T>;
 
         try {
-          handler.handle(event, eventCreatorId, finalArgs);
+          handler.handle(event, userId, finalArgs);
           if (event.isStopped) break;
         } catch (err: unknown) {
           console.error(err, "Unknown event handler error occured.");

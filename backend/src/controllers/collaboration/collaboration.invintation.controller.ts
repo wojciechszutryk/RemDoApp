@@ -44,7 +44,7 @@ export class UserCollaborationInvintationController extends BaseHttpController {
     if (!existingCollaboration) {
       const newCollaboration =
         await this.collaborationInvintationService.inviteUserToCollaboration(
-          currentUser.id,
+          currentUser,
           userId
         );
 
@@ -66,7 +66,7 @@ export class UserCollaborationInvintationController extends BaseHttpController {
           await this.collaborationInvintationService.changeCollaborationState(
             existingCollaboration.id,
             CollaborationState.ReOpened,
-            existingCollaboration.userId,
+            currentUser,
             true
           );
         return this.ok(newCollaboration);
@@ -108,9 +108,7 @@ export class UserCollaborationInvintationController extends BaseHttpController {
         await this.collaborationInvintationService.changeCollaborationState(
           existingCollaboration.id,
           CollaborationState.Accepted,
-          existingCollaboration.userId === currentUser.id
-            ? existingCollaboration.creatorId
-            : existingCollaboration.userId,
+          currentUser,
           true
         );
       return this.ok(collaboration);
@@ -145,9 +143,7 @@ export class UserCollaborationInvintationController extends BaseHttpController {
         await this.collaborationInvintationService.changeCollaborationState(
           existingCollaboration.id,
           CollaborationState.Rejected,
-          existingCollaboration.userId === currentUser.id
-            ? existingCollaboration.creatorId
-            : existingCollaboration.userId,
+          currentUser,
           true
         );
       return this.ok(collaboration);
@@ -156,9 +152,7 @@ export class UserCollaborationInvintationController extends BaseHttpController {
         await this.collaborationInvintationService.changeCollaborationState(
           existingCollaboration.id,
           CollaborationState.Blocked,
-          existingCollaboration.userId === currentUser.id
-            ? existingCollaboration.creatorId
-            : existingCollaboration.userId,
+          currentUser,
           true
         );
       return this.ok(collaboration);
