@@ -1,21 +1,24 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useSnackbar } from "framework/snackBar";
-import { ICollaborantDTO } from "linked-models/collaboration/collaboration.dto";
 import { ICollaborationAttached } from "linked-models/collaboration/collaboration.model";
-import {
-  URL_COLLABORANTS,
-  URL_INVITE_COLLABORANT,
-} from "linked-models/collaboration/collaboration.urls";
+import { URL_INVITE_COLLABORANT } from "linked-models/collaboration/collaboration.urls";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { URL_USER, URL_USERS } from "linked-models/user/user.urls";
+import useUpdateQueriesAfterInvitingToCollaboration from "./useUpdateQueriesAfterInvitingToCollaboration";
 
+/**
+ * Creates a new collaboration between users [creator - currentUser, user - user passed as argument] in two cases:
+ * 1) if there is no collaboration between users
+ * 2) if there is a collaboration between users created by current user, and it was rejected by other user - new collaboration will be created with reopened state
+ */
 export const useInviteUserToCollaborationMutation = () => {
-  const queryClient = useQueryClient();
-  const { currentUser } = useCurrentUser();
   const { setSnackbar } = useSnackbar();
+  const { currentUser } = useCurrentUser();
+  const updateQueriesAfterInvitingToCollaboration =
+    useUpdateQueriesAfterInvitingToCollaboration();
 
   const inviteUserToCollaboration = async (user: IUserPublicDataDTO) => {
     const url = FRONTIFY_URL(
@@ -27,25 +30,16 @@ export const useInviteUserToCollaborationMutation = () => {
   return useMutation(
     (user: IUserPublicDataDTO) => inviteUserToCollaboration(user),
     {
-      onSuccess: (newCollaboration, user) => {
-        //update userCollaborants query
-        queryClient.setQueryData(
-          [URL_USERS + URL_COLLABORANTS],
-          (prev: ICollaborantDTO[] | undefined) => {
-            if (!currentUser) return prev;
-            const newCollaborant = {
-              ...newCollaboration,
-              user,
-              creator: currentUser,
-            };
-            if (!prev) return [newCollaborant];
-            return prev.map((collaborant) =>
-              collaborant.id === newCollaborant.id
-                ? newCollaborant
-                : collaborant
-            );
-          }
-        );
+      onSuccess: (
+        newCollaboration: ICollaborationAttached,
+        user: IUserPublicDataDTO
+      ) => {
+        if (currentUser)
+          updateQueriesAfterInvitingToCollaboration(
+            newCollaboration,
+            user,
+            currentUser
+          );
       },
       onError: (e) => {
         //TODO: ADD PROPER ERROR MESSAGE

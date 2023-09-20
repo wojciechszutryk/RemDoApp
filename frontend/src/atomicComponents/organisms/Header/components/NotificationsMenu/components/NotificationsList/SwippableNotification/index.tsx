@@ -14,10 +14,12 @@ import TodoListNotificationContent from "./TodoListNotificationContent";
 
 interface Props {
   extendedNotification: IExtendedNotification;
+  hideNotificationMenu: (event: React.KeyboardEvent | React.MouseEvent) => void;
 }
 
 const SwippableNotification = ({
   extendedNotification,
+  hideNotificationMenu,
 }: Props): JSX.Element => {
   const isArchived =
     extendedNotification.state === UserNotificationState.Archived;
@@ -59,10 +61,12 @@ const SwippableNotification = ({
         {extendedNotification.actionSubject === EventSubject.Collaboration ? (
           <CollaborantNotificationContent
             extendedNotification={extendedNotification}
+            hideNotificationMenu={hideNotificationMenu}
           />
         ) : (
           <TodoListNotificationContent
             extendedNotification={extendedNotification}
+            hideNotificationMenu={hideNotificationMenu}
           />
         )}
       </>

@@ -12,6 +12,11 @@ import {
 import { URL_USER, URL_USERS } from "linked-models/user/user.urls";
 import useUpdateQueriesAfterAcceptingCollaboration from "./useUpdateQueriesAfterAcceptingCollaboration";
 
+/** mutation to accept collaboration - updates state of collaboration (created by other user):
+ * 1) if previous state was pending, it will be changed to accepted
+ * 2) if previous state was rejected, it will be changed to accepted
+ * 3) if previous state was reopened, it will be changed to accepted
+ */
 export const useAcceptCollaborationMutation = () => {
   const { currentUser } = useCurrentUser();
   const { setSnackbar } = useSnackbar();
