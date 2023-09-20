@@ -1,5 +1,11 @@
-import { useNotifications } from "framework/notificationSocket/useNotifications";
-import { CollaborationAcceptedEvent, CollaborationBlockedEvent, CollaborationRejectedEvent, CollaborationReopenedEvent, CollaborationRequestedEvent } from "linked-models/event/implementation/collaboartion.events";
+import { useNotifications } from "framework/notifications/context";
+import {
+  CollaborationAcceptedEvent,
+  CollaborationBlockedEvent,
+  CollaborationRejectedEvent,
+  CollaborationReopenedEvent,
+  CollaborationRequestedEvent,
+} from "linked-models/event/implementation/collaboartion.events";
 import {
   TaskCreatedEvent,
   TaskDeletedEvent,
@@ -26,7 +32,6 @@ import { useInitializeNotificationSocket } from "./useInitializeNotificationSock
 
 const useNotificationSocket = () => {
   const { notificationSocketReady, on } = useInitializeNotificationSocket();
-
   const { handleSocketNotification } = useNotifications();
   const { t } = useTranslation();
 
@@ -179,49 +184,54 @@ const useNotificationSocket = () => {
           updateQueriesAfterDeletingTask(deletedTask);
         });
         on(CollaborationRequestedEvent, ({ notification, payload }) => {
-          createCollaborationNotificationMsg(
-            notification.action,
-            payload.displayName,
-            t
+          handleSocketNotification(
+            notification,
+            createCollaborationNotificationMsg(
+              notification.action,
+              payload.displayName,
+              t
+            )
           );
-          //TODO:
-          updateQueriesAfterDeletingTask(deletedTask);
         });
         on(CollaborationAcceptedEvent, ({ notification, payload }) => {
-          createCollaborationNotificationMsg(
-            notification.action,
-            payload.displayName,
-            t
+          handleSocketNotification(
+            notification,
+            createCollaborationNotificationMsg(
+              notification.action,
+              payload.displayName,
+              t
+            )
           );
-          //TODO:
-          updateQueriesAfterDeletingTask(deletedTask);
         });
         on(CollaborationRejectedEvent, ({ notification, payload }) => {
-          createCollaborationNotificationMsg(
-            notification.action,
-            payload.displayName,
-            t
+          handleSocketNotification(
+            notification,
+            createCollaborationNotificationMsg(
+              notification.action,
+              payload.displayName,
+              t
+            )
           );
-          //TODO:
-          updateQueriesAfterDeletingTask(deletedTask);
         });
         on(CollaborationReopenedEvent, ({ notification, payload }) => {
-          createCollaborationNotificationMsg(
-            notification.action,
-            payload.displayName,
-            t
+          handleSocketNotification(
+            notification,
+            createCollaborationNotificationMsg(
+              notification.action,
+              payload.displayName,
+              t
+            )
           );
-          //TODO:
-          updateQueriesAfterDeletingTask(deletedTask);
         });
         on(CollaborationBlockedEvent, ({ notification, payload }) => {
-          createCollaborationNotificationMsg(
-            notification.action,
-            payload.displayName,
-            t
+          handleSocketNotification(
+            notification,
+            createCollaborationNotificationMsg(
+              notification.action,
+              payload.displayName,
+              t
+            )
           );
-          //TODO:
-          updateQueriesAfterDeletingTask(deletedTask);
         });
       }
     },

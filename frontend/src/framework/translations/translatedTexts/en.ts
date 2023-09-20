@@ -78,8 +78,10 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.DeleteCollaboration]: "Delete user from collaborators list",
   [TranslationKeys.UserRejectedCollaboration]: "User rejected collaboration",
   [TranslationKeys.InviteAgain]: "Invite again",
-  [TranslationKeys.YouRejectedButCanAccept]: "You rejected invitation, but you can accept it again",
-  [TranslationKeys.YouBlockedButCanUnblock]: "You blocked user, but you can unblock him",
+  [TranslationKeys.YouRejectedButCanAccept]:
+    "You rejected invitation, but you can accept it again",
+  [TranslationKeys.YouBlockedButCanUnblock]:
+    "You blocked user, but you can unblock him",
   [TranslationKeys.Block]: "Block",
   [TranslationKeys.Unblock]: "Unblock",
 
@@ -144,9 +146,17 @@ export const enTranslation: Record<TranslationKeys, string> = {
     "You've been invited to todo list ",
   [TranslationKeys.NotificationUserRemovedPart]:
     "You've been removed from members of todo list ",
-  [TranslationKeys.NotificationCollaborationRequestedPart]:
-    "You have new collaboration request sent",
   [TranslationKeys.NotificationUnknownAction]: "Unknown action was done",
+  [TranslationKeys.UserSendYouCollaborationRequest]:
+    "sent you collaboration request.",
+  [TranslationKeys.UserAcceptedYourCollaborationRequest]:
+    "accepted your collaboration request.",
+  [TranslationKeys.UserRejectedYourCollaborationRequest]:
+    "rejected your collaboration request.",
+  [TranslationKeys.UserSendYouCollaborationSecondRequest]:
+    "sent you collaboration request for second time.",
+  [TranslationKeys.UserBlockedCollaborationWithYou]:
+    "blocked collaboration with you.",
 
   [TranslationKeys.PageTitleUserSettings]: "User settings",
   [TranslationKeys.CurrentPasswordLabel]: "current password",
@@ -167,4 +177,5 @@ export const enTranslation: Record<TranslationKeys, string> = {
 
   [TranslationKeys.Save]: "Save",
   [TranslationKeys.Cancel]: "Anuluj",
+  [TranslationKeys.Details]: "Details",
 };

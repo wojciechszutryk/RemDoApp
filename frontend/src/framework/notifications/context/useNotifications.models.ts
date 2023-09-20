@@ -6,6 +6,6 @@ export interface ContextProps {
   setNotifications: Dispatch<SetStateAction<INotificationDto[]>>;
   handleSocketNotification: (
     notification: INotificationDto,
-    notificationMessageData: string
+    notificationMessage: string
   ) => void;
 }

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiDelete } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
-import { useNotifications } from "framework/notificationSocket/useNotifications";
+import { useNotifications } from "framework/notifications/context";
 import { URL_USER_NOTIFICATIONS } from "linked-models/notification/notification.urls";
 import { URL_USERS } from "linked-models/user/user.urls";
 

@@ -80,11 +80,6 @@ export const createTodoNotificationMsg = (
         todoListName ? `"${todoListName}" ` : ""
       }${actionCreatorPart}`;
       break;
-    case EventName.TodoListMemberRemoved:
-      text = `${t(
-        TranslationKeys.NotificationCollaborationRequestedPart
-      )}${actionCreatorPart}`;
-      break;
 
     default:
       text = `${t(

@@ -1,4 +1,4 @@
-import { StyledListItemText } from "atomicComponents/organisms/Header/components/NotificationsMenu/components/styles";
+import { ListItemText } from "@mui/material";
 import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import {
   StyledDetailsColapse,
@@ -27,7 +27,7 @@ const CollapsableReminder = ({ reminder }: Props): JSX.Element => {
           <TodoListIcon type={reminder.icon} />
         </StyledListItemIcon>
       )}
-      <StyledListItemText primary={reminder.text} />
+      <ListItemText primary={reminder.text} />
       <StyledDetailsColapse in={expanded}>
         <TaskDetailsList
           task={{

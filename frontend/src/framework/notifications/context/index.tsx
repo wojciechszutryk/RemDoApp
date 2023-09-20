@@ -12,6 +12,7 @@ function NotificationsProvider({ children }: Props): JSX.Element {
   const [notifications, setNotifications] = useState<INotificationDto[]>([]);
   const { setSnackbar } = useSnackbar();
 
+  //** TODO prawdopodonie wywalić i zastąpić stanem z query */
   const handleSocketNotification = (
     notification: INotificationDto,
     notificationMessage: string

@@ -132,7 +132,6 @@ export enum TranslationKeys {
   NotificationWasDeletedPart = "NotificationWasDeletedPart",
   NotificationUserInvitedPart = "NotificationUserInvitedPart",
   NotificationUserRemovedPart = "NotificationUserRemovedPart",
-  NotificationCollaborationRequestedPart = "NotificationCollaborationRequestedPart",
   NotificationUnknownAction = "NotificationUnknownAction",
   UserSendYouCollaborationRequest = "UserSendYouCollaborationRequest",
   UserAcceptedYourCollaborationRequest = "UserAcceptedYourCollaborationRequest",
@@ -158,4 +157,5 @@ export enum TranslationKeys {
 
   Save = "Save",
   Cancel = "Cancel",
+  Details = "Details",
 }

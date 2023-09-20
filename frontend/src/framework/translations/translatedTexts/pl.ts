@@ -147,13 +147,21 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.NotificationWasCreatedPart]: "zostało utworzone ",
   [TranslationKeys.NotificationWasModifiedPart]: "zostało zmodyfikowane ",
   [TranslationKeys.NotificationWasDeletedPart]: "zostało usunięte ",
+  [TranslationKeys.NotificationUnknownAction]: "Nieznana akcja ",
   [TranslationKeys.NotificationUserInvitedPart]:
     "Zostałeś zaproszony do listy zadań ",
   [TranslationKeys.NotificationUserRemovedPart]:
     "Zostałeś usunięty z listy zadań ",
-  [TranslationKeys.NotificationCollaborationRequestedPart]:
-    "Dostałeś zaproszenie do współpracy wysłane",
-  [TranslationKeys.NotificationUnknownAction]: "Nieznana akcja ",
+  [TranslationKeys.UserSendYouCollaborationRequest]:
+    "wysłał/a Ci zaproszenie do współpracy.",
+  [TranslationKeys.UserAcceptedYourCollaborationRequest]:
+    "zaakceptował/a Twoje zaproszenie do współpracy.",
+  [TranslationKeys.UserRejectedYourCollaborationRequest]:
+    "odrzucił/a Twoje zaproszenie do współpracy.",
+  [TranslationKeys.UserSendYouCollaborationSecondRequest]:
+    "ponownie wysłał/a Ci zaproszenie do współpracy.",
+  [TranslationKeys.UserBlockedCollaborationWithYou]:
+    "zablokował/a współpracę z Tobą.",
 
   [TranslationKeys.PageTitleUserSettings]: "Ustawienia użytkownika",
   [TranslationKeys.ChangePassword]: "Zmień hasło",
@@ -174,4 +182,5 @@ export const plTranslation: Record<TranslationKeys, string> = {
 
   [TranslationKeys.Save]: "Zapisz",
   [TranslationKeys.Cancel]: "Anuluj",
+  [TranslationKeys.Details]: "Szczegóły",
 };

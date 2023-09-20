@@ -21,7 +21,10 @@ interface Props {
   hideNotificationMenu: (event: React.KeyboardEvent | React.MouseEvent) => void;
 }
 
-const NotificationsList = ({ notificationsData }: Props): JSX.Element => {
+const NotificationsList = ({
+  notificationsData,
+  hideNotificationMenu,
+}: Props): JSX.Element => {
   const [todoListIdToNotificationsMap, otherNotifications] = useMemo(() => {
     const { notifications, todoListsMap, creatorsMap, tasksMap } =
       notificationsData;
@@ -68,6 +71,7 @@ const NotificationsList = ({ notificationsData }: Props): JSX.Element => {
           <SwippableNotification
             key={notificationWithCreator.userNotificationId}
             extendedNotification={notificationWithCreator}
+            hideNotificationMenu={hideNotificationMenu}
           />
         ))}
       </StyledList>
@@ -91,6 +95,7 @@ const NotificationsList = ({ notificationsData }: Props): JSX.Element => {
                       <SwippableNotification
                         key={notificationWithCreator.userNotificationId}
                         extendedNotification={notificationWithCreator}
+                        hideNotificationMenu={hideNotificationMenu}
                       />
                     );
                   })}
