@@ -30,7 +30,7 @@ const DisplayNameChangeForm = (): JSX.Element => {
       { displayName },
       {
         onSuccess: () => {
-          setSnackbar({ message: t(TranslationKeys.DispalyNameChanged) });
+          setSnackbar({ message: t(TranslationKeys.DispalyNameChanged), userData: currentUser });
         },
         onError: (error) => {
           setSnackbar({

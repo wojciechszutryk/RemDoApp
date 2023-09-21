@@ -69,18 +69,20 @@ const useNotificationSocket = () => {
         on(
           TodoListCreatedEvent,
           ({ notification, payload: createdTodoList }) => {
+            const creator = createdTodoList.assignedOwners.find(
+              (u) => u.id === notification.actionCreatorId
+            );
             addNewNotification(
               notification,
               createTodoNotificationMsg(
                 {
                   action: notification.action,
-                  actionCreatorDisplayName: createdTodoList.assignedOwners.find(
-                    (u) => u.id === notification.actionCreatorId
-                  )?.displayName,
+                  actionCreatorDisplayName: creator?.displayName,
                   todoListName: createdTodoList.name,
                 },
                 t
-              )
+              ),
+              creator
             );
             updateQueriesAfterCreatingTodoList(createdTodoList);
           }
@@ -88,18 +90,20 @@ const useNotificationSocket = () => {
         on(
           TodoListUpdatedEvent,
           ({ notification, payload: updatedTodoList }) => {
+            const creator = updatedTodoList.assignedOwners.find(
+              (u) => u.id === notification.actionCreatorId
+            );
             addNewNotification(
               notification,
               createTodoNotificationMsg(
                 {
                   action: notification.action,
-                  actionCreatorDisplayName: updatedTodoList.assignedOwners.find(
-                    (u) => u.id === notification.actionCreatorId
-                  )?.displayName,
+                  actionCreatorDisplayName: creator?.displayName,
                   todoListName: updatedTodoList.name,
                 },
                 t
-              )
+              ),
+              creator
             );
             updateQueriesAfterEditingTodoList(updatedTodoList);
           }
@@ -107,79 +111,79 @@ const useNotificationSocket = () => {
         on(
           TodoListDeletedEvent,
           ({ notification, payload: deletedTodoList }) => {
+            const creator = userIdToUserMap.get(notification.actionCreatorId);
             addNewNotification(
               notification,
               createTodoNotificationMsg(
                 {
                   action: notification.action,
-                  actionCreatorDisplayName: userIdToUserMap.get(
-                    notification.actionCreatorId
-                  )?.displayName,
+                  actionCreatorDisplayName: creator?.displayName,
                   todoListName: deletedTodoList.name,
                 },
                 t
-              )
+              ),
+              creator
             );
             updateQueriesAfterDeletingTodoList(deletedTodoList);
           }
         );
 
         on(TaskCreatedEvent, ({ notification, payload: { createdTask } }) => {
+          const creator = userIdToUserMap.get(notification.actionCreatorId);
           addNewNotification(
             notification,
             createTodoNotificationMsg(
               {
                 action: notification.action,
-                actionCreatorDisplayName: userIdToUserMap.get(
-                  notification.actionCreatorId
-                )?.displayName,
+                actionCreatorDisplayName: creator?.displayName,
                 todoListName: todoLists?.find(
                   (td) => td.id === createdTask.todoListId
                 )?.name,
                 taskName: createdTask.text,
               },
               t
-            )
+            ),
+            creator
           );
           updateQueriesAfterCreatingTask(createdTask);
         });
         on(TaskUpdatedEvent, ({ notification, payload: updatedTask }) => {
+          const creator = userIdToUserMap.get(notification.actionCreatorId);
           addNewNotification(
             notification,
             createTodoNotificationMsg(
               {
                 action: notification.action,
-                actionCreatorDisplayName: userIdToUserMap.get(
-                  notification.actionCreatorId
-                )?.displayName,
+                actionCreatorDisplayName: creator?.displayName,
                 todoListName: todoLists?.find(
                   (td) => td.id === updatedTask.todoListId
                 )?.name,
                 taskName: updatedTask.text,
               },
               t
-            )
+            ),
+            creator
           );
           updateQueriesAfterEditingTask(updatedTask, {
             todoListId: updatedTask.todoListId,
           });
         });
         on(TaskDeletedEvent, ({ notification, payload: deletedTask }) => {
+          const creator = userIdToUserMap.get(notification.actionCreatorId);
           addNewNotification(
             notification,
             createTodoNotificationMsg(
               {
                 action: notification.action,
-                actionCreatorDisplayName: userIdToUserMap.get(
-                  notification.actionCreatorId
-                )?.displayName,
+                actionCreatorDisplayName: creator?.displayName,
                 todoListName: todoLists?.find(
                   (td) => td.id === deletedTask.todoListId
                 )?.name,
                 taskName: deletedTask.text,
               },
               t
-            )
+            ),
+            creator
           );
           updateQueriesAfterDeletingTask(deletedTask);
         });
@@ -190,7 +194,8 @@ const useNotificationSocket = () => {
               notification.action,
               payload.displayName,
               t
-            )
+            ),
+            payload
           );
         });
         on(CollaborationAcceptedEvent, ({ notification, payload }) => {
@@ -200,7 +205,8 @@ const useNotificationSocket = () => {
               notification.action,
               payload.displayName,
               t
-            )
+            ),
+            payload
           );
         });
         on(CollaborationRejectedEvent, ({ notification, payload }) => {
@@ -210,7 +216,8 @@ const useNotificationSocket = () => {
               notification.action,
               payload.displayName,
               t
-            )
+            ),
+            payload
           );
         });
         on(CollaborationReopenedEvent, ({ notification, payload }) => {
@@ -220,7 +227,8 @@ const useNotificationSocket = () => {
               notification.action,
               payload.displayName,
               t
-            )
+            ),
+            payload
           );
         });
         on(CollaborationBlockedEvent, ({ notification, payload }) => {
@@ -230,7 +238,8 @@ const useNotificationSocket = () => {
               notification.action,
               payload.displayName,
               t
-            )
+            ),
+            payload
           );
         });
       }

@@ -27,7 +27,10 @@ const AvatarChangeForm = (): JSX.Element => {
       formData.append(AVATAR_FILENAME, selectedImage);
       changeAvatarMutation.mutate(formData, {
         onSuccess: () => {
-          setSnackbar({ message: t(TranslationKeys.AvatarChanged) });
+          setSnackbar({
+            message: t(TranslationKeys.AvatarChanged),
+            userData: currentUser,
+          });
         },
       });
     }

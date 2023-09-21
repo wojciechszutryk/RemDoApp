@@ -2,6 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "framework/snackBar";
 import { INotificationDto } from "linked-models/notification/notification.dto";
 import { URL_USER_NOTIFICATIONS } from "linked-models/notification/notification.urls";
+import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { useCallback } from "react";
 import { IUserNotificationsQueryData } from "../queries/getUserNotifications.query";
 
@@ -16,6 +17,7 @@ const useAddNewNotification = () => {
     (
       newNotification: INotificationDto,
       notificationMessage: string,
+      creatorData?: IUserPublicDataDTO,
       noSnackbar?: boolean
     ) => {
       queryClient.setQueryData(
@@ -47,6 +49,7 @@ const useAddNewNotification = () => {
       );
       if (!noSnackbar)
         setSnackbar({
+          userData: creatorData,
           message: notificationMessage,
         });
     },
