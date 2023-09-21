@@ -59,6 +59,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Time]: "Time",
   [TranslationKeys.Event]: "Event",
 
+  [TranslationKeys.Collaborants]: "Your collaborants",
+  [TranslationKeys.CollaborantsSearch]: "Search for user",
   [TranslationKeys.ShowMyCollaborations]: "Show my collaborations",
   [TranslationKeys.SearchForUser]: "Search for user",
   [TranslationKeys.InviteCollaborants]: "Invite someone",

@@ -1,15 +1,11 @@
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import {
-  Collapse,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-} from "@mui/material";
+import { Collapse, ListItem, ListItemAvatar } from "@mui/material";
 import UserAvatar from "atomicComponents/organisms/UserAvatar";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { ICollaborantDTO } from "linked-models/collaboration/collaboration.dto";
 import { useState } from "react";
+import { StyledCollaborantListItemText } from "../../styles";
 import CollaborationActions from "../CollaborationActions";
 import CollaborationStateIcon from "../CollaborationStateIcon";
 
@@ -41,10 +37,15 @@ const CollabrantListItem = ({ collaborant }: Props): JSX.Element => {
           <UserAvatar userData={collaborantPublicData} />
           <CollaborationStateIcon
             state={collaborant.state}
-            sx={{ position: "absolute", top: -5, right: 5, transform: "scale(0.8)" }}
+            sx={{
+              position: "absolute",
+              top: -5,
+              right: 5,
+              transform: "scale(0.8)",
+            }}
           />
         </ListItemAvatar>
-        <ListItemText
+        <StyledCollaborantListItemText
           primary={collaborantPublicData.displayName}
           secondary={collaborantPublicData.email}
         />

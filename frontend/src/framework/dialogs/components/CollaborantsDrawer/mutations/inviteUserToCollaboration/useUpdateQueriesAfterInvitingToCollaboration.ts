@@ -25,9 +25,15 @@ const useUpdateQueriesAfterInvitingToCollaboration = () => {
             creator,
           };
           if (!prev) return [newCollaborant];
-          return prev.map((collaborant) =>
-            collaborant.id === newCollaborant.id ? newCollaborant : collaborant
-          );
+
+          //check if collaborant already exists
+          const index = prev.findIndex((c) => c.id == newCollaborant.id);
+
+          if (index > -1) {
+            return prev;
+          }
+
+          return [...prev, newCollaborant];
         }
       );
     },

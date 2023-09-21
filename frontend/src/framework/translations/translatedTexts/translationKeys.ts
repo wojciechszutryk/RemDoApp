@@ -89,6 +89,8 @@ export enum TranslationKeys {
   Ago = "ago",
 
   //collaboration
+  Collaborants = "Collaborants",
+  CollaborantsSearch = "CollaborantsSearch",
   ShowMyCollaborations = "ShowMyCollaborations",
   SearchForUser = "SearchForUser",
   YouHaveNoCollaborants = "YouHaveNoCollaborants",

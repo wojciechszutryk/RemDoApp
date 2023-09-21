@@ -6,9 +6,11 @@ interface Props {
   index: number;
   value: number;
   key: string;
+  width: number;
 }
 
 const TabWrapper = ({
+  width,
   children,
   value,
   index,
@@ -19,10 +21,14 @@ const TabWrapper = ({
     <motion.div
       style={{ position: "absolute", top: "60px" }}
       key={key}
-      initial={{ opacity: 0, translateX: index === 0 ? -300 : 300, zIndex: 0 }}
+      initial={{
+        opacity: 0,
+        translateX: index === 0 ? -1 * width : width,
+        zIndex: 0,
+      }}
       exit={{
         opacity: 0,
-        translateX: index === 0 ? 300 : -300,
+        translateX: index === 0 ? width : -1 * width,
         zIndex: 1,
       }}
       animate={{ opacity: 1, translateX: 0 }}
@@ -30,7 +36,7 @@ const TabWrapper = ({
     >
       <div
         role="tabpanel"
-        style={{ width: 300, padding: 15 }}
+        style={{ width: `${width}px`, padding: "15px" }}
         hidden={value !== index}
         id={`tabpanel-${index}`}
         {...other}

@@ -59,6 +59,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Time]: "Czas",
   [TranslationKeys.Event]: "Wydarzenie",
 
+  [TranslationKeys.Collaborants]: "Twoi współpracownicy",
+  [TranslationKeys.CollaborantsSearch]: "Szukaj użytkownika",
   [TranslationKeys.ShowMyCollaborations]: "Pokaż moje współprace",
   [TranslationKeys.SearchForUser]: "Wyszukaj użytkownika",
   [TranslationKeys.InviteCollaborants]: "Zaproś kogoś",

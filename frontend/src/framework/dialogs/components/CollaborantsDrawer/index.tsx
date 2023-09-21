@@ -1,13 +1,16 @@
-import { Box, CircularProgress, Drawer, Tabs } from "@mui/material";
+import { CircularProgress, Tabs, useMediaQuery } from "@mui/material";
 import { Tab } from "atomicComponents/atoms/Tab";
 import { AnimatePresence } from "framer-motion";
 import { useDialogs } from "framework/dialogs";
 import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { memo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import TabWrapper from "./components/TabWrapper";
 import UserCollaborantsTabContent from "./components/UserCollaborantsTabContent";
 import UserSearch from "./components/UserSearch";
 import { useGetUserCollaborantsQuery } from "./queries/getUserCollaborants.query.";
+import { StyledDrawer, StyledTabsWrapper } from "./styles";
 
 const CollaborantsDrawer = (): JSX.Element => {
   const {
@@ -19,9 +22,12 @@ const CollaborantsDrawer = (): JSX.Element => {
   const [open, onClose] = useAppDialogState(visible, () =>
     updateCollaborantsDrawer({ visible: false })
   );
+  const isMobile = useMediaQuery("(max-width:500px)");
+  const width = isMobile ? 300 : 450;
 
   const [tabIndex, setTabIndex] = useState(0);
   const userCollaborantsQuery = useGetUserCollaborantsQuery();
+  const { t } = useTranslation();
 
   if (userCollaborantsQuery.isLoading) {
     return <CircularProgress />;
@@ -32,25 +38,43 @@ const CollaborantsDrawer = (): JSX.Element => {
   };
 
   return (
-    <Drawer open={open} onClose={onClose} anchor={"right"} sx={{ padding: 10 }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider", width: 300 }}>
+    <StyledDrawer open={open} onClose={onClose} anchor={"right"}>
+      <StyledTabsWrapper style={{ width: `${width}px` }}>
         <Tabs value={tabIndex} onChange={handleChangeTabIndex}>
-          <Tab label="Item One" value={0} id={`tab-0`} />
-          <Tab label="Item Two" value={1} id={`tab-1`} />
+          <Tab
+            label={t(TranslationKeys.Collaborants)}
+            value={0}
+            id={"CollaborantsList"}
+          />
+          <Tab
+            label={t(TranslationKeys.CollaborantsSearch)}
+            value={1}
+            id={"CollaborantsSearch"}
+          />
         </Tabs>
-      </Box>
+      </StyledTabsWrapper>
       <AnimatePresence>
-        <TabWrapper value={0} index={tabIndex} key={`${tabIndex}-0`}>
+        <TabWrapper
+          value={0}
+          index={tabIndex}
+          key={`${tabIndex}-0`}
+          width={width}
+        >
           <UserCollaborantsTabContent
             collaborants={userCollaborantsQuery.data || []}
             handleOpenInviteTab={() => setTabIndex(1)}
           />
         </TabWrapper>
-        <TabWrapper value={1} index={tabIndex} key={`${tabIndex}-1`}>
+        <TabWrapper
+          value={1}
+          index={tabIndex}
+          key={`${tabIndex}-1`}
+          width={width}
+        >
           <UserSearch userCollaborants={userCollaborantsQuery.data || []} />
         </TabWrapper>
       </AnimatePresence>
-    </Drawer>
+    </StyledDrawer>
   );
 };
 
