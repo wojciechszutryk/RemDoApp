@@ -1,4 +1,3 @@
-import { useNotifications } from "framework/notifications/context";
 import {
   CollaborationAcceptedEvent,
   CollaborationBlockedEvent,
@@ -28,11 +27,12 @@ import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { createCollaborationNotificationMsg } from "./helpers/createCollaborationNotificationMsg";
 import { createTodoNotificationMsg } from "./helpers/createTodoNotificationMsg";
+import useAddNewNotification from "./hooks/useAddNewNotification";
 import { useInitializeNotificationSocket } from "./useInitializeNotificationSocket";
 
 const useNotificationSocket = () => {
   const { notificationSocketReady, on } = useInitializeNotificationSocket();
-  const { handleSocketNotification } = useNotifications();
+  const addNewNotification = useAddNewNotification();
   const { t } = useTranslation();
 
   const updateQueriesAfterCreatingTask = useUpdateQueriesAfterCreatingTask();
@@ -69,7 +69,7 @@ const useNotificationSocket = () => {
         on(
           TodoListCreatedEvent,
           ({ notification, payload: createdTodoList }) => {
-            handleSocketNotification(
+            addNewNotification(
               notification,
               createTodoNotificationMsg(
                 {
@@ -88,7 +88,7 @@ const useNotificationSocket = () => {
         on(
           TodoListUpdatedEvent,
           ({ notification, payload: updatedTodoList }) => {
-            handleSocketNotification(
+            addNewNotification(
               notification,
               createTodoNotificationMsg(
                 {
@@ -107,7 +107,7 @@ const useNotificationSocket = () => {
         on(
           TodoListDeletedEvent,
           ({ notification, payload: deletedTodoList }) => {
-            handleSocketNotification(
+            addNewNotification(
               notification,
               createTodoNotificationMsg(
                 {
@@ -125,7 +125,7 @@ const useNotificationSocket = () => {
         );
 
         on(TaskCreatedEvent, ({ notification, payload: { createdTask } }) => {
-          handleSocketNotification(
+          addNewNotification(
             notification,
             createTodoNotificationMsg(
               {
@@ -144,7 +144,7 @@ const useNotificationSocket = () => {
           updateQueriesAfterCreatingTask(createdTask);
         });
         on(TaskUpdatedEvent, ({ notification, payload: updatedTask }) => {
-          handleSocketNotification(
+          addNewNotification(
             notification,
             createTodoNotificationMsg(
               {
@@ -165,7 +165,7 @@ const useNotificationSocket = () => {
           });
         });
         on(TaskDeletedEvent, ({ notification, payload: deletedTask }) => {
-          handleSocketNotification(
+          addNewNotification(
             notification,
             createTodoNotificationMsg(
               {
@@ -184,7 +184,7 @@ const useNotificationSocket = () => {
           updateQueriesAfterDeletingTask(deletedTask);
         });
         on(CollaborationRequestedEvent, ({ notification, payload }) => {
-          handleSocketNotification(
+          addNewNotification(
             notification,
             createCollaborationNotificationMsg(
               notification.action,
@@ -194,7 +194,7 @@ const useNotificationSocket = () => {
           );
         });
         on(CollaborationAcceptedEvent, ({ notification, payload }) => {
-          handleSocketNotification(
+          addNewNotification(
             notification,
             createCollaborationNotificationMsg(
               notification.action,
@@ -204,7 +204,7 @@ const useNotificationSocket = () => {
           );
         });
         on(CollaborationRejectedEvent, ({ notification, payload }) => {
-          handleSocketNotification(
+          addNewNotification(
             notification,
             createCollaborationNotificationMsg(
               notification.action,
@@ -214,7 +214,7 @@ const useNotificationSocket = () => {
           );
         });
         on(CollaborationReopenedEvent, ({ notification, payload }) => {
-          handleSocketNotification(
+          addNewNotification(
             notification,
             createCollaborationNotificationMsg(
               notification.action,
@@ -224,7 +224,7 @@ const useNotificationSocket = () => {
           );
         });
         on(CollaborationBlockedEvent, ({ notification, payload }) => {
-          handleSocketNotification(
+          addNewNotification(
             notification,
             createCollaborationNotificationMsg(
               notification.action,
@@ -235,7 +235,7 @@ const useNotificationSocket = () => {
         });
       }
     },
-    // disabled because dependencies 'todoLists' and 'userIdToUserMap' and 'handleSocketNotification' cause invocation of socket.on() many times
+    // disabled because dependencies 'todoLists' and 'userIdToUserMap' and 'addNewNotification' cause invocation of socket.on() many times
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       notificationSocketReady,

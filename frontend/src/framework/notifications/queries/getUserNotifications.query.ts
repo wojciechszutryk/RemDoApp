@@ -1,4 +1,8 @@
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import {
+  useQuery,
+  UseQueryOptions,
+  UseQueryResult,
+} from "@tanstack/react-query";
 import { apiGet } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import {
@@ -18,10 +22,16 @@ export interface IUserNotificationsQueryData {
   creatorsMap: Map<string, IUserPublicDataDTO>;
 }
 
-export const useGetUserNotificationsQuery = (): UseQueryResult<
-  IUserNotificationsQueryData,
-  unknown
-> => {
+export const emptyUserNotificationsQueryData: IUserNotificationsQueryData = {
+  notifications: [],
+  todoListsMap: new Map(),
+  tasksMap: new Map(),
+  creatorsMap: new Map(),
+};
+
+export const useGetUserNotificationsQuery = (
+  options?: Omit<UseQueryOptions<IUserNotificationsQueryData>, "queryFn">
+): UseQueryResult<IUserNotificationsQueryData, unknown> => {
   const url = FRONTIFY_URL(URL_USERS + URL_USER_NOTIFICATIONS);
 
   const getUserNotifications =
@@ -41,5 +51,5 @@ export const useGetUserNotificationsQuery = (): UseQueryResult<
       });
     };
 
-  return useQuery([URL_USER_NOTIFICATIONS], getUserNotifications);
+  return useQuery([URL_USER_NOTIFICATIONS], getUserNotifications, options);
 };
