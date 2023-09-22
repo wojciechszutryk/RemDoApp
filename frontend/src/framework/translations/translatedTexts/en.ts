@@ -43,6 +43,9 @@ export const enTranslation: Record<TranslationKeys, string> = {
     "Create new reminder. It will be visible only in yours callendar.",
   [TranslationKeys.ScopeChoose]: "Choose scope",
   [TranslationKeys.OrChooseTodoList]: "Or choose todo list",
+  [TranslationKeys.EditReminder]: "Edit reminder",
+  [TranslationKeys.CreateReminder]: "Create reminder",
+  [TranslationKeys.ReminderName]: "Reminder name",
 
   [TranslationKeys.Week]: "Week",
   [TranslationKeys.WorkWeek]: "WorkWeek",
@@ -104,6 +107,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
     "Are you sure you want to delete this todo list? This action cannot be undone. All tasks in this list will be deleted.",
   [TranslationKeys.Other]: "Other",
   [TranslationKeys.BackToTodoLists]: "Back to todo lists",
+  [TranslationKeys.ManageAccess]: "Manage access",
+  [TranslationKeys.GeneralInfo]: "General information",
 
   [TranslationKeys.EmptyTasksList]: "No tasks in this list.",
   [TranslationKeys.DelteTask]: "Delete task",

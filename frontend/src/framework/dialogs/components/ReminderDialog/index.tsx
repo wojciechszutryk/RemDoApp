@@ -1,11 +1,8 @@
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FlagCircleIcon from "@mui/icons-material/FlagCircle";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Typography,
-} from "@mui/material";
+import { AccordionDetails, AccordionSummary, Typography } from "@mui/material";
+import { StyledAccordion } from "atomicComponents/atoms/Accordion/styles";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
@@ -15,6 +12,7 @@ import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
 import { initialTaskDialog } from "framework/dialogs/models/initialState.const";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IReminder } from "linked-models/reminder/reminder.dto";
+import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { useCreateReminderMutation } from "pages/RemindersPage/mutations/createReminder/createReminder.mutation";
 import { useEditReminderMutation } from "pages/RemindersPage/mutations/editReminder/editReminder.mutation";
@@ -22,8 +20,8 @@ import { memo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import DateTimePickerWithIcon from "../TaskDilog/components/DatePickerWithIcon";
-import EmailAutocomplete from "../TodoListDialog/components/EmailAutocomplete";
 import { StyledAutocompleteLabel, StyledForm } from "../TodoListDialog/styles";
+import CollaborantAutocomplete from "./components/CollaborantAutocomplete";
 import TodoListSelect from "./components/TodoListSelect";
 import { IReminderDialogState } from "./helpers/IReminderDialogState";
 
@@ -49,7 +47,7 @@ const ReminderDialog = (): JSX.Element => {
     assignedUsers: editReminderData?.assignedUsers || [],
   };
 
-  const methods = useForm<IReminderDialogState>({
+  const methods = useForm<IReminderAttached>({
     defaultValues: defaultFormValues,
   });
 
@@ -91,7 +89,7 @@ const ReminderDialog = (): JSX.Element => {
     onClose();
   };
 
-  const [expanded, setExpanded] = useState("edit");
+  const [expanded, setExpanded] = useState("general");
 
   const handleChange = (panel: string) => () => {
     setExpanded(panel);
@@ -99,31 +97,29 @@ const ReminderDialog = (): JSX.Element => {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <Accordion expanded={expanded === "edit"} onChange={handleChange("edit")}>
-        <AccordionSummary
-        // expandIcon={<ExpandMoreIcon />}
-        >
-          <Typography sx={{ width: "33%", flexShrink: 0 }}>
-            General settings
-          </Typography>
-          <Typography sx={{ color: "text.secondary" }}>
-            I am an accordion
-          </Typography>
+      <StyledAccordion
+        expanded={expanded === "general"}
+        onChange={handleChange("general")}
+      >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>{t(TranslationKeys.GeneralInfo)}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <FormProvider {...methods}>
             <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
               <Typography variant="h4">
                 {editReminderData
-                  ? `${t(TranslationKeys.EditTask)}: ${editReminderData.text}`
-                  : t(TranslationKeys.AddTask)}
+                  ? `${t(TranslationKeys.EditReminder)}: ${
+                      editReminderData.text
+                    }`
+                  : t(TranslationKeys.CreateReminder)}
               </Typography>
 
               <ControlledTextField
                 name={"text"}
                 required
                 control={methods.control}
-                placeholder={t(TranslationKeys.TaskName)}
+                placeholder={t(TranslationKeys.ReminderName)}
               />
               {[
                 {
@@ -149,46 +145,44 @@ const ReminderDialog = (): JSX.Element => {
               <Button type="submit">
                 {editReminderData
                   ? t(TranslationKeys.Save)
-                  : t(TranslationKeys.AddTask)}
+                  : t(TranslationKeys.CreateReminder)}
               </Button>
             </StyledForm>
           </FormProvider>
         </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === "share"}
-        onChange={handleChange("share")}
+      </StyledAccordion>
+      <StyledAccordion
+        expanded={expanded === "access"}
+        onChange={handleChange("access")}
       >
-        <AccordionSummary
-        // expandIcon={<ExpandMoreIcon />}
-        >
-          {t(TranslationKeys.ShareTodoList)}
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          {t(TranslationKeys.ManageAccess)}
         </AccordionSummary>
         <AccordionDetails>
           <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
             <FormProvider {...methods}>
-              {/* <Typography variant="h4">
-                {t(TranslationKeys.ShareTodoList)}: {todoListName}
+              <Typography variant="h4">
+                {t(TranslationKeys.ManageAccess)}
               </Typography>
               <StyledAutocompleteLabel>
                 {t(TranslationKeys.CurrentOwners)}
               </StyledAutocompleteLabel>
-              <EmailAutocomplete
+              <CollaborantAutocomplete
                 name="assignedOwners"
-                defaultValues={defaultFormValues.assignedOwners}
+                defaultValues={defaultFormValues?.assignedOwners}
               />
               <StyledAutocompleteLabel>
                 {t(TranslationKeys.CurrentUsers)}
               </StyledAutocompleteLabel>
-              <EmailAutocomplete
+              <CollaborantAutocomplete
                 name="assignedUsers"
-                defaultValues={defaultFormValues.assignedUsers}
-              /> */}
+                defaultValues={defaultFormValues?.assignedUsers}
+              />
               <Button type="submit">{t(TranslationKeys.Save)}</Button>
             </FormProvider>
           </StyledForm>
         </AccordionDetails>
-      </Accordion>
+      </StyledAccordion>
     </Dialog>
   );
 };

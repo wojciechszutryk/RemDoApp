@@ -37,6 +37,9 @@ export enum TranslationKeys {
   ReminderInfo = "ReminderInfo",
   ScopeChoose = "ScopeChoose",
   OrChooseTodoList = "OrChooseTodoList",
+  EditReminder = "EditReminder",
+  CreateReminder = "CreateReminder",
+  ReminderName = "ReminderName",
 
   //callendar
   Week = "Week",
@@ -70,6 +73,8 @@ export enum TranslationKeys {
   DelteTodoListWarning = "DelteTodoListWarning",
   Other = "Other",
   BackToTodoLists = "BackToTodoLists",
+  ManageAccess = "ManageAccess",
+  GeneralInfo = "GeneralInfo",
 
   EmptyTasksList = "EmptyTasksList",
   DelteTask = "DelteTask",

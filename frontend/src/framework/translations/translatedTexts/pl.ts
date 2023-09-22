@@ -43,6 +43,9 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "Utwórz nowe przypomnienie. Będzie ono widoczne jedynie w twoim kalendarzu. ",
   [TranslationKeys.ScopeChoose]: "Wybierz zakres",
   [TranslationKeys.OrChooseTodoList]: "Lub wybierz listę zadań",
+  [TranslationKeys.EditReminder]: "Edytuj przypomnienie",
+  [TranslationKeys.CreateReminder]: "Utwórz przypomnienie",
+  [TranslationKeys.ReminderName]: "Nazwa przypomnienia",
 
   [TranslationKeys.Week]: "Tydzień",
   [TranslationKeys.WorkWeek]: "Dni robocze",
@@ -109,6 +112,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "Czy na pewno chcesz usunąć tę listę zadań? Ta operacja jest nieodwracalna. Wszystkie zadania powiązane z tą listą zostaną usunięte.",
   [TranslationKeys.Other]: "Inne",
   [TranslationKeys.BackToTodoLists]: "Powrót do list zadań",
+  [TranslationKeys.ManageAccess]: "Zarządzaj dostępem",
+  [TranslationKeys.GeneralInfo]: "Informacje ogólne",
 
   [TranslationKeys.EmptyTasksList]: "Brak zadań na liście. Dodaj nowe zadanie!",
   [TranslationKeys.DelteTask]: "Usuń zadanie",
