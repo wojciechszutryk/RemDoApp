@@ -1,14 +1,23 @@
+import { useDialogs } from "framework/dialogs";
 import { useCallback } from "react";
 import { SlotInfo } from "react-big-calendar";
 
 const useOnSelectSlot = () => {
-  return useCallback(({ start, end }: SlotInfo) => {
-    const title = window.prompt("New Event Name");
-
-    if (title) {
-      // setEvents((prev) => [...prev, { start, end, title }]);
-    }
-  }, []);
+  const {
+    dialogsActions: { updateReminderDialog },
+  } = useDialogs();
+  return useCallback(
+    (slotInfo: SlotInfo) => {
+      updateReminderDialog({
+        visible: true,
+        editReminderData: {
+          startDate: slotInfo.start,
+          finishDate: slotInfo.end,
+        },
+      });
+    },
+    [updateReminderDialog]
+  );
 };
 
 export default useOnSelectSlot;

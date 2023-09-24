@@ -1,7 +1,13 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FlagCircleIcon from "@mui/icons-material/FlagCircle";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import { AccordionDetails, AccordionSummary, Typography } from "@mui/material";
+import {
+  AccordionDetails,
+  AccordionSummary,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { StyledAccordion } from "atomicComponents/atoms/Accordion/styles";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
@@ -24,6 +30,7 @@ import { StyledAutocompleteLabel, StyledForm } from "../TodoListDialog/styles";
 import CollaborantAutocomplete from "./components/CollaborantAutocomplete";
 import TodoListSelect from "./components/TodoListSelect";
 import { IReminderDialogState } from "./helpers/IReminderDialogState";
+import { StyledHelpOutlineIcon } from "./styles";
 
 const ReminderDialog = (): JSX.Element => {
   const {
@@ -45,6 +52,7 @@ const ReminderDialog = (): JSX.Element => {
     finishDate: editReminderData?.finishDate || dayjs().add(1, "hour").toDate(),
     assignedOwners: editReminderData?.assignedOwners || [],
     assignedUsers: editReminderData?.assignedUsers || [],
+    todoListId: editReminderData?.todoListId || "reminder",
   };
 
   const methods = useForm<IReminderAttached>({
@@ -56,8 +64,8 @@ const ReminderDialog = (): JSX.Element => {
   const { t } = useTranslation();
 
   const onSubmit = (data: IReminderDialogState) => {
-    const ownersIDs = data.assignedOwners.map((owner) => owner.id);
-    const usersIDs = data.assignedUsers.map((user) => user.id);
+    const ownerEmails = data.assignedOwners.map((owner) => owner.email);
+    const userEmails = data.assignedUsers.map((user) => user.email);
 
     if (editReminderData) {
       editReminderMutation.mutate({
@@ -65,8 +73,8 @@ const ReminderDialog = (): JSX.Element => {
         taskId: editReminderData.taskId,
         data: {
           ...data,
-          assignedOwners: ownersIDs,
-          assignedUsers: usersIDs,
+          assignedOwners: ownerEmails,
+          assignedUsers: userEmails,
         },
       });
     } else {
@@ -74,8 +82,8 @@ const ReminderDialog = (): JSX.Element => {
         return;
       const createReminderData: IReminder = {
         ...data,
-        assignedOwners: ownersIDs,
-        assignedUsers: usersIDs,
+        assignedOwners: ownerEmails,
+        assignedUsers: userEmails,
         text: data.text,
         name: data.text,
         icon: data.icon,
@@ -100,8 +108,14 @@ const ReminderDialog = (): JSX.Element => {
       <StyledAccordion
         expanded={expanded === "general"}
         onChange={handleChange("general")}
+        disableGutters
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Tooltip title={t(TranslationKeys.GeneralInfoReminderDescription)}>
+            <div>
+              <HelpOutlineIcon sx={{ marginRight: "3px" }} />
+            </div>
+          </Tooltip>
           <Typography>{t(TranslationKeys.GeneralInfo)}</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -141,7 +155,7 @@ const ReminderDialog = (): JSX.Element => {
               ].map((props, index) => (
                 <DateTimePickerWithIcon key={index} {...props} />
               ))}
-              <TodoListSelect />
+              {!editReminderData && <TodoListSelect />}
               <Button type="submit">
                 {editReminderData
                   ? t(TranslationKeys.Save)
@@ -154,8 +168,14 @@ const ReminderDialog = (): JSX.Element => {
       <StyledAccordion
         expanded={expanded === "access"}
         onChange={handleChange("access")}
+        disableGutters
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Tooltip title={t(TranslationKeys.ManageAccessReminderDescription)}>
+            <div>
+              <StyledHelpOutlineIcon />
+            </div>
+          </Tooltip>
           {t(TranslationKeys.ManageAccess)}
         </AccordionSummary>
         <AccordionDetails>

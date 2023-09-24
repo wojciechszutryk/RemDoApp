@@ -109,6 +109,10 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.BackToTodoLists]: "Back to todo lists",
   [TranslationKeys.ManageAccess]: "Manage access",
   [TranslationKeys.GeneralInfo]: "General information",
+  [TranslationKeys.GeneralInfoReminderDescription]:
+    "Provide general informations, like name, description, scope and date rande.",
+  [TranslationKeys.ManageAccessReminderDescription]:
+    "Manage access to reminder. You can share reminder with your collaborants. You can assign them owner or user role. Owner can manage access to reminder.",
 
   [TranslationKeys.EmptyTasksList]: "No tasks in this list.",
   [TranslationKeys.DelteTask]: "Delete task",

@@ -1,5 +1,6 @@
 import { TextField } from "atomicComponents/atoms/TextField";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
+import { CollaborationState } from "linked-models/collaboration/collaboration.enum";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { memo, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
@@ -17,7 +18,7 @@ const CollaborantAutocomplete = ({
   defaultValues,
 }: Props): JSX.Element => {
   const watch = useWatch<IReminderDialogState>();
-  const { setValue, getValues } = useFormContext();
+  const { setValue } = useFormContext();
   const currentWatchValue = watch[name];
   const { currentUser } = useCurrentUser();
   const userCollaborantsQuery = useGetUserCollaborantsQuery();
@@ -25,8 +26,10 @@ const CollaborantAutocomplete = ({
   const collaborantsEmails = useMemo(() => {
     const emails = new Set<string>();
     userCollaborantsQuery.data?.forEach((col) => {
-      emails.add(col.creator.email);
-      emails.add(col.user.email);
+      if (col.state === CollaborationState.Accepted) {
+        emails.add(col.creator.email);
+        emails.add(col.user.email);
+      }
     });
 
     return Array.from(emails);
@@ -41,8 +44,10 @@ const CollaborantAutocomplete = ({
   const userEmailToPublicDataMap = useMemo(() => {
     const userEmailToPublicDataMap = new Map<string, IUserPublicDataDTO>();
     userCollaborantsQuery.data?.forEach((col) => {
-      userEmailToPublicDataMap.set(col.creator.email, col.creator);
-      userEmailToPublicDataMap.set(col.user.email, col.user);
+      if (col.state === CollaborationState.Accepted) {
+        userEmailToPublicDataMap.set(col.creator.email, col.creator);
+        userEmailToPublicDataMap.set(col.user.email, col.user);
+      }
     });
     defaultValues.forEach((u) => {
       userEmailToPublicDataMap.set(u.email, u);
@@ -57,7 +62,6 @@ const CollaborantAutocomplete = ({
     <StyledAutocomplete
       renderTags={() => {
         return currentWatchValue?.map((value, index) => {
-          const disabled = value.email === currentUser?.email
           return (
             <StyledAutocompleteChip
               key={index}
