@@ -82,16 +82,18 @@ const TodoListDialog = (): JSX.Element => {
             <StyledAutocompleteLabel>
               {t(TranslationKeys.CurrentOwners)}
             </StyledAutocompleteLabel>
-            <EmailAutocomplete
+
+            <CollaborantAutocomplete
               name="assignedOwners"
-              defaultValues={defaultFormValues.assignedOwners}
+              defaultValues={defaultFormValues?.assignedUsers}
             />
             <StyledAutocompleteLabel>
               {t(TranslationKeys.CurrentUsers)}
             </StyledAutocompleteLabel>
-            <EmailAutocomplete
+
+            <CollaborantAutocomplete
               name="assignedUsers"
-              defaultValues={defaultFormValues.assignedUsers}
+              defaultValues={defaultFormValues?.assignedUsers}
             />
           </Accordion>
           <Button type="submit">

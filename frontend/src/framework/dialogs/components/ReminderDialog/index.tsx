@@ -35,7 +35,7 @@ import { StyledHelpOutlineIcon } from "./styles";
 const ReminderDialog = (): JSX.Element => {
   const {
     dialogsState: {
-      reminderDialog: { editReminderData, visible },
+      reminderDialog: { editReminderData, visible, defaultData },
     },
     dialogsActions: { updateReminderDialog },
   } = useDialogs();
@@ -45,14 +45,22 @@ const ReminderDialog = (): JSX.Element => {
   );
 
   const defaultFormValues = {
-    text: editReminderData?.text || "",
-    name: editReminderData?.name || "",
-    icon: editReminderData?.icon || TodoListIconEnum.Reminder,
-    startDate: editReminderData?.startDate || dayjs().toDate(),
-    finishDate: editReminderData?.finishDate || dayjs().add(1, "hour").toDate(),
-    assignedOwners: editReminderData?.assignedOwners || [],
-    assignedUsers: editReminderData?.assignedUsers || [],
-    todoListId: editReminderData?.todoListId || "reminder",
+    text: defaultData?.text || editReminderData?.text || "",
+    name: defaultData?.name || editReminderData?.name || "",
+    icon:
+      defaultData?.icon || editReminderData?.icon || TodoListIconEnum.Reminder,
+    startDate:
+      defaultData?.startDate || editReminderData?.startDate || dayjs().toDate(),
+    finishDate:
+      defaultData?.finishDate ||
+      editReminderData?.finishDate ||
+      dayjs().add(1, "hour").toDate(),
+    assignedOwners:
+      defaultData?.assignedOwners || editReminderData?.assignedOwners || [],
+    assignedUsers:
+      defaultData?.assignedUsers || editReminderData?.assignedUsers || [],
+    todoListId:
+      defaultData?.todoListId || editReminderData?.todoListId || "reminder",
   };
 
   const methods = useForm<IReminderAttached>({
@@ -130,10 +138,17 @@ const ReminderDialog = (): JSX.Element => {
               </Typography>
 
               <ControlledTextField
-                name={"text"}
+                name={"name"}
                 required
                 control={methods.control}
                 placeholder={t(TranslationKeys.ReminderName)}
+              />
+
+              <ControlledTextField
+                name={"text"}
+                required
+                control={methods.control}
+                placeholder={t(TranslationKeys.ReminderDescription)}
               />
               {[
                 {

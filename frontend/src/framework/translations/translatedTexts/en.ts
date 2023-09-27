@@ -46,6 +46,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.EditReminder]: "Edit reminder",
   [TranslationKeys.CreateReminder]: "Create reminder",
   [TranslationKeys.ReminderName]: "Reminder name",
+  [TranslationKeys.ReminderDescription]: "Reminder description",
 
   [TranslationKeys.Week]: "Week",
   [TranslationKeys.WorkWeek]: "WorkWeek",

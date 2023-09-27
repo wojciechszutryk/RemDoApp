@@ -40,6 +40,7 @@ export enum TranslationKeys {
   EditReminder = "EditReminder",
   CreateReminder = "CreateReminder",
   ReminderName = "ReminderName",
+  ReminderDescription = "ReminderDescription",
 
   //callendar
   Week = "Week",

@@ -10,7 +10,7 @@ const useOnSelectSlot = () => {
     (slotInfo: SlotInfo) => {
       updateReminderDialog({
         visible: true,
-        editReminderData: {
+        defaultData: {
           startDate: slotInfo.start,
           finishDate: slotInfo.end,
         },

@@ -46,6 +46,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.EditReminder]: "Edytuj przypomnienie",
   [TranslationKeys.CreateReminder]: "Utwórz przypomnienie",
   [TranslationKeys.ReminderName]: "Nazwa przypomnienia",
+  [TranslationKeys.ReminderDescription]: "Opis przypomnienia",
 
   [TranslationKeys.Week]: "Tydzień",
   [TranslationKeys.WorkWeek]: "Dni robocze",
