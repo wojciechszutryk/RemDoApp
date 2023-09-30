@@ -88,6 +88,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
     "You rejected invitation, but you can accept it again",
   [TranslationKeys.YouBlockedButCanUnblock]:
     "You blocked user, but you can unblock him",
+  [TranslationKeys.NoCollaborantOption]:
+    "You have no collaborant with name including given phrase",
   [TranslationKeys.Block]: "Block",
   [TranslationKeys.Unblock]: "Unblock",
 

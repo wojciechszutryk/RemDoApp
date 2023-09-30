@@ -26,7 +26,7 @@ import { memo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import DateTimePickerWithIcon from "../TaskDilog/components/DatePickerWithIcon";
-import { StyledAutocompleteLabel, StyledForm } from "../TodoListDialog/styles";
+import { StyledForm } from "../TodoListDialog/styles";
 import CollaborantAutocomplete from "./components/CollaborantAutocomplete";
 import TodoListSelect from "./components/TodoListSelect";
 import { IReminderDialogState } from "./helpers/IReminderDialogState";
@@ -199,16 +199,12 @@ const ReminderDialog = (): JSX.Element => {
               <Typography variant="h4">
                 {t(TranslationKeys.ManageAccess)}
               </Typography>
-              <StyledAutocompleteLabel>
-                {t(TranslationKeys.CurrentOwners)}
-              </StyledAutocompleteLabel>
+              <Typography>{t(TranslationKeys.CurrentOwners)}</Typography>
               <CollaborantAutocomplete
                 name="assignedOwners"
                 defaultValues={defaultFormValues?.assignedOwners}
               />
-              <StyledAutocompleteLabel>
-                {t(TranslationKeys.CurrentUsers)}
-              </StyledAutocompleteLabel>
+              <Typography>{t(TranslationKeys.CurrentUsers)}</Typography>
               <CollaborantAutocomplete
                 name="assignedUsers"
                 defaultValues={defaultFormValues?.assignedUsers}

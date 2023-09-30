@@ -1,4 +1,4 @@
-import { Autocomplete, Chip, styled, Typography } from "@mui/material";
+import { Autocomplete, Chip, styled } from "@mui/material";
 
 export const StyledForm = styled("form")(({ theme }) => ({
   display: "flex",
@@ -11,10 +11,6 @@ export const StyledForm = styled("form")(({ theme }) => ({
     overflowY: "auto",
   },
 }));
-
-export const StyledAutocompleteLabel = styled(Typography)({
-  marginBottom: 10,
-});
 
 export const StyledInlineInputs = styled("div")({
   display: "flex",

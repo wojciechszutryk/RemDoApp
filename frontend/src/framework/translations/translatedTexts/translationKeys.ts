@@ -119,6 +119,7 @@ export enum TranslationKeys {
   InviteAgain = "InviteAgain",
   YouRejectedButCanAccept = "YouRejectedButCanAccept",
   YouBlockedButCanUnblock = "YouBlockedButCanUnblock",
+  NoCollaborantOption = "NoCollaborantOption",
   Block = "Block",
   Unblock = "Unblock",
 

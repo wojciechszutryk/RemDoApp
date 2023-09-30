@@ -1,14 +1,21 @@
+import { AutocompleteProps } from "@mui/material";
 import { TextField } from "atomicComponents/atoms/TextField";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { CollaborationState } from "linked-models/collaboration/collaboration.enum";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { memo, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { useGetUserCollaborantsQuery } from "../../CollaborantsDrawer/queries/getUserCollaborants.query.";
 import { IReminderDialogState } from "../helpers/IReminderDialogState";
 import { StyledAutocomplete, StyledAutocompleteChip } from "./styles";
 
-interface Props {
+interface Props
+  extends Omit<
+    AutocompleteProps<string, true, false, true, "div">,
+    "renderInput" | "options"
+  > {
   name: "assignedOwners" | "assignedUsers";
   defaultValues: IUserPublicDataDTO[];
 }
@@ -16,7 +23,9 @@ interface Props {
 const CollaborantAutocomplete = ({
   name,
   defaultValues,
+  ...autocompleteProps
 }: Props): JSX.Element => {
+  const { t } = useTranslation();
   const watch = useWatch<IReminderDialogState>();
   const { setValue } = useFormContext();
   const currentWatchValue = watch[name];
@@ -60,6 +69,7 @@ const CollaborantAutocomplete = ({
 
   return (
     <StyledAutocomplete
+      {...autocompleteProps}
       renderTags={() => {
         return currentWatchValue?.map((value, index) => {
           return (
@@ -96,6 +106,7 @@ const CollaborantAutocomplete = ({
       renderInput={(params) => {
         return <TextField {...params} />;
       }}
+      noOptionsText={t(TranslationKeys.NoCollaborantOption)}
     />
   );
 };

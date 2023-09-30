@@ -10,7 +10,6 @@ export const StyledAutocompleteChip = styled(Chip)(({ theme }) => ({
 export const StyledAutocomplete = styled(
   Autocomplete<string, true, false, true>
 )({
-  marginBottom: 10,
   "& .MuiFormControl-root": {
     height: "unset",
   },

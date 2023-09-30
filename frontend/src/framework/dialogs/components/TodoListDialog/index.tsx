@@ -16,12 +16,8 @@ import { memo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import CollaborantAutocomplete from "../ReminderDialog/components/CollaborantAutocomplete";
-import IconPicker from "./components/IconPicker";
-import {
-  StyledAutocompleteLabel,
-  StyledForm,
-  StyledInlineInputs,
-} from "./styles";
+import IconPicker from "./IconPicker";
+import { StyledForm, StyledInlineInputs } from "./styles";
 
 export type ITodoListDialogValues = Omit<
   ITodoListWithMembersDto,
@@ -54,6 +50,7 @@ const TodoListDialog = (): JSX.Element => {
     defaultValues: defaultFormValues,
   });
 
+  console.log(defaultFormValues);
   const createTodoListMutation = useCreateTodoListMutation();
   const editTodoListMutation = useEditTodoListMutation();
   const { t } = useTranslation();
@@ -90,19 +87,18 @@ const TodoListDialog = (): JSX.Element => {
             />
           </StyledInlineInputs>
           <Accordion summaryText={t(TranslationKeys.ShareTodoList)}>
-            <StyledAutocompleteLabel>
+            <Typography sx={{ marginBottom: "4px" }}>
               {t(TranslationKeys.CurrentOwners)}
-            </StyledAutocompleteLabel>
-
+            </Typography>
             <CollaborantAutocomplete
               name="assignedOwners"
-              defaultValues={defaultFormValues?.assignedUsers}
+              defaultValues={defaultFormValues?.assignedOwners}
             />
-            <StyledAutocompleteLabel>
+            <Typography sx={{ marginBottom: "4px" }}>
               {t(TranslationKeys.CurrentUsers)}
-            </StyledAutocompleteLabel>
-
+            </Typography>
             <CollaborantAutocomplete
+              sx={{ marginBottom: "10px" }}
               name="assignedUsers"
               defaultValues={defaultFormValues?.assignedUsers}
             />

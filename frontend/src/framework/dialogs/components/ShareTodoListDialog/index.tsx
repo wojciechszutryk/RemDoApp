@@ -9,9 +9,9 @@ import { useEditTodoListMutation } from "pages/SingleTodoListPage/mutations/edit
 import { memo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import EmailAutocomplete from "../TodoListDialog/components/EmailAutocomplete";
-import { StyledAutocompleteLabel, StyledForm } from "../TodoListDialog/styles";
-import { ShareTodoListForm } from "./models";
+import CollaborantAutocomplete from "../ReminderDialog/components/CollaborantAutocomplete";
+import { StyledForm } from "../TodoListDialog/styles";
+import { ShareTodoListDialogValues } from "./models";
 
 const ShareTodoListDialog = (): JSX.Element => {
   const {
@@ -35,14 +35,20 @@ const ShareTodoListDialog = (): JSX.Element => {
     assignedOwners,
     assignedUsers,
   };
-  const methods = useForm<ShareTodoListForm>({
+  const methods = useForm<ShareTodoListDialogValues>({
     defaultValues: defaultFormValues,
   });
   const editTodoListMutation = useEditTodoListMutation();
   const { t } = useTranslation();
 
-  const onSubmit = (data: ShareTodoListForm) => {
-    editTodoListMutation.mutate({ todoListId, data });
+  const onSubmit = (data: ShareTodoListDialogValues) => {
+    editTodoListMutation.mutate({
+      todoListId,
+      data: {
+        assignedUsers: data.assignedUsers.map((u) => u.email),
+        assignedOwners: data.assignedOwners.map((u) => u.email),
+      },
+    });
     onClose();
   };
 
@@ -53,19 +59,15 @@ const ShareTodoListDialog = (): JSX.Element => {
           <Typography variant="h4">
             {t(TranslationKeys.ShareTodoList)}: {todoListName}
           </Typography>
-          <StyledAutocompleteLabel>
-            {t(TranslationKeys.CurrentOwners)}
-          </StyledAutocompleteLabel>
-          <EmailAutocomplete
+          <Typography>{t(TranslationKeys.CurrentOwners)}</Typography>
+          <CollaborantAutocomplete
             name="assignedOwners"
-            defaultValues={defaultFormValues.assignedOwners}
+            defaultValues={defaultFormValues?.assignedOwners}
           />
-          <StyledAutocompleteLabel>
-            {t(TranslationKeys.CurrentUsers)}
-          </StyledAutocompleteLabel>
-          <EmailAutocomplete
+          <Typography>{t(TranslationKeys.CurrentUsers)}</Typography>
+          <CollaborantAutocomplete
             name="assignedUsers"
-            defaultValues={defaultFormValues.assignedUsers}
+            defaultValues={defaultFormValues?.assignedUsers}
           />
           <Button type="submit">{t(TranslationKeys.Save)}</Button>
         </FormProvider>
