@@ -13,5 +13,7 @@ export const URL_REDIRECT = `/redirect`;
 
 export const URL_WITH_COOKIE = `/withCookie`;
 export const URL_PASSWORD = `/password`;
+
 export const URL_PUBLIC_DATA = `/publicData`;
 export const URL_AVATAR = `/avatar`;
+export const URL_PREFERENCES = `/preferences`;

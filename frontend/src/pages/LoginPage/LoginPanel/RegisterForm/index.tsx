@@ -6,6 +6,7 @@ import { useRegisterUserMutation } from "framework/authentication/mutations/useR
 import { Pages } from "framework/routing/pages";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
+import { useLocalisation } from "framework/translations/useLocalisation.context";
 import { IRegisterUserDTO } from "linked-models/user/user.dto";
 import { Dispatch, memo, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
@@ -27,6 +28,7 @@ const RegisterContent = ({
   defaultEmail,
 }: Props): JSX.Element => {
   const { t } = useTranslation();
+  const { language } = useLocalisation();
   const { setSnackbar } = useSnackbar();
   const registerUserMutation = useRegisterUserMutation();
   const navigate = useNavigate();
@@ -66,18 +68,21 @@ const RegisterContent = ({
       });
     }
 
-    registerUserMutation.mutate(data, {
-      onSuccess: () => {
-        navigate(Pages.RemindersPage.path);
-        setSnackbar({ message: t(TranslationKeys.LoginSuccess) });
-      },
-      onError: (error) => {
-        setSnackbar({
-          message: error.response?.data || error.message,
-          severity: "error",
-        });
-      },
-    });
+    registerUserMutation.mutate(
+      { ...data, language },
+      {
+        onSuccess: () => {
+          navigate(Pages.RemindersPage.path);
+          setSnackbar({ message: t(TranslationKeys.LoginSuccess) });
+        },
+        onError: (error) => {
+          setSnackbar({
+            message: error.response?.data || error.message,
+            severity: "error",
+          });
+        },
+      }
+    );
   };
 
   return (

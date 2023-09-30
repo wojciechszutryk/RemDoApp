@@ -1,4 +1,10 @@
 import { IBaseModelAttached } from "../abstraction/base.interface";
+import { AppLanguages } from "../language/languages.enum";
+
+export interface IUserPreferences {
+  /** User's prefered language */
+  language: AppLanguages;
+}
 
 export interface IUser {
   /** User's nickName */
@@ -6,6 +12,9 @@ export interface IUser {
 
   /** User's email */
   email: string;
+
+  /** User's preferences */
+  preferences: IUserPreferences;
 }
 
 export interface IUserWithReadonlyProperties extends IUser {

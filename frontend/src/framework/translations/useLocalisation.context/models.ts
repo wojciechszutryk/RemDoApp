@@ -1,6 +1,6 @@
-import { TodoListLanguages } from "../models/translations.model";
+import { AppLanguages } from "linked-models/language/languages.enum";
 
 export interface ContextProps {
   changeLanguage: () => void;
-  language: TodoListLanguages;
+  language: AppLanguages;
 }

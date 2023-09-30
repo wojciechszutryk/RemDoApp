@@ -1,3 +1,4 @@
+import { AppLanguages } from "../language/languages.enum";
 import { IUserAttached } from "./user.model";
 
 export type IUserPublicDataDTO = Pick<
@@ -9,6 +10,7 @@ export type IRegisterUserDTO = {
   email: string;
   password: string;
   displayName: string;
+  language: AppLanguages;
 };
 
 export type ILoginUserDTO = Omit<IRegisterUserDTO, "displayName">;

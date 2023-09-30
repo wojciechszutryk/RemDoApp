@@ -20,6 +20,9 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  preferences: {
+    language: { type: String, default: "en" },
+  },
 });
 
 export interface IUserDocument extends IUserWithReadonlyProperties, Document {}
@@ -41,5 +44,6 @@ export const mapUserToAttachedUser = (user: IUserDocument): IUserAttached => {
     googleTokenExpiryDate: user.googleTokenExpiryDate,
     integratedWithGoogle: user.integratedWithGoogle,
     whenCreated: user.whenCreated,
+    preferences: user.preferences,
   };
 };
