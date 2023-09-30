@@ -5,7 +5,7 @@ import {
   URL_SUBSCRIBE,
 } from "linked-models/pushSubscription/pushSubscription.urls";
 
-async function regSw() {
+async function registerServiceWorker() {
   if ("serviceWorker" in navigator) {
     const url = process.env.PUBLIC_URL + "/sw.js";
     const reg = await navigator.serviceWorker.register(url, { scope: "/" });
@@ -16,17 +16,16 @@ async function regSw() {
   throw Error("serviceworker not supported");
 }
 
-async function subscribe(serviceWorkerReg: ServiceWorkerRegistration) {
+async function pushSubscribe(serviceWorkerReg: ServiceWorkerRegistration) {
   let subscription = await serviceWorkerReg.pushManager.getSubscription();
 
   if (subscription === null) {
     subscription = await serviceWorkerReg.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey:
-        "BAakkS83jr79aQ2MB5QK9MazuXWqpvMC4WlvopbGEnDLlME7L2BZWADcaaMJZXcKsuH0Zuc0MbrK9hFaYXZwqjw",
+      applicationServerKey: process.env.REACT_APP_VAPID_PUBLIC_KEY,
     });
     apiPost(FRONTIFY_URL(URL_PUSH, URL_SUBSCRIBE), subscription);
   }
 }
 
-export { regSw, subscribe };
+export { registerServiceWorker as regSw, pushSubscribe as subscribe };

@@ -7,7 +7,8 @@ import mongoose, { Document } from "mongoose";
 export const PushSubscriptionCollectionName = "PushSubscriptions";
 
 const PushSubscriptionSchema = new mongoose.Schema({
-  endpoint: String,
+  userId: { type: String, required: true },
+  endpoint: { type: String, required: true },
   expirationTime: Number,
   keys: {
     p256dh: String,
@@ -32,6 +33,7 @@ export const mapPushSubscriptionToAttachedPushSubscription = (
 ): IPushSubscriptionAttached => {
   return {
     id: pushSubscription.id,
+    userId: pushSubscription.userId,
     endpoint: pushSubscription.endpoint,
     expirationTime: pushSubscription.expirationTime,
     keys: pushSubscription.keys,

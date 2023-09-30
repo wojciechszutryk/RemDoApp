@@ -49,6 +49,7 @@
     "@types/jest": "^28.1.4",
     "@types/passport-google-oauth20": "^2.0.11",
     "@types/passport-local": "^1.0.35",
+    "@types/web-push": "^3.6.1",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "cross-env": "^7.0.3",

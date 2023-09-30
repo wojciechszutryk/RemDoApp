@@ -3,6 +3,10 @@ import {
   getNotificationCollection,
 } from "dbSchemas/notification.schema";
 import {
+  PushSubscriptionCollectionName,
+  getPushSubscriptionCollection,
+} from "dbSchemas/pushSubscription.schema";
+import {
   UserNotificationCollectionName,
   getUserNotificationCollection,
 } from "dbSchemas/userNotification.schema";
@@ -16,5 +20,8 @@ export const registerNotificationBindings = (container: Container) => {
   container
     .bind(UserNotificationCollectionName)
     .toDynamicValue(() => getUserNotificationCollection());
+  container
+    .bind(PushSubscriptionCollectionName)
+    .toDynamicValue(() => getPushSubscriptionCollection());
   container.bind(NotificationService).toSelf();
 };

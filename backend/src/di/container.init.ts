@@ -1,5 +1,6 @@
 import "controllers/collaboration/collaboration.invintation.controller";
 import "controllers/collaboration/user.collaborants.controller";
+import "controllers/other/pushSubscription.controller";
 import "controllers/reminder/reminder.controller";
 import "controllers/reminder/reminders.controller";
 import "controllers/task/todoList.task.controller";

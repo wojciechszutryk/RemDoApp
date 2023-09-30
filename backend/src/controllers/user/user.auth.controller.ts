@@ -10,6 +10,7 @@ import {
   response,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import { URL_PUSH } from "linked-models/pushSubscription/pushSubscription.urls";
 import { IUserAttached } from "linked-models/user/user.model";
 import {
   URL_GOOGLE,
@@ -33,6 +34,13 @@ export class UserAuthController extends BaseHttpController {
     @inject(UserAuthService) private readonly userService: UserAuthService
   ) {
     super();
+  }
+
+
+  @httpGet(URL_PUSH)
+  async getPushSubscription(): Promise<OkResult> {
+    // const pushSubscription = await this.pushSubscriptionCollection.findOne();
+    return this.json('');
   }
 
   @httpGet(
