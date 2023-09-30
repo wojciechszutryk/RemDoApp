@@ -4,6 +4,7 @@ import useAutoLogin from "framework/authentication/useAutoLogin";
 import useNotificationSocket from "framework/notifications/useNotificationSocket";
 
 import { Pages } from "framework/routing/pages";
+import { regSw, subscribe } from "framework/serviceWorker/register";
 import "framework/translations/i18.config/resources";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import UserPage from "pages/UserPage";
@@ -29,6 +30,15 @@ const App = (): JSX.Element => {
 
   useAutoLogin();
 
+  async function registerAndSubscribe() {
+    try {
+      const serviceWorkerReg = await regSw();
+      await subscribe(serviceWorkerReg);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <BrowserRouter>
       <Routes>
@@ -37,7 +47,12 @@ const App = (): JSX.Element => {
           element={
             <Suspense fallback={false}>
               <PageTemplate>
-                <HomePage />
+                <>
+                  <button onClick={registerAndSubscribe}>
+                    subscribe for push notifications
+                  </button>
+                  <HomePage />
+                </>
               </PageTemplate>
             </Suspense>
           }

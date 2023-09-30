@@ -21,6 +21,6 @@
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/**/*"],
+  "include": ["src", "src/**/*", "public/sw.js"],
   "exclude": ["craco.config.js"]
 }
