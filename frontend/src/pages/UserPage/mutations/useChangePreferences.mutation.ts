@@ -4,7 +4,11 @@ import { apiPut } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { IUserPreferences } from "linked-models/user/user.model";
-import { URL_AVATAR, URL_USER, URL_USERS } from "linked-models/user/user.urls";
+import {
+  URL_PREFERENCES,
+  URL_USER,
+  URL_USERS,
+} from "linked-models/user/user.urls";
 
 export const useChangePreferencesMutation = (): UseMutationResult<
   void,
@@ -13,11 +17,14 @@ export const useChangePreferencesMutation = (): UseMutationResult<
   unknown
 > => {
   const { currentUser, setCurrentUser } = useCurrentUser();
-  const url = FRONTIFY_URL(URL_USERS, URL_USER(currentUser?.id) + URL_AVATAR);
 
   const changePreferences = async (
     preferences: Partial<IUserPreferences>
   ): Promise<void> => {
+    const url = FRONTIFY_URL(
+      URL_USERS,
+      URL_USER(currentUser?.id) + URL_PREFERENCES
+    );
     return await apiPut<Partial<IUserPreferences>, void>(url, preferences).then(
       (res) => res.data
     );

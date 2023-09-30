@@ -17,20 +17,20 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <LocalisationProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <SnackbarProvider>
-            <DialogsProvider>
-              <CurrentUserProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <SnackbarProvider>
+          <DialogsProvider>
+            <CurrentUserProvider>
+              <LocalisationProvider>
                 <App />
                 <Snackbar />
-              </CurrentUserProvider>
-            </DialogsProvider>
-          </SnackbarProvider>
-        </ThemeProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </LocalisationProvider>
+              </LocalisationProvider>
+            </CurrentUserProvider>
+          </DialogsProvider>
+        </SnackbarProvider>
+      </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   </React.StrictMode>
 );

@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   preferences: {
-    language: { type: String, default: "en" },
+    language: String,
   },
 });
 

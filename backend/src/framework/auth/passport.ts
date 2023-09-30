@@ -28,7 +28,7 @@ passport.use(
       passReqToCallback: true,
     },
     async function (req, _, __, done) {
-      const { displayName, email, password } = req.body;
+      const { displayName, email, password, language } = req.body;
 
       if (!(email && password && displayName)) {
         return done("No email or password or displayName provided", false);
@@ -47,6 +47,9 @@ passport.use(
         email: email.toLowerCase(),
         password: encryptedPassword,
         whenCreated: new Date(),
+        preferences: {
+          language,
+        },
         authId: "",
       });
       await getUserCollection().findByIdAndUpdate(user._id, {
@@ -136,6 +139,9 @@ passport.use(
           authId: profile.id,
           displayName: profile.displayName,
           email,
+          preferences: {
+            language: profile._json.locale,
+          },
           integratedWithGoogle: true,
           avatarUrl: profile.photos ? profile.photos[0].value : null,
           googleAccessToken: accessToken,

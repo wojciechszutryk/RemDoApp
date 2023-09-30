@@ -13,7 +13,7 @@ export type IRegisterUserDTO = {
   language: AppLanguages;
 };
 
-export type ILoginUserDTO = Omit<IRegisterUserDTO, "displayName">;
+export type ILoginUserDTO = Omit<IRegisterUserDTO, "displayName" | "language">;
 
 export type IChangePasswordDTO = {
   currentPassword: string;

@@ -20,10 +20,11 @@ import {
   IChangePasswordDTO,
   IUserPublicDataDTO,
 } from "linked-models/user/user.dto";
-import { IUserAttached } from "linked-models/user/user.model";
+import { IUserAttached, IUserPreferences } from "linked-models/user/user.model";
 import {
   URL_AVATAR,
   URL_PASSWORD,
+  URL_PREFERENCES,
   URL_PUBLIC_DATA,
   URL_USER,
   URL_USERS,
@@ -145,6 +146,23 @@ export class UserController extends BaseHttpController {
   ): Promise<OkResult> {
     try {
       await this.userService.updateUserPublicData(currentUser.id, body);
+      return this.ok();
+    } catch (error) {
+      if (error instanceof Error) {
+        return this.json(error.message, 400);
+      }
+
+      return this.statusCode(400);
+    }
+  }
+
+  @httpPut(URL_USER() + URL_PREFERENCES, SetCurrentUser)
+  async changePreferences(
+    @currentUser() currentUser: IUserAttached,
+    @requestBody() body: Partial<IUserPreferences>
+  ): Promise<OkResult> {
+    try {
+      await this.userService.updateUserPreferences(currentUser, body);
       return this.ok();
     } catch (error) {
       if (error instanceof Error) {

@@ -1,4 +1,5 @@
 import {
+  IUserDocument,
   UserCollectionName,
   UserCollectionType,
   mapUserToAttachedUser,
@@ -6,8 +7,8 @@ import {
 import { extractPropertiesToUpdate } from "helpers/extractPropertiesToUpdate";
 import { inject, injectable } from "inversify";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
-import { IUserAttached } from "linked-models/user/user.model";
-import mongoose from "mongoose";
+import { IUserAttached, IUserPreferences } from "linked-models/user/user.model";
+import mongoose, { UpdateQuery } from "mongoose";
 
 @injectable()
 export class UserService {
@@ -101,6 +102,38 @@ export class UserService {
     if (!updatedUser) {
       throw new Error(
         `Cannot update user: ${userId}, because it does not exist.`
+      );
+    }
+  }
+
+  /**
+   * Warning this service doesn't check if can be updated. It is assumed that proper check is done before using this service
+   */
+  public async updateUserPreferences(
+    user: IUserAttached,
+    data: Partial<IUserPreferences>
+  ): Promise<void> {
+    debugger;
+    //only valid properties
+    const updateValues = extractPropertiesToUpdate(data, ["language"]);
+
+    const updateObject: UpdateQuery<IUserDocument> = {};
+    Object.entries(updateValues).forEach(([key, value]) => {
+      updateObject[`preferences.${key}`] = value;
+    });
+
+    const updatedUser = await this.userCollection.findByIdAndUpdate(
+      user.id,
+      {
+        whenUpdated: new Date(),
+        ...updateObject,
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      throw new Error(
+        `Cannot update user: ${user.id}, because it does not exist.`
       );
     }
   }
