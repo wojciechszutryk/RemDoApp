@@ -7,20 +7,26 @@ import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useDialogs } from "framework/dialogs";
 import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
+import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
 import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
-import { ITodoList } from "linked-models/todoList/todoList.model";
+import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { useEditTodoListMutation } from "pages/SingleTodoListPage/mutations/editTodoList/editTodoList.mutation";
 import { useCreateTodoListMutation } from "pages/TodoListsPage/mutations/createTodoList/createTodoList.mutation";
 import { memo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import EmailAutocomplete from "./components/EmailAutocomplete";
+import CollaborantAutocomplete from "../ReminderDialog/components/CollaborantAutocomplete";
 import IconPicker from "./components/IconPicker";
 import {
   StyledAutocompleteLabel,
   StyledForm,
   StyledInlineInputs,
 } from "./styles";
+
+export type ITodoListDialogValues = Omit<
+  ITodoListWithMembersDto,
+  "creator" | "whenCreated" | "whenUpdated" | "id"
+>;
 
 const TodoListDialog = (): JSX.Element => {
   const {
@@ -36,15 +42,15 @@ const TodoListDialog = (): JSX.Element => {
 
   const { currentUser } = useCurrentUser();
 
-  const defaultFormValues = {
+  const defaultFormValues: ITodoListDialogValues = {
     name: editTodoListData?.name || "",
     icon: editTodoListData?.icon || TodoListIconEnum.TodoList,
     assignedOwners: editTodoListData?.assignedOwners || [
-      currentUser?.email || "",
+      currentUser as IUserPublicDataDTO,
     ],
     assignedUsers: editTodoListData?.assignedUsers || [],
   };
-  const methods = useForm<ITodoList>({
+  const methods = useForm<ITodoListWithMembersDto>({
     defaultValues: defaultFormValues,
   });
 
@@ -52,7 +58,12 @@ const TodoListDialog = (): JSX.Element => {
   const editTodoListMutation = useEditTodoListMutation();
   const { t } = useTranslation();
 
-  const onSubmit = (data: ITodoList) => {
+  const onSubmit = (values: ITodoListDialogValues) => {
+    const data = {
+      ...values,
+      assignedOwners: values.assignedOwners.map((owner) => owner.email),
+      assignedUsers: values.assignedUsers.map((user) => user.email),
+    };
     if (editTodoListData)
       editTodoListMutation.mutate({ todoListId: editTodoListData.id, data });
     else createTodoListMutation.mutate(data);
