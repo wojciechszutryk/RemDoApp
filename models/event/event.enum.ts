@@ -14,10 +14,15 @@ export enum EventName {
   CollaboartionReOpened = "COLLABOARTION_RE_OPENED",
   CollaboartionRejected = "COLLABOARTION_REJECTED",
   CollaboartionBlocked = "COLLABOARTION_BLOCKED",
+
+  ReminderCreated = "REMINDER_CREATED",
+  ReminderUpdated = "REMINDER_UPDATED",
+  ReminderDeleted = "REMINDER_DELETED",
 }
 
 export enum EventSubject {
   Task = "TASK",
   TodoList = "TODOLIST",
   Collaboration = "COLLABORATION",
+  Reminder = "REMINDER",
 }

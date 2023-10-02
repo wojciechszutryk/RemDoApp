@@ -1,6 +1,11 @@
 import { EventService } from "framework/events/event.service";
 import { extractPropertiesToUpdate } from "helpers/extractPropertiesToUpdate";
 import { inject, injectable } from "inversify";
+import {
+  ReminderCreatedEvent,
+  ReminderDeletedEvent,
+  ReminderUpdatedEvent,
+} from "linked-models/event/implementation/reminder.events";
 import { IReminder } from "linked-models/reminder/reminder.dto";
 import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import { ITask, ITaskAttached } from "linked-models/task/task.model";
@@ -150,9 +155,23 @@ export class ReminderService {
       false
     );
 
-    //TODO: event service
+    const createdReminder = this.mapTodoListAndTaskToReminderAttached(
+      newTodoList,
+      newTask
+    );
 
-    return this.mapTodoListAndTaskToReminderAttached(newTodoList, newTask);
+    if (
+      [
+        ...createdReminder.assignedOwners,
+        ...createdReminder.assignedUsers,
+      ].some((u) => u.id !== creator.id)
+    )
+      this.eventService.emit(ReminderCreatedEvent, creator.id, {
+        createdReminder,
+        eventCreator: creator,
+      });
+
+    return createdReminder;
   }
 
   /**
@@ -163,7 +182,7 @@ export class ReminderService {
     todoListId: string,
     taskId: string,
     editReminderData: Partial<IReminder>,
-    creatorId: string
+    editorId: string
   ): Promise<IReminderAttached> {
     const todoListKeys: (keyof ITodoList)[] = [
       "name",
@@ -181,7 +200,7 @@ export class ReminderService {
       await this.todoListService.updateTodoList(
         todoListId,
         todoListDataToEdit,
-        creatorId,
+        editorId,
         false
       );
     }
@@ -204,7 +223,7 @@ export class ReminderService {
       await this.taskService.updateTask(
         taskId,
         taskDataToEdit,
-        creatorId,
+        editorId,
         false
       );
     }
@@ -214,7 +233,13 @@ export class ReminderService {
     if (!updatedReminder)
       throw new Error("There was an error while updating reminder");
 
-    //TODO: event service
+    if (
+      [
+        ...updatedReminder.assignedOwners,
+        ...updatedReminder.assignedUsers,
+      ].some((u) => u.id !== editorId)
+    )
+      this.eventService.emit(ReminderUpdatedEvent, editorId, updatedReminder);
 
     return updatedReminder;
   }
@@ -239,7 +264,17 @@ export class ReminderService {
 
     if (!deletedTodoList) throw new Error("TodoList not found");
 
-    //TODO: event service
+    if (
+      [
+        ...deletedTodoList.assignedOwners,
+        ...deletedTodoList.assignedUsers,
+      ].some((u) => u.id !== deleterId)
+    )
+      this.eventService.emit(
+        ReminderDeletedEvent,
+        deleterId,
+        this.mapTodoListAndTaskToReminderAttached(deletedTodoList, deletedTask)
+      );
 
     return this.mapTodoListAndTaskToReminderAttached(
       deletedTodoList,

@@ -5,18 +5,18 @@ import { EventName, EventSubject } from "linked-models/event/event.enum";
 import { TypedEventHandler } from "linked-models/event/event.handler.interface";
 import { TypedEvent } from "linked-models/event/event.interface";
 import {
-  ITaskCreatedEventPayload,
-  TaskCreatedEvent,
-} from "linked-models/event/implementation/task.events";
+  IReminderCreatedEventPayload,
+  ReminderCreatedEvent,
+} from "linked-models/event/implementation/reminder.events";
 import { GoogleEventService } from "services/googleEvent/googleEvent.service";
 import { NotificationService } from "services/notification.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { TodoListService } from "services/todoList/todoList.service";
 import { UserAuthService } from "services/user/user.auth.service";
 
-@EventHandler(TaskCreatedEvent)
-export class TaskCreatedEventHandler
-  implements TypedEventHandler<ITaskCreatedEventPayload>
+@EventHandler(ReminderCreatedEvent)
+export class ReminderCreatedEventHandler
+  implements TypedEventHandler<IReminderCreatedEventPayload>
 {
   constructor(
     @inject(TodoListCacheService)
@@ -32,13 +32,13 @@ export class TaskCreatedEventHandler
   ) {}
 
   async handle(
-    _: TypedEvent<ITaskCreatedEventPayload>,
+    _: TypedEvent<IReminderCreatedEventPayload>,
     __: string,
-    { createdTask, eventCreator }: ITaskCreatedEventPayload
+    { createdReminder, eventCreator }: IReminderCreatedEventPayload
   ) {
     const todoListWithMembers =
       await this.todoListService.getTodoListWithMembersById(
-        createdTask.todoListId
+        createdReminder.todoListId
       );
 
     if (!todoListWithMembers) return;
@@ -57,13 +57,13 @@ export class TaskCreatedEventHandler
     const createdNotifications =
       await this.notificationService.createNotificationForUsers(
         uniqueTodoListMembersIDs,
-        EventName.TaskCreated,
-        EventSubject.Task,
+        EventName.ReminderCreated,
+        EventSubject.Reminder,
         eventCreator.id,
-        createdTask.todoListId,
-        createdTask.id
+        createdReminder.todoListId,
+        createdReminder.taskId
       );
-    this.socketService.notifyUsers(createdNotifications, createdTask);
+    this.socketService.notifyUsers(createdNotifications, createdReminder);
 
     //invalidate cache
     this.todoListCacheService.invalidateExtendedTodoListCacheByUserIDs(
@@ -72,8 +72,8 @@ export class TaskCreatedEventHandler
 
     //create google event
     if (
-      !!createdTask.startDate &&
-      !!createdTask.finishDate &&
+      !!createdReminder.startDate &&
+      !!createdReminder.finishDate &&
       !!eventCreator.googleAccessToken &&
       !!eventCreator.googleRefreshToken
     ) {
@@ -81,8 +81,8 @@ export class TaskCreatedEventHandler
         eventCreator
       );
       this.googleEventService.createEventInGoogleCallendar(userOAuth2Client!, {
-        id: createdTask.id,
-        summary: createdTask.text,
+        id: createdReminder.taskId,
+        summary: createdReminder.text,
         description: todoListWithMembers.name,
         attendees: todoListMembers.map((member) => {
           return {
@@ -92,11 +92,11 @@ export class TaskCreatedEventHandler
           };
         }),
         start: {
-          dateTime: new Date(createdTask.startDate).toISOString(),
+          dateTime: new Date(createdReminder.startDate).toISOString(),
           timeZone: "UTC",
         },
         end: {
-          dateTime: new Date(createdTask.finishDate).toISOString(),
+          dateTime: new Date(createdReminder.finishDate).toISOString(),
           timeZone: "UTC",
         },
       });
