@@ -1,9 +1,12 @@
 import { IBaseModelAttached } from "../abstraction/base.interface";
 import { AppLanguages } from "../language/languages.enum";
 
+export type AppTheme = "light" | "dark";
+
 export interface IUserPreferences {
   /** User's prefered language */
   language: AppLanguages;
+  theme: AppTheme;
 }
 
 export interface IUser {

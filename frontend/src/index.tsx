@@ -18,18 +18,18 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <SnackbarProvider>
-          <DialogsProvider>
-            <CurrentUserProvider>
+      <SnackbarProvider>
+        <DialogsProvider>
+          <CurrentUserProvider>
+            <ThemeProvider>
               <LocalisationProvider>
                 <App />
                 <Snackbar />
               </LocalisationProvider>
-            </CurrentUserProvider>
-          </DialogsProvider>
-        </SnackbarProvider>
-      </ThemeProvider>
+            </ThemeProvider>
+          </CurrentUserProvider>
+        </DialogsProvider>
+      </SnackbarProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.StrictMode>

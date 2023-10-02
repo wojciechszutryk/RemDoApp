@@ -1,8 +1,7 @@
-import {
-  createTheme,
-  PaletteMode,
-  ThemeProvider as MuiThemeProvider,
-} from "@mui/material";
+import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material";
+import { useCurrentUser } from "framework/authentication/useCurrentUser";
+import { AppTheme } from "linked-models/user/user.model";
+import { useChangePreferencesMutation } from "pages/UserPage/mutations/useChangePreferences.mutation";
 
 import { ReactNode, useContext, useMemo, useState } from "react";
 import { TodoListThemeLSKey } from "../models/theme.const";
@@ -16,9 +15,11 @@ interface Props {
 }
 
 function ThemeProvider({ children }: Props): JSX.Element {
-  const [mode, setMode] = useState<PaletteMode>(
-    localStorage.getItem(TodoListThemeLSKey)
-      ? (localStorage.getItem(TodoListThemeLSKey) as PaletteMode)
+  const { currentUser } = useCurrentUser();
+  const changePreferencesMutation = useChangePreferencesMutation();
+  const [mode, setMode] = useState<AppTheme>(
+    currentUser?.preferences.theme || localStorage.getItem(TodoListThemeLSKey)
+      ? (localStorage.getItem(TodoListThemeLSKey) as AppTheme)
       : "light"
   );
   const muiTheme = useMemo(
@@ -70,6 +71,10 @@ function ThemeProvider({ children }: Props): JSX.Element {
     const newTheme = mode === "light" ? "dark" : "light";
     setMode(newTheme);
     localStorage.setItem(TodoListThemeLSKey, newTheme);
+
+    if (currentUser) {
+      changePreferencesMutation.mutate({ theme: newTheme });
+    }
   };
 
   const value = {

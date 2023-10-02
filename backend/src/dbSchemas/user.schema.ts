@@ -22,6 +22,7 @@ const UserSchema = new mongoose.Schema({
   },
   preferences: {
     language: String,
+    theme: String,
   },
 });
 

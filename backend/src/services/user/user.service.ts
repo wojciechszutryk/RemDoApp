@@ -115,7 +115,12 @@ export class UserService {
   ): Promise<void> {
     debugger;
     //only valid properties
-    const updateValues = extractPropertiesToUpdate(data, ["language"]);
+    const updateValues = extractPropertiesToUpdate(data, ["language", "theme"]);
+
+    /**
+     * TODO: add theme to preferences
+     * handle push noti
+     */
 
     const updateObject: UpdateQuery<IUserDocument> = {};
     Object.entries(updateValues).forEach(([key, value]) => {
