@@ -63,7 +63,10 @@ export class TaskCreatedEventHandler
         createdTask.todoListId,
         createdTask.id
       );
-    this.socketService.notifyUsers(createdNotifications, createdTask);
+    this.socketService.notifyUsers(createdNotifications, {
+      createdTask,
+      eventCreator,
+    } as ITaskCreatedEventPayload);
 
     //invalidate cache
     this.todoListCacheService.invalidateExtendedTodoListCacheByUserIDs(

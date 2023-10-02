@@ -156,6 +156,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.NotificationWasCreatedPart]: "was created ",
   [TranslationKeys.NotificationWasModifiedPart]: "was modified ",
   [TranslationKeys.NotificationWasDeletedPart]: "was deleted ",
+  [TranslationKeys.NotificationNewReminderPart]: "New reminder ",
+  [TranslationKeys.NotificationExistingReminderPart]: "Reminder ",
   [TranslationKeys.NotificationUserInvitedPart]:
     "You've been invited to todo list ",
   [TranslationKeys.NotificationUserRemovedPart]:

@@ -6,6 +6,11 @@ import {
   CollaborationRequestedEvent,
 } from "linked-models/event/implementation/collaboartion.events";
 import {
+  ReminderCreatedEvent,
+  ReminderDeletedEvent,
+  ReminderUpdatedEvent,
+} from "linked-models/event/implementation/reminder.events";
+import {
   TaskCreatedEvent,
   TaskDeletedEvent,
   TaskUpdatedEvent,
@@ -240,6 +245,53 @@ const useNotificationSocket = () => {
               t
             ),
             payload
+          );
+        });
+        on(ReminderCreatedEvent, ({ notification, payload }) => {
+          addNewNotification(
+            notification,
+            createTodoNotificationMsg(
+              {
+                action: notification.action,
+                actionCreatorDisplayName: payload.eventCreator.displayName,
+                todoListName: payload.createdReminder.name,
+                taskName: payload.createdReminder.text,
+              },
+              t
+            ),
+            payload.eventCreator
+          );
+        });
+        on(ReminderUpdatedEvent, ({ notification, payload }) => {
+          const creator = userIdToUserMap.get(notification.actionCreatorId);
+          addNewNotification(
+            notification,
+            createTodoNotificationMsg(
+              {
+                action: notification.action,
+                actionCreatorDisplayName: creator?.displayName,
+                todoListName: payload.name,
+                taskName: payload.text,
+              },
+              t
+            ),
+            creator
+          );
+        });
+        on(ReminderDeletedEvent, ({ notification, payload }) => {
+          const creator = userIdToUserMap.get(notification.actionCreatorId);
+          addNewNotification(
+            notification,
+            createTodoNotificationMsg(
+              {
+                action: notification.action,
+                actionCreatorDisplayName: creator?.displayName,
+                todoListName: payload.name,
+                taskName: payload.text,
+              },
+              t
+            ),
+            creator
           );
         });
       }

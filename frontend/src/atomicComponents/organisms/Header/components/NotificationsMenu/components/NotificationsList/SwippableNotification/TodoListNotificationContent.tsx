@@ -1,6 +1,7 @@
 import { createTodoNotificationMsg } from "framework/notifications/helpers/createTodoNotificationMsg";
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
+import { EventSubject } from "linked-models/event/event.enum";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +14,7 @@ interface Props {
 }
 
 const TodoListNotificationContent = ({
-  extendedNotification: { task, todoList, creator, action },
+  extendedNotification: { task, todoList, creator, action, actionSubject },
   hideNotificationMenu,
 }: Props): JSX.Element => {
   const navigate = useNavigate();
@@ -34,7 +35,9 @@ const TodoListNotificationContent = ({
             )}
             <span
               onClick={(e) => {
-                if (todoList?.id) {
+                if (actionSubject === EventSubject.Reminder) {
+                  navigate(Pages.RemindersPage.path);
+                } else if (todoList?.id) {
                   if (task?.id && todoList?.id)
                     navigate(Pages.TaskPage.path(todoList.id, task.id));
                   else {

@@ -144,6 +144,8 @@ export enum TranslationKeys {
   NotificationUserInvitedPart = "NotificationUserInvitedPart",
   NotificationUserRemovedPart = "NotificationUserRemovedPart",
   NotificationUnknownAction = "NotificationUnknownAction",
+  NotificationNewReminderPart = "NotificationNewReminderPart",
+  NotificationExistingReminderPart = "NotificationExistingReminderPart",
   UserSendYouCollaborationRequest = "UserSendYouCollaborationRequest",
   UserAcceptedYourCollaborationRequest = "UserAcceptedYourCollaborationRequest",
   UserRejectedYourCollaborationRequest = "UserRejectedYourCollaborationRequest",

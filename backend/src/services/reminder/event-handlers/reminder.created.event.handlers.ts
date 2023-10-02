@@ -63,7 +63,10 @@ export class ReminderCreatedEventHandler
         createdReminder.todoListId,
         createdReminder.taskId
       );
-    this.socketService.notifyUsers(createdNotifications, createdReminder);
+    this.socketService.notifyUsers(createdNotifications, {
+      createdReminder,
+      eventCreator,
+    } as IReminderCreatedEventPayload);
 
     //invalidate cache
     this.todoListCacheService.invalidateExtendedTodoListCacheByUserIDs(

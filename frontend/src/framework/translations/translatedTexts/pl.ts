@@ -93,7 +93,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "Odrzuciłeś zaproszenie, ale możesz je ponownie zaakceptować",
   [TranslationKeys.YouBlockedButCanUnblock]:
     "Zablokowałeś użytkownika, ale możesz go odblokować",
-  [TranslationKeys.NoCollaborantOption]: "Nie masz współpracownika z nazwą zawierającą podaną frazę",
+  [TranslationKeys.NoCollaborantOption]:
+    "Nie masz współpracownika z nazwą zawierającą podaną frazę",
   [TranslationKeys.Block]: "Zablokuj",
   [TranslationKeys.Unblock]: "Odblokuj",
 
@@ -161,6 +162,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.NotificationWasModifiedPart]: "zostało zmodyfikowane ",
   [TranslationKeys.NotificationWasDeletedPart]: "zostało usunięte ",
   [TranslationKeys.NotificationUnknownAction]: "Nieznana akcja ",
+  [TranslationKeys.NotificationNewReminderPart]: "Nowe przypomnienie ",
+  [TranslationKeys.NotificationExistingReminderPart]: "Przypomnienie ",
   [TranslationKeys.NotificationUserInvitedPart]:
     "Zostałeś zaproszony do listy zadań ",
   [TranslationKeys.NotificationUserRemovedPart]:

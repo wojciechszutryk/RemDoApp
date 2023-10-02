@@ -80,6 +80,21 @@ export const createTodoNotificationMsg = (
         todoListName ? `"${todoListName}" ` : ""
       }${actionCreatorPart}`;
       break;
+    case EventName.ReminderCreated:
+      text = `${t(TranslationKeys.NotificationNewReminderPart)}${
+        todoListName ? `"${todoListName}" ` : ""
+      }${t(TranslationKeys.NotificationWasCreatedPart)}${actionCreatorPart}`;
+      break;
+    case EventName.ReminderUpdated:
+      text = `${t(TranslationKeys.NotificationExistingReminderPart)}${
+        todoListName ? `"${todoListName}" ` : ""
+      }${t(TranslationKeys.NotificationWasModifiedPart)}${actionCreatorPart}`;
+      break;
+    case EventName.ReminderDeleted:
+      text = `${t(TranslationKeys.NotificationExistingReminderPart)}${
+        todoListName ? `"${todoListName}" ` : ""
+      }${t(TranslationKeys.NotificationWasDeletedPart)}${actionCreatorPart}`;
+      break;
 
     default:
       text = `${t(
