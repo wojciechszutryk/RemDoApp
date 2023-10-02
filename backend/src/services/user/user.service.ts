@@ -117,11 +117,6 @@ export class UserService {
     //only valid properties
     const updateValues = extractPropertiesToUpdate(data, ["language", "theme"]);
 
-    /**
-     * TODO: add theme to preferences
-     * handle push noti
-     */
-
     const updateObject: UpdateQuery<IUserDocument> = {};
     Object.entries(updateValues).forEach(([key, value]) => {
       updateObject[`preferences.${key}`] = value;
