@@ -190,6 +190,34 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Theme]: "Theme",
   [TranslationKeys.LanguagePolish]: "Polish language",
   [TranslationKeys.LanguageEnglish]: "English language",
+  [TranslationKeys.NotificationsSettings]: "Notifications preferences",
+  [TranslationKeys.TASK_CREATED]: "Task created in your todo list",
+  [TranslationKeys.TASK_UPDATED]: "Task updated in your todo list",
+  [TranslationKeys.TASK_DELETED]: "Task deleted in your todo list",
+  [TranslationKeys.REMINDER_CREATED]: "You were assigned to new reminder",
+  [TranslationKeys.REMINDER_UPDATED]:
+    "Reminder that you are assigned to was updated",
+  [TranslationKeys.REMINDER_DELETED]:
+    "Reminder that you are assigned to was deleted",
+  [TranslationKeys.COLLABOARTION_ACCEPTED]:
+    "Collaboration you requested was accepted",
+  [TranslationKeys.COLLABOARTION_REQUESTED]: "You received collaboration request",
+  [TranslationKeys.COLLABOARTION_RE_OPENED]:
+    "You received collaboration request for second time",
+  [TranslationKeys.COLLABOARTION_REJECTED]:
+    "Collaboration you requested was rejected",
+  [TranslationKeys.COLLABOARTION_BLOCKED]: "Collaboration with you was blocked",
+  [TranslationKeys.TODOLIST_CREATED]: "You were assigned to new todo list",
+  [TranslationKeys.TODOLIST_UPDATED]:
+    "Todo list that you are assigned to was updated",
+  [TranslationKeys.TODOLIST_DELETED]:
+    "Todo list that you are assigned to was deleted",
+  [TranslationKeys.TODOLIST_MEMBER_ADDED]:
+    "User added to todo list that you are assigned to",
+  [TranslationKeys.TODOLIST_MEMBER_REMOVED]:
+    "User removed from todo list that you are assigned to",
+  [TranslationKeys.PushNotification]: "Push notification",
+  [TranslationKeys.SocketNotification]: "Real time notification",
 
   [TranslationKeys.Save]: "Save",
   [TranslationKeys.Cancel]: "Anuluj",

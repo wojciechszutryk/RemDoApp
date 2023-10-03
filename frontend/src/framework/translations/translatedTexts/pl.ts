@@ -195,6 +195,41 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Theme]: "Motyw",
   [TranslationKeys.LanguagePolish]: "Język Polski",
   [TranslationKeys.LanguageEnglish]: "Język Angielski",
+  [TranslationKeys.NotificationsSettings]: "Preferencje powiadomień",
+  [TranslationKeys.TASK_CREATED]:
+    "Zadanie zostało utworzone w liście zadań do której jesteś przypisany/a",
+  [TranslationKeys.TASK_UPDATED]:
+    "Zadanie zostało zmodyfikowane w liście zadań do której jesteś przypisany/a",
+  [TranslationKeys.TASK_DELETED]:
+    "Zadanie zostało usunięte z listy zadań do której jesteś przypisany/a",
+  [TranslationKeys.REMINDER_CREATED]:
+    "Zostałeś przypisany/a do nowego przypomnienia",
+  [TranslationKeys.REMINDER_UPDATED]:
+    "Przypomnienie do którego jesteś przypisany/a zostało zmodyfikowane",
+  [TranslationKeys.REMINDER_DELETED]:
+    "Przypomnienie do którego jesteś przypisany/a zostało usunięte",
+  [TranslationKeys.COLLABOARTION_ACCEPTED]:
+    "Prośba o współpracę którą wysłałeś/aś została zaakceptowana",
+  [TranslationKeys.COLLABOARTION_REQUESTED]:
+    "Otrzymałeś/aś zaproszenie do współpracy",
+  [TranslationKeys.COLLABOARTION_RE_OPENED]:
+    "Otrzymałeś/aś zaproszenie do współpracy po raz drugi",
+  [TranslationKeys.COLLABOARTION_REJECTED]:
+    "Prośba o współpracę którą wysłałeś/aś została odrzucona",
+  [TranslationKeys.COLLABOARTION_BLOCKED]:
+    "Współpraca z Tobą została zablokowana",
+  [TranslationKeys.TODOLIST_CREATED]:
+    "Zostałeś przypisany/a do nowej listy zadań",
+  [TranslationKeys.TODOLIST_UPDATED]:
+    "Lista zadań do której jesteś przypisany/a została zmodyfikowana",
+  [TranslationKeys.TODOLIST_DELETED]:
+    "Lista zadań do której jesteś przypisany/a została usunięta",
+  [TranslationKeys.TODOLIST_MEMBER_ADDED]:
+    "Użytkownik został dodany do listy zadań do której jesteś przypisany/a",
+  [TranslationKeys.TODOLIST_MEMBER_REMOVED]:
+    "Użytkownik został usunięty z listy zadań do której jesteś przypisany/a",
+  [TranslationKeys.PushNotification]: "Powiadomienia push",
+  [TranslationKeys.SocketNotification]: "Powiadomienia w czasie rzeczywistym",
 
   [TranslationKeys.Save]: "Zapisz",
   [TranslationKeys.Cancel]: "Anuluj",

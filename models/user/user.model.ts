@@ -1,12 +1,46 @@
+import { EventName } from "linked-models/event/event.enum";
 import { IBaseModelAttached } from "../abstraction/base.interface";
 import { AppLanguages } from "../language/languages.enum";
 
 export type AppTheme = "light" | "dark";
 
+export enum NotificationPreference {
+  /** only push notifications */
+  PUSH = "PUSH",
+  /** only socket notifications */
+  SOCKET = "SOCKET",
+  /** both push and socket notifications */
+  ALL = "ALL",
+  /** no notifications */
+  NONE = "NONE",
+}
+
+export interface NotificationPreferences {
+  [EventName.CollaboartionAccepted]: NotificationPreference;
+  [EventName.CollaboartionBlocked]: NotificationPreference;
+  [EventName.CollaboartionReOpened]: NotificationPreference;
+  [EventName.CollaboartionRejected]: NotificationPreference;
+  [EventName.CollaboartionRequested]: NotificationPreference;
+  [EventName.ReminderCreated]: NotificationPreference;
+  [EventName.ReminderDeleted]: NotificationPreference;
+  [EventName.ReminderUpdated]: NotificationPreference;
+  [EventName.TaskCreated]: NotificationPreference;
+  [EventName.TaskDeleted]: NotificationPreference;
+  [EventName.TaskUpdated]: NotificationPreference;
+  [EventName.TodoListCreated]: NotificationPreference;
+  [EventName.TodoListDeleted]: NotificationPreference;
+  [EventName.TodoListUpdated]: NotificationPreference;
+  [EventName.TodoListMemberAdded]: NotificationPreference;
+  [EventName.TodoListMemberRemoved]: NotificationPreference;
+}
+
 export interface IUserPreferences {
   /** User's prefered language */
   language: AppLanguages;
+  /** User's prefered theme */
   theme: AppTheme;
+  /** User's notification preferences */
+  notificationPreferences: NotificationPreferences;
 }
 
 export interface IUser {
