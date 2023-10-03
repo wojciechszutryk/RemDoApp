@@ -115,12 +115,29 @@ export class UserService {
   ): Promise<void> {
     debugger;
     //only valid properties
-    const updateValues = extractPropertiesToUpdate(data, ["language", "theme"]);
+    const updateValues = extractPropertiesToUpdate(data, [
+      "language",
+      "theme",
+      "notificationPreferences",
+    ]);
 
     const updateObject: UpdateQuery<IUserDocument> = {};
-    Object.entries(updateValues).forEach(([key, value]) => {
-      updateObject[`preferences.${key}`] = value;
-    });
+
+    if (updateValues.language) {
+      updateObject["preferences.language"] = updateValues.language;
+    }
+
+    if (updateValues.theme) {
+      updateObject["preferences.theme"] = updateValues.theme;
+    }
+
+    if (updateValues.notificationPreferences) {
+      Object.entries(updateValues.notificationPreferences).forEach(
+        ([key, value]) => {
+          updateObject[`preferences.notificationPreferences.${key}`] = value;
+        }
+      );
+    }
 
     const updatedUser = await this.userCollection.findByIdAndUpdate(
       user.id,
