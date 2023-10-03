@@ -1,6 +1,8 @@
+import { EventName } from "linked-models/event/event.enum";
 import {
   IUserAttached,
   IUserWithReadonlyProperties,
+  NotificationPreference,
 } from "linked-models/user/user.model";
 import mongoose, { Document } from "mongoose";
 
@@ -23,6 +25,72 @@ const UserSchema = new mongoose.Schema({
   preferences: {
     language: String,
     theme: String,
+    notificationPreferences: {
+      [EventName.CollaboartionAccepted]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.CollaboartionBlocked]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.CollaboartionReOpened]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.CollaboartionRejected]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.CollaboartionRequested]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.ReminderCreated]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.ReminderDeleted]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.ReminderUpdated]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.TaskCreated]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.TaskDeleted]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.TaskUpdated]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.TodoListCreated]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.TodoListDeleted]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.TodoListUpdated]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.TodoListMemberAdded]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.TodoListMemberRemoved]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+    },
   },
 });
 
