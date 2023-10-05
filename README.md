@@ -1,30 +1,25 @@
-### todoReact
+### todo & reminders App
 
-Demo: https://wojciechszutryk.github.io/todoReact/
-
-Built with React, JavaScript, Express, NodeJS, CSS, Bootstrap
+Demo: [In Progress]
+Built with: 
+React, Tyescript, MUI, hook-form, framer-motion, dnd, i18next, socket.io
+NodeJS, Tyescript, inversify-express-utils, passport, mongoose, node-cache, node-schedule, googleapis
 
 ## Project Status
 
-In progress
+[In Progress]
 
 ## Project Screen Shot(s)
 
-![image](https://user-images.githubusercontent.com/72247608/119135131-4c8d4f00-ba3e-11eb-9cab-4ecbfd888dcf.png)
+[In Progress]
 
 ## Features
 
--add new task
-
--mark task as important
-
--set task deadline
-
--select task color
-
--mark task as finished
-
--delete task
+- collaboration with other users to create notes, todo lists and reminders
+- integration with Google to authenticate and import/export user's data from Google Callendar
+- personalized notifications including real time-and push notifications
+- innovative interface based on animations and gestures
+- high customization of interface, support of different themes and languages
 
 ## Installation and Setup Instructions
 
@@ -57,7 +52,3 @@ To Start Server:
 To Visit App:
 
 `localhost:3000`
-
-## Reflection
-
-Application written to support organization meetings with a GF :)
