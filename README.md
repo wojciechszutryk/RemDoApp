@@ -22,6 +22,8 @@
 ## Project Screen Shot(s)
 
 [In Progress]
+![image](https://github.com/wojciechszutryk/todoReact/assets/72247608/f7c3f329-1810-4c15-a563-85e7fbb5aa08)
+
 
 
 ## Installation and Setup Instructions
