@@ -1,9 +1,19 @@
 ### todo & reminders App
 
-Demo: [In Progress]
-Built with: 
-React, Tyescript, MUI, hook-form, framer-motion, dnd, i18next, socket.io
-NodeJS, Tyescript, inversify-express-utils, passport, mongoose, node-cache, node-schedule, googleapis
+## Features:
+
+- collaboration with other users to create notes, todo lists and reminders
+- integration with Google to authenticate and import/export user's data from Google Callendar
+- personalized notifications including real time-and push notifications
+- innovative interface based on animations and gestures
+- high customization of interface, support of different themes and languages
+
+## Demo: 
+[In Progress]
+
+## Built with: 
+- React, Tyescript, MUI, hook-form, framer-motion, dnd, i18next, socket.io
+- NodeJS, Tyescript, inversify-express-utils, passport, mongoose, node-cache, node-schedule, googleapis
 
 ## Project Status
 
@@ -13,13 +23,6 @@ NodeJS, Tyescript, inversify-express-utils, passport, mongoose, node-cache, node
 
 [In Progress]
 
-## Features
-
-- collaboration with other users to create notes, todo lists and reminders
-- integration with Google to authenticate and import/export user's data from Google Callendar
-- personalized notifications including real time-and push notifications
-- innovative interface based on animations and gestures
-- high customization of interface, support of different themes and languages
 
 ## Installation and Setup Instructions
 
