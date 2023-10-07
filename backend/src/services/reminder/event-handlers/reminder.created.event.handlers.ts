@@ -1,5 +1,4 @@
 import { EventHandler } from "framework/events/event.handler.decorator";
-import { SocketService } from "framework/sockets/socket.service";
 import { inject } from "inversify";
 import { EventName, EventSubject } from "linked-models/event/event.enum";
 import { TypedEventHandler } from "linked-models/event/event.handler.interface";
@@ -9,7 +8,8 @@ import {
   ReminderCreatedEvent,
 } from "linked-models/event/implementation/reminder.events";
 import { GoogleEventService } from "services/googleEvent/googleEvent.service";
-import { NotificationService } from "services/notification.service";
+import { NotificationService } from "services/notification/notification.service";
+import { SocketNotificationService } from "services/notification/socket.notification.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { TodoListService } from "services/todoList/todoList.service";
 import { UserAuthService } from "services/user/user.auth.service";
@@ -23,7 +23,8 @@ export class ReminderCreatedEventHandler
     private readonly todoListCacheService: TodoListCacheService,
     @inject(TodoListService)
     private readonly todoListService: TodoListService,
-    @inject(SocketService) private readonly socketService: SocketService,
+    @inject(SocketNotificationService)
+    private readonly socketService: SocketNotificationService,
     @inject(UserAuthService) private readonly userAuthService: UserAuthService,
     @inject(GoogleEventService)
     private readonly googleEventService: GoogleEventService,

@@ -1,5 +1,4 @@
 import { EventHandler } from "framework/events/event.handler.decorator";
-import { SocketService } from "framework/sockets/socket.service";
 import { inject } from "inversify";
 import { EventName, EventSubject } from "linked-models/event/event.enum";
 import { TypedEventHandler } from "linked-models/event/event.handler.interface";
@@ -7,7 +6,8 @@ import { TypedEvent } from "linked-models/event/event.interface";
 import { TodoListDeletedEvent } from "linked-models/event/implementation/todoList.events";
 import { ITaskAttached } from "linked-models/task/task.model";
 import { ITodoListAttached } from "linked-models/todoList/todoList.model";
-import { NotificationService } from "services/notification.service";
+import { NotificationService } from "services/notification/notification.service";
+import { SocketNotificationService } from "services/notification/socket.notification.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { TodoListService } from "../todoList.service";
 
@@ -20,7 +20,8 @@ export class TodoListDeletedEventHandler
     private readonly todoListCacheService: TodoListCacheService,
     @inject(TodoListService)
     private readonly todoListService: TodoListService,
-    @inject(SocketService) private readonly socketService: SocketService,
+    @inject(SocketNotificationService)
+    private readonly socketService: SocketNotificationService,
     @inject(NotificationService)
     private readonly notificationService: NotificationService
   ) {}

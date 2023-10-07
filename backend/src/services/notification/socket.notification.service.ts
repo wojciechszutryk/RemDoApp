@@ -5,7 +5,7 @@ import { USER_PARAM } from "linked-models/user/user.urls";
 import { Server } from "socket.io";
 
 @injectable()
-export class SocketService {
+export class SocketNotificationService {
   private readonly io: Server;
 
   constructor(httpServer: http.Server) {

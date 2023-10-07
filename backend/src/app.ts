@@ -13,7 +13,7 @@ import mongoose from "mongoose";
 import passport from "passport";
 
 import cors from "cors";
-import { SocketService } from "framework/sockets/socket.service";
+import { SocketNotificationService } from "services/notification/socket.notification.service";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
@@ -40,7 +40,7 @@ server.setConfig((app) => {
       origin: process.env.CLIENT_URL,
       methods: "GET,POST,PUT,DELETE",
       credentials: true,
-      exposedHeaders: ['set-cookie'],
+      exposedHeaders: ["set-cookie"],
     })
   );
 });
@@ -64,8 +64,8 @@ mongoose.connection.on("open", () => {
   const app = server.build();
   const httpServer = createServer(app);
 
-  const socketService = new SocketService(httpServer);
-  container.bind(SocketService).toConstantValue(socketService);
+  const socketService = new SocketNotificationService(httpServer);
+  container.bind(SocketNotificationService).toConstantValue(socketService);
 
   const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 
