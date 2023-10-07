@@ -3,15 +3,15 @@ import { inject } from "inversify";
 import { EventName, EventSubject } from "linked-models/event/event.enum";
 import { TypedEventHandler } from "linked-models/event/event.handler.interface";
 import { TypedEvent } from "linked-models/event/event.interface";
-import { TodoListUpdatedEvent } from "linked-models/event/implementation/todoList.events";
+import { TodoListCreatedEvent } from "linked-models/event/implementation/todoList.events";
 import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
 import { NotificationService } from "services/notification/notification.service";
 import { SocketNotificationService } from "services/notification/socket.notification.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
-import { TodoListService } from "../todoList.service";
+import { TodoListService } from "../../services/todoList/todoList.service";
 
-@EventHandler(TodoListUpdatedEvent)
-export class TodoListUpdatedEventHandler
+@EventHandler(TodoListCreatedEvent)
+export class TodoListCreatedEventHandler
   implements TypedEventHandler<ITodoListWithMembersDto>
 {
   constructor(
@@ -28,20 +28,20 @@ export class TodoListUpdatedEventHandler
   async handle(
     event: TypedEvent<ITodoListWithMembersDto>,
     eventCreatorId: string,
-    updatedTodoList: ITodoListWithMembersDto
+    createdTodoList: ITodoListWithMembersDto
   ) {
     const todoListMembers = await this.todoListService.getTodoListMemberIDs(
-      updatedTodoList.id
+      createdTodoList.id
     );
     const createdNotifications =
       await this.notificationService.createNotificationForUsers(
         todoListMembers,
-        EventName.TodoListUpdated,
+        EventName.TodoListCreated,
         EventSubject.TodoList,
         eventCreatorId,
-        updatedTodoList.id
+        createdTodoList.id
       );
-    this.socketService.notifyUsers(createdNotifications, updatedTodoList);
+    this.socketService.notifyUsers(createdNotifications, createdTodoList);
     this.todoListCacheService.invalidateExtendedTodoListCacheByUserIDs(
       todoListMembers
     );

@@ -2,11 +2,11 @@ import {
   TodoListCollectionName,
   getTodoListCollection,
 } from "dbSchemas/todoList.schema";
+import { TodoListCreatedEventHandler } from "events/todoList/todoList.created.event.handlers";
+import { TodoListDeletedEventHandler } from "events/todoList/todoList.deleted.event.handlers";
+import { TodoListUpdatedEventHandler } from "events/todoList/todoList.updated.event.handlers";
 import { Container } from "inversify";
 import { SetPermissionsAndScopes } from "middlewares/permissions/setPermissionsAndScopes.middleware";
-import { TodoListCreatedEventHandler } from "services/todoList/event-handlers/todoList.created.event.handlers";
-import { TodoListDeletedEventHandler } from "services/todoList/event-handlers/todoList.deleted.event.handlers";
-import { TodoListUpdatedEventHandler } from "services/todoList/event-handlers/todoList.updated.event.handlers";
 import { TodoListService } from "services/todoList/todoList.service";
 
 export const registerTodoListBindings = (container: Container) => {

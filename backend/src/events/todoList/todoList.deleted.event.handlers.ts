@@ -9,7 +9,7 @@ import { ITodoListAttached } from "linked-models/todoList/todoList.model";
 import { NotificationService } from "services/notification/notification.service";
 import { SocketNotificationService } from "services/notification/socket.notification.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
-import { TodoListService } from "../todoList.service";
+import { TodoListService } from "../../services/todoList/todoList.service";
 
 @EventHandler(TodoListDeletedEvent)
 export class TodoListDeletedEventHandler
