@@ -1,5 +1,8 @@
-import { EventName } from "linked-models/event/event.enum";
+import { INotificationDto } from "linked-models/notification/notification.dto";
 
-export const getPushCronJobName = (userId: string, event: EventName) => {
-  return `push-${userId}-${event}`;
+export const getPushCronJobName = (
+  userId: string,
+  notification: INotificationDto
+) => {
+  return `push-${userId}-${notification.action}`;
 };
