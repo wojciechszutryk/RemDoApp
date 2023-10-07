@@ -1,7 +1,3 @@
-import {
-  PushSubscriptionCollectionName,
-  PushSubscriptionCollectionType,
-} from "dbSchemas/pushSubscription.schema";
 import { currentUser } from "decorators/currentUser.decorator";
 import { inject } from "inversify";
 import {
@@ -19,7 +15,7 @@ import {
 } from "linked-models/pushSubscription/pushSubscription.urls";
 import { IUserAttached } from "linked-models/user/user.model";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
-import { sendNotification } from "web-push";
+import { PushNotificationService } from "services/notification/push.notification.service";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
@@ -27,16 +23,25 @@ require("dotenv").config();
 @controller(URL_PUSH, SetCurrentUser)
 export class PushSubscriptionController extends BaseHttpController {
   constructor(
-    @inject(PushSubscriptionCollectionName)
-    private readonly pushSubscriptionCollection: PushSubscriptionCollectionType
+    @inject(PushNotificationService)
+    private readonly pushNotificationService: PushNotificationService
   ) {
     super();
   }
 
   @httpGet("")
-  async getPushSubscription(): Promise<OkResult> {
-    const pushSubscription = await this.pushSubscriptionCollection.findOne();
-    return this.json(pushSubscription);
+  async getPushSubscriptionsForCurrentUser(
+    @currentUser() currentUser: IUserAttached
+  ): Promise<OkResult> {
+    if (!currentUser) {
+      return this.json({ error: "User not found" }, 403);
+    }
+
+    const pushSubscriptions =
+      await this.pushNotificationService.getSubscriptionsForUsers([
+        currentUser.id,
+      ]);
+    return this.ok(pushSubscriptions);
   }
 
   @httpPost(URL_SUBSCRIBE)
@@ -58,33 +63,12 @@ export class PushSubscriptionController extends BaseHttpController {
       );
     }
 
-    const createdSubscription = await this.pushSubscriptionCollection.create({
-      ...body,
-      userId: currentUser.id,
-    });
-
-    const options = {
-      vapidDetails: {
-        subject: "mailto:wojtekszutryk@gmail.com",
-        publicKey: process.env.VAPID_PUBLIC_KEY!,
-        privateKey: process.env.VAPID_PRIVATE_KEY!,
-      },
-    };
-
-    try {
-      const res2 = await sendNotification(
-        createdSubscription,
-        JSON.stringify({
-          title: "Hello from server",
-          description: "this message is coming from the server",
-          image:
-            "https://cdn2.vectorstock.com/i/thumb-large/94/66/emoji-smile-icon-symbol-smiley-face-vector-26119466.jpg",
-        }),
-        options
+    const createdSubscription =
+      await this.pushNotificationService.createPushSubscription(
+        body,
+        currentUser.id
       );
-      return this.ok();
-    } catch (error) {
-      return this.json({ error }, 500);
-    }
+
+    return this.ok(createdSubscription);
   }
 }
