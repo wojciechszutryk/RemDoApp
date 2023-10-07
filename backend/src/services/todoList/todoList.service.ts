@@ -21,6 +21,7 @@ import {
   ITodoListWithReadonlyProperties,
 } from "linked-models/todoList/todoList.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
+import { IUserAttached } from "linked-models/user/user.model";
 import { TaskService } from "services/task/task.service";
 import { UserService } from "services/user/user.service";
 
@@ -106,6 +107,23 @@ export class TodoListService {
     todoList?.assignedUsers.forEach((u) => todoListMembersIDs.add(u.id));
 
     return Array.from(todoListMembersIDs);
+  }
+
+  public async getTodoListMembers(
+    todoListId: string
+  ): Promise<IUserAttached[]> {
+    const todoList = await this.getTodoListById(todoListId);
+    if (!todoList) return [];
+
+    const todoListMembersIDs = new Set<string>();
+    todoList?.assignedOwners?.forEach((u) => todoListMembersIDs.add(u));
+    todoList?.assignedUsers?.forEach((u) => todoListMembersIDs.add(u));
+
+    const todoListMembers = await this.userService.getUsersByIDs(
+      Array.from(todoListMembersIDs)
+    );
+
+    return todoListMembers;
   }
 
   public async getTodoListsWithMembersForUser(userId: string): Promise<{

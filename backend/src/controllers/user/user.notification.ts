@@ -17,7 +17,7 @@ import { URL_USER_NOTIFICATIONS } from "linked-models/notification/notification.
 import { IUserAttached } from "linked-models/user/user.model";
 import { URL_USERS } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
-import { NotificationService } from "services/notification.service";
+import { NotificationService } from "services/notification/notification.service";
 
 @controller(URL_USERS + URL_USER_NOTIFICATIONS, SetCurrentUser)
 export class NotificationController
