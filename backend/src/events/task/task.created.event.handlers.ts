@@ -8,8 +8,7 @@ import {
   TaskCreatedEvent,
 } from "linked-models/event/implementation/task.events";
 import { GoogleEventService } from "services/googleEvent/googleEvent.service";
-import { NotificationService } from "services/notification/notification.service";
-import { SocketNotificationService } from "services/notification/socket.notification.service";
+import { NotifyService } from "services/notification/notify.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { TodoListService } from "services/todoList/todoList.service";
 import { UserAuthService } from "services/user/user.auth.service";
@@ -23,13 +22,11 @@ export class TaskCreatedEventHandler
     private readonly todoListCacheService: TodoListCacheService,
     @inject(TodoListService)
     private readonly todoListService: TodoListService,
-    @inject(SocketNotificationService)
-    private readonly socketService: SocketNotificationService,
     @inject(UserAuthService) private readonly userAuthService: UserAuthService,
     @inject(GoogleEventService)
     private readonly googleEventService: GoogleEventService,
-    @inject(NotificationService)
-    private readonly notificationService: NotificationService
+    @inject(NotifyService)
+    private readonly notifyService: NotifyService
   ) {}
 
   async handle(
@@ -37,41 +34,25 @@ export class TaskCreatedEventHandler
     __: string,
     { createdTask, eventCreator }: ITaskCreatedEventPayload
   ) {
-    const todoListWithMembers =
-      await this.todoListService.getTodoListWithMembersById(
+    const { todoListMembers, todoList } =
+      await this.todoListService.getTodoListWithAttachedMembers(
         createdTask.todoListId
       );
-
-    if (!todoListWithMembers) return;
-
-    const todoListMembers = [
-      ...todoListWithMembers.assignedOwners,
-      ...todoListWithMembers.assignedUsers,
-      todoListWithMembers.creator,
-    ];
-
-    const uniqueTodoListMembersIDs = [
-      ...new Set(todoListMembers.map((member) => member.id)),
-    ];
+      
+    if (!todoList) return;
 
     //notify users
-    const createdNotifications =
-      await this.notificationService.createNotificationForUsers(
-        uniqueTodoListMembersIDs,
-        EventName.TaskCreated,
-        EventSubject.Task,
-        eventCreator.id,
-        createdTask.todoListId,
-        createdTask.id
-      );
-    this.socketService.notifyUsers(createdNotifications, {
-      createdTask,
-      eventCreator,
-    } as ITaskCreatedEventPayload);
+    this.notifyService.notifyUsers(
+      todoListMembers,
+      eventCreator.id,
+      EventName.ReminderUpdated,
+      EventSubject.Reminder,
+      createdTask
+    );
 
     //invalidate cache
     this.todoListCacheService.invalidateExtendedTodoListCacheByUserIDs(
-      uniqueTodoListMembersIDs
+      todoListMembers.map((u) => u.id)
     );
 
     //create google event
@@ -87,7 +68,7 @@ export class TaskCreatedEventHandler
       this.googleEventService.createEventInGoogleCallendar(userOAuth2Client!, {
         id: createdTask.id,
         summary: createdTask.text,
-        description: todoListWithMembers.name,
+        description: todoList?.name,
         attendees: todoListMembers.map((member) => {
           return {
             id: member.id,

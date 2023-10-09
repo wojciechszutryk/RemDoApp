@@ -27,9 +27,10 @@ export class ReminderDeletedEventHandler
     eventCreatorId: string,
     deletedReminder: IReminderAttached
   ) {
-    const todoListMembers = await this.todoListService.getTodoListMembers(
-      deletedReminder.todoListId
-    );
+    const { todoListMembers } =
+      await this.todoListService.getTodoListWithAttachedMembers(
+        deletedReminder.todoListId
+      );
 
     //invalidate cache
     this.todoListCacheService.invalidateExtendedTodoListCacheByUserIDs(

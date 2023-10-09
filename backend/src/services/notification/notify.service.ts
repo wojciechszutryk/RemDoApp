@@ -34,7 +34,7 @@ export class NotifyService {
     });
   }
 
-  public async notifyUsers<T extends { todoListId?: string; taskId?: string }>(
+  public async notifyUsers<T>(
     /** potential users to notify - e.g. todoList members or owners */
     memberUsers: IUserAttached[],
     eventCreatorId: string,

@@ -8,7 +8,6 @@ import {
   ReminderCreatedEvent,
 } from "linked-models/event/implementation/reminder.events";
 import { GoogleEventService } from "services/googleEvent/googleEvent.service";
-import { NotificationService } from "services/notification/notification.service";
 import { NotifyService } from "services/notification/notify.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { TodoListService } from "services/todoList/todoList.service";
@@ -27,9 +26,7 @@ export class ReminderCreatedEventHandler
     private readonly notifyService: NotifyService,
     @inject(UserAuthService) private readonly userAuthService: UserAuthService,
     @inject(GoogleEventService)
-    private readonly googleEventService: GoogleEventService,
-    @inject(NotificationService)
-    private readonly notificationService: NotificationService
+    private readonly googleEventService: GoogleEventService
   ) {}
 
   async handle(
@@ -37,8 +34,10 @@ export class ReminderCreatedEventHandler
     __: string,
     { createdReminder, eventCreator }: IReminderCreatedEventPayload
   ) {
-    const todoListMembers =
-      await this.todoListService.getTodoListMembers(createdReminder.todoListId);
+    const { todoListMembers } =
+      await this.todoListService.getTodoListWithAttachedMembers(
+        createdReminder.todoListId
+      );
 
     //send notifications
     this.notifyService.notifyUsers(

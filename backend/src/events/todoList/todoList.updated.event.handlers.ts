@@ -6,6 +6,7 @@ import { TypedEvent } from "linked-models/event/event.interface";
 import { TodoListUpdatedEvent } from "linked-models/event/implementation/todoList.events";
 import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
 import { NotificationService } from "services/notification/notification.service";
+import { NotifyService } from "services/notification/notify.service";
 import { SocketNotificationService } from "services/notification/socket.notification.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { TodoListService } from "../../services/todoList/todoList.service";
@@ -22,7 +23,9 @@ export class TodoListUpdatedEventHandler
     @inject(SocketNotificationService)
     private readonly socketService: SocketNotificationService,
     @inject(NotificationService)
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    @inject(NotifyService)
+    private readonly notifyService: NotifyService
   ) {}
 
   async handle(
@@ -30,20 +33,23 @@ export class TodoListUpdatedEventHandler
     eventCreatorId: string,
     updatedTodoList: ITodoListWithMembersDto
   ) {
-    const todoListMembers = await this.todoListService.getTodoListMemberIDs(
-      updatedTodoList.id
-    );
-    const createdNotifications =
-      await this.notificationService.createNotificationForUsers(
-        todoListMembers,
-        EventName.TodoListUpdated,
-        EventSubject.TodoList,
-        eventCreatorId,
+    const { todoListMembers } =
+      await this.todoListService.getTodoListWithAttachedMembers(
         updatedTodoList.id
       );
-    this.socketService.notifyUsers(createdNotifications, updatedTodoList);
+
+    //notify users
+    this.notifyService.notifyUsers(
+      todoListMembers,
+      eventCreatorId,
+      EventName.ReminderUpdated,
+      EventSubject.Reminder,
+      updatedTodoList
+    );
+
+    //invalidate cache
     this.todoListCacheService.invalidateExtendedTodoListCacheByUserIDs(
-      todoListMembers
+      todoListMembers.map((u) => u.id)
     );
   }
 }

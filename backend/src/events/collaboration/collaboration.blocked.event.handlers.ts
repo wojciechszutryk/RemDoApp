@@ -5,18 +5,18 @@ import { TypedEventHandler } from "linked-models/event/event.handler.interface";
 import { TypedEvent } from "linked-models/event/event.interface";
 import { CollaborationBlockedEvent } from "linked-models/event/implementation/collaboartion.events";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
-import { NotificationService } from "services/notification/notification.service";
-import { SocketNotificationService } from "services/notification/socket.notification.service";
+import { NotifyService } from "services/notification/notify.service";
+import { UserService } from "services/user/user.service";
 
 @EventHandler(CollaborationBlockedEvent)
 export class CollaborationBlockedEventHandler
   implements TypedEventHandler<IUserPublicDataDTO>
 {
   constructor(
-    @inject(SocketNotificationService)
-    private readonly socketService: SocketNotificationService,
-    @inject(NotificationService)
-    private readonly notificationService: NotificationService
+    @inject(UserService)
+    private readonly userService: UserService,
+    @inject(NotifyService)
+    private readonly notifyService: NotifyService
   ) {}
 
   async handle(
@@ -24,13 +24,17 @@ export class CollaborationBlockedEventHandler
     eventReceiverId: string,
     eventCreator: IUserPublicDataDTO
   ) {
-    const createdNotifications =
-      await this.notificationService.createNotificationForUsers(
-        [eventReceiverId],
-        EventName.CollaboartionBlocked,
-        EventSubject.Collaboration,
-        eventCreator.id
+    const eventReceiver = await this.userService.getUsersByIDs([
+      eventReceiverId,
+    ]);
+
+    if (eventReceiver)
+      this.notifyService.notifyUsers(
+        [eventReceiver[0]],
+        eventCreator.id,
+        EventName.ReminderUpdated,
+        EventSubject.Reminder,
+        eventCreator
       );
-    this.socketService.notifyUsers(createdNotifications, eventCreator);
   }
 }
