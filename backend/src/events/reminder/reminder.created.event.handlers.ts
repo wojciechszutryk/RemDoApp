@@ -9,7 +9,7 @@ import {
 } from "linked-models/event/implementation/reminder.events";
 import { GoogleEventService } from "services/googleEvent/googleEvent.service";
 import { NotificationService } from "services/notification/notification.service";
-import { SocketNotificationService } from "services/notification/socket.notification.service";
+import { NotifyService } from "services/notification/notify.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { TodoListService } from "services/todoList/todoList.service";
 import { UserAuthService } from "services/user/user.auth.service";
@@ -23,8 +23,8 @@ export class ReminderCreatedEventHandler
     private readonly todoListCacheService: TodoListCacheService,
     @inject(TodoListService)
     private readonly todoListService: TodoListService,
-    @inject(SocketNotificationService)
-    private readonly socketService: SocketNotificationService,
+    @inject(NotifyService)
+    private readonly notifyService: NotifyService,
     @inject(UserAuthService) private readonly userAuthService: UserAuthService,
     @inject(GoogleEventService)
     private readonly googleEventService: GoogleEventService,
@@ -37,41 +37,21 @@ export class ReminderCreatedEventHandler
     __: string,
     { createdReminder, eventCreator }: IReminderCreatedEventPayload
   ) {
-    const todoListWithMembers =
-      await this.todoListService.getTodoListWithMembersById(
-        createdReminder.todoListId
-      );
+    const todoListMembers =
+      await this.todoListService.getTodoListMembers(createdReminder.todoListId);
 
-    if (!todoListWithMembers) return;
-
-    const todoListMembers = [
-      ...todoListWithMembers.assignedOwners,
-      ...todoListWithMembers.assignedUsers,
-      todoListWithMembers.creator,
-    ];
-
-    const uniqueTodoListMembersIDs = [
-      ...new Set(todoListMembers.map((member) => member.id)),
-    ];
-
-    //notify users
-    const createdNotifications =
-      await this.notificationService.createNotificationForUsers(
-        uniqueTodoListMembersIDs,
-        EventName.ReminderCreated,
-        EventSubject.Reminder,
-        eventCreator.id,
-        createdReminder.todoListId,
-        createdReminder.taskId
-      );
-    this.socketService.notifyUsers(createdNotifications, {
-      createdReminder,
-      eventCreator,
-    } as IReminderCreatedEventPayload);
+    //send notifications
+    this.notifyService.notifyUsers(
+      todoListMembers,
+      eventCreator.id,
+      EventName.ReminderUpdated,
+      EventSubject.Reminder,
+      createdReminder
+    );
 
     //invalidate cache
     this.todoListCacheService.invalidateExtendedTodoListCacheByUserIDs(
-      uniqueTodoListMembersIDs
+      todoListMembers.map((u) => u.id)
     );
 
     //create google event
@@ -87,7 +67,7 @@ export class ReminderCreatedEventHandler
       this.googleEventService.createEventInGoogleCallendar(userOAuth2Client!, {
         id: createdReminder.taskId,
         summary: createdReminder.text,
-        description: todoListWithMembers.name,
+        description: createdReminder.name,
         attendees: todoListMembers.map((member) => {
           return {
             id: member.id,
