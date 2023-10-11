@@ -14,7 +14,6 @@ import { Container } from "inversify";
 import { NotificationService } from "services/notification/notification.service";
 import { NotifyService } from "services/notification/notify.service";
 import { PushNotificationService } from "services/notification/push.notification.service";
-import { SocketNotificationService } from "services/notification/socket.notification.service";
 
 export const registerNotificationBindings = (container: Container) => {
   container.bind(NotificationService).toSelf();
@@ -24,8 +23,6 @@ export const registerNotificationBindings = (container: Container) => {
   container
     .bind(UserNotificationCollectionName)
     .toDynamicValue(() => getUserNotificationCollection());
-
-  container.bind(SocketNotificationService).toSelf();
 
   container.bind(PushNotificationService).toSelf();
   container

@@ -113,7 +113,6 @@ export class UserService {
     user: IUserAttached,
     data: Partial<IUserPreferences>
   ): Promise<void> {
-    debugger;
     //only valid properties
     const updateValues = extractPropertiesToUpdate(data, [
       "language",

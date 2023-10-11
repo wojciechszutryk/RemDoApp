@@ -38,9 +38,13 @@ export class TaskUpdatedEventHandler
     this.notifyService.notifyUsers(
       todoListMembers,
       eventCreatorId,
-      EventName.ReminderUpdated,
-      EventSubject.Reminder,
-      updatedTask
+      EventName.TaskUpdated,
+      EventSubject.Task,
+      updatedTask,
+      {
+        todoListId: updatedTask.todoListId,
+        taskId: updatedTask.id,
+      }
     );
 
     //invalidate cache

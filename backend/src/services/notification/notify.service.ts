@@ -21,16 +21,18 @@ export class NotifyService {
 
   private getUsersToNotiftByPreference(
     users: IUserAttached[],
+    preferenceScope: EventName,
     preference: NotificationPreference,
     excludeId?: string
   ) {
     return users.filter((u) => {
-      if (u.id !== excludeId) return false;
+      if (u.id === excludeId) return false;
 
-      u.preferences.notificationPreferences[EventName.ReminderUpdated] ===
-        NotificationPreference.SOCKET ||
-        u.preferences.notificationPreferences[EventName.ReminderUpdated] ===
-          NotificationPreference.ALL;
+      return (
+        u.preferences.notificationPreferences[preferenceScope] === preference ||
+        u.preferences.notificationPreferences[preferenceScope] ===
+          NotificationPreference.ALL
+      );
     });
   }
 
@@ -40,7 +42,11 @@ export class NotifyService {
     eventCreatorId: string,
     eventName: EventName,
     eventSubject: EventSubject,
-    payload: T
+    payload: T,
+    notificationScopes?: {
+      todoListId?: string;
+      taskId?: string;
+    }
   ): Promise<void> {
     //for now we create notification for all users
     //TODO: handle NotificationPreference.NONE and do not create notification for those users
@@ -50,11 +56,12 @@ export class NotifyService {
         eventName,
         eventSubject,
         eventCreatorId,
-        payload.todoListId,
-        payload.taskId
+        notificationScopes?.todoListId,
+        notificationScopes?.taskId
       );
     const usersToNotifyBySocket = this.getUsersToNotiftByPreference(
       memberUsers,
+      eventName,
       NotificationPreference.SOCKET,
       eventCreatorId
     );
@@ -68,6 +75,7 @@ export class NotifyService {
 
     const usersToNotifyByPush = this.getUsersToNotiftByPreference(
       memberUsers,
+      eventName,
       NotificationPreference.PUSH,
       eventCreatorId
     );

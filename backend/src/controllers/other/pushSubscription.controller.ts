@@ -53,11 +53,10 @@ export class PushSubscriptionController extends BaseHttpController {
       return this.json({ error: "User not found" }, 403);
     }
 
-    if (!body.endpoint || !body.keys.auth || !body.keys.p256dh) {
+    if (!body.endpoint) {
       return this.json(
         {
-          error:
-            "Invalid request body, endpoint, keys, expirationTime required",
+          error: "Invalid request body, endpoint required",
         },
         400
       );
