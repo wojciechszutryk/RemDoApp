@@ -42,12 +42,12 @@ export class TaskCreatedEventHandler
     if (!todoList) return;
 
     //notify users
-    this.notifyService.notifyUsers(
+    this.notifyService.notifyUsers<ITaskCreatedEventPayload>(
       todoListMembers,
       eventCreator.id,
       EventName.TaskCreated,
       EventSubject.Task,
-      createdTask,
+      { createdTask, eventCreator },
       {
         todoListId: createdTask.todoListId,
         taskId: createdTask.id,

@@ -133,25 +133,27 @@ const useNotificationSocket = () => {
           }
         );
 
-        on(TaskCreatedEvent, ({ notification, payload: { createdTask } }) => {
-          const creator = userIdToUserMap.get(notification.actionCreatorId);
-          addNewNotification(
-            notification,
-            createTodoNotificationMsg(
-              {
-                action: notification.action,
-                actionCreatorDisplayName: creator?.displayName,
-                todoListName: todoLists?.find(
-                  (td) => td.id === createdTask.todoListId
-                )?.name,
-                taskName: createdTask.text,
-              },
-              t
-            ),
-            creator
-          );
-          updateQueriesAfterCreatingTask(createdTask);
-        });
+        on(
+          TaskCreatedEvent,
+          ({ notification, payload: { createdTask, eventCreator } }) => {
+            addNewNotification(
+              notification,
+              createTodoNotificationMsg(
+                {
+                  action: notification.action,
+                  actionCreatorDisplayName: eventCreator?.displayName,
+                  todoListName: todoLists?.find(
+                    (td) => td.id === createdTask.todoListId
+                  )?.name,
+                  taskName: createdTask.text,
+                },
+                t
+              ),
+              eventCreator
+            );
+            updateQueriesAfterCreatingTask(createdTask);
+          }
+        );
         on(TaskUpdatedEvent, ({ notification, payload: updatedTask }) => {
           const creator = userIdToUserMap.get(notification.actionCreatorId);
           addNewNotification(

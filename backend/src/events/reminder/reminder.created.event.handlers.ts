@@ -40,12 +40,12 @@ export class ReminderCreatedEventHandler
       );
 
     //send notifications
-    this.notifyService.notifyUsers(
+    this.notifyService.notifyUsers<IReminderCreatedEventPayload>(
       todoListMembers,
       eventCreator.id,
       EventName.ReminderCreated,
       EventSubject.Reminder,
-      createdReminder,
+      { createdReminder, eventCreator },
       {
         todoListId: createdReminder.todoListId,
         taskId: createdReminder.taskId,

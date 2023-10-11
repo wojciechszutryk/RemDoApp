@@ -3,7 +3,7 @@ import { TypedEvent } from "linked-models/event/event.interface";
 import { INotificationDto } from "linked-models/notification/notification.dto";
 import { USER_PARAM } from "linked-models/user/user.urls";
 import { useEffect, useState } from "react";
-import { Socket, io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
 type NotificationOnType = <R>(
   event: TypedEvent<R>,
