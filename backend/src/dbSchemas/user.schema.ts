@@ -1,6 +1,7 @@
 import { EventName } from "linked-models/event/event.enum";
 import {
   IUserAttached,
+  IUserPreferences,
   IUserWithReadonlyProperties,
   NotificationPreference,
 } from "linked-models/user/user.model";
@@ -94,7 +95,13 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-export interface IUserDocument extends IUserWithReadonlyProperties, Document {}
+export interface IUserDocument
+  extends Omit<IUserWithReadonlyProperties, "preferences">,
+    Document {
+  preferences: {
+    _doc: { preferences: IUserPreferences };
+  };
+}
 
 export type UserCollectionType = mongoose.Model<IUserDocument>;
 export const getUserCollection = () =>
@@ -113,6 +120,6 @@ export const mapUserToAttachedUser = (user: IUserDocument): IUserAttached => {
     googleTokenExpiryDate: user.googleTokenExpiryDate,
     integratedWithGoogle: user.integratedWithGoogle,
     whenCreated: user.whenCreated,
-    preferences: user.preferences,
+    preferences: user.preferences._doc.preferences,
   };
 };
