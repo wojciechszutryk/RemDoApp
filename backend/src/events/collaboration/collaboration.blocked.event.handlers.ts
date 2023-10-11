@@ -32,8 +32,8 @@ export class CollaborationBlockedEventHandler
       this.notifyService.notifyUsers(
         [eventReceiver[0]],
         eventCreator.id,
-        EventName.ReminderUpdated,
-        EventSubject.Reminder,
+        EventName.CollaboartionBlocked,
+        EventSubject.Collaboration,
         eventCreator
       );
   }

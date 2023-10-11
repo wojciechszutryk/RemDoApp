@@ -43,7 +43,11 @@ export class ReminderUpdatedEventHandler
       eventCreatorId,
       EventName.ReminderUpdated,
       EventSubject.Reminder,
-      updatedReminder
+      updatedReminder,
+      {
+        todoListId: updatedReminder.todoListId,
+        taskId: updatedReminder.taskId,
+      }
     );
   }
 }

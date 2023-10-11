@@ -33,8 +33,8 @@ export class CollaborationRequestedEventHandler
       this.notifyService.notifyUsers(
         [eventReceiver[0]],
         eventCreator.id,
-        EventName.ReminderUpdated,
-        EventSubject.Reminder,
+        EventName.CollaboartionRequested,
+        EventSubject.Collaboration,
         eventCreator
       );
   }

@@ -38,16 +38,20 @@ export class TaskCreatedEventHandler
       await this.todoListService.getTodoListWithAttachedMembers(
         createdTask.todoListId
       );
-      
+
     if (!todoList) return;
 
     //notify users
     this.notifyService.notifyUsers(
       todoListMembers,
       eventCreator.id,
-      EventName.ReminderUpdated,
-      EventSubject.Reminder,
-      createdTask
+      EventName.TaskCreated,
+      EventSubject.Task,
+      createdTask,
+      {
+        todoListId: createdTask.todoListId,
+        taskId: createdTask.id,
+      }
     );
 
     //invalidate cache

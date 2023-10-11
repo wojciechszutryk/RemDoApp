@@ -37,9 +37,12 @@ export class TodoListDeletedEventHandler
     this.notifyService.notifyUsers(
       todoListMembers,
       eventCreatorId,
-      EventName.ReminderUpdated,
-      EventSubject.Reminder,
+      EventName.TodoListDeleted,
+      EventSubject.TodoList,
       deletedTodoList,
+      {
+        todoListId: deletedTodoList.id,
+      }
     );
 
     //invalidate cache

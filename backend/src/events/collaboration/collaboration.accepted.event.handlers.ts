@@ -32,8 +32,8 @@ export class CollaborationAcceptedEventHandler
       this.notifyService.notifyUsers(
         [eventReceiver[0]],
         eventCreator.id,
-        EventName.ReminderUpdated,
-        EventSubject.Reminder,
+        EventName.CollaboartionAccepted,
+        EventSubject.Collaboration,
         eventCreator
       );
   }

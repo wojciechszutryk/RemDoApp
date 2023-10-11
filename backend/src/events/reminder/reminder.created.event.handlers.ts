@@ -43,9 +43,13 @@ export class ReminderCreatedEventHandler
     this.notifyService.notifyUsers(
       todoListMembers,
       eventCreator.id,
-      EventName.ReminderUpdated,
+      EventName.ReminderCreated,
       EventSubject.Reminder,
-      createdReminder
+      createdReminder,
+      {
+        todoListId: createdReminder.todoListId,
+        taskId: createdReminder.taskId,
+      }
     );
 
     //invalidate cache

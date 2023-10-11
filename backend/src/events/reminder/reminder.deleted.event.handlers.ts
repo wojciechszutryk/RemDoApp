@@ -41,9 +41,13 @@ export class ReminderDeletedEventHandler
     this.notifyService.notifyUsers(
       todoListMembers,
       eventCreatorId,
-      EventName.ReminderUpdated,
+      EventName.ReminderDeleted,
       EventSubject.Reminder,
-      deletedReminder
+      deletedReminder,
+      {
+        todoListId: deletedReminder.todoListId,
+        taskId: deletedReminder.taskId,
+      }
     );
   }
 }
