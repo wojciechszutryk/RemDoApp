@@ -25,7 +25,7 @@ export async function checkSubscription(
 export async function pushSubscribe(
   serviceWorkerReg: ServiceWorkerRegistration
 ) {
-  let subscription = await serviceWorkerReg.pushManager.getSubscription();
+  let subscription = await checkSubscription(serviceWorkerReg);
 
   if (subscription === null) {
     subscription = await serviceWorkerReg.pushManager.subscribe({
