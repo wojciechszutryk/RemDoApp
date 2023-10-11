@@ -3,7 +3,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import App from "App";
 import { CurrentUserProvider } from "framework/authentication/useCurrentUser";
 import { DialogsProvider } from "framework/dialogs";
-import { PushProvider } from "framework/pushServiceWorker";
+import { PushSWRegistartionProvider } from "framework/pushServiceWorker/context";
 import { SnackbarProvider } from "framework/snackBar";
 import { Snackbar } from "framework/snackBar/components/Snackbar";
 import { ThemeProvider } from "framework/theme/useTheme.context";
@@ -24,10 +24,10 @@ root.render(
           <CurrentUserProvider>
             <ThemeProvider>
               <LocalisationProvider>
-                <PushProvider>
+                <PushSWRegistartionProvider>
                   <App />
                   <Snackbar />
-                </PushProvider>
+                </PushSWRegistartionProvider>
               </LocalisationProvider>
             </ThemeProvider>
           </CurrentUserProvider>

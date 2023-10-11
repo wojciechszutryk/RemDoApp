@@ -6,6 +6,8 @@ import ArchivedNotificationsList from "./components/ArchivedNotificationsList";
 import EmptyNotificationsInfo from "./components/EmptyNotificationsInfo";
 import NotificationIcon from "./components/NotificationIcon";
 import NotificationsLoader from "./components/NotificationsLoader";
+import RegisterDeviceForPushButton from "./components/RegisterDeviceForPushButton";
+import useCheckPushSubActive from "./hooks/useCheckPushSubActive";
 import useGetNotificationsData from "./hooks/useGetNotificationsData";
 import useMarkFreshNotificationsAsRead from "./hooks/useMarkFreshNotificationsAsRead";
 import useToggleDrawer from "./hooks/useToggleDrawer";
@@ -15,6 +17,7 @@ const NotificationsMenu = (): JSX.Element => {
   const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
 
   const getUserNotificationsQuery = useGetUserNotificationsQuery();
+  const showNoActivePushSubIcon = useCheckPushSubActive();
 
   const [
     activeNotificationsData,
@@ -37,6 +40,7 @@ const NotificationsMenu = (): JSX.Element => {
       ) : (
         <StyledNotificationButton onClick={toggleDrawer(true)}>
           <NotificationIcon
+            showNoActivePushSubIcon={showNoActivePushSubIcon}
             freshNotificationsNumber={freshNotificationIDs.length}
           />
         </StyledNotificationButton>
@@ -47,6 +51,7 @@ const NotificationsMenu = (): JSX.Element => {
           onKeyDown={toggleDrawer(false)}
         >
           <NotificationsLoader />
+          {showNoActivePushSubIcon && <RegisterDeviceForPushButton />}
           {!!activeNotificationsData?.notifications.length ? (
             <ActiveNotificationsList
               notificationsData={activeNotificationsData}
