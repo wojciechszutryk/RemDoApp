@@ -47,8 +47,7 @@ export class TodoListTasksController extends BaseHttpController {
     const task = await this.taskServce.createTaskInTodoList(
       currentTodoList.id,
       parseTaskDateFields(body),
-      currentUser,
-      false
+      currentUser
     );
 
     return this.ok(task);
