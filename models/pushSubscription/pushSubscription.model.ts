@@ -5,8 +5,8 @@ export type IPushSubscription = {
   readonly endpoint: string;
   readonly expirationTime: number | null;
   readonly keys: {
-    readonly p256dh?: string;
-    readonly auth?: string;
+    readonly p256dh: string;
+    readonly auth: string;
   };
 };
 export type IPushSubscriptionAttached = IBaseModelAttached & IPushSubscription;

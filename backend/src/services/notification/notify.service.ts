@@ -1,5 +1,6 @@
 import { inject, injectable } from "inversify";
 import { EventName, EventSubject } from "linked-models/event/event.enum";
+import { AppLanguages } from "linked-models/language/languages.enum";
 import {
   IUserAttached,
   NotificationPreference,
@@ -82,9 +83,17 @@ export class NotifyService {
     const notificationsToSendByPush = createdNotifications.filter((n) =>
       usersToNotifyByPush.some((u) => u.id === n.userId)
     );
+    const userIdToPreferedLanguageMap = usersToNotifyByPush.reduce(
+      (map, user) => {
+        map[user.id] = user.preferences.language;
+        return map;
+      },
+      {} as { [userId: string]: AppLanguages }
+    );
     this.pushNotificationService.notifyUsers(
       notificationsToSendByPush,
-      payload
+      payload,
+      userIdToPreferedLanguageMap,
     );
   }
 }

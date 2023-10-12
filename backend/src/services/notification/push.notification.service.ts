@@ -4,9 +4,10 @@ import {
   mapPushSubscriptionToAttachedPushSubscription,
 } from "dbSchemas/pushSubscription.schema";
 import { inject, injectable } from "inversify";
+import { AppLanguages } from "linked-models/language/languages.enum";
 import { INotificationDto } from "linked-models/notification/notification.dto";
 import { IPushSubscription } from "linked-models/pushSubscription/pushSubscription.model";
-import { sendNotification } from "web-push";
+import webpush from "web-push";
 
 @injectable()
 export class PushNotificationService {
@@ -37,14 +38,19 @@ export class PushNotificationService {
     );
   }
 
-  public async notifyUsers<T>(notifications: INotificationDto[], payload: T) {
-    const options = {
-      vapidDetails: {
-        subject: "mailto:wojtekszutryk@gmail.com",
-        publicKey: process.env.VAPID_PUBLIC_KEY!,
-        privateKey: process.env.VAPID_PRIVATE_KEY!,
-      },
-    };
+  public async notifyUsers<T>(
+    notifications: INotificationDto[],
+    payload: T,
+    languagePreferences: {
+      [userId: string]: AppLanguages;
+    }
+  ) {
+    webpush.setGCMAPIKey(process.env.GOOGLE_API_KEY!);
+    webpush.setVapidDetails(
+      "mailto:wojtekszutryk@gmail.com",
+      process.env.VAPID_PUBLIC_KEY!,
+      process.env.VAPID_PRIVATE_KEY!
+    );
 
     const userIDs = notifications.map((n) => n.userId);
 
@@ -54,10 +60,13 @@ export class PushNotificationService {
     const notificationsRequests = subscriptions.map((s) => {
       const notification = notifications.find((n) => n.userId === s.userId);
 
-      return sendNotification(
+      return webpush.sendNotification(
         s,
-        JSON.stringify({ notification, payload }),
-        options
+        JSON.stringify({
+          notification,
+          payload,
+          language: languagePreferences[s.userId] || AppLanguages.en,
+        })
       );
     });
 
