@@ -23,18 +23,14 @@ export class NotifyService {
   private getUsersToNotiftByPreference(
     users: IUserAttached[],
     preferenceScope: EventName,
-    preference: NotificationPreference,
-    excludeId?: string
+    preference: NotificationPreference
   ) {
-    return users.filter((u) => {
-      if (u.id === excludeId) return false;
-
-      return (
+    return users.filter(
+      (u) =>
         u.preferences.notificationPreferences[preferenceScope] === preference ||
         u.preferences.notificationPreferences[preferenceScope] ===
           NotificationPreference.ALL
-      );
-    });
+    );
   }
 
   public async notifyUsers<T>(
@@ -53,7 +49,7 @@ export class NotifyService {
     //TODO: handle NotificationPreference.NONE and do not create notification for those users
     const createdNotifications =
       await this.notificationService.createNotificationForUsers(
-        memberUsers.map((u) => u.id),
+        memberUsers.map((u) => u.id).filter((id) => id !== eventCreatorId),
         eventName,
         eventSubject,
         eventCreatorId,
@@ -63,8 +59,7 @@ export class NotifyService {
     const usersToNotifyBySocket = this.getUsersToNotiftByPreference(
       memberUsers,
       eventName,
-      NotificationPreference.SOCKET,
-      eventCreatorId
+      NotificationPreference.SOCKET
     );
     const notificationsToSendBySocket = createdNotifications.filter((n) =>
       usersToNotifyBySocket.some((u) => u.id === n.userId)
@@ -77,8 +72,7 @@ export class NotifyService {
     const usersToNotifyByPush = this.getUsersToNotiftByPreference(
       memberUsers,
       eventName,
-      NotificationPreference.PUSH,
-      eventCreatorId
+      NotificationPreference.PUSH
     );
     const notificationsToSendByPush = createdNotifications.filter((n) =>
       usersToNotifyByPush.some((u) => u.id === n.userId)
@@ -93,7 +87,7 @@ export class NotifyService {
     this.pushNotificationService.notifyUsers(
       notificationsToSendByPush,
       payload,
-      userIdToPreferedLanguageMap,
+      userIdToPreferedLanguageMap
     );
   }
 }
