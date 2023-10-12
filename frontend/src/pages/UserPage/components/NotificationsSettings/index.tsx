@@ -1,6 +1,8 @@
 import { Divider, Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
 import { ControlledCheckbox } from "atomicComponents/molecules/ControlledCheckbox";
+import RegisterDeviceForPushButton from "atomicComponents/organisms/Header/components/NotificationsMenu/components/RegisterDeviceForPushButton";
+import useCheckPushSubActive from "atomicComponents/organisms/Header/components/NotificationsMenu/hooks/useCheckPushSubActive";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { EventName } from "linked-models/event/event.enum";
@@ -42,6 +44,8 @@ const NotificationsSettings = (): JSX.Element => {
   const { currentUser } = useCurrentUser();
   const { t } = useTranslation();
   const changePreferencesMutation = useChangePreferencesMutation();
+  const showNoActivePushSubIcon = useCheckPushSubActive();
+
   const defaultValues = Object.entries(
     currentUser?.preferences.notificationPreferences || {}
   ).reduce((acc, [key, value]) => {
@@ -55,7 +59,6 @@ const NotificationsSettings = (): JSX.Element => {
     };
     return acc;
   }, {} as NotificationsSettingsForm);
-  console.log("defaultValues", defaultValues);
 
   const { handleSubmit, control } = useForm<NotificationsSettingsForm>({
     defaultValues,
@@ -77,12 +80,12 @@ const NotificationsSettings = (): JSX.Element => {
         {} as IUserPreferences["notificationPreferences"]
       ),
     };
-    console.log(updatedPreferences);
     changePreferencesMutation.mutate(updatedPreferences);
   };
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
+      {showNoActivePushSubIcon && <RegisterDeviceForPushButton />}
       {Object.values(EventName).map((event) => {
         return (
           <>

@@ -18,7 +18,7 @@ const NotificationsMenu = (): JSX.Element => {
 
   const getUserNotificationsQuery = useGetUserNotificationsQuery();
   const showNoActivePushSubIcon = useCheckPushSubActive();
-
+ 
   const [
     activeNotificationsData,
     archivedNotificationsData,
