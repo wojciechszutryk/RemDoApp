@@ -35,18 +35,16 @@ export const StyledHeaderButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export const StyledHeaderContentWrapper = styled("div")(({ theme }) => ({
+export const StyledHeaderContentWrapper = styled("div")({
   height: "60px",
   display: "flex",
   justifyContent: "space-around",
   alignContent: "center",
   alignItems: "center",
   pointerEvents: "all",
+  maxWidth: 720,
+  margin: "0 auto",
   "& > button": {
     zIndex: 1,
   },
-
-  [theme.breakpoints.up("sm")]: {
-    justifyContent: "center",
-  },
-}));
+});
