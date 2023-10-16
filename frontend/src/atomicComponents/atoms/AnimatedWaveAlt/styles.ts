@@ -2,7 +2,11 @@ import { Theme } from "@mui/material";
 
 const numOfBlobs = 4;
 
-export const AnimatedWaveAltStyles = (theme: Theme, noBorder?: boolean) => ({
+export const AnimatedWaveAltStyles = (
+  theme: Theme,
+  noBorder?: boolean,
+  disabled?: boolean
+) => ({
   zIndex: 1,
   position: "relative",
   backgroundColor: "transparent",
@@ -31,20 +35,22 @@ export const AnimatedWaveAltStyles = (theme: Theme, noBorder?: boolean) => ({
     transition: "all 0.3s 0.2s",
     borderRadius: "30px",
   },
-  "&:hover": {
-    color: theme.palette.primary.light,
-    "& > div:last-of-type > div > span": {
-      transform: "translateZ(0) scale(1.7)",
-      "@supports (filter: url('#goo'))": {
-        transform: "translateZ(0) scale(1.4)",
+  ...(!disabled && {
+    "&:hover": {
+      color: theme.palette.primary.light,
+      "& > div:last-of-type > div > span": {
+        transform: "translateZ(0) scale(1.7)",
+        "@supports (filter: url('#goo'))": {
+          transform: "translateZ(0) scale(1.4)",
+        },
+      },
+      "&:after": {
+        transition: "all 0.3s",
+        left: 0,
+        top: 0,
       },
     },
-    "&:after": {
-      transition: "all 0.3s",
-      left: 0,
-      top: 0,
-    },
-  },
+  }),
   "& > div:last-of-type": {
     zIndex: "-1",
     overflow: "hidden",

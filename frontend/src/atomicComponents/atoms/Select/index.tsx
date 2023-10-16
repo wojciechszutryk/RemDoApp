@@ -28,7 +28,7 @@ const MenuProps: Partial<MuiMenuProps> = {
   },
 };
 
-interface Props extends MuiSelectProps {
+export interface SelectProps extends MuiSelectProps {
   options?: string[];
   value: string[] | string;
 }
@@ -38,7 +38,7 @@ export const Select = ({
   value,
   children,
   ...otherProps
-}: Props): JSX.Element => {
+}: SelectProps): JSX.Element => {
   return (
     <StyledWrapper>
       <FormControl fullWidth variant={"standard"}>

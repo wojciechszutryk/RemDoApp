@@ -4,7 +4,10 @@ import { AnimatedWaveAltStyles } from "../AnimatedWaveAlt/styles";
 export const StyledOutlinedButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== "disabled" && prop !== "color",
 })<{ disabled?: boolean }>(({ theme, disabled, color }) => ({
-  color: color === 'secondary' ? theme.palette.primary.contrastText : theme.palette.primary.main,
+  color:
+    color === "secondary"
+      ? theme.palette.primary.contrastText
+      : theme.palette.primary.main,
   border: `1px solid ${theme.palette.primary.main}`,
   fontWeight: "bold",
   "&:hover": {
@@ -43,7 +46,7 @@ export const StyledButton = styled(Button, {
           cursor: "default",
         }
       : {
-          ...(AnimatedWaveAltStyles(theme, noBorder) as {}),
+          ...(AnimatedWaveAltStyles(theme, noBorder, disabled) as {}),
           ":hover": {
             backgroundColor: theme.palette.primary.light,
           },

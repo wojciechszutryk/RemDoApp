@@ -24,10 +24,16 @@ const DateTimePicker = ({
         }}
         onClose={() => setOpen(false)}
         slotProps={{
+          ...props.slotProps,
           textField: {
+            ...props.slotProps?.textField,
             InputProps: {
+              disabled: props.disabled,
               startAdornment: (
-                <StyledCallendarIcon onClick={() => setOpen(true)} />
+                <StyledCallendarIcon
+                  disabled={props.disabled}
+                  onClick={() => !props.disabled && setOpen(true)}
+                />
               ),
             },
           },
