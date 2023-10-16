@@ -10,6 +10,9 @@ export interface ITask {
   /** Date when task should be finished */
   finishDate?: Date | null;
 
+  /** Date when to notify user about task or reminder */
+  notifyDate?: Date | null;
+
   /** Optional Date when task was finished */
   completionDate?: Date | null;
 
