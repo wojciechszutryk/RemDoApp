@@ -86,6 +86,7 @@ export enum TranslationKeys {
   EditTask = "EditTask",
   TaskName = "TaskName",
   TaskImportant = "TaskImportant",
+  NotifyMe = "NotifyMe",
   TaskMarkedAsFinishedWithDate = "TaskMarkedAsFinishedWithDate",
   TaskIsOnFinishedList = "TaskIsOnFinishedList",
   StartDate = "StartDate",

@@ -17,7 +17,9 @@ export const StyledWrapper = styled("div")({
   },
 });
 
-export const StyledSelect = styled(Select)(({ theme }) => ({
+export const StyledSelect = styled(Select, {
+  shouldForwardProp: (prop) => prop !== "disabled",
+})<{ disabled?: boolean }>(({ theme, disabled }) => ({
   height: 52,
   paddingLeft: 0,
   paddingTop: 0,
@@ -27,6 +29,10 @@ export const StyledSelect = styled(Select)(({ theme }) => ({
   border: `2px solid ${theme.palette.primary.contrastText}`,
   borderRadius: theme.spacing(3),
   transition: "all .15s",
+  ...(disabled && {
+    pointerEvents: "none",
+    opacity: 0.5,
+  }),
 
   [`&.${selectClasses.select}`]: {
     backgroundColor: "transparent",

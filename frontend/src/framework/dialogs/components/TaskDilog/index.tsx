@@ -1,6 +1,7 @@
 import FlagCircleIcon from "@mui/icons-material/FlagCircle";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { Autocomplete, Typography } from "@mui/material";
+import Collapse from "@mui/material/Collapse";
 import { Button } from "atomicComponents/atoms/Button";
 import DateTimePicker from "atomicComponents/atoms/DateTimePicker";
 import Dialog from "atomicComponents/atoms/Dialog";
@@ -24,6 +25,7 @@ import {
   ITaskDialog,
   NotifyDateCreatorFields,
 } from "./models/taskDialog.model";
+import { StyledCheckboxesWrapper, StyledNotifyInputsWrapper } from "./styles";
 
 const createDateFromSelectValues = (
   params: NotifyDateCreatorFields,
@@ -200,9 +202,10 @@ const TaskDialog = (): JSX.Element => {
       : ["Start"]
     : watch("finishDate")
     ? ["Finish"]
-    : [];
+    : ["Start"];
 
-  const disableSelects = !watch("startDate") && !watch("finishDate");
+  const disableSelects =
+    !watch("notify") || (!watch("startDate") && !watch("finishDate"));
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -236,149 +239,152 @@ const TaskDialog = (): JSX.Element => {
           <DateTimePickerWithIcon key={index} {...props} />
         ))}
 
-        {/* START */}
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <StyledCheckboxesWrapper>
           <ControlledCheckbox
             name={"notify"}
             control={control}
-            // label={"create notification"}
+            label={t(TranslationKeys.NotifyMe)}
           />
-
-          <Controller
+          <ControlledCheckbox
+            name={"important"}
             control={control}
-            name={"minsAccordingToTimePoint"}
-            render={({ field: { ref, onChange, value } }) => (
-              <Autocomplete
-                ref={ref}
-                disabled={!watch("notify")}
-                onChange={(event, value) => {
-                  const mins = parseInt(value as string);
-                  const newDate = createDateFromSelectValues(
-                    {
-                      minsAccordingToTimePoint: mins,
-                      beforeOrAfter: watch("beforeOrAfter"),
-                      timePoint: watch("timePoint"),
-                    },
-                    watch("startDate"),
-                    watch("finishDate")
-                  );
-
-                  setValue("notifyDate", newDate || undefined);
-
-                  onChange(mins);
-                }}
-                value={value ? value.toString() : null}
-                freeSolo
-                options={["15", "10", "5"]}
-                renderInput={(params) => {
-                  return <TextField {...params} disabled={!watch("notify")} />;
-                }}
-              />
-            )}
+            label={t(TranslationKeys.TaskImportant)}
           />
-          <Controller
-            control={control}
-            name={"beforeOrAfter"}
-            render={({ field: { onChange, value } }) => (
-              <Select
-                options={["Before", "After"]}
-                disabled={disableSelects}
-                onChange={(event) => {
-                  const newBeforeOrAfterValue = event.target.value as
-                    | "Before"
-                    | "After"
-                    | undefined;
-                  const newDate = createDateFromSelectValues(
-                    {
-                      minsAccordingToTimePoint: watch(
-                        "minsAccordingToTimePoint"
-                      ),
-                      beforeOrAfter: newBeforeOrAfterValue,
-                      timePoint: watch("timePoint"),
-                    },
-                    watch("startDate"),
-                    watch("finishDate")
-                  );
-
-                  setValue("notifyDate", newDate || undefined);
-
-                  onChange(newBeforeOrAfterValue);
-                }}
-                // onChange={onChange}
-                value={value}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name={"timePoint"}
-            render={({ field: { onChange, value } }) => (
-              <Select
-                options={timePointOptions}
-                disabled={disableSelects}
-                onChange={(event) => {
-                  const newTimePoint = event.target.value as
-                    | "Start"
-                    | "Finish"
-                    | undefined;
-                  const newDate = createDateFromSelectValues(
-                    {
-                      minsAccordingToTimePoint: watch(
-                        "minsAccordingToTimePoint"
-                      ),
-                      beforeOrAfter: watch("beforeOrAfter"),
-                      timePoint: newTimePoint,
-                    },
-                    watch("startDate"),
-                    watch("finishDate")
-                  );
-
-                  setValue("notifyDate", newDate || undefined);
-
-                  onChange(newTimePoint);
-                }}
-                value={value}
-              />
-            )}
-          />
-
-          <Controller
-            control={control}
-            name={"notifyDate"}
-            render={({ field: { ref, onChange, value } }) => (
-              <DateTimePicker
-                disabled={!watch("notify")}
-                onChange={(date) => {
-                  const selectParams = createNotifySelectParams(
-                    date?.toDate(),
-                    watch("startDate"),
-                    watch("finishDate")
-                  );
-
-                  if (selectParams) {
-                    setValue(
-                      "minsAccordingToTimePoint",
-                      selectParams.minsAccordingToTimePoint
+        </StyledCheckboxesWrapper>
+        <Collapse in={watch("notify")} timeout="auto" unmountOnExit>
+          <StyledNotifyInputsWrapper>
+            <Controller
+              control={control}
+              name={"minsAccordingToTimePoint"}
+              render={({ field: { ref, onChange, value } }) => (
+                <Autocomplete
+                  ref={ref}
+                  disabled={disableSelects}
+                  onChange={(event, value) => {
+                    const mins = parseInt(value as string);
+                    const newDate = createDateFromSelectValues(
+                      {
+                        minsAccordingToTimePoint: mins,
+                        beforeOrAfter: watch("beforeOrAfter"),
+                        timePoint: watch("timePoint"),
+                      },
+                      watch("startDate"),
+                      watch("finishDate")
                     );
-                    setValue("beforeOrAfter", selectParams.beforeOrAfter);
-                    setValue("timePoint", selectParams.timePoint);
-                  }
 
-                  onChange(date?.toDate());
-                }}
-                value={dayjs(value)}
-                inputRef={ref}
-              />
-            )}
-          />
-        </div>
+                    setValue("notifyDate", newDate || undefined);
+
+                    onChange(mins);
+                  }}
+                  value={value ? value.toString() : null}
+                  freeSolo
+                  options={["5", "10", "15", "30"]}
+                  renderInput={(params) => {
+                    return <TextField {...params} disabled={disableSelects} />;
+                  }}
+                />
+              )}
+            />
+            <span> min</span>
+            <Controller
+              control={control}
+              name={"beforeOrAfter"}
+              render={({ field: { onChange, value } }) => (
+                <Select
+                  options={["Before", "After"]}
+                  disabled={disableSelects}
+                  onChange={(event) => {
+                    const newBeforeOrAfterValue = event.target.value as
+                      | "Before"
+                      | "After"
+                      | undefined;
+                    const newDate = createDateFromSelectValues(
+                      {
+                        minsAccordingToTimePoint: watch(
+                          "minsAccordingToTimePoint"
+                        ),
+                        beforeOrAfter: newBeforeOrAfterValue,
+                        timePoint: watch("timePoint"),
+                      },
+                      watch("startDate"),
+                      watch("finishDate")
+                    );
+
+                    setValue("notifyDate", newDate || undefined);
+
+                    onChange(newBeforeOrAfterValue);
+                  }}
+                  // onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name={"timePoint"}
+              render={({ field: { onChange, value } }) => (
+                <Select
+                  options={timePointOptions}
+                  disabled={disableSelects}
+                  defaultValue={"Start"}
+                  placeholder={"Time point"}
+                  onChange={(event) => {
+                    const newTimePoint = event.target.value as
+                      | "Start"
+                      | "Finish"
+                      | undefined;
+                    const newDate = createDateFromSelectValues(
+                      {
+                        minsAccordingToTimePoint: watch(
+                          "minsAccordingToTimePoint"
+                        ),
+                        beforeOrAfter: watch("beforeOrAfter"),
+                        timePoint: newTimePoint,
+                      },
+                      watch("startDate"),
+                      watch("finishDate")
+                    );
+
+                    setValue("notifyDate", newDate || undefined);
+
+                    onChange(newTimePoint);
+                  }}
+                  value={value}
+                />
+              )}
+            />
+            <Controller
+              control={control}
+              name={"notifyDate"}
+              render={({ field: { ref, onChange, value } }) => (
+                <DateTimePicker
+                  disabled={!watch("notify")}
+                  onChange={(date) => {
+                    const selectParams = createNotifySelectParams(
+                      date?.toDate(),
+                      watch("startDate"),
+                      watch("finishDate")
+                    );
+
+                    if (selectParams) {
+                      setValue(
+                        "minsAccordingToTimePoint",
+                        selectParams.minsAccordingToTimePoint
+                      );
+                      setValue("beforeOrAfter", selectParams.beforeOrAfter);
+                      setValue("timePoint", selectParams.timePoint);
+                    }
+
+                    onChange(date?.toDate());
+                  }}
+                  value={dayjs(value)}
+                  inputRef={ref}
+                />
+              )}
+            />
+          </StyledNotifyInputsWrapper>
+        </Collapse>
         {/* END */}
-        <ControlledCheckbox
-          name={"important"}
-          control={control}
-          label={t(TranslationKeys.TaskImportant)}
-        />
         <Button type="submit">
           {editTaskData ? t(TranslationKeys.Save) : t(TranslationKeys.AddTask)}
         </Button>

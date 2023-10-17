@@ -123,6 +123,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.EditTask]: "Edit task",
   [TranslationKeys.TaskName]: "Task name",
   [TranslationKeys.TaskImportant]: "Important",
+  [TranslationKeys.NotifyMe]: "Notify me",
   [TranslationKeys.DelteTaskWarning]:
     "Are you sure you want to delete this task? This action cannot be undone.",
   [TranslationKeys.TaskMarkedAsFinishedWithDate]:

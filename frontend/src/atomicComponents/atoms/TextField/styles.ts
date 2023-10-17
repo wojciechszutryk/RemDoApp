@@ -16,13 +16,16 @@ export const StyledTextField = styled(TextField, {
   },
 
   "& input, & textarea": {
-    // textTransform: "uppercase",
     color: theme.palette.primary.contrastText,
     // "&::placeholder": { color: "red", opacity: 1 },
     // "&:-ms-input-placeholder": { color: "red" },
     // "&::-ms-input-placeholder": { color: "red" },
   },
 
+  ...(disabled && {
+    pointerEvents: "none",
+    opacity: 0.5,
+  }),
   ...(!disabled && {
     "&:hover input, &:hover textarea": {
       color: theme.palette.primary.light,
@@ -31,6 +34,10 @@ export const StyledTextField = styled(TextField, {
 
   "& .Mui-focused input, & .Mui-focused textarea": {
     color: theme.palette.primary.light,
+  },
+
+  "&:hover svg": {
+    color: theme.palette.primary.main,
   },
 
   "& > div": {
