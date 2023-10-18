@@ -1,12 +1,12 @@
 import EventIcon from "@mui/icons-material/Event";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
-import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
 import { useMediaQuery } from "@mui/material";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
+import LogoButton from "./components/LogoButton";
 import NotificationsMenu from "./components/NotificationsMenu";
 import SettingsMenu from "./components/SettingsMenu";
 import {
@@ -27,12 +27,7 @@ export const Header = (): JSX.Element => {
   return (
     <StyledHeaderWrapper>
       <StyledHeaderContentWrapper>
-        <StyledHeaderButton
-          onClick={() => navigate(Pages.HomePage.path)}
-          disabled={!currentPagePath}
-        >
-          {isMobile ? <MapsHomeWorkIcon /> : t(TranslationKeys.PageTitleHome)}
-        </StyledHeaderButton>
+        <LogoButton />
         {currentUser ? (
           <>
             <StyledHeaderButton
