@@ -50,6 +50,8 @@ export class TodoListTasksController extends BaseHttpController {
       currentUser
     );
 
+    if (!task) return this.json("Error while creating task", 500);
+
     return this.ok(task);
   }
 }

@@ -40,8 +40,10 @@ export class TodoListTaskController extends BaseHttpController {
       const task = await this.taskServce.updateTask(
         taskId,
         parseTaskDateFields(body),
-        currentUser.id
+        currentUser
       );
+
+      if (!task) return this.json("Error while updating task", 500);
 
       return this.ok(task);
     } catch (error) {

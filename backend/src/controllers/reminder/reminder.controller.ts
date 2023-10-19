@@ -54,7 +54,7 @@ export class ReminderController extends BaseHttpController {
         todoListId,
         taskId,
         parseTaskDateFields(body),
-        currentUser.id
+        currentUser
       );
 
       return this.ok(reminder);

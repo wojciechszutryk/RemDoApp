@@ -18,6 +18,9 @@ export enum EventName {
   ReminderCreated = "REMINDER_CREATED",
   ReminderUpdated = "REMINDER_UPDATED",
   ReminderDeleted = "REMINDER_DELETED",
+
+  ScheduleTaskNotification = "SCHEDULE_TASK_NOTIFICATION",
+  ScheduleReminderNotification = "SCHEDULE_REMINDER_NOTIFICATION",
 }
 
 export enum EventSubject {
@@ -25,4 +28,5 @@ export enum EventSubject {
   TodoList = "TODOLIST",
   Collaboration = "COLLABORATION",
   Reminder = "REMINDER",
+  ScheduleNotification = "SCHEDULE_NOTIFICATION",
 }

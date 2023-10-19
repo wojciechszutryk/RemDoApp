@@ -32,6 +32,8 @@ export interface NotificationPreferences {
   [EventName.TodoListUpdated]: NotificationPreference;
   [EventName.TodoListMemberAdded]: NotificationPreference;
   [EventName.TodoListMemberRemoved]: NotificationPreference;
+  [EventName.ScheduleTaskNotification]: NotificationPreference;
+  [EventName.ScheduleReminderNotification]: NotificationPreference;
 }
 
 export interface IUserPreferences {

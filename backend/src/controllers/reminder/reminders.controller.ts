@@ -134,6 +134,9 @@ export class RemindersController extends BaseHttpController {
         currentUser
       );
 
+      if (!createdReminder)
+        return this.json("Error while creating reminder", 500);
+
       return this.ok(createdReminder);
     } catch (error) {
       if (error instanceof Error) {
