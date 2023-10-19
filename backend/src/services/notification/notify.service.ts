@@ -5,9 +5,9 @@ import {
   IUserAttached,
   NotificationPreference,
 } from "linked-models/user/user.model";
-import { SocketNotificationService } from "services/notification/socket.notification.service";
 import { NotificationService } from "./notification.service";
 import { PushNotificationService } from "./push.notification.service";
+import { SocketNotificationService } from "./socket.notification.service";
 
 @injectable()
 export class NotifyService {
@@ -43,21 +43,29 @@ export class NotifyService {
     notificationScopes?: {
       todoListId?: string;
       taskId?: string;
-    }
+    },
+    includeEventCreator?: boolean
   ): Promise<void> {
     //for now we create notification for all users
     //TODO: handle NotificationPreference.NONE and do not create notification for those users
+    const usersToNotify = includeEventCreator
+      ? memberUsers
+      : memberUsers.filter((u) => u.id !== eventCreatorId);
+    const usersToNotifyIDs = memberUsers.map((u) => u.id);
+
     const createdNotifications =
       await this.notificationService.createNotificationForUsers(
-        memberUsers.map((u) => u.id).filter((id) => id !== eventCreatorId),
+        usersToNotifyIDs,
         eventName,
         eventSubject,
         eventCreatorId,
         notificationScopes?.todoListId,
         notificationScopes?.taskId
       );
+
+    /** SOCKET START */
     const usersToNotifyBySocket = this.getUsersToNotiftByPreference(
-      memberUsers,
+      usersToNotify,
       eventName,
       NotificationPreference.SOCKET
     );
@@ -68,9 +76,11 @@ export class NotifyService {
       notificationsToSendBySocket,
       payload
     );
+    /** SOCKET END */
 
+    /** PUSH START */
     const usersToNotifyByPush = this.getUsersToNotiftByPreference(
-      memberUsers,
+      usersToNotify,
       eventName,
       NotificationPreference.PUSH
     );
@@ -89,5 +99,6 @@ export class NotifyService {
       payload,
       userIdToPreferedLanguageMap
     );
+    /** PUSH END */
   }
 }
