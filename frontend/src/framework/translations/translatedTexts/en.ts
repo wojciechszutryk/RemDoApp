@@ -202,7 +202,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
     "Reminder that you are assigned to was deleted",
   [TranslationKeys.COLLABOARTION_ACCEPTED]:
     "Collaboration you requested was accepted",
-  [TranslationKeys.COLLABOARTION_REQUESTED]: "You received collaboration request",
+  [TranslationKeys.COLLABOARTION_REQUESTED]:
+    "You received collaboration request",
   [TranslationKeys.COLLABOARTION_RE_OPENED]:
     "You received collaboration request for second time",
   [TranslationKeys.COLLABOARTION_REJECTED]:
@@ -217,6 +218,9 @@ export const enTranslation: Record<TranslationKeys, string> = {
     "User added to todo list that you are assigned to",
   [TranslationKeys.TODOLIST_MEMBER_REMOVED]:
     "User removed from todo list that you are assigned to",
+  [TranslationKeys.SCHEDULE_TASK_NOTIFICATION]: "Task notification scheduled",
+  [TranslationKeys.SCHEDULE_REMINDER_NOTIFICATION]:
+    "Reminder notification scheduled",
   [TranslationKeys.PushNotification]: "Push notification",
   [TranslationKeys.SocketNotification]: "Real time notification",
 

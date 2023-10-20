@@ -38,6 +38,8 @@ type NotificationsSettingsForm = {
   [EventName.TodoListUpdated]: INotificationOptions;
   [EventName.TodoListMemberAdded]: INotificationOptions;
   [EventName.TodoListMemberRemoved]: INotificationOptions;
+  [EventName.ScheduleTaskNotification]: INotificationOptions;
+  [EventName.ScheduleReminderNotification]: INotificationOptions;
 };
 
 const NotificationsSettings = (): JSX.Element => {

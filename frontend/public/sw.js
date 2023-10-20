@@ -83,6 +83,14 @@ self.addEventListener("push", async function (event) {
         pl: "Współpraca została zablokowana",
         en: "Collaboration was blocked",
       },
+      SCHEDULE_TASK_NOTIFICATION: {
+        pl: "Zaplanowane zadanie",
+        en: "Task was scheduled",
+      },
+      SCHEDULE_REMINDER_NOTIFICATION: {
+        pl: "Zaplanowane przypomnienie",
+        en: "Reminder was scheduled",
+      },
     };
 
     const ByUserPart = {

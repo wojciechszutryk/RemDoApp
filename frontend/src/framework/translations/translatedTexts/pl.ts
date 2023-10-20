@@ -229,6 +229,10 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "Użytkownik został dodany do listy zadań do której jesteś przypisany/a",
   [TranslationKeys.TODOLIST_MEMBER_REMOVED]:
     "Użytkownik został usunięty z listy zadań do której jesteś przypisany/a",
+  [TranslationKeys.SCHEDULE_TASK_NOTIFICATION]:
+    "Zaplanowano zadanie do wykonania",
+  [TranslationKeys.SCHEDULE_REMINDER_NOTIFICATION]:
+    "Zaplanowano przypomnienie do wykonania",
   [TranslationKeys.PushNotification]: "Powiadomienia push",
   [TranslationKeys.SocketNotification]: "Powiadomienia w czasie rzeczywistym",
 
