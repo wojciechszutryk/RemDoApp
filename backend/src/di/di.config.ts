@@ -8,9 +8,9 @@ import { registerUserBindings } from "./register.user.bindings";
 
 export const registerBindings = (container: Container) => {
   registerUserBindings(container);
+  registerNotificationBindings(container);
   registerCollaborationBindings(container);
   registerTodoListBindings(container);
   registerTaskBindings(container);
   registerReminderBindings(container);
-  registerNotificationBindings(container);
 };
