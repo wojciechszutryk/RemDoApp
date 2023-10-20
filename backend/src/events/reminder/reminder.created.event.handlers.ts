@@ -1,21 +1,23 @@
 import { EventHandler } from "framework/events/event.handler.decorator";
 import { inject } from "inversify";
 import { EventName, EventSubject } from "linked-models/event/event.enum";
-import { TypedEventHandler } from "linked-models/event/event.handler.interface";
-import { TypedEvent } from "linked-models/event/event.interface";
 import {
-  IReminderCreatedEventPayload,
-  ReminderCreatedEvent,
-} from "linked-models/event/implementation/reminder.events";
+  CreatorScopedEventPayload,
+  TypedEventHandler,
+} from "linked-models/event/event.handler.interface";
+import { TypedEvent } from "linked-models/event/event.interface";
+import { ReminderCreatedEvent } from "linked-models/event/implementation/reminder.events";
+import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import { GoogleEventService } from "services/googleEvent/googleEvent.service";
 import { NotifyService } from "services/notification/notify.service";
+import { ScheduleNotificationService } from "services/notification/schedule.notification.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { TodoListService } from "services/todoList/todoList.service";
 import { UserAuthService } from "services/user/user.auth.service";
 
 @EventHandler(ReminderCreatedEvent)
 export class ReminderCreatedEventHandler
-  implements TypedEventHandler<IReminderCreatedEventPayload>
+  implements TypedEventHandler<CreatorScopedEventPayload<IReminderAttached>>
 {
   constructor(
     @inject(TodoListCacheService)
@@ -24,15 +26,20 @@ export class ReminderCreatedEventHandler
     private readonly todoListService: TodoListService,
     @inject(NotifyService)
     private readonly notifyService: NotifyService,
+    @inject(ScheduleNotificationService)
+    private readonly scheduleNotificationService: ScheduleNotificationService,
     @inject(UserAuthService) private readonly userAuthService: UserAuthService,
     @inject(GoogleEventService)
     private readonly googleEventService: GoogleEventService
   ) {}
 
   async handle(
-    _: TypedEvent<IReminderCreatedEventPayload>,
+    _: TypedEvent<CreatorScopedEventPayload<IReminderAttached>>,
     __: string,
-    { createdReminder, eventCreator }: IReminderCreatedEventPayload
+    {
+      payload: createdReminder,
+      eventCreator,
+    }: CreatorScopedEventPayload<IReminderAttached>
   ) {
     const { todoListMembers } =
       await this.todoListService.getTodoListWithAttachedMembers(
@@ -40,12 +47,14 @@ export class ReminderCreatedEventHandler
       );
 
     //send notifications
-    this.notifyService.notifyUsers<IReminderCreatedEventPayload>(
+    this.notifyService.notifyUsers<
+      CreatorScopedEventPayload<IReminderAttached>
+    >(
       todoListMembers,
       eventCreator.id,
       EventName.ReminderCreated,
       EventSubject.Reminder,
-      { createdReminder, eventCreator },
+      { payload: createdReminder, eventCreator },
       {
         todoListId: createdReminder.todoListId,
         taskId: createdReminder.taskId,
@@ -56,6 +65,36 @@ export class ReminderCreatedEventHandler
     this.todoListCacheService.invalidateExtendedTodoListCacheByUserIDs(
       todoListMembers.map((u) => u.id)
     );
+
+    //schedule notification for user
+    if (createdReminder.notifyDate) {
+      this.scheduleNotificationService.scheduleNotification(
+        eventCreator,
+        new Date(createdReminder.notifyDate),
+        `${createdReminder.todoListId}-${createdReminder.taskId}`,
+        () => {
+          this.notifyService.notifyUsers<
+            CreatorScopedEventPayload<IReminderAttached>
+          >(
+            [eventCreator],
+            eventCreator.id,
+            EventName.ScheduleTaskNotification,
+            EventSubject.ScheduleNotification,
+            { payload: createdReminder, eventCreator },
+            {
+              todoListId: createdReminder.todoListId,
+              taskId: createdReminder.taskId,
+            },
+            true
+          );
+        }
+      );
+    } else {
+      this.scheduleNotificationService.cancelScheduledNotification(
+        eventCreator.id,
+        `${createdReminder.todoListId}-${createdReminder.taskId}`
+      );
+    }
 
     //create google event
     if (
