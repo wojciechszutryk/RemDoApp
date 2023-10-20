@@ -21,6 +21,9 @@ import {
   TodoListUpdatedEvent,
 } from "linked-models/event/implementation/todoList.events";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
+import useUpdateQueriesAfterCreatingReminder from "pages/RemindersPage/mutations/createReminder/useUpdateQueriesAfterCreatingReminder";
+import useUpdateQueriesAfterDeletingReminder from "pages/RemindersPage/mutations/deleteReminder/useUpdateQueriesAfterDeletingReminder";
+import useUpdateQueriesAfterEditingReminder from "pages/RemindersPage/mutations/editReminder/useUpdateQueriesAfterEditingReminder";
 import useUpdateQueriesAfterCreatingTask from "pages/SingleTodoListPage/mutations/createTask/useUpdateQueriesAfterCreatingTask";
 import useUpdateQueriesAfterDeletingTask from "pages/SingleTodoListPage/mutations/deleteTask/useUpdateQueriesAfterDeletingTask";
 import useUpdateQueriesAfterDeletingTodoList from "pages/SingleTodoListPage/mutations/deleteTodoList/useUpdateQueriesAfterDeletingTodoList";
@@ -40,15 +43,21 @@ const useNotificationSocket = () => {
   const addNewNotification = useAddNewNotification();
   const { t } = useTranslation();
 
-  const updateQueriesAfterCreatingTask = useUpdateQueriesAfterCreatingTask();
-  const updateQueriesAfterDeletingTask = useUpdateQueriesAfterDeletingTask();
-  const updateQueriesAfterDeletingTodoList =
-    useUpdateQueriesAfterDeletingTodoList();
-  const updateQueriesAfterEditingTask = useUpdateQueriesAfterEditingTask();
-  const updateQueriesAfterEditingTodoList =
-    useUpdateQueriesAfterEditingTodoList();
   const updateQueriesAfterCreatingTodoList =
     useUpdateQueriesAfterCreatingTodoList();
+  const updateQueriesAfterEditingTodoList =
+    useUpdateQueriesAfterEditingTodoList();
+  const updateQueriesAfterDeletingTodoList =
+    useUpdateQueriesAfterDeletingTodoList();
+  const updateQueriesAfterCreatingTask = useUpdateQueriesAfterCreatingTask();
+  const updateQueriesAfterDeletingTask = useUpdateQueriesAfterDeletingTask();
+  const updateQueriesAfterEditingTask = useUpdateQueriesAfterEditingTask();
+  const updateQueriesAfterCreatingReminder =
+    useUpdateQueriesAfterCreatingReminder();
+  const updateQueriesAfterDeletingReminder =
+    useUpdateQueriesAfterDeletingReminder();
+  const updateQueriesAfterEditingReminder =
+    useUpdateQueriesAfterEditingReminder();
 
   const getUserTodoListsWithTasksQuery = useGetUserExtendedTodoListsQuery({
     enabled: !!false,
@@ -135,7 +144,7 @@ const useNotificationSocket = () => {
 
         on(
           TaskCreatedEvent,
-          ({ notification, payload: { createdTask, eventCreator } }) => {
+          ({ notification, payload: { payload, eventCreator } }) => {
             addNewNotification(
               notification,
               createTodoNotificationMsg(
@@ -143,38 +152,40 @@ const useNotificationSocket = () => {
                   action: notification.action,
                   actionCreatorDisplayName: eventCreator?.displayName,
                   todoListName: todoLists?.find(
-                    (td) => td.id === createdTask.todoListId
+                    (td) => td.id === payload.todoListId
                   )?.name,
-                  taskName: createdTask.text,
+                  taskName: payload.text,
                 },
                 t
               ),
               eventCreator
             );
-            updateQueriesAfterCreatingTask(createdTask);
+            updateQueriesAfterCreatingTask(payload);
           }
         );
-        on(TaskUpdatedEvent, ({ notification, payload: updatedTask }) => {
-          const creator = userIdToUserMap.get(notification.actionCreatorId);
-          addNewNotification(
-            notification,
-            createTodoNotificationMsg(
-              {
-                action: notification.action,
-                actionCreatorDisplayName: creator?.displayName,
-                todoListName: todoLists?.find(
-                  (td) => td.id === updatedTask.todoListId
-                )?.name,
-                taskName: updatedTask.text,
-              },
-              t
-            ),
-            creator
-          );
-          updateQueriesAfterEditingTask(updatedTask, {
-            todoListId: updatedTask.todoListId,
-          });
-        });
+        on(
+          TaskUpdatedEvent,
+          ({ notification, payload: { payload, eventCreator } }) => {
+            addNewNotification(
+              notification,
+              createTodoNotificationMsg(
+                {
+                  action: notification.action,
+                  actionCreatorDisplayName: eventCreator.displayName,
+                  todoListName: todoLists?.find(
+                    (td) => td.id === payload.todoListId
+                  )?.name,
+                  taskName: payload.text,
+                },
+                t
+              ),
+              eventCreator
+            );
+            updateQueriesAfterEditingTask(payload, {
+              todoListId: payload.todoListId,
+            });
+          }
+        );
         on(TaskDeletedEvent, ({ notification, payload: deletedTask }) => {
           const creator = userIdToUserMap.get(notification.actionCreatorId);
           addNewNotification(
@@ -249,37 +260,44 @@ const useNotificationSocket = () => {
             payload
           );
         });
-        on(ReminderCreatedEvent, ({ notification, payload }) => {
-          addNewNotification(
-            notification,
-            createTodoNotificationMsg(
-              {
-                action: notification.action,
-                actionCreatorDisplayName: payload.eventCreator.displayName,
-                todoListName: payload.createdReminder.name,
-                taskName: payload.createdReminder.text,
-              },
-              t
-            ),
-            payload.eventCreator
-          );
-        });
-        on(ReminderUpdatedEvent, ({ notification, payload }) => {
-          const creator = userIdToUserMap.get(notification.actionCreatorId);
-          addNewNotification(
-            notification,
-            createTodoNotificationMsg(
-              {
-                action: notification.action,
-                actionCreatorDisplayName: creator?.displayName,
-                todoListName: payload.name,
-                taskName: payload.text,
-              },
-              t
-            ),
-            creator
-          );
-        });
+        on(
+          ReminderCreatedEvent,
+          ({ notification, payload: { payload, eventCreator } }) => {
+            addNewNotification(
+              notification,
+              createTodoNotificationMsg(
+                {
+                  action: notification.action,
+                  actionCreatorDisplayName: eventCreator.displayName,
+                  todoListName: payload.name,
+                  taskName: payload.text,
+                },
+                t
+              ),
+              eventCreator
+            );
+            updateQueriesAfterCreatingReminder(payload);
+          }
+        );
+        on(
+          ReminderUpdatedEvent,
+          ({ notification, payload: { payload, eventCreator } }) => {
+            addNewNotification(
+              notification,
+              createTodoNotificationMsg(
+                {
+                  action: notification.action,
+                  actionCreatorDisplayName: eventCreator?.displayName,
+                  todoListName: payload.name,
+                  taskName: payload.text,
+                },
+                t
+              ),
+              eventCreator
+            );
+            updateQueriesAfterEditingReminder(payload);
+          }
+        );
         on(ReminderDeletedEvent, ({ notification, payload }) => {
           const creator = userIdToUserMap.get(notification.actionCreatorId);
           addNewNotification(
@@ -295,6 +313,7 @@ const useNotificationSocket = () => {
             ),
             creator
           );
+          updateQueriesAfterDeletingReminder(payload);
         });
       }
     },
