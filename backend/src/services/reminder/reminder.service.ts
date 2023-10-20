@@ -13,6 +13,7 @@ import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
+import { ScheduleNotificationService } from "services/notification/schedule.notification.service";
 import { TaskService } from "services/task/task.service";
 import { TodoListService } from "services/todoList/todoList.service";
 import { UserService } from "services/user/user.service";
@@ -27,7 +28,9 @@ export class ReminderService {
     @inject(UserService)
     private readonly userService: UserService,
     @inject(TodoListService)
-    private readonly todoListService: TodoListService
+    private readonly todoListService: TodoListService,
+    @inject(ScheduleNotificationService)
+    private readonly scheduleNotificationService: ScheduleNotificationService
   ) {}
 
   private mapTodoListAndTaskToReminderAttached(
@@ -160,16 +163,13 @@ export class ReminderService {
       newTask
     );
 
-    if (
-      [
-        ...createdReminder.assignedOwners,
-        ...createdReminder.assignedUsers,
-      ].some((u) => u.id !== creator.id)
-    )
-      this.eventService.emit(ReminderCreatedEvent, creator.id, {
-        createdReminder,
-        eventCreator: creator,
-      });
+    this.eventService.emit(ReminderCreatedEvent, creator.id, {
+      payload: {
+        ...createdReminder,
+        notifyDate: reminderData.notifyDate,
+      },
+      eventCreator: creator,
+    });
 
     return createdReminder;
   }
@@ -182,7 +182,7 @@ export class ReminderService {
     todoListId: string,
     taskId: string,
     editReminderData: Partial<IReminder>,
-    editorId: string
+    editor: IUserAttached
   ): Promise<IReminderAttached> {
     const todoListKeys: (keyof ITodoList)[] = [
       "name",
@@ -200,7 +200,7 @@ export class ReminderService {
       await this.todoListService.updateTodoList(
         todoListId,
         todoListDataToEdit,
-        editorId,
+        editor.id,
         false
       );
     }
@@ -220,12 +220,7 @@ export class ReminderService {
     );
 
     if (Object.keys(taskDataToEdit).length > 0) {
-      await this.taskService.updateTask(
-        taskId,
-        taskDataToEdit,
-        editorId,
-        false
-      );
+      await this.taskService.updateTask(taskId, taskDataToEdit, editor, false);
     }
 
     const updatedReminder = await this.getReminderByTaskId(taskId);
@@ -233,13 +228,13 @@ export class ReminderService {
     if (!updatedReminder)
       throw new Error("There was an error while updating reminder");
 
-    if (
-      [
-        ...updatedReminder.assignedOwners,
-        ...updatedReminder.assignedUsers,
-      ].some((u) => u.id !== editorId)
-    )
-      this.eventService.emit(ReminderUpdatedEvent, editorId, updatedReminder);
+    this.eventService.emit(ReminderUpdatedEvent, editor.id, {
+      payload: {
+        ...updatedReminder,
+        notifyDate: editReminderData.notifyDate,
+      },
+      eventCreator: editor,
+    });
 
     return updatedReminder;
   }

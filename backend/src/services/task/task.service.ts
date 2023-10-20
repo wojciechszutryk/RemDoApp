@@ -8,6 +8,7 @@ import { EventService } from "framework/events/event.service";
 import { inject, injectable } from "inversify";
 import {
   TaskCreatedEvent,
+  TaskDeletedEvent,
   TaskUpdatedEvent,
 } from "linked-models/event/implementation/task.events";
 import {
@@ -17,6 +18,7 @@ import {
 } from "linked-models/task/task.model";
 import { IUserAttached } from "linked-models/user/user.model";
 import { FilterQuery } from "mongoose";
+import { ScheduleNotificationService } from "services/notification/schedule.notification.service";
 
 @injectable()
 export class TaskService {
@@ -24,7 +26,9 @@ export class TaskService {
     @inject(TaskCollectionName)
     private readonly taskCollection: TaskCollectionType,
     @inject(EventService)
-    private readonly eventService: EventService
+    private readonly eventService: EventService,
+    @inject(ScheduleNotificationService)
+    private readonly scheduleNotificationService: ScheduleNotificationService
   ) {}
 
   public async getTaskById(id: string): Promise<ITaskAttached | undefined> {
@@ -89,7 +93,7 @@ export class TaskService {
 
     if (generateEvent)
       this.eventService.emit(TaskCreatedEvent, creator.id, {
-        createdTask: mappedCreatedTask,
+        payload: { ...mappedCreatedTask, notifyDate: task.notifyDate },
         eventCreator: creator,
       });
 
@@ -102,7 +106,7 @@ export class TaskService {
   public async updateTask(
     taskId: string,
     updateData: Partial<ITask>,
-    updaterId: string,
+    editor: IUserAttached,
     generateEvent = true
   ): Promise<ITaskAttached> {
     const update = {
@@ -125,7 +129,10 @@ export class TaskService {
     const mappedUpdatedTask = mapTaskToAttachedTask(updatedTask);
 
     if (generateEvent)
-      this.eventService.emit(TaskUpdatedEvent, updaterId, mappedUpdatedTask);
+      this.eventService.emit(TaskUpdatedEvent, editor.id, {
+        payload: { ...mappedUpdatedTask, notifyDate: updateData.notifyDate },
+        eventCreator: editor,
+      });
 
     return mappedUpdatedTask;
   }
@@ -148,7 +155,7 @@ export class TaskService {
     const mappedDeletedTask = mapTaskToAttachedTask(deletedTask);
 
     if (generateEvent)
-      this.eventService.emit(TaskUpdatedEvent, deleterId, mappedDeletedTask);
+      this.eventService.emit(TaskDeletedEvent, deleterId, mappedDeletedTask);
 
     return mappedDeletedTask;
   }
