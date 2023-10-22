@@ -25,7 +25,7 @@ import { useEditReminderMutation } from "pages/RemindersPage/mutations/editRemin
 import { memo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import DateTimePickerWithIcon from "../TaskDilog/components/DatePickerWithIcon";
+import DateTimePickerWithIcon from "../TaskDialog/components/DatePickerWithIcon";
 import { StyledForm } from "../TodoListDialog/styles";
 import CollaborantAutocomplete from "./components/CollaborantAutocomplete";
 import TodoListSelect from "./components/TodoListSelect";

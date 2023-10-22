@@ -5,7 +5,7 @@ const TodoListDialog = lazy(() => import("./TodoListDialog"));
 const CollaborantsDrawer = lazy(() => import("./CollaborantsDrawer"));
 const ShareTodoListDialog = lazy(() => import("./ShareTodoListDialog"));
 const DeleteTodoListDialog = lazy(() => import("./DeleteTodoListDialog"));
-const TaskDialog = lazy(() => import("./TaskDilog"));
+const TaskDialog = lazy(() => import("./TaskDialog"));
 const DeleteTaskDialog = lazy(() => import("./DeleteTaskDialog"));
 const ReminderDialog = lazy(() => import("./ReminderDialog"));
 
