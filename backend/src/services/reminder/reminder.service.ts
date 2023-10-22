@@ -58,9 +58,10 @@ export class ReminderService {
   }
 
   public async getReminderByTaskId(
-    taskId: string
+    taskId: string,
+    userId: string
   ): Promise<IReminderAttached | undefined> {
-    const task = await this.taskService.getTaskById(taskId);
+    const task = await this.taskService.getTaskById(taskId, userId);
     if (!task) return undefined;
     const [todoList, creator] = await Promise.all([
       this.todoListService.getTodoListWithMembersById(task.todoListId),
@@ -99,7 +100,8 @@ export class ReminderService {
     const tasks = await this.taskService.getTasksByTodoListIDs(
       todoListIDs,
       startDate,
-      endDate
+      endDate,
+      userId
     );
 
     const reminders: IReminderAttached[] = [];
@@ -223,7 +225,7 @@ export class ReminderService {
       await this.taskService.updateTask(taskId, taskDataToEdit, editor, false);
     }
 
-    const updatedReminder = await this.getReminderByTaskId(taskId);
+    const updatedReminder = await this.getReminderByTaskId(taskId, editor.id);
 
     if (!updatedReminder)
       throw new Error("There was an error while updating reminder");
@@ -247,7 +249,7 @@ export class ReminderService {
     taskId: string,
     deleterId: string
   ): Promise<IReminderAttached> {
-    const task = await this.taskService.getTaskById(taskId);
+    const task = await this.taskService.getTaskById(taskId, deleterId);
 
     if (!task) throw new Error("Task not found");
 

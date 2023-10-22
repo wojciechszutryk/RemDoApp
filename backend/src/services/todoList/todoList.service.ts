@@ -22,6 +22,7 @@ import {
 } from "linked-models/todoList/todoList.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
+import { ScheduleNotificationService } from "services/notification/schedule.notification.service";
 import { TaskService } from "services/task/task.service";
 import { UserService } from "services/user/user.service";
 
@@ -34,6 +35,8 @@ export class TodoListService {
     private readonly taskService: TaskService,
     @inject(UserService)
     private readonly userService: UserService,
+    @inject(ScheduleNotificationService)
+    private readonly scheduleNotificationService: ScheduleNotificationService,
     @inject(EventService)
     private readonly eventService: EventService
   ) {}
@@ -163,11 +166,17 @@ export class TodoListService {
   }
 
   public async getExtendedTodoList(
-    todoListId: string
+    todoListId: string,
+    userId: string
   ): Promise<IExtendedTodoListDto> {
     const [todoListWithMembers, tasks] = await Promise.all([
       this.getTodoListWithMembersById(todoListId),
-      this.taskService.getTasksByTodoListIDs([todoListId]),
+      this.taskService.getTasksByTodoListIDs(
+        [todoListId],
+        undefined,
+        undefined,
+        userId
+      ),
     ]);
 
     if (!todoListWithMembers) throw new Error("TodoList does not exist.");
@@ -202,7 +211,12 @@ export class TodoListService {
     );
     const todoListIDs = todoLists.map((td) => td.id);
 
-    const tasks = await this.taskService.getTasksByTodoListIDs(todoListIDs);
+    const tasks = await this.taskService.getTasksByTodoListIDs(
+      todoListIDs,
+      undefined,
+      undefined,
+      userId
+    );
 
     return todoLists.map((td) => ({
       ...td,

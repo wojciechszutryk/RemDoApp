@@ -42,12 +42,14 @@ export class TodoListController extends BaseHttpController {
   )
   async getTodoList(
     @requestParam(TODO_LIST_PARAM) todoListId: string,
-    @queryParam(PARAM_EXTENDED) extended = false
+    @queryParam(PARAM_EXTENDED) extended = false,
+    @currentUser() currentUser: IUserAttached
   ): Promise<OkResult> {
     try {
       if (extended) {
         const extendedTodoList = await this.todoListService.getExtendedTodoList(
-          todoListId
+          todoListId,
+          currentUser.id
         );
 
         return this.ok(extendedTodoList);

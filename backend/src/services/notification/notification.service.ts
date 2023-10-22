@@ -132,7 +132,7 @@ export class NotificationService {
 
     const [todoLists, tasks, creators] = await Promise.all([
       this.todoListService.getTodoListByIDs(todoListIds),
-      this.taskService.getTasksByIDs(taskIds),
+      this.taskService.getTasksByIDs(taskIds, userId),
       this.userService.getUsersPublicDataByIDs(creatorIds),
     ]);
 

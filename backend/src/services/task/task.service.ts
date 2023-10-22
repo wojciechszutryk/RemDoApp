@@ -18,6 +18,7 @@ import {
 } from "linked-models/task/task.model";
 import { IUserAttached } from "linked-models/user/user.model";
 import { FilterQuery } from "mongoose";
+import { scheduledJobs } from "node-schedule";
 import { ScheduleNotificationService } from "services/notification/schedule.notification.service";
 
 @injectable()
@@ -30,20 +31,57 @@ export class TaskService {
     @inject(ScheduleNotificationService)
     private readonly scheduleNotificationService: ScheduleNotificationService
   ) {}
+  private addNotifyDateToTasks(
+    tasks: ITaskAttached[],
+    userId: string
+  ): ITaskAttached[] {
+    return tasks.map((t) => {
+      const jobName = this.scheduleNotificationService.createScheduleJobName(
+        t.id,
+        userId
+      );
 
-  public async getTaskById(id: string): Promise<ITaskAttached | undefined> {
+      const job = scheduledJobs[jobName];
+
+      return {
+        ...t,
+        notifyDate: job?.nextInvocation(),
+      };
+    });
+  }
+
+  public async getTaskById(
+    id: string,
+    /** if userId is provided, notifyDate field might be added to task in context of this user */
+    userId?: string
+  ): Promise<ITaskAttached | undefined> {
     const foundTask = await this.taskCollection.findOne({ _id: id });
     if (!foundTask) return undefined;
+
+    if (userId) {
+      return this.addNotifyDateToTasks(
+        [mapTaskToAttachedTask(foundTask)],
+        userId
+      )[0];
+    }
 
     return mapTaskToAttachedTask(foundTask);
   }
 
-  public async getTasksByIDs(taskIDs: string[]): Promise<ITaskAttached[]> {
+  public async getTasksByIDs(
+    taskIDs: string[],
+    /** if userId is provided, notifyDate field might be added to task in context of this user */
+    userId?: string
+  ): Promise<ITaskAttached[]> {
     const foundTasks = await this.taskCollection.find({
       _id: { $in: taskIDs },
     });
 
-    return foundTasks.map((t) => mapTaskToAttachedTask(t));
+    const mappedTasks = foundTasks.map((t) => mapTaskToAttachedTask(t));
+
+    if (userId) return this.addNotifyDateToTasks(mappedTasks, userId);
+
+    return mappedTasks;
   }
 
   public async getTasksByTodoListId(
@@ -57,7 +95,9 @@ export class TaskService {
   public async getTasksByTodoListIDs(
     todoListIDs: string[],
     minStartDate?: Date,
-    maxStartDate?: Date
+    maxStartDate?: Date,
+    /** if userId is provided, notifyDate field might be added to task in context of this user */
+    userId?: string
   ): Promise<ITaskAttached[]> {
     const filter: FilterQuery<ITaskDocument> = {
       todoListId: { $in: todoListIDs },
@@ -65,6 +105,22 @@ export class TaskService {
     if (minStartDate) filter.startDate = { $gte: minStartDate };
     if (maxStartDate) filter.startDate = { $lte: maxStartDate };
     const foundTasks = await this.taskCollection.find(filter);
+
+    if (userId) {
+      return foundTasks.map((t) => {
+        const jobName = this.scheduleNotificationService.createScheduleJobName(
+          t.id,
+          userId
+        );
+
+        const job = scheduledJobs[jobName];
+
+        return {
+          ...mapTaskToAttachedTask(t),
+          notifyDate: job?.nextInvocation(),
+        };
+      });
+    }
 
     return foundTasks.map((t) => mapTaskToAttachedTask(t));
   }

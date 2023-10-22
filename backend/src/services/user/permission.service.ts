@@ -40,7 +40,7 @@ export class PermissionsService {
     if (todoListId)
       todoList = await this.todoListService.getTodoListById(todoListId);
     else if (taskId) {
-      task = await this.taskService.getTaskById(taskId);
+      task = await this.taskService.getTaskById(taskId, userId);
       if (task?.todoListId)
         todoList = await this.todoListService.getTodoListById(task.todoListId);
     }
@@ -69,7 +69,7 @@ export class PermissionsService {
     } else if (assignedUsers?.includes(userId)) {
       /** assigned users can read todoList, modify own tasks and create new ones */
       if (taskId) {
-        const task = await this.taskService.getTaskById(taskId);
+        const task = await this.taskService.getTaskById(taskId, userId);
 
         if (task?.creatorId === userId) {
           return (

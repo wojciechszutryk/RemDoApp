@@ -4,7 +4,7 @@ import { scheduleJob, scheduledJobs } from "node-schedule";
 
 @injectable()
 export class ScheduleNotificationService {
-  private createScheduleJobName(userId: string, resourceId: string) {
+  public createScheduleJobName(userId: string, resourceId: string) {
     return `${userId}-${resourceId}`;
   }
 
