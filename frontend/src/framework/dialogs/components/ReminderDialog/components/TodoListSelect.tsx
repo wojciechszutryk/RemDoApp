@@ -33,7 +33,7 @@ const TodoListSelect = (): JSX.Element => {
 
   return (
     <>
-      <Separator text={t(TranslationKeys.ScopeChoose)} />
+      <Separator text={t(TranslationKeys.ScopeChoose)} spacingBottom={15} />
       <Controller
         name={"todoListId"}
         render={({ field: { onChange, value } }) => (
