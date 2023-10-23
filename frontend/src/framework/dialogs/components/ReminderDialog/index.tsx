@@ -11,6 +11,8 @@ import {
 import { StyledAccordion } from "atomicComponents/atoms/Accordion/styles";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
+import { Separator } from "atomicComponents/atoms/Separator";
+import { ControlledCheckbox } from "atomicComponents/molecules/ControlledCheckbox";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import dayjs from "dayjs";
 import { useDialogs } from "framework/dialogs";
@@ -18,18 +20,21 @@ import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
 import { initialTaskDialog } from "framework/dialogs/models/initialState.const";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IReminder } from "linked-models/reminder/reminder.dto";
-import { IReminderAttached } from "linked-models/reminder/reminder.model";
-import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { useCreateReminderMutation } from "pages/RemindersPage/mutations/createReminder/createReminder.mutation";
 import { useEditReminderMutation } from "pages/RemindersPage/mutations/editReminder/editReminder.mutation";
 import { memo, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { Control, FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import DateTimePickerWithIcon from "../TaskDialog/components/DatePickerWithIcon";
+import NotifyForm from "../TaskDialog/components/NotifyForm";
+import { ITaskDialog } from "../TaskDialog/models/taskDialog.model";
 import { StyledForm } from "../TodoListDialog/styles";
 import CollaborantAutocomplete from "./components/CollaborantAutocomplete";
+import DatesInfo from "./components/DatesInfo";
 import TodoListSelect from "./components/TodoListSelect";
-import { IReminderDialogState } from "./helpers/IReminderDialogState";
+import useCreateDefaultReminderDialogData from "./hooks/useCreateDefaultReminderDialogData";
+import { IReminderDialog } from "./models/reminderDialog.model";
+import { IReminderDialogState } from "./models/reminderDialogState.model";
 import { StyledHelpOutlineIcon } from "./styles";
 
 const ReminderDialog = (): JSX.Element => {
@@ -39,37 +44,29 @@ const ReminderDialog = (): JSX.Element => {
     },
     dialogsActions: { updateReminderDialog },
   } = useDialogs();
-
-  const [open, onClose] = useAppDialogState(visible, () =>
-    updateReminderDialog(initialTaskDialog)
-  );
-
-  const defaultFormValues = {
-    text: defaultData?.text || editReminderData?.text || "",
-    name: defaultData?.name || editReminderData?.name || "",
-    icon:
-      defaultData?.icon || editReminderData?.icon || TodoListIconEnum.Reminder,
-    startDate:
-      defaultData?.startDate || editReminderData?.startDate || dayjs().toDate(),
-    finishDate:
-      defaultData?.finishDate ||
-      editReminderData?.finishDate ||
-      dayjs().add(1, "hour").toDate(),
-    assignedOwners:
-      defaultData?.assignedOwners || editReminderData?.assignedOwners || [],
-    assignedUsers:
-      defaultData?.assignedUsers || editReminderData?.assignedUsers || [],
-    todoListId:
-      defaultData?.todoListId || editReminderData?.todoListId || "reminder",
-  };
-
-  const methods = useForm<IReminderAttached>({
-    defaultValues: defaultFormValues,
-  });
-
   const createReminderMutation = useCreateReminderMutation();
   const editReminderMutation = useEditReminderMutation();
   const { t } = useTranslation();
+  const [open, onClose] = useAppDialogState(visible, () =>
+    updateReminderDialog(initialTaskDialog)
+  );
+  const [expandedAccordion, setExpandedAccordion] = useState("general");
+
+  const handleAccordionChange = (panel: string) => () => {
+    if (expandedAccordion === panel) setExpandedAccordion("");
+    else {
+      setExpandedAccordion(panel);
+    }
+  };
+
+  const defaultFormValues = useCreateDefaultReminderDialogData(
+    defaultData,
+    editReminderData
+  );
+
+  const methods = useForm<IReminderDialog>({
+    defaultValues: defaultFormValues,
+  });
 
   const onSubmit = (data: IReminderDialogState) => {
     const ownerEmails = data.assignedOwners.map((owner) => owner.email);
@@ -105,38 +102,35 @@ const ReminderDialog = (): JSX.Element => {
     onClose();
   };
 
-  const [expanded, setExpanded] = useState("general");
-
-  const handleChange = (panel: string) => () => {
-    setExpanded(panel);
-  };
-
   return (
     <Dialog open={open} onClose={onClose}>
-      <StyledAccordion
-        expanded={expanded === "general"}
-        onChange={handleChange("general")}
-        disableGutters
-      >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Tooltip title={t(TranslationKeys.GeneralInfoReminderDescription)}>
-            <div>
-              <HelpOutlineIcon sx={{ marginRight: "3px" }} />
-            </div>
-          </Tooltip>
-          <Typography>{t(TranslationKeys.GeneralInfo)}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <FormProvider {...methods}>
+      <FormProvider {...methods}>
+        <StyledAccordion
+          expanded={expandedAccordion === "general"}
+          onChange={handleAccordionChange("general")}
+          disableGutters
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Tooltip title={t(TranslationKeys.GeneralInfoReminderDescription)}>
+              <div>
+                <HelpOutlineIcon sx={{ marginRight: "3px" }} />
+              </div>
+            </Tooltip>
+            <Typography>{t(TranslationKeys.GeneralInfo)}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
             <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
-              <Typography variant="h4">
-                {editReminderData
-                  ? `${t(TranslationKeys.EditReminder)}: ${
-                      editReminderData.text
-                    }`
-                  : t(TranslationKeys.CreateReminder)}
-              </Typography>
-
+              <Separator
+                text={
+                  editReminderData
+                    ? `${t(TranslationKeys.EditReminder)}: ${
+                        editReminderData.text
+                      }`
+                    : t(TranslationKeys.CreateReminder)
+                }
+                spacingBottom={15}
+                spacingTop={-5}
+              />
               <ControlledTextField
                 name={"name"}
                 required
@@ -170,35 +164,48 @@ const ReminderDialog = (): JSX.Element => {
               ].map((props, index) => (
                 <DateTimePickerWithIcon key={index} {...props} />
               ))}
-              {!editReminderData && <TodoListSelect />}
-              <Button type="submit">
-                {editReminderData
-                  ? t(TranslationKeys.Save)
-                  : t(TranslationKeys.CreateReminder)}
-              </Button>
             </StyledForm>
-          </FormProvider>
-        </AccordionDetails>
-      </StyledAccordion>
-      <StyledAccordion
-        expanded={expanded === "access"}
-        onChange={handleChange("access")}
-        disableGutters
-      >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Tooltip title={t(TranslationKeys.ManageAccessReminderDescription)}>
-            <div>
-              <StyledHelpOutlineIcon />
-            </div>
-          </Tooltip>
-          {t(TranslationKeys.ManageAccess)}
-        </AccordionSummary>
-        <AccordionDetails>
-          <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
-            <FormProvider {...methods}>
-              <Typography variant="h4">
-                {t(TranslationKeys.ManageAccess)}
-              </Typography>
+          </AccordionDetails>
+        </StyledAccordion>
+        {!editReminderData && (
+          <StyledAccordion
+            expanded={expandedAccordion === "scope"}
+            onChange={handleAccordionChange("scope")}
+            disableGutters
+          >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Tooltip title={t(TranslationKeys.ScopeDescription)}>
+                <div>
+                  <StyledHelpOutlineIcon />
+                </div>
+              </Tooltip>
+              {t(TranslationKeys.ScopeChoose)}
+            </AccordionSummary>
+            <AccordionDetails>
+              <TodoListSelect />
+            </AccordionDetails>
+          </StyledAccordion>
+        )}
+        <StyledAccordion
+          expanded={expandedAccordion === "access"}
+          onChange={handleAccordionChange("access")}
+          disableGutters
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Tooltip title={t(TranslationKeys.ManageAccessReminderDescription)}>
+              <div>
+                <StyledHelpOutlineIcon />
+              </div>
+            </Tooltip>
+            {t(TranslationKeys.ManageAccess)}
+          </AccordionSummary>
+          <AccordionDetails>
+            <StyledForm>
+              <Separator
+                text={t(TranslationKeys.ManageAccess)}
+                spacingBottom={-5}
+                spacingTop={-5}
+              />
               <Typography>{t(TranslationKeys.CurrentOwners)}</Typography>
               <CollaborantAutocomplete
                 name="assignedOwners"
@@ -209,11 +216,52 @@ const ReminderDialog = (): JSX.Element => {
                 name="assignedUsers"
                 defaultValues={defaultFormValues?.assignedUsers}
               />
-              <Button type="submit">{t(TranslationKeys.Save)}</Button>
-            </FormProvider>
-          </StyledForm>
-        </AccordionDetails>
-      </StyledAccordion>
+            </StyledForm>
+          </AccordionDetails>
+        </StyledAccordion>
+        <StyledAccordion
+          expanded={expandedAccordion === "notify"}
+          onChange={handleAccordionChange("notify")}
+          disableGutters
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Tooltip title={t(TranslationKeys.SetNotificationDescription)}>
+              <div>
+                <StyledHelpOutlineIcon />
+              </div>
+            </Tooltip>
+            {t(TranslationKeys.SetNotification)}
+          </AccordionSummary>
+          <AccordionDetails>
+            <StyledForm>
+              <Separator
+                text={t(TranslationKeys.SetNotification)}
+                spacingBottom={5}
+                spacingTop={-5}
+              />
+              <DatesInfo />
+              <ControlledCheckbox
+                name={"notify"}
+                control={methods.control}
+                label={t(TranslationKeys.NotifyMe)}
+              />
+              <NotifyForm
+                control={
+                  methods.control as unknown as Control<ITaskDialog, any>
+                }
+              />
+            </StyledForm>
+          </AccordionDetails>
+        </StyledAccordion>
+        <Button
+          onClick={methods.handleSubmit(onSubmit)}
+          sx={{ margin: "0 auto" }}
+        >
+          {editReminderData
+            ? t(TranslationKeys.Save)
+            : t(TranslationKeys.CreateReminder)}
+        </Button>
+      </FormProvider>
     </Dialog>
   );
 };
