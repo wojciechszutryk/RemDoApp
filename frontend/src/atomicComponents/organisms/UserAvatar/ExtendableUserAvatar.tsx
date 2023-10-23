@@ -1,11 +1,14 @@
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import CakeIcon from "@mui/icons-material/Cake";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
+import Settings from "@mui/icons-material/Settings";
 import {
   AvatarProps,
+  Divider,
   List,
   ListItem,
   ListItemAvatar,
+  ListItemButton,
   ListItemText,
   Popover,
   Typography,
@@ -13,10 +16,12 @@ import {
 import { Avatar } from "atomicComponents/atoms/Avatar";
 import dayjs from "dayjs";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
+import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import UserAvatar from ".";
 
 interface Props {
@@ -30,6 +35,7 @@ const ExtendableUserAvatar = ({
 }: Props): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
   const { currentUser } = useCurrentUser();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const { displayName, email, whenCreated, id } = userData;
@@ -74,7 +80,24 @@ const ExtendableUserAvatar = ({
           }}
         >
           {currentUser?.id === id && (
-            <Typography p={2}>{t(TranslationKeys.CurrentAccount)}</Typography>
+            <>
+              <Typography p={2}>{t(TranslationKeys.CurrentAccount)}</Typography>
+              <ListItemButton
+                onClick={() => {
+                  navigate(Pages.UserPage.path);
+                }}
+              >
+                <ListItemAvatar>
+                  <Avatar>
+                    <Settings />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={t(TranslationKeys.PageTitleUserSettings)}
+                />
+              </ListItemButton>
+              <Divider />
+            </>
           )}
           <ListItem>
             <ListItemAvatar>

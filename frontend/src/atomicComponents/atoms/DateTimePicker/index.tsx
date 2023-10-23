@@ -19,6 +19,7 @@ const DateTimePicker = ({
       <MuiDateTimePicker
         {...props}
         open={open}
+        ampm={false}
         slots={{
           textField: TextField,
         }}
