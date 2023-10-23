@@ -37,8 +37,8 @@ export class TaskService {
   ): ITaskAttached[] {
     return tasks.map((t) => {
       const jobName = this.scheduleNotificationService.createScheduleJobName(
-        t.id,
-        userId
+        userId,
+        t.id
       );
 
       const job = scheduledJobs[jobName];
@@ -109,8 +109,8 @@ export class TaskService {
     if (userId) {
       return foundTasks.map((t) => {
         const jobName = this.scheduleNotificationService.createScheduleJobName(
-          t.id,
-          userId
+          userId,
+          t.id
         );
 
         const job = scheduledJobs[jobName];
@@ -153,7 +153,7 @@ export class TaskService {
         eventCreator: creator,
       });
 
-    return mapTaskToAttachedTask(createdTask);
+    return { ...mappedCreatedTask, notifyDate: task.notifyDate };
   }
 
   /**
@@ -190,7 +190,7 @@ export class TaskService {
         eventCreator: editor,
       });
 
-    return mappedUpdatedTask;
+    return { ...mappedUpdatedTask, notifyDate: updateData.notifyDate };
   }
 
   /**

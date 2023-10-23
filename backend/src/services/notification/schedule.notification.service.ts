@@ -21,7 +21,9 @@ export class ScheduleNotificationService {
       scheduledJobs[jobName].cancel();
     }
 
-    scheduleJob(jobName, date, action);
+    const job = scheduleJob(jobName, date, action);
+
+    return job;
   }
 
   public async cancelScheduledNotification(userId: string, resourceId: string) {

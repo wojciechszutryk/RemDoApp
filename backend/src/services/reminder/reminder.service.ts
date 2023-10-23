@@ -173,7 +173,7 @@ export class ReminderService {
       eventCreator: creator,
     });
 
-    return createdReminder;
+    return { ...createdReminder, notifyDate: reminderData.notifyDate };
   }
 
   /**
@@ -238,7 +238,7 @@ export class ReminderService {
       eventCreator: editor,
     });
 
-    return updatedReminder;
+    return { ...updatedReminder, notifyDate: editReminderData.notifyDate };
   }
 
   /**

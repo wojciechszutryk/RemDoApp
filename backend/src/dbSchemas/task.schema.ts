@@ -54,6 +54,7 @@ export const mapTaskToAttachedTask = (task: ITaskDocument): ITaskAttached => {
     text: task.text,
     startDate: task.startDate,
     finishDate: task.finishDate,
+    notifyDate: task.notifyDate,
     completionDate: task.completionDate,
     important: task.important,
     creatorId: task.creatorId,
