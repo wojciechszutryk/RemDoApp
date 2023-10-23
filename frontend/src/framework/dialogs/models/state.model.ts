@@ -23,8 +23,7 @@ export interface IDeleteTodoListDialog extends IBaseDialogProps {
 
 export interface ITaskDialog {
   visible: boolean;
-  editTaskData?: ITask & { id: string };
-  editNotifyData?: Date;
+  editTaskData?: ITask & { id: string; notifyDate?: Date };
   todoListId: string;
 }
 

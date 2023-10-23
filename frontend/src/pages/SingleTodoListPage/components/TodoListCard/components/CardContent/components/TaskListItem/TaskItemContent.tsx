@@ -1,16 +1,18 @@
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import NotificationImportantIcon from "@mui/icons-material/NotificationImportant";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import { useSwippableItemContext } from "atomicComponents/molecules/SwippableItem/context";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { memo, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import TaskDetailsList from "./TaskDetailsList";
 import {
   StyledDetailsColapse,
   StyledListItemIcon,
   StyledListItemText,
   StyledTaskListItem,
 } from "./styles";
+import TaskDetailsList from "./TaskDetailsList";
 
 interface Props {
   task: IExtendedTaskDto;
@@ -40,9 +42,22 @@ const TaskItemContent = ({ task }: Props): JSX.Element => {
       }}
     >
       <StyledListItemIcon>
-        {task.important ? <PriorityHighIcon /> : <ArrowForwardIcon />}
+        {task.important ? (
+          task.notifyDate ? (
+            <NotificationImportantIcon />
+          ) : (
+            <PriorityHighIcon />
+          )
+        ) : task.notifyDate ? (
+          <NotificationsIcon />
+        ) : (
+          <ArrowForwardIcon />
+        )}
       </StyledListItemIcon>
-      <StyledListItemText primary={task.text} isTaskFinished={isTaskCompleted} />
+      <StyledListItemText
+        primary={task.text}
+        isTaskFinished={isTaskCompleted}
+      />
       <StyledDetailsColapse in={expanded}>
         <TaskDetailsList task={task} />
       </StyledDetailsColapse>

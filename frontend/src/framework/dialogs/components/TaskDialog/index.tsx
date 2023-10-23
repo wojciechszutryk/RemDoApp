@@ -26,7 +26,7 @@ import { StyledCheckboxesWrapper } from "./styles";
 const TaskDialog = (): JSX.Element => {
   const {
     dialogsState: {
-      taskDialog: { editTaskData, todoListId, visible, editNotifyData },
+      taskDialog: { editTaskData, todoListId, visible },
     },
     dialogsActions: { updateTaskDialog },
   } = useDialogs();
@@ -35,21 +35,25 @@ const TaskDialog = (): JSX.Element => {
     updateTaskDialog(initialTaskDialog)
   );
 
-  const defaultSelectsValues = createNotifySelectParams(
-    editNotifyData,
-    editTaskData?.startDate,
-    editTaskData?.finishDate
-  );
+  const defaultSelectsValues =
+    editTaskData?.notifyDate &&
+    createNotifySelectParams(
+      new Date(editTaskData?.notifyDate),
+      editTaskData?.startDate && new Date(editTaskData?.startDate),
+      editTaskData?.finishDate && new Date(editTaskData?.finishDate)
+    );
 
   const defaultFormValues = {
     text: editTaskData?.text || "",
     startDate: editTaskData?.startDate || null,
     finishDate: editTaskData?.finishDate || null,
     minsAccordingToTimePoint:
-      defaultSelectsValues.minsAccordingToTimePoint || 15,
-    beforeOrAfter: defaultSelectsValues.beforeOrAfter || "Before",
-    timePoint: defaultSelectsValues.timePoint || "Start",
+      defaultSelectsValues?.minsAccordingToTimePoint || 15,
+    beforeOrAfter: defaultSelectsValues?.beforeOrAfter || "Before",
+    timePoint: defaultSelectsValues?.timePoint || "Start",
+    notifyDate: editTaskData?.notifyDate || new Date(),
     important: editTaskData?.important,
+    notify: !!editTaskData?.notifyDate,
   };
 
   const methods = useForm<ITaskDialog>({
@@ -117,7 +121,6 @@ const TaskDialog = (): JSX.Element => {
           <Collapse in={watch("notify")} timeout="auto" unmountOnExit>
             <NotifyForm control={control} />
           </Collapse>
-          {/* END */}
           <Button type="submit">
             {editTaskData
               ? t(TranslationKeys.Save)

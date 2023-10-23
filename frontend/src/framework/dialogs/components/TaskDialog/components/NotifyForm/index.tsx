@@ -42,6 +42,7 @@ const NotifyForm = <
 
   const disableSelects =
     !watch["notify"] || (!watch["startDate"] && !watch["finishDate"]);
+
   return (
     <StyledNotifyInputsWrapper>
       <Controller
@@ -51,16 +52,19 @@ const NotifyForm = <
           <Autocomplete
             ref={ref}
             disabled={disableSelects}
+            autoSelect
             onChange={(event, value) => {
-              const mins = parseInt(value as string);
+              if (value == null) return;
+
+              const mins = parseInt(value);
               const newDate = createDateFromSelectValues(
                 {
                   minsAccordingToTimePoint: mins,
                   beforeOrAfter: watch["beforeOrAfter"],
                   timePoint: watch["timePoint"],
                 },
-                watch["startDate"],
-                watch["finishDate"]
+                watch["startDate"] && new Date(watch["startDate"]),
+                watch["finishDate"] && new Date(watch["finishDate"])
               );
 
               setValue(
@@ -105,8 +109,8 @@ const NotifyForm = <
                   beforeOrAfter: newBeforeOrAfterValue,
                   timePoint: watch["timePoint"],
                 },
-                watch["startDate"],
-                watch["finishDate"]
+                watch["startDate"] && new Date(watch["startDate"]),
+                watch["finishDate"] && new Date(watch["finishDate"])
               );
 
               setValue(
@@ -148,8 +152,8 @@ const NotifyForm = <
                   beforeOrAfter: watch["beforeOrAfter"],
                   timePoint: newTimePoint,
                 },
-                watch["startDate"],
-                watch["finishDate"]
+                watch["startDate"] && new Date(watch["startDate"]),
+                watch["finishDate"] && new Date(watch["finishDate"])
               );
 
               setValue(
@@ -175,12 +179,13 @@ const NotifyForm = <
         name={"notifyDate" as Path<TFieldValues>}
         render={({ field: { ref, onChange, value } }) => (
           <DateTimePicker
+            minDate={dayjs()}
             disabled={!watch["notify"]}
             onChange={(date) => {
               const selectParams = createNotifySelectParams(
                 date?.toDate(),
-                watch["startDate"],
-                watch["finishDate"]
+                watch["startDate"] && new Date(watch["startDate"]),
+                watch["finishDate"] && new Date(watch["finishDate"])
               );
 
               if (selectParams) {

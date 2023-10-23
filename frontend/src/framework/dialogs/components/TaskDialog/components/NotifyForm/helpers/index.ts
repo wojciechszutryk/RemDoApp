@@ -6,7 +6,7 @@ export const createDateFromSelectValues = (
   finishDate?: Date | null
 ): Date | null => {
   if (
-    !params.minsAccordingToTimePoint ||
+    params.minsAccordingToTimePoint == null ||
     !params.beforeOrAfter ||
     !params.timePoint
   )
@@ -94,6 +94,7 @@ export const createNotifySelectParams = (
 
     if (!startDate) {
       // when notifyDate is before finishDate and there is no startDate return MINUTES BEFORE FINISH
+
       return {
         minsAccordingToTimePoint:
           (finishDate.getTime() - notifyDate.getTime()) / 1000 / 60,
