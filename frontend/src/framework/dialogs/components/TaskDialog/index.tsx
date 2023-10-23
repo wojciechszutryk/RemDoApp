@@ -1,7 +1,6 @@
 import FlagCircleIcon from "@mui/icons-material/FlagCircle";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { Typography } from "@mui/material";
-import Collapse from "@mui/material/Collapse";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
 import { ControlledCheckbox } from "atomicComponents/molecules/ControlledCheckbox";
@@ -17,8 +16,8 @@ import { memo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { StyledForm } from "../TodoListDialog/styles";
+import CollapsableNotifyForm from "./components/CollapsableNotifyForm";
 import DateTimePickerWithIcon from "./components/DatePickerWithIcon";
-import NotifyForm from "./components/NotifyForm";
 import { createNotifySelectParams } from "./components/NotifyForm/helpers";
 import { ITaskDialog } from "./models/taskDialog.model";
 import { StyledCheckboxesWrapper } from "./styles";
@@ -71,7 +70,7 @@ const TaskDialog = (): JSX.Element => {
     onClose();
   };
 
-  const { handleSubmit, control, getValues, watch } = methods;
+  const { handleSubmit, control, getValues } = methods;
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -118,9 +117,7 @@ const TaskDialog = (): JSX.Element => {
               label={t(TranslationKeys.TaskImportant)}
             />
           </StyledCheckboxesWrapper>
-          <Collapse in={watch("notify")} timeout="auto" unmountOnExit>
-            <NotifyForm control={control} />
-          </Collapse>
+          <CollapsableNotifyForm control={methods.control} />
           <Button type="submit">
             {editTaskData
               ? t(TranslationKeys.Save)
