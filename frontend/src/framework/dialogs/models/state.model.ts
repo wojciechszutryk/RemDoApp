@@ -1,7 +1,7 @@
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { ITask } from "linked-models/task/task.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
-import { IReminderDialogState } from "../components/ReminderDialog/helpers/IReminderDialogState";
+import { IReminderDialogState } from "../components/ReminderDialog/models/reminderDialogState.model";
 import { ITodoListDialogValues } from "../components/TodoListDialog";
 import { IBaseDialogProps } from "./baseModalProps.model";
 
@@ -23,7 +23,7 @@ export interface IDeleteTodoListDialog extends IBaseDialogProps {
 
 export interface ITaskDialog {
   visible: boolean;
-  editTaskData?: ITask & { id: string; notifyDate?: Date };
+  editTaskData?: ITask & { id: string; notifyDate?: Date | null };
   todoListId: string;
 }
 

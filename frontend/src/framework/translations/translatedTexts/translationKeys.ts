@@ -36,6 +36,7 @@ export enum TranslationKeys {
   Reminder = "Reminder",
   ReminderInfo = "ReminderInfo",
   ScopeChoose = "ScopeChoose",
+  ScopeDescription = "ScopeDescription",
   OrChooseTodoList = "OrChooseTodoList",
   EditReminder = "EditReminder",
   CreateReminder = "CreateReminder",
@@ -78,6 +79,8 @@ export enum TranslationKeys {
   GeneralInfo = "GeneralInfo",
   GeneralInfoReminderDescription = "GeneralInfoReminderDescription",
   ManageAccessReminderDescription = "ManageAccessReminderDescription",
+  SetNotification = "SetNotification",
+  SetNotificationDescription = "SetNotificationDescription",
 
   EmptyTasksList = "EmptyTasksList",
   DelteTask = "DelteTask",

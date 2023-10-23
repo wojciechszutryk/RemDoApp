@@ -42,6 +42,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.ReminderInfo]:
     "Create new reminder. It will be visible only in yours callendar.",
   [TranslationKeys.ScopeChoose]: "Choose scope",
+  [TranslationKeys.ScopeDescription]:
+    "Choose a reminder to make it visible only in your calendar or choose todo list to make it part of it",
   [TranslationKeys.OrChooseTodoList]: "Or choose todo list",
   [TranslationKeys.EditReminder]: "Edit reminder",
   [TranslationKeys.CreateReminder]: "Create reminder",
@@ -110,12 +112,15 @@ export const enTranslation: Record<TranslationKeys, string> = {
     "Are you sure you want to delete this todo list? This action cannot be undone. All tasks in this list will be deleted.",
   [TranslationKeys.Other]: "Other",
   [TranslationKeys.BackToTodoLists]: "Back to todo lists",
-  [TranslationKeys.ManageAccess]: "Manage access",
   [TranslationKeys.GeneralInfo]: "General information",
   [TranslationKeys.GeneralInfoReminderDescription]:
     "Provide general informations, like name, description, scope and date rande.",
+  [TranslationKeys.ManageAccess]: "Manage access",
   [TranslationKeys.ManageAccessReminderDescription]:
     "Manage access to reminder. You can share reminder with your collaborants. You can assign them owner or user role. Owner can manage access to reminder.",
+  [TranslationKeys.SetNotification]: "Create notification",
+  [TranslationKeys.SetNotificationDescription]:
+    "Provide details when notification with reminder should be send.",
 
   [TranslationKeys.EmptyTasksList]: "No tasks in this list.",
   [TranslationKeys.DelteTask]: "Delete task",

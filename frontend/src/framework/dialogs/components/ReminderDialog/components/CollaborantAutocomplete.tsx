@@ -8,7 +8,7 @@ import { memo, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useGetUserCollaborantsQuery } from "../../CollaborantsDrawer/queries/getUserCollaborants.query.";
-import { IReminderDialogState } from "../helpers/IReminderDialogState";
+import { IReminderDialogState } from "../models/reminderDialogState.model";
 import { StyledAutocomplete, StyledAutocompleteChip } from "./styles";
 
 interface Props

@@ -42,6 +42,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.ReminderInfo]:
     "Utwórz nowe przypomnienie. Będzie ono widoczne jedynie w twoim kalendarzu. ",
   [TranslationKeys.ScopeChoose]: "Wybierz zakres",
+  [TranslationKeys.ScopeDescription]:
+    "Wybierz przypomnienie aby widoczny był jedynie w twoim kalendarzu lub wybierz listę zadań aby był częścią tej listy",
   [TranslationKeys.OrChooseTodoList]: "Lub wybierz listę zadań",
   [TranslationKeys.EditReminder]: "Edytuj przypomnienie",
   [TranslationKeys.CreateReminder]: "Utwórz przypomnienie",
@@ -121,6 +123,9 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "Podaj podstawowe informacje o przypomnieniu, m.in. nazwę, zakres dat, zakres",
   [TranslationKeys.ManageAccessReminderDescription]:
     "Zarządzaj dostępem do przypomnienia. Możesz udostępnić przypomnienie wybranej osobie z listy współpracowników. Możesz przypisać jej rolę właściciela lub użytkownika. Właściciel może zarządzać dostępem do przypomnienia",
+  [TranslationKeys.SetNotification]: "Ustaw powiadomienie",
+  [TranslationKeys.SetNotificationDescription]:
+    "Podaj szczegóły kiedy powiadomienie z przypomnieniem powinno zostać wysłane.",
 
   [TranslationKeys.EmptyTasksList]: "Brak zadań na liście. Dodaj nowe zadanie!",
   [TranslationKeys.DelteTask]: "Usuń zadanie",
