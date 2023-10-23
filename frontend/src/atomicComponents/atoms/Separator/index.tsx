@@ -3,11 +3,18 @@ import { StyledLine, StyledText, StyledWrapper } from "./styles";
 interface Props {
   text: string;
   variant?: "primary" | "secondary";
+  spacingBottom?: number;
+  spacingTop?: number;
 }
 
-export const Separator = ({ text, variant }: Props): JSX.Element => {
+export const Separator = ({
+  text,
+  variant,
+  spacingBottom,
+  spacingTop,
+}: Props): JSX.Element => {
   return (
-    <StyledWrapper>
+    <StyledWrapper spacingBottom={spacingBottom} spacingTop={spacingTop}>
       <StyledLine color={variant} />
       <StyledText color={variant}>{text}</StyledText>
       <StyledLine color={variant} />
