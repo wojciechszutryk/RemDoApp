@@ -3,10 +3,12 @@ import DateTimePicker from "atomicComponents/atoms/DateTimePicker";
 import { Select } from "atomicComponents/atoms/Select";
 import { TextField } from "atomicComponents/atoms/TextField";
 import dayjs from "dayjs";
+import { IReminderDialog } from "framework/dialogs/components/ReminderDialog/models/reminderDialog.model";
 import { ChangeEvent, memo } from "react";
 import {
   Control,
   Controller,
+  FieldValues,
   Path,
   PathValue,
   useFormContext,
@@ -19,12 +21,12 @@ import {
 } from "./helpers";
 import { StyledNotifyInputsWrapper } from "./styles";
 
-interface Props<TFormValues extends ITaskDialog> {
+interface Props<TFormValues extends FieldValues> {
   control: Control<TFormValues, any>;
 }
 
 const NotifyForm = <
-  TFormValues extends ITaskDialog,
+  TFormValues extends IReminderDialog | ITaskDialog,
   TFieldValues extends TFormValues
 >({
   control,
