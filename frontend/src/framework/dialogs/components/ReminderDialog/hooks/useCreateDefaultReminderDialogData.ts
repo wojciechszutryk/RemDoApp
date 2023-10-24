@@ -15,7 +15,7 @@ const useCreateDefaultReminderDialogData = (
   const defaultNotifyDate = notifyDateFromArgs
     ? new Date(notifyDateFromArgs)
     : defaultStartDate
-    ? new Date(defaultStartDate.getTime() - 900000)
+    ? new Date(new Date(defaultStartDate).getTime() - 900000)
     : null;
 
   const defaultFinishDate =

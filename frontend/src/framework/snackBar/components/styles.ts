@@ -13,6 +13,9 @@ export const StyledSnackbar = styled(Snackbar, {
       transform: transformOnScroll ? "translateY(-80px)" : "none",
       transition: "0.3s transform",
     },
+    "& .MuiPaper-root .MuiAlert-icon": {
+      color: theme.palette.secondary.contrastText,
+    },
   },
   "& div": {
     backgroundColor: theme.palette.secondary.light,

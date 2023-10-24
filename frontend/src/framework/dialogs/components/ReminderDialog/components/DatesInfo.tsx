@@ -26,7 +26,7 @@ const DatesInfo = (): JSX.Element => {
         <Typography sx={{ display: "flex", justifyContent: "space-between" }}>
           <span>{t(TranslationKeys.StartDate)}:</span>
           <strong style={{ fontWeight: 800 }}>
-            {startDate.toLocaleString("pl-PL", options)}
+            {new Date(startDate).toLocaleString("pl-PL", options)}
           </strong>
         </Typography>
       )}
@@ -34,7 +34,7 @@ const DatesInfo = (): JSX.Element => {
         <Typography sx={{ display: "flex", justifyContent: "space-between" }}>
           <span>{t(TranslationKeys.FinishDate)}:</span>
           <strong style={{ fontWeight: 800 }}>
-            {finishDate.toLocaleString("pl-PL", options)}
+            {new Date(finishDate).toLocaleString("pl-PL", options)}
           </strong>
         </Typography>
       )}

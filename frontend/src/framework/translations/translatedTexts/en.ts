@@ -230,6 +230,6 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.SocketNotification]: "Real time notification",
 
   [TranslationKeys.Save]: "Save",
-  [TranslationKeys.Cancel]: "Anuluj",
+  [TranslationKeys.Cancel]: "Cancel",
   [TranslationKeys.Details]: "Details",
 };

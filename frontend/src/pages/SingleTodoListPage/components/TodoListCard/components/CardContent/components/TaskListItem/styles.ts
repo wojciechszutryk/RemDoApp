@@ -4,7 +4,7 @@ import {
   ListItemIcon,
   ListItemText,
   styled,
-  Typography,
+  Typography
 } from "@mui/material";
 
 export const StyledTaskListItem = styled(ListItem, {
@@ -50,7 +50,7 @@ export const StyledListItemText = styled(ListItemText, {
 }));
 
 export const StyledCancelExitTaskText = styled(Typography)(({ theme }) => ({
-  color: theme.palette.primary.contrastText,
+  color: theme.palette.secondary.dark,
   cursor: "pointer",
   textDecoration: "underline",
 }));
