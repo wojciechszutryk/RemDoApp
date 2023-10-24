@@ -71,6 +71,12 @@ export class PushNotificationService {
     });
 
     //do not await to not block the process
-    Promise.all([notificationsRequests]);
+    try {
+      Promise.all([notificationsRequests]).catch((error) => {
+        console.error(error);
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
