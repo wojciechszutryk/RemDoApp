@@ -78,7 +78,7 @@ export class ReminderCreatedEventHandler
           >(
             [eventCreator],
             eventCreator.id,
-            EventName.ScheduleTaskNotification,
+            EventName.ScheduleReminderNotification,
             EventSubject.ScheduleNotification,
             { payload: createdReminder, eventCreator },
             {

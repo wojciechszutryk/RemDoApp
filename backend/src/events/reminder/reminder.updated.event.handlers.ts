@@ -69,7 +69,7 @@ export class ReminderUpdatedEventHandler
           this.notifyService.notifyUsers(
             [eventCreator],
             eventCreator.id,
-            EventName.ScheduleTaskNotification,
+            EventName.ScheduleReminderNotification,
             EventSubject.ScheduleNotification,
             updatedReminder,
             {

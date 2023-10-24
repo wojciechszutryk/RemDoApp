@@ -91,6 +91,14 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: NotificationPreference.ALL,
       },
+      [EventName.ScheduleTaskNotification]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.ScheduleReminderNotification]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
     },
   },
 });
