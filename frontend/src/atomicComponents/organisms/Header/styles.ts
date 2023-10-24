@@ -8,7 +8,7 @@ export const StyledHeaderBottomAnimation = styled(StyledWave)(({ theme }) => ({
   bottom: "54vh",
   backgroundColor: "transparent",
   "&::before": {
-    backgroundColor: theme.palette.secondary.dark,
+    backgroundColor: theme.palette.secondary.main,
     animationDuration: "15s",
   },
   "&::after": {
@@ -44,7 +44,7 @@ export const StyledHeaderContentWrapper = styled("div")({
   pointerEvents: "all",
   maxWidth: 720,
   margin: "0 auto",
-  "& > button": {
+  "& > button, & > div > button": {
     zIndex: 1,
   },
 });

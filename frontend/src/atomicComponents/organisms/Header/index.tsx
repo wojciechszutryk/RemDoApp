@@ -27,7 +27,6 @@ export const Header = (): JSX.Element => {
   return (
     <StyledHeaderWrapper>
       <StyledHeaderContentWrapper>
-        <LogoButton />
         {currentUser ? (
           <>
             <StyledHeaderButton
@@ -38,6 +37,9 @@ export const Header = (): JSX.Element => {
             >
               {isMobile ? <EventIcon /> : t(TranslationKeys.PageTitleReminders)}
             </StyledHeaderButton>
+            <SettingsMenu />
+            <LogoButton />
+            <NotificationsMenu />
             <StyledHeaderButton
               onClick={() => navigate(Pages.TodoListsPage.path)}
               disabled={
@@ -50,20 +52,21 @@ export const Header = (): JSX.Element => {
                 t(TranslationKeys.PageTitleTodoLists)
               )}
             </StyledHeaderButton>
-            <NotificationsMenu />
           </>
         ) : (
-          <StyledHeaderButton
-            onClick={() => navigate(Pages.LoginPage.path)}
-            disabled={currentPagePath === Pages.LoginPage.path.substring(1)}
-          >
-            {t(TranslationKeys.LoginButtonText) +
-              " / " +
-              t(TranslationKeys.RegisterButtonText)}
-          </StyledHeaderButton>
+          <>
+              <LogoButton />
+            <StyledHeaderButton
+              onClick={() => navigate(Pages.LoginPage.path)}
+              disabled={currentPagePath === Pages.LoginPage.path.substring(1)}
+            >
+              {t(TranslationKeys.LoginButtonText) +
+                " / " +
+                t(TranslationKeys.RegisterButtonText)}
+            </StyledHeaderButton>
+            <SettingsMenu />
+          </>
         )}
-
-        <SettingsMenu />
       </StyledHeaderContentWrapper>
       <StyledHeaderBottomAnimation />
     </StyledHeaderWrapper>

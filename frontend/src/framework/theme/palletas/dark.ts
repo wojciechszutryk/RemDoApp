@@ -8,7 +8,7 @@ export const darkTheme = {
   secondary: {
     light: "#928490",
     main: "#928490",
-    dark: "#928490",
+    dark: "#c2b6b9",
     contrastText: "#F3E8EB",
   },
   background: {
