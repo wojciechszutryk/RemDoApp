@@ -8,7 +8,7 @@ import { ITaskAttached } from "linked-models/task/task.model";
 import { ITodoListAttached } from "linked-models/todoList/todoList.model";
 import { NotifyService } from "services/notification/notify.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
-import { TodoListService } from "../../services/todoList/todoList.service";
+import { UserService } from "services/user/user.service";
 
 @EventHandler(TodoListDeletedEvent)
 export class TodoListDeletedEventHandler
@@ -17,10 +17,9 @@ export class TodoListDeletedEventHandler
   constructor(
     @inject(TodoListCacheService)
     private readonly todoListCacheService: TodoListCacheService,
-    @inject(TodoListService)
-    private readonly todoListService: TodoListService,
     @inject(NotifyService)
-    private readonly notifyService: NotifyService
+    private readonly notifyService: NotifyService,
+    @inject(UserService) private readonly userService: UserService
   ) {}
 
   async handle(
@@ -28,10 +27,19 @@ export class TodoListDeletedEventHandler
     eventCreatorId: string,
     deletedTodoList: ITodoListAttached
   ) {
-    const { todoListMembers } =
-      await this.todoListService.getTodoListWithAttachedMembers(
-        deletedTodoList.id
-      );
+    const todoListMembersIDs = [];
+
+    if (deletedTodoList.assignedOwners) {
+      todoListMembersIDs.push(...deletedTodoList.assignedOwners);
+    }
+
+    if (deletedTodoList.assignedUsers) {
+      todoListMembersIDs.push(...deletedTodoList.assignedUsers);
+    }
+
+    const todoListMembers = await this.userService.getUsersByIDs(
+      todoListMembersIDs
+    );
 
     //notify users
     this.notifyService.notifyUsers(
