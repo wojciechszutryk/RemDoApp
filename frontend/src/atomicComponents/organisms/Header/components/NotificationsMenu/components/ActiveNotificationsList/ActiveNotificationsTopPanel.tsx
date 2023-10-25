@@ -23,6 +23,7 @@ const ActiveNotificationsTopPanel = ({
       </Typography>
       <Tooltip title={t(TranslationKeys.ArchiveAll)}>
         <IconButton
+          data-testid="archive-button"
           onClick={() =>
             editUserNotificationMutation.mutate(
               notificationIDs.map((id) => ({

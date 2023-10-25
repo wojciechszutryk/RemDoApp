@@ -38,21 +38,23 @@ const ActiveNotificationsList = ({
   return (
     <>
       <ActiveNotificationsTopPanel notificationIDs={notificationIDs} />
-      {!!freshNotificationsData && (
-        <NotificationsList
-          notificationsData={freshNotificationsData}
-          hideNotificationMenu={hideNotificationMenu}
-        />
-      )}
-      {!!readNotificationsData && (
-        <>
-          <Divider />
+      {!!freshNotificationsData &&
+        freshNotificationsData.notifications.length > 0 && (
           <NotificationsList
-            notificationsData={readNotificationsData}
+            notificationsData={freshNotificationsData}
             hideNotificationMenu={hideNotificationMenu}
           />
-        </>
-      )}
+        )}
+      {!!readNotificationsData &&
+        readNotificationsData.notifications.length > 0 && (
+          <>
+            <Divider data-testid="divider" />
+            <NotificationsList
+              notificationsData={readNotificationsData}
+              hideNotificationMenu={hideNotificationMenu}
+            />
+          </>
+        )}
     </>
   );
 };
