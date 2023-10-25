@@ -7,6 +7,7 @@ export const Logo = () => {
       height="35pt"
       viewBox="0 0 300.000000 126.000000"
       preserveAspectRatio="xMidYMid meet"
+      data-testid="logo"
     >
       <metadata>
         Created by potrace 1.10, written by Peter Selinger 2001-2011

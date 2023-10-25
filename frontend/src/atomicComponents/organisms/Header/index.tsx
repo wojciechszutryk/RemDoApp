@@ -55,14 +55,14 @@ export const Header = (): JSX.Element => {
           </>
         ) : (
           <>
-              <LogoButton />
+            <LogoButton />
             <StyledHeaderButton
               onClick={() => navigate(Pages.LoginPage.path)}
               disabled={currentPagePath === Pages.LoginPage.path.substring(1)}
             >
-              {t(TranslationKeys.LoginButtonText) +
-                " / " +
-                t(TranslationKeys.RegisterButtonText)}
+              {`${t(TranslationKeys.LoginButtonText)} / ${t(
+                TranslationKeys.RegisterButtonText
+              )}`}
             </StyledHeaderButton>
             <SettingsMenu />
           </>
