@@ -21,6 +21,7 @@
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/**/*", "public/sw.js"],
-  "exclude": ["craco.config.js"]
+  "types": ["node", "jest", "@testing-library/jest-dom"],
+  "include": ["src", "src/**/*", "public/sw.js", "setupTests.ts"],
+  "exclude": ["craco.config.js", "jest.config.js"]
 }
