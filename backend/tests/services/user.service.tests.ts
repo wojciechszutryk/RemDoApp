@@ -15,11 +15,11 @@ import {
 } from "../db.testSetup.helpers";
 
 import { getUserCollection } from "dbSchemas/user.schema";
-import { UserAuthService } from "services/user.auth.service";
+import { UserService } from "services/user/user.service";
 import { mockedUser } from "../mocks/user.mock";
 
 describe(`User service`, () => {
-  let userService: UserAuthService;
+  let userService: UserService;
 
   beforeAll(async () => {
     await setUpTestDB();
@@ -27,7 +27,7 @@ describe(`User service`, () => {
 
   beforeEach(async () => {
     await getUserCollection().create(mockedUser);
-    userService = new UserAuthService(getUserCollection());
+    userService = new UserService(getUserCollection());
   });
 
   afterEach(async () => {
@@ -39,44 +39,8 @@ describe(`User service`, () => {
   });
 
   it(`should return user by email`, async () => {
-    const user = await userService.getUserByEmail(mockedUser.email);
+    const users = await userService.getUsersByEmails([mockedUser.email]);
 
-    expect(user?.displayName).toEqual(mockedUser.displayName);
-  });
-
-  it(`should register new user`, async () => {
-    const newUser = {
-      email: "newEmail.com",
-      displayName: "displayName",
-      password: "password",
-    };
-    const registeredUser = await userService.registerUser(
-      newUser.email,
-      newUser.displayName,
-      newUser.password
-    );
-
-    expect(registeredUser?.displayName).toEqual(newUser.displayName);
-  });
-
-  it(`should sign user in`, async () => {
-    const newUser = {
-      email: "newEmail.com",
-      displayName: "displayName",
-      password: "password",
-    };
-    const registeredUser = await userService.registerUser(
-      newUser.email,
-      newUser.displayName,
-      newUser.password
-    );
-
-    // const signedUser = await userService.signTokenToUser(
-    //   registeredUser as unknown as IUserAttached,
-    //   newUser.password
-    // );
-
-    // expect(signedUser?.displayName).toEqual(registeredUser.displayName);
-    expect(registeredUser?.displayName).toEqual(registeredUser.displayName);
+    expect(users[0].displayName).toEqual(mockedUser.displayName);
   });
 });
