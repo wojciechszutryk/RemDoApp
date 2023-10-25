@@ -7,8 +7,11 @@ import { StyledLogoWrapper } from "./styles";
 const LogoButton = (): JSX.Element => {
   const navigate = useNavigate();
   return (
-    <StyledLogoWrapper onClick={() => navigate(Pages.HomePage.path)}>
-      <Logo />
+    <StyledLogoWrapper
+      data-testid="logo-wrapper"
+      onClick={() => navigate(Pages.HomePage.path)}
+    >
+      <Logo/>
     </StyledLogoWrapper>
   );
 };
