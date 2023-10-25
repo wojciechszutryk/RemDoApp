@@ -87,7 +87,13 @@ const NotifyForm = <
             freeSolo
             options={["5", "10", "15", "30"]}
             renderInput={(params) => {
-              return <TextField {...params} disabled={disableSelects} />;
+              return (
+                <TextField
+                  {...params}
+                  InputLabelProps={undefined}
+                  disabled={disableSelects}
+                />
+              );
             }}
           />
         )}

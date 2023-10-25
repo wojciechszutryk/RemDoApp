@@ -104,7 +104,7 @@ const CollaborantAutocomplete = ({
       }}
       defaultValue={defaultValues.map((u) => u.email)}
       renderInput={(params) => {
-        return <TextField {...params} />;
+        return <TextField {...params} InputLabelProps={undefined} />;
       }}
       noOptionsText={t(TranslationKeys.NoCollaborantOption)}
     />
