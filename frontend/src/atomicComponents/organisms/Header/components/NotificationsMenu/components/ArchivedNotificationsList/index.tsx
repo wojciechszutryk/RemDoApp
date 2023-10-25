@@ -27,7 +27,11 @@ const ArchivedNotificationsList = ({
         expanded={expanded}
         setExpanded={setExpanded}
       />
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse
+        in={expanded}
+        timeout="auto"
+        unmountOnExit
+      >
         <NotificationsList
           notificationsData={notificationsData}
           hideNotificationMenu={hideNotificationMenu}

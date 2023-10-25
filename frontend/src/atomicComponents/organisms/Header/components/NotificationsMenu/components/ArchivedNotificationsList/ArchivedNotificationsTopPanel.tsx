@@ -15,7 +15,7 @@ interface Props {
   setExpanded: Dispatch<SetStateAction<boolean>>;
 }
 
-const NewNotificationsTopPanel = ({
+const ArchivedNotificationsTopPanel = ({
   notificationIDs,
   expanded,
   setExpanded,
@@ -36,6 +36,7 @@ const NewNotificationsTopPanel = ({
         <div>
           <Tooltip title={t(TranslationKeys.UnarchiveAll)}>
             <IconButton
+              data-testid="unarchive-button"
               onClick={(e) => {
                 e.stopPropagation();
                 editUserNotificationMutation.mutate(
@@ -51,6 +52,7 @@ const NewNotificationsTopPanel = ({
           </Tooltip>
           <Tooltip title={t(TranslationKeys.DeleteAllArchived)}>
             <IconButton
+              data-testid="delete-button"
               onClick={(e) => {
                 e.stopPropagation();
                 deleteUserNotificationsMutation.mutate(notificationIDs);
@@ -65,4 +67,4 @@ const NewNotificationsTopPanel = ({
   );
 };
 
-export default memo(NewNotificationsTopPanel);
+export default memo(ArchivedNotificationsTopPanel);
