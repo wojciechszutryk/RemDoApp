@@ -16,14 +16,20 @@ import {
 
 import { getTaskCollection } from "dbSchemas/task.schema";
 import { getTodoListCollection } from "dbSchemas/todoList.schema";
+import { getUserCollection } from "dbSchemas/user.schema";
+import { EventService } from "framework/events/event.service";
+import { interfaces } from "inversify-express-utils";
 import {
   AssignedToTodoListAndTaskCreatorPermissions,
   AssignedToTodoListPermissions,
 } from "linked-models/permissions/todoList.permissions.constants";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
-import { TodoListService } from "services/TodoList.service";
+import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
+import { ScheduleNotificationService } from "services/notification/schedule.notification.service";
 import { TaskService } from "services/task/task.service";
+import { TodoListService } from "services/todoList/todoList.service";
 import { PermissionsService } from "services/user/permission.service";
+import { UserService } from "services/user/user.service";
 import { MOCKED_TASK_ID } from "../mocks/task.mock";
 import { MOCKED_TODO_ID } from "../mocks/todoList.mock";
 
@@ -31,9 +37,12 @@ describe(`TodoList permissions service`, () => {
   const todoListOwnerId = "OwnerId";
   const assignedUserId = "assignedUserId";
   const assignedOwnerId = "assignedOwnerId";
+  let eventService: EventService;
+  let scheduleNotificationService: ScheduleNotificationService;
   let taskService: TaskService;
   let todoListService: TodoListService;
   let todoListPermissionsService: PermissionsService;
+  let userService: UserService;
 
   beforeAll(async () => {
     await setUpTestDB();
@@ -49,13 +58,14 @@ describe(`TodoList permissions service`, () => {
         assignedOwners: [assignedOwnerId],
         whenCreated: new Date(),
         whenUpdated: new Date(),
+        icon: TodoListIconEnum.Child,
       }),
       getTaskCollection().create({
         _id: MOCKED_TASK_ID,
         text: "task1",
         important: true,
         todoListId: MOCKED_TODO_ID,
-        creator: assignedUserId,
+        creatorId: assignedUserId,
         whenCreated: new Date(),
         whenUpdated: new Date(),
       }),
@@ -63,13 +73,32 @@ describe(`TodoList permissions service`, () => {
         _id: "othertaskId_",
         text: "task2",
         todoListId: MOCKED_TODO_ID,
-        creator: "some user",
+        creatorId: "some user",
         whenCreated: new Date(),
         whenUpdated: new Date(),
       }),
     ]);
-    taskService = new TaskService(getTaskCollection());
-    todoListService = new TodoListService(getTodoListCollection(), taskService);
+    eventService = new EventService({} as interfaces.HttpContext);
+    scheduleNotificationService = new ScheduleNotificationService();
+    userService = new UserService(getUserCollection());
+
+    taskService = new TaskService(
+      getTaskCollection(),
+      eventService,
+      scheduleNotificationService
+    );
+    taskService = new TaskService(
+      getTaskCollection(),
+      eventService,
+      scheduleNotificationService
+    );
+    todoListService = new TodoListService(
+      getTodoListCollection(),
+      taskService,
+      userService,
+      scheduleNotificationService,
+      eventService
+    );
     todoListPermissionsService = new PermissionsService(
       todoListService,
       taskService
