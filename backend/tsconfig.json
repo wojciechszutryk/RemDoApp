@@ -18,6 +18,7 @@
     }
   },
   "typeRoots": ["./src/typings", "./node_modules/@types"],
-  "include": ["src/**/*", "tests/**/*", "tests/**/*"],
+  // "include": ["src/**/*", "tests/**/*", "tests/**/*"],
+  "include": ["src/**/*"], //for build
   "exclude": ["node_modules", "dist"]
 }
