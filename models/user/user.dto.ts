@@ -1,26 +1,20 @@
-import { INotificationDto } from "linked-models/notification/notification.dto";
+import { AppLanguages } from "../language/languages.enum";
 import { IUserAttached } from "./user.model";
 
-/**
- * user without password
- */
-export type IUserPublicDataDTO = Omit<IUserAttached, "password">;
+export type IUserPublicDataDTO = Pick<
+  IUserAttached,
+  "avatarUrl" | "whenCreated" | "displayName" | "email" | "id"
+>;
 
 export type IRegisterUserDTO = {
   email: string;
   password: string;
   displayName: string;
+  language: AppLanguages;
 };
 
-export type ILoginUserDTO = Omit<IRegisterUserDTO, "displayName">;
+export type ILoginUserDTO = Omit<IRegisterUserDTO, "displayName" | "language">;
 
-export interface ILoginUserResponseDTO extends Omit<IUserAttached, "password"> {
-  token: string;
-}
-
-export interface IExtendedLoginUserResponseDTO extends ILoginUserResponseDTO {
-  notifications: INotificationDto[];
-}
 export type IChangePasswordDTO = {
   currentPassword: string;
   newPassword: string;

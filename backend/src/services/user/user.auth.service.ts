@@ -1,14 +1,10 @@
+import axios from "axios";
 import bcrypt from "bcrypt";
-import {
-  mapUserToAttachedUser,
-  UserCollectionName,
-  UserCollectionType,
-} from "dbSchemas/user.schema";
+import { UserCollectionName, UserCollectionType } from "dbSchemas/user.schema";
+import { OAuth2Client } from "google-auth-library";
+import { google } from "googleapis";
 import { inject, injectable } from "inversify";
-import jwt from "jsonwebtoken";
-import { ILoginUserResponseDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
-import { IToken } from "models/authentication.model";
 
 @injectable()
 export class UserAuthService {
@@ -17,75 +13,52 @@ export class UserAuthService {
     private readonly userCollection: UserCollectionType
   ) {}
 
-  public async getUserByEmail(
-    email: string
-  ): Promise<IUserAttached | undefined> {
-    const foundUser = await this.userCollection.findOne({ email });
+  private async refreshAccessToken(refresh_token: string) {
+    const tokenEndpoint = "https://oauth2.googleapis.com/token";
 
-    if (!foundUser) return undefined;
+    try {
+      const response = await axios.post(tokenEndpoint, {
+        grant_type: "refresh_token",
+        refresh_token: refresh_token,
+        client_id: process.env.GOOGLE_AUTH_CLIENT_ID,
+        client_secret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
+      });
 
-    return mapUserToAttachedUser(foundUser);
+      if (response.status === 200) {
+        const newAccessToken = response.data.access_token;
+        return newAccessToken;
+      }
+    } catch (error) {
+      console.error("Error refreshing access token:", error);
+    }
   }
 
-  public async registerUser(
-    email: string,
-    displayName: string,
-    password: string
-  ): Promise<ILoginUserResponseDTO> {
-    const encryptedPassword = await bcrypt.hash(password, 10);
+  public async getUserOAuth2Client({
+    googleAccessToken,
+    googleRefreshToken,
+    googleTokenExpiryDate,
+  }: IUserAttached): Promise<OAuth2Client | undefined> {
+    if (!googleAccessToken || !googleRefreshToken || !googleTokenExpiryDate) {
+      return undefined;
+    }
 
-    const user = await this.userCollection.create({
-      displayName,
-      email: email.toLowerCase(),
-      password: encryptedPassword,
-      whenCreated: new Date(),
-    });
-    const attachedUser = mapUserToAttachedUser(user);
+    let validAccessToken = googleAccessToken;
 
-    const token = jwt.sign(
-      { user_id: user._id, email },
-      process.env.TOKEN_KEY!,
-      {
-        expiresIn: "2h",
-      }
+    if (googleTokenExpiryDate < new Date().getTime()) {
+      validAccessToken = await this.refreshAccessToken(googleRefreshToken);
+    }
+
+    const oAuth2Client = new google.auth.OAuth2(
+      process.env.GOOGLE_AUTH_CLIENT_ID,
+      process.env.GOOGLE_AUTH_CLIENT_SECRET
     );
 
-    return { ...attachedUser, token };
-  }
+    oAuth2Client.setCredentials({
+      access_token: validAccessToken,
+      refresh_token: googleRefreshToken,
+    });
 
-  public async signTokenToUser(
-    user: IUserAttached,
-    password: string
-  ): Promise<ILoginUserResponseDTO | undefined> {
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-
-    if (user && isPasswordCorrect) {
-      const token = jwt.sign(
-        { userId: user.id, email: user.email } as IToken,
-        process.env.TOKEN_KEY!,
-        {
-          expiresIn: "2days",
-        }
-      );
-
-      return { ...user, token };
-    }
-  }
-
-  public async refreshUserToken(
-    user: IUserAttached
-  ): Promise<ILoginUserResponseDTO | undefined> {
-    if (user) {
-      const token = jwt.sign(
-        { userId: user.id, email: user.email } as IToken,
-        process.env.TOKEN_KEY!,
-        {
-          expiresIn: "2days",
-        }
-      );
-
-      return { ...user, token };
-    }
+    return oAuth2Client;
   }
 
   public async changePassword(
@@ -103,9 +76,8 @@ export class UserAuthService {
     }
 
     const encryptedPassword = await bcrypt.hash(newPassword, 10);
-    await this.userCollection.findOneAndUpdate(
-      { _id: user.id },
-      { password: encryptedPassword }
-    );
+    await this.userCollection.findByIdAndUpdate(user.id, {
+      password: encryptedPassword,
+    });
   }
 }

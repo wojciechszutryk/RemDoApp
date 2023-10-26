@@ -5,7 +5,7 @@ export const mockedTask = {
   text: "task1",
   important: true,
   todoListId: "todoList1",
-  creator: "User1",
+  creatorId: "User1",
   whenCreated: new Date(),
   whenUpdated: new Date(),
 };

@@ -1,4 +1,4 @@
-import { useEditUserNotificationsMutation } from "atomicComponents/organisms/Header/mutations/editUserNotification.mutation";
+import { useEditUserNotificationsMutation } from "framework/notifications/mutations/editUserNotification.mutation";
 import { UserNotificationState } from "linked-models/notification/notification.enum";
 import { useCallback } from "react";
 

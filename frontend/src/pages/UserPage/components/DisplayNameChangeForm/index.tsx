@@ -4,7 +4,7 @@ import CollapsableAlert from "atomicComponents/molecules/CollapsableAlert";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { useChangeDisplayNameMutation } from "pages/UserPage/mutations/useChangeDisplayName.mutation";
+import { useChangeUserPublicData } from "pages/UserPage/mutations/useChangeUserPublicData.mutation";
 import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledFormWrapper } from "./styles";
@@ -18,7 +18,7 @@ const DisplayNameChangeForm = (): JSX.Element => {
 
   const [error, setError] = useState<string | undefined>(undefined);
   const { setSnackbar } = useSnackbar();
-  const changeDisplayNameMutation = useChangeDisplayNameMutation();
+  const changeUserPublicData = useChangeUserPublicData();
 
   const onSubmit = () => {
     if (displayName?.length === 0 || !displayName) {
@@ -26,11 +26,11 @@ const DisplayNameChangeForm = (): JSX.Element => {
       return;
     }
 
-    changeDisplayNameMutation.mutate(
-      { newDisplayName: displayName },
+    changeUserPublicData.mutate(
+      { displayName },
       {
         onSuccess: () => {
-          setSnackbar({ message: t(TranslationKeys.DispalyNameChanged) });
+          setSnackbar({ message: t(TranslationKeys.DispalyNameChanged), userData: currentUser });
         },
         onError: (error) => {
           setSnackbar({

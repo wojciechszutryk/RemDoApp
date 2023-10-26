@@ -1,15 +1,36 @@
 import { useEffect } from "react";
-import { useLoginUserWithTokenMutation } from "../mutations/useLoginUserWithToken.mutation";
+import { useLoginUserWithCookieMutation } from "../mutations/useLoginUserWithCookie.mutation";
 import { useCurrentUser } from "../useCurrentUser";
+
+function getCookie(cname: string) {
+  const name = cname + "=";
+  const decodedCookie = decodeURIComponent(document.cookie);
+  const ca = decodedCookie.split(";");
+
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+
+  return "";
+}
 
 const useAutoLogin = () => {
   const { currentUser } = useCurrentUser();
-  const loginUserWithTokenMutation = useLoginUserWithTokenMutation();
+  const loginUserWithCookieMutation = useLoginUserWithCookieMutation();
+  const sessionCookie = getCookie("session");
   useEffect(() => {
-    if (!!localStorage.getItem("todoListToken") && !currentUser) {
-      loginUserWithTokenMutation.mutate();
+    if (!!getCookie("session") && !currentUser) {
+      loginUserWithCookieMutation.mutate();
     }
-  }, []);
+  }, [currentUser, sessionCookie]);
 };
 
 export default useAutoLogin;

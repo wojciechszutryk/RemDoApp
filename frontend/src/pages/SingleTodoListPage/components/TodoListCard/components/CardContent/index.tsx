@@ -7,33 +7,33 @@ import TasksList from "./components/TasksList";
 
 interface Props {
   activeTasks: IExtendedTaskDto[];
-  finishedTasks: IExtendedTaskDto[];
+  completedTasks: IExtendedTaskDto[];
   expanded: boolean;
   scrollable?: boolean;
 }
 
 const CardContent = ({
   activeTasks,
-  finishedTasks,
+  completedTasks,
   expanded,
   scrollable,
 }: Props): JSX.Element => {
   return (
     <StyledCardContent scrollable={scrollable}>
-      {activeTasks.length + finishedTasks.length === 0 ? (
+      {activeTasks.length + completedTasks.length === 0 ? (
         <EmptyTasksList />
       ) : (
         <>
           <TasksList tasks={activeTasks} />
           {scrollable ? (
-            <TasksList tasks={finishedTasks} />
+            <TasksList tasks={completedTasks} />
           ) : (
             <Collapse
               in={expanded || activeTasks.length === 0}
               timeout="auto"
               unmountOnExit
             >
-              <TasksList tasks={finishedTasks} />
+              <TasksList tasks={completedTasks} />
             </Collapse>
           )}
         </>

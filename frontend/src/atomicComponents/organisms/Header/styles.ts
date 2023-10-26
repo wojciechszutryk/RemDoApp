@@ -8,7 +8,7 @@ export const StyledHeaderBottomAnimation = styled(StyledWave)(({ theme }) => ({
   bottom: "54vh",
   backgroundColor: "transparent",
   "&::before": {
-    backgroundColor: theme.palette.secondary.dark,
+    backgroundColor: theme.palette.secondary.main,
     animationDuration: "15s",
   },
   "&::after": {
@@ -16,15 +16,14 @@ export const StyledHeaderBottomAnimation = styled(StyledWave)(({ theme }) => ({
   },
 }));
 
-export const StyledHeaderWrapper = styled("div", {
-  shouldForwardProp: (prop) => prop !== "noContentOverlay",
-})<{ noContentOverlay?: boolean }>(({ noContentOverlay }) => ({
+export const StyledHeaderWrapper = styled("div")({
   position: "fixed",
   height: 122,
   top: 0,
-  zIndex: noContentOverlay ? 1302 : 1303,
+  zIndex: 1303,
+  pointerEvents: "none",
   width: "100%",
-}));
+});
 
 export const StyledHeaderButton = styled(Button)(({ theme }) => ({
   minWidth: "60px",
@@ -36,17 +35,16 @@ export const StyledHeaderButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export const StyledHeaderContentWrapper = styled("div")(({ theme }) => ({
+export const StyledHeaderContentWrapper = styled("div")({
   height: "60px",
   display: "flex",
   justifyContent: "space-around",
   alignContent: "center",
   alignItems: "center",
-  "& > button": {
+  pointerEvents: "all",
+  maxWidth: 720,
+  margin: "0 auto",
+  "& > button, & > div > button": {
     zIndex: 1,
   },
-
-  [theme.breakpoints.up("sm")]: {
-    justifyContent: "center",
-  },
-}));
+});

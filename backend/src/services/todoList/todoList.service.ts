@@ -21,6 +21,8 @@ import {
   ITodoListWithReadonlyProperties,
 } from "linked-models/todoList/todoList.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
+import { IUserAttached } from "linked-models/user/user.model";
+import { ScheduleNotificationService } from "services/notification/schedule.notification.service";
 import { TaskService } from "services/task/task.service";
 import { UserService } from "services/user/user.service";
 
@@ -33,6 +35,8 @@ export class TodoListService {
     private readonly taskService: TaskService,
     @inject(UserService)
     private readonly userService: UserService,
+    @inject(ScheduleNotificationService)
+    private readonly scheduleNotificationService: ScheduleNotificationService,
     @inject(EventService)
     private readonly eventService: EventService
   ) {}
@@ -44,6 +48,16 @@ export class TodoListService {
     if (!todoList) return undefined;
 
     return mapTodoListToAttachedTodoList(todoList);
+  }
+
+  public async getTodoListByIDs(
+    todoListIDs: string[]
+  ): Promise<ITodoListAttached[]> {
+    const todoList = await this.todoListCollection.find({
+      _id: { $in: todoListIDs },
+    });
+
+    return todoList.map((td) => mapTodoListToAttachedTodoList(td));
   }
 
   public async getTodoListsForUser(
@@ -68,16 +82,24 @@ export class TodoListService {
     const todoList = await this.getTodoListById(todoListId);
     if (!todoList) return undefined;
 
-    const [users, owners] = await Promise.all([
+    const [users, owners, creator] = await Promise.all([
       todoList.assignedUsers
         ? this.userService.getUsersPublicDataByIDs(todoList.assignedUsers)
         : [],
       todoList.assignedOwners
         ? this.userService.getUsersPublicDataByIDs(todoList.assignedOwners)
         : [],
+      this.userService.getUserPublicData(todoList.creatorId),
     ]);
 
-    return { ...todoList, assignedUsers: users, assignedOwners: owners };
+    if (!creator) return undefined;
+
+    return {
+      ...todoList,
+      assignedUsers: users,
+      assignedOwners: owners,
+      creator,
+    };
   }
 
   public async getTodoListMemberIDs(todoListId: string): Promise<string[]> {
@@ -90,13 +112,36 @@ export class TodoListService {
     return Array.from(todoListMembersIDs);
   }
 
+  public async getTodoListWithAttachedMembers(todoListId: string): Promise<{
+    todoListMembers: IUserAttached[];
+    todoList?: ITodoListAttached;
+  }> {
+    const todoList = await this.getTodoListById(todoListId);
+
+    if (!todoList)
+      return {
+        todoList: undefined,
+        todoListMembers: [],
+      };
+
+    const todoListMembersIDs = new Set<string>();
+    todoList?.assignedOwners?.forEach((u) => todoListMembersIDs.add(u));
+    todoList?.assignedUsers?.forEach((u) => todoListMembersIDs.add(u));
+
+    const todoListMembers = await this.userService.getUsersByIDs(
+      Array.from(todoListMembersIDs)
+    );
+
+    return { todoList, todoListMembers };
+  }
+
   public async getTodoListsWithMembersForUser(userId: string): Promise<{
     todoLists: ITodoListWithMembersDto[];
     users: IUserPublicDataDTO[];
   }> {
     const todoLists = await this.getTodoListsForUser(userId);
 
-    const memberIDs = new Set<string>();
+    const memberIDs = new Set<string>(todoLists.map((t) => t.creatorId));
     todoLists.forEach((t) => {
       t.assignedOwners?.forEach(memberIDs.add, memberIDs);
       t.assignedUsers?.forEach(memberIDs.add, memberIDs);
@@ -108,6 +153,7 @@ export class TodoListService {
 
     const todoListsWithMembers = todoLists.map((td) => ({
       ...td,
+      creator: members.find((member) => member.id === td.creatorId)!,
       assignedOwners: members.filter((member) =>
         td.assignedOwners?.includes(member.id)
       ),
@@ -120,11 +166,17 @@ export class TodoListService {
   }
 
   public async getExtendedTodoList(
-    todoListId: string
+    todoListId: string,
+    userId: string
   ): Promise<IExtendedTodoListDto> {
     const [todoListWithMembers, tasks] = await Promise.all([
       this.getTodoListWithMembersById(todoListId),
-      this.taskService.getTasksByTodoListIDs([todoListId]),
+      this.taskService.getTasksByTodoListIDs(
+        [todoListId],
+        undefined,
+        undefined,
+        userId
+      ),
     ]);
 
     if (!todoListWithMembers) throw new Error("TodoList does not exist.");
@@ -159,7 +211,12 @@ export class TodoListService {
     );
     const todoListIDs = todoLists.map((td) => td.id);
 
-    const tasks = await this.taskService.getTasksByTodoListIDs(todoListIDs);
+    const tasks = await this.taskService.getTasksByTodoListIDs(
+      todoListIDs,
+      undefined,
+      undefined,
+      userId
+    );
 
     return todoLists.map((td) => ({
       ...td,
@@ -174,7 +231,9 @@ export class TodoListService {
 
   public async createTodoList(
     todoListData: ITodoList,
-    creatorId: string
+    creatorId: string,
+    isReminder = false,
+    generateEvent = true
   ): Promise<ITodoListWithMembersDto> {
     const newTodoList: ITodoListWithReadonlyProperties = {
       name: todoListData.name,
@@ -184,6 +243,7 @@ export class TodoListService {
       creatorId: creatorId,
       whenCreated: new Date(),
       whenUpdated: new Date(),
+      isReminder,
     };
 
     if (
@@ -212,31 +272,19 @@ export class TodoListService {
     }
 
     const createdTodoList = await this.todoListCollection.create(newTodoList);
-    const mappedCreatedTodoList =
-      mapTodoListToAttachedTodoList(createdTodoList);
 
-    const [assignedOwners, assignedUsers] = await Promise.all([
-      mappedCreatedTodoList.assignedOwners &&
-        this.userService.getUsersPublicDataByIDs(
-          mappedCreatedTodoList.assignedOwners
-        ),
-      mappedCreatedTodoList.assignedUsers &&
-        this.userService.getUsersPublicDataByIDs(
-          mappedCreatedTodoList.assignedUsers
-        ),
-    ]);
-
-    const todoListWithMembers = {
-      ...mappedCreatedTodoList,
-      assignedOwners: assignedOwners || [],
-      assignedUsers: assignedUsers || [],
-    };
-
-    this.eventService.emit(
-      TodoListCreatedEvent,
-      creatorId,
-      todoListWithMembers
+    const todoListWithMembers = await this.getTodoListWithMembersById(
+      createdTodoList._id
     );
+
+    if (!todoListWithMembers) throw new Error("Error while creating todoList.");
+
+    if (generateEvent)
+      this.eventService.emit(
+        TodoListCreatedEvent,
+        creatorId,
+        todoListWithMembers
+      );
 
     return todoListWithMembers;
   }
@@ -247,7 +295,8 @@ export class TodoListService {
   public async updateTodoList(
     todoListId: string,
     todoListData: Partial<ITodoList>,
-    updaterId: string
+    updaterId: string,
+    generateEvent = true
   ): Promise<ITodoListWithMembersDto> {
     //only valid properties
     const update: Partial<ITodoListAttached> = {
@@ -295,27 +344,22 @@ export class TodoListService {
       );
     }
 
-    const mappedUpdatedTodoList =
-      mapTodoListToAttachedTodoList(updatedTodoList);
-
-    const [assignedOwners, assignedUsers] = await Promise.all([
-      mappedUpdatedTodoList.assignedOwners &&
-        this.userService.getUsersByEmails(mappedUpdatedTodoList.assignedOwners),
-      mappedUpdatedTodoList.assignedUsers &&
-        this.userService.getUsersByEmails(mappedUpdatedTodoList.assignedUsers),
-    ]);
-
-    const todoListWithMembers = {
-      ...mappedUpdatedTodoList,
-      assignedOwners: assignedOwners || [],
-      assignedUsers: assignedUsers || [],
-    };
-
-    this.eventService.emit(
-      TodoListUpdatedEvent,
-      updaterId,
-      todoListWithMembers
+    const todoListWithMembers = await this.getTodoListWithMembersById(
+      updatedTodoList._id
     );
+
+    if (!todoListWithMembers) {
+      throw new Error(
+        `Cannot update todoList: ${todoListId}, because it does not exist.`
+      );
+    }
+
+    if (generateEvent)
+      this.eventService.emit(
+        TodoListUpdatedEvent,
+        updaterId,
+        todoListWithMembers
+      );
 
     return todoListWithMembers;
   }
@@ -326,7 +370,8 @@ export class TodoListService {
    */
   public async deleteTodoList(
     todoListId: string,
-    deleterId: string
+    deleterId: string,
+    generateEvent = true
   ): Promise<ITodoListAttached> {
     const [deletedTodoList] = await Promise.all([
       this.todoListCollection.findByIdAndDelete(todoListId),
@@ -341,11 +386,12 @@ export class TodoListService {
     const mappedDeletedTodoList =
       mapTodoListToAttachedTodoList(deletedTodoList);
 
-    this.eventService.emit(
-      TodoListDeletedEvent,
-      deleterId,
-      mappedDeletedTodoList
-    );
+    if (generateEvent)
+      this.eventService.emit(
+        TodoListDeletedEvent,
+        deleterId,
+        mappedDeletedTodoList
+      );
 
     return mappedDeletedTodoList;
   }

@@ -47,9 +47,10 @@ export const StyledFreshIcon = styled(CircleIcon)(({ theme }) => ({
 
 export const StyledListItemText = styled(ListItemText)(({ theme }) => ({
   flex: "unset",
-  "& > span": {
+  "& > span > span > span": {
     cursor: "pointer",
     transition: ".1s",
+    color: theme.palette.primary.contrastText,
     "&:hover": {
       color: theme.palette.secondary.main,
     },

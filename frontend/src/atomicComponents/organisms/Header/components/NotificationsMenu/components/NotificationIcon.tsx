@@ -4,11 +4,18 @@ import { memo } from "react";
 
 interface Props {
   freshNotificationsNumber: number;
+  showNoActivePushSubIcon: boolean;
 }
 
-const NotificationIcon = ({ freshNotificationsNumber }: Props): JSX.Element => {
+const NotificationIcon = ({
+  freshNotificationsNumber,
+  showNoActivePushSubIcon,
+}: Props): JSX.Element => {
   return (
-    <Badge badgeContent={freshNotificationsNumber} color="primary">
+    <Badge
+      badgeContent={showNoActivePushSubIcon ? "!" : freshNotificationsNumber}
+      color="primary"
+    >
       <NotificationsIcon />
     </Badge>
   );

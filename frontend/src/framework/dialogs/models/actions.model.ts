@@ -10,6 +10,7 @@ import {
 
 export enum DialogsActionTypes {
   updateTodoListDialog = "UPDATE_TODOLIST_DIALOG",
+  updateCollaborantsDrawer = "UPDATE_COLLABORANTS_DRAWER",
   updateShareTodoListDialog = "UPDATE_SHARE_TODOLIST_DIALOG",
   updateDeleteTodoListDialog = "UPDATE_DELETE_TODOLIST_DIALOG",
   updateTaskDialog = "UPDATE_TASK_DIALOG",
@@ -17,6 +18,10 @@ export enum DialogsActionTypes {
   updateRemindersListDialog = "UPDATE_REMINSERS_LIST_DIALOG",
   updateReminderDialog = "UPDATE_REMINDER_DIALOG",
   updateReminderListDialog = "UPDATE_REMINDER_LIST_DIALOG",
+}
+export interface UpdateCollaborantsDrawerAction {
+  type: DialogsActionTypes.updateCollaborantsDrawer;
+  payload: { visible: boolean };
 }
 export interface UpdateTodoListDialogAction {
   type: DialogsActionTypes.updateTodoListDialog;
@@ -53,6 +58,7 @@ export interface UpdateReminderListDialogAction {
 }
 
 export type DialogsReducerActions =
+  | UpdateCollaborantsDrawerAction
   | UpdateTodoListDialogAction
   | UpdateShareTodoListDialogAction
   | UpdateDeleteTodoListDialogAction

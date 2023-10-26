@@ -8,19 +8,15 @@ export const TaskCollectionName = "tasks";
 
 const TaskSchema = new mongoose.Schema({
   text: { type: String, required: true },
-  whenShouldBeStarted: {
-    type: Date,
-    required: false,
-  },
-  whenShouldBeFinished: {
-    type: Date,
-    required: false,
-  },
   startDate: {
     type: Date,
     required: false,
   },
   finishDate: {
+    type: Date,
+    required: false,
+  },
+  completionDate: {
     type: Date,
     required: false,
   },
@@ -44,10 +40,6 @@ const TaskSchema = new mongoose.Schema({
     type: Date,
     required: false,
   },
-  isReminder: {
-    type: Boolean,
-    required: false,
-  },
 });
 
 export interface ITaskDocument extends ITaskWithReadonlyProperties, Document {}
@@ -60,15 +52,14 @@ export const mapTaskToAttachedTask = (task: ITaskDocument): ITaskAttached => {
   return {
     id: task.id,
     text: task.text,
-    whenShouldBeStarted: task.whenShouldBeStarted,
-    whenShouldBeFinished: task.whenShouldBeFinished,
     startDate: task.startDate,
     finishDate: task.finishDate,
+    notifyDate: task.notifyDate,
+    completionDate: task.completionDate,
     important: task.important,
     creatorId: task.creatorId,
     todoListId: task.todoListId,
     whenCreated: task.whenCreated,
     whenUpdated: task.whenUpdated,
-    isReminder: task.isReminder,
   };
 };

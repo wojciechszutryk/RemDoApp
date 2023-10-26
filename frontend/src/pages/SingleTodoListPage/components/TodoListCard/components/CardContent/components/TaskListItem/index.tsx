@@ -19,7 +19,7 @@ interface Props {
 }
 
 const TaskListItem = ({ task }: Props): JSX.Element => {
-  const isTaskFinished = !!task.finishDate;
+  const isTaskCompleted = !!task.completionDate;
   const editTaskInTodoListMutation = useEditTaskInTodoListMutation();
   const { setSnackbar } = useSnackbar();
   const { t } = useTranslation();
@@ -30,27 +30,27 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
   return (
     <SwippableItem
       defaultColor={
-        isTaskFinished
+        isTaskCompleted
           ? theme.palette.background.paper
           : theme.palette.info.main
       }
       rightShift={{
-        color: isTaskFinished
+        color: isTaskCompleted
           ? theme.palette.info.main
           : theme.palette.background.paper,
-        Icon: isTaskFinished ? <UnpublishedIcon /> : <CheckCircleIcon />,
+        Icon: isTaskCompleted ? <UnpublishedIcon /> : <CheckCircleIcon />,
         action: () => {
           editTaskInTodoListMutation.mutate(
             {
               todoListId: task.todoListId,
               taskId: task.id,
               data: {
-                finishDate: isTaskFinished ? null : new Date(),
+                completionDate: isTaskCompleted ? null : new Date(),
               },
             },
             {
               onSuccess: () => {
-                if (!isTaskFinished)
+                if (!isTaskCompleted)
                   setSnackbar({
                     content: (
                       <Typography>
@@ -65,7 +65,7 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
                               todoListId: task.todoListId,
                               taskId: task.id,
                               data: {
-                                finishDate: null,
+                                completionDate: null,
                               },
                             });
                             setSnackbar(undefined);
@@ -82,12 +82,12 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
         },
       }}
       leftShift={{
-        color: isTaskFinished
+        color: isTaskCompleted
           ? theme.palette.warning.main
           : theme.palette.primary.main,
-        Icon: isTaskFinished ? <DeleteIcon /> : <EditIcon />,
+        Icon: isTaskCompleted ? <DeleteIcon /> : <EditIcon />,
         action: () => {
-          if (isTaskFinished) {
+          if (isTaskCompleted) {
             dialogsActions.updateDeleteTaskDialog({
               visible: true,
               taskId: task.id,

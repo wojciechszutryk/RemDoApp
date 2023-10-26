@@ -1,5 +1,6 @@
 import {
   DialogsActionTypes,
+  UpdateCollaborantsDrawerAction,
   UpdateDeleteTaskDialogAction,
   UpdateDeleteTodoListDialogAction,
   UpdateReminderDialogAction,
@@ -17,6 +18,15 @@ import {
   ITaskDialog,
   ITodoListDialog,
 } from "./models/state.model";
+
+export const updateCollaborantsDrawerAction = (payload: {
+  visible: boolean;
+}): UpdateCollaborantsDrawerAction => {
+  return {
+    type: DialogsActionTypes.updateCollaborantsDrawer,
+    payload,
+  };
+};
 
 export const updateTodoListDialogAction = (
   payload: ITodoListDialog

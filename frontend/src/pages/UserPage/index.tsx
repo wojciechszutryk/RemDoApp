@@ -4,6 +4,8 @@ import { memo, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 import AvatarChangeForm from "./components/AvatarChangeForm";
 import DisplayNameChangeForm from "./components/DisplayNameChangeForm";
+import GoogleIntegrationForm from "./components/GoogleIntegration";
+import NotificationsSettings from "./components/NotificationsSettings";
 import PasswordChangeForm from "./components/PasswordChangeForm";
 import { StyledTitle, StyledWrapper } from "./styles";
 
@@ -28,6 +30,12 @@ const UserPage = (): JSX.Element => {
       </Accordion>
       <Accordion summaryText={t(TranslationKeys.ChangePassword)}>
         <PasswordChangeForm />
+      </Accordion>
+      <Accordion summaryText={t(TranslationKeys.GoogleIntegration)}>
+        <GoogleIntegrationForm />
+      </Accordion>
+      <Accordion summaryText={t(TranslationKeys.NotificationsSettings)}>
+        <NotificationsSettings />
       </Accordion>
     </StyledWrapper>
   );

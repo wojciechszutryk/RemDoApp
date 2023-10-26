@@ -3,15 +3,16 @@ import {
   IDeleteTodoListDialog,
   IDialogsState,
   IReminderDialog,
+  IReminderListDialog,
   IShareTodoListDialog,
   ITaskDialog,
   ITodoListDialog,
-  IReminderListDialog,
 } from "./state.model";
 
 export interface ContextProps {
   dialogsState: IDialogsState;
   dialogsActions: {
+    updateCollaborantsDrawer: (actionPayload: { visible: boolean }) => void;
     updateTodoListDialog: (actionPayload: ITodoListDialog) => void;
     updateShareTodoListDialog: (actionPayload: IShareTodoListDialog) => void;
     updateDeleteTodoListDialog: (actionPayload: IDeleteTodoListDialog) => void;

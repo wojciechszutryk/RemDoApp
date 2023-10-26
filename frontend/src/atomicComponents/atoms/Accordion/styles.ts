@@ -4,6 +4,7 @@ import { Accordion, styled } from "@mui/material";
 export const StyledAccordion = styled(Accordion)(({ theme }) => ({
   color: theme.palette.primary.contrastText,
   backgroundColor: "transparent",
+  backgroundImage: "none",
   boxShadow: "none",
 }));
 

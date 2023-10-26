@@ -1,17 +1,18 @@
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { ITask } from "linked-models/task/task.model";
-import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
-import { ITodoList } from "linked-models/todoList/todoList.model";
+import { IUserPublicDataDTO } from "linked-models/user/user.dto";
+import { IReminderDialogState } from "../components/ReminderDialog/models/reminderDialogState.model";
+import { ITodoListDialogValues } from "../components/TodoListDialog";
 import { IBaseDialogProps } from "./baseModalProps.model";
 
 export interface ITodoListDialog extends IBaseDialogProps {
   visible: boolean;
-  editTodoListData?: ITodoList & { id: string };
+  editTodoListData?: ITodoListDialogValues & { id: string };
 }
 export interface IShareTodoListDialog extends IBaseDialogProps {
   visible: boolean;
-  assignedUsers: string[];
-  assignedOwners: string[];
+  assignedUsers: IUserPublicDataDTO[];
+  assignedOwners: IUserPublicDataDTO[];
   todoListId: string;
   todoListName: string;
 }
@@ -22,7 +23,7 @@ export interface IDeleteTodoListDialog extends IBaseDialogProps {
 
 export interface ITaskDialog {
   visible: boolean;
-  editTaskData?: ITask & { id: string };
+  editTaskData?: ITask & { id: string; notifyDate?: Date | null };
   todoListId: string;
 }
 
@@ -34,11 +35,8 @@ export interface IDeleteTaskDialog {
 
 export interface IReminderDialog {
   visible: boolean;
-  editReminderData?: ITask & {
-    id: string;
-    todoListId: string;
-    icon: TodoListIconEnum;
-  };
+  editReminderData?: IReminderDialogState;
+  defaultData?: Partial<IReminderDialogState>;
 }
 
 export interface IReminderListDialog {
@@ -47,11 +45,11 @@ export interface IReminderListDialog {
 }
 
 export interface IDialogsState {
+  collaborantsDrawer: { visible: boolean };
   todoListDialog: ITodoListDialog;
   shareTodoListDialog: IShareTodoListDialog;
   deleteTodoListDialog: IDeleteTodoListDialog;
   taskDialog: ITaskDialog;
   deleteTaskDialog: IDeleteTaskDialog;
   reminderDialog: IReminderDialog;
-  reminderListDialog: IReminderListDialog;
 }

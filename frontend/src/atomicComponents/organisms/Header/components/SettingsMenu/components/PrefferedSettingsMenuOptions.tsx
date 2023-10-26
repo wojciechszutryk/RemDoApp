@@ -1,7 +1,7 @@
 import { useTheme } from "framework/theme/useTheme.context";
-import { TodoListLanguages } from "framework/translations/models/translations.model";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { useLocalisation } from "framework/translations/useLocalisation.context";
+import { AppLanguages } from "linked-models/language/languages.enum";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledFormControlLabel, StyledMenuItem } from "../styles";
@@ -24,10 +24,10 @@ const PrefferedSettingsMenuOptions = (): JSX.Element => {
       </StyledMenuItem>
       <StyledMenuItem>
         <StyledFormControlLabel
-          checked={language === TodoListLanguages.pl}
+          checked={language === AppLanguages.pl}
           control={<LanguageSwitch onChange={changeLanguage} />}
           label={
-            language === TodoListLanguages.en
+            language === AppLanguages.en
               ? t(TranslationKeys.LanguagePolish)
               : t(TranslationKeys.LanguageEnglish)
           }

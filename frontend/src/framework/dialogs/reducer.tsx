@@ -11,6 +11,12 @@ function Reducer(
   const newState = { ...state };
 
   switch (action.type) {
+    case DialogsActionTypes.updateCollaborantsDrawer: {
+      newState.collaborantsDrawer = action.payload;
+
+      return newState;
+    }
+
     case DialogsActionTypes.updateTodoListDialog: {
       newState.todoListDialog = action.payload;
 
@@ -43,12 +49,6 @@ function Reducer(
 
     case DialogsActionTypes.updateReminderDialog: {
       newState.reminderDialog = action.payload;
-
-      return newState;
-    }
-
-    case DialogsActionTypes.updateReminderListDialog: {
-      newState.reminderListDialog = action.payload;
 
       return newState;
     }

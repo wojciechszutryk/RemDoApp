@@ -5,12 +5,10 @@ import { Outlet, useLocation, useParams } from "react-router-dom";
 import { StyledPageBackground, StyledPageContentWrapper } from "./styles";
 
 interface Props {
-  /** Used on no scrollable pages, prevents header from overlay page content */
-  disabledScroll?: boolean;
   children?: JSX.Element;
 }
 
-const PageTemplate = ({ disabledScroll, children }: Props): JSX.Element => {
+const PageTemplate = ({ children }: Props): JSX.Element => {
   const location = useLocation();
   const { todoListId } = useParams();
   const [contentVisible, setContentVisible] = useState(true);
@@ -29,7 +27,7 @@ const PageTemplate = ({ disabledScroll, children }: Props): JSX.Element => {
       contentVisible={contentVisible}
       imageUrl={`${process.env.PUBLIC_URL}/images/wave-doodles.png`}
     >
-      <Header noContentOverlay={disabledScroll} />
+      <Header />
       <StyledPageContentWrapper contentHidden={!contentVisible}>
         <Outlet />
         {children}

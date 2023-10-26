@@ -1,23 +1,25 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
+import { IReminder, IReminderDTO } from "linked-models/reminder/reminder.dto";
+import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import { URL_REMINDERS } from "linked-models/reminder/reminder.urls";
-import { ITaskDTO, mapITaskToITaskDTO } from "linked-models/task/task.dto";
-import { ITask, ITaskAttached } from "linked-models/task/task.model";
-import useUpdateQueriesAfterCreatingTask from "../../../SingleTodoListPage/mutations/createTask/useUpdateQueriesAfterCreatingTask";
+import { stringifyTaskDateFields } from "linked-models/task/task.dto";
+import useUpdateQueriesAfterCreatingReminder from "./useUpdateQueriesAfterCreatingReminder";
 
 export const useCreateReminderMutation = () => {
-  const updateQueriesAfterCreatingTask =
-    useUpdateQueriesAfterCreatingTask(true);
+  const updateQueriesAfterCreatingReminder =
+    useUpdateQueriesAfterCreatingReminder();
 
-  const createTaskInTodoList = async (data: ITask) => {
+  const createReminder = async (data: IReminder) => {
     const url = FRONTIFY_URL(URL_REMINDERS);
-    return apiPost<ITaskDTO, ITaskAttached>(url, mapITaskToITaskDTO(data)).then(
-      (res) => res.data
-    );
+    return apiPost<IReminderDTO, IReminderAttached>(
+      url,
+      stringifyTaskDateFields(data)
+    ).then((res) => res.data);
   };
 
-  return useMutation(createTaskInTodoList, {
-    onSuccess: updateQueriesAfterCreatingTask,
+  return useMutation(createReminder, {
+    onSuccess: updateQueriesAfterCreatingReminder,
   });
 };

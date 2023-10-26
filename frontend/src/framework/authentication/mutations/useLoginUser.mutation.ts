@@ -2,39 +2,32 @@ import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
-import { useNotifications } from "framework/notificationSocket/useNotifications";
-import {
-  IExtendedLoginUserResponseDTO,
-  ILoginUserDTO,
-  ILoginUserResponseDTO,
-} from "linked-models/user/user.dto";
+import { ILoginUserDTO } from "linked-models/user/user.dto";
+import { IUserAttached } from "linked-models/user/user.model";
 import { URL_LOGIN, URL_USERS } from "linked-models/user/user.urls";
 import { useCurrentUser } from "../useCurrentUser";
 
 export const useLoginUserMutation = (): UseMutationResult<
-  ILoginUserResponseDTO,
+  IUserAttached,
   AxiosError<string>,
   ILoginUserDTO,
   unknown
 > => {
   const { setCurrentUser } = useCurrentUser();
-  const { setNotifications } = useNotifications();
 
   const url = FRONTIFY_URL(URL_USERS, URL_LOGIN);
 
-  const loginUser = async (
-    userData: ILoginUserDTO
-  ): Promise<IExtendedLoginUserResponseDTO> => {
-    return await apiPost<ILoginUserDTO, IExtendedLoginUserResponseDTO>(
-      url,
-      userData
-    ).then((res) => res.data);
+  const loginUser = async (userData: ILoginUserDTO): Promise<IUserAttached> => {
+    return await apiPost<ILoginUserDTO, IUserAttached>(url, userData, {
+      withCredentials: true,
+    }).then((res) => {
+      return res.data;
+    });
   };
 
   return useMutation(loginUser, {
-    onSuccess: ({ notifications, ...user }: IExtendedLoginUserResponseDTO) => {
+    onSuccess: (user: IUserAttached) => {
       setCurrentUser(user);
-      setNotifications(notifications);
     },
   });
 };

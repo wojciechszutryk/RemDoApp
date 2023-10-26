@@ -1,7 +1,7 @@
 import PortraitIcon from "@mui/icons-material/Portrait";
 import { Avatar } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
-import UserAvatar from "atomicComponents/molecules/UserAvatar";
+import UserAvatar from "atomicComponents/organisms/UserAvatar";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
@@ -27,7 +27,10 @@ const AvatarChangeForm = (): JSX.Element => {
       formData.append(AVATAR_FILENAME, selectedImage);
       changeAvatarMutation.mutate(formData, {
         onSuccess: () => {
-          setSnackbar({ message: t(TranslationKeys.AvatarChanged) });
+          setSnackbar({
+            message: t(TranslationKeys.AvatarChanged),
+            userData: currentUser,
+          });
         },
       });
     }
@@ -46,10 +49,7 @@ const AvatarChangeForm = (): JSX.Element => {
       />
       <label htmlFor="inputFile">
         {currentUser ? (
-          <UserAvatar
-            userId={currentUser?.id}
-            fallback={currentUser.displayName[0].toUpperCase()}
-          />
+          <UserAvatar userData={currentUser} />
         ) : (
           <Avatar>
             <PortraitIcon />

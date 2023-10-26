@@ -1,78 +1,106 @@
-import dayjs, { Dayjs } from "dayjs";
-import { IExtendedTaskDto } from "linked-models/task/task.dto";
+import dayjs, { Ls } from "dayjs";
+import useCheckLoader from "hooks/useCheckLoader";
+import useOnEventResize from "pages/RemindersPage/components/Callendar/hooks/useOnEventResize";
+import { CalendarAnimation } from "pages/RemindersPage/helpers/enums";
+import { ICallendarEvent } from "pages/RemindersPage/helpers/models";
+import { useGetUserRemindersForDateRange } from "pages/RemindersPage/queries/getUserRemindersForDateRange.query";
 import { memo, useMemo, useState } from "react";
-import CallendarDay from "./CallendarDay";
-import { StyledDateCalendar } from "./styles";
+import { Calendar, DateRange } from "react-big-calendar";
+import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import CallendarLoader from "../CallendarLoader";
+import CollapsableReminder from "../CollapsableReminder";
+import CallendarEvent from "./components/CalendarEvent";
+import useCallendarConfig from "./hooks/useCallendarConfig";
+import useOnEventDrop from "./hooks/useOnEventDrop";
+import useOnNavigate from "./hooks/useOnNavigate";
+import useOnRangeChange from "./hooks/useOnRangeChange";
+import useOnSelectEvent from "./hooks/useOnSelectEvent";
+import useOnSelectSlot from "./hooks/useOnSelectSlot";
+import useOnView from "./hooks/useOnView";
+import { StyledCallendarWrapper } from "./styles";
 
-const initialValue = dayjs();
-interface Props {
-  dateToTasksMap: Map<string, IExtendedTaskDto[]>;
-}
+Ls.en.weekStart = 1;
 
-const Callendar = ({ dateToTasksMap }: Props): JSX.Element => {
-  const handleMonthChange = (date: Dayjs) => {
-    const monthDayToTasksMap = getHighlightedDaysForMonth(date);
+const DnDCalendar = withDragAndDrop<ICallendarEvent>(Calendar);
 
-    setHighlightedMonthDays(monthDayToTasksMap);
-  };
+const BigCallendar = (): JSX.Element => {
+  const [dateRange, setDateRange] = useState<DateRange>({
+    start: dayjs().startOf("month").toDate(),
+    end: dayjs().endOf("month").toDate(),
+  });
+  const [contentAnimation, setContentAnimation] = useState<CalendarAnimation>(
+    CalendarAnimation.FADE_IN
+  );
+  const getUserRemindersForDateRange =
+    useGetUserRemindersForDateRange(dateRange);
+  const isLoading = useCheckLoader(getUserRemindersForDateRange.isLoading);
 
-  const dateToSortedTasksMap = useMemo(() => {
-    const dateToSortedTasksMap = new Map(dateToTasksMap);
-    dateToSortedTasksMap.forEach((tasks) => {
-      tasks?.sort((a, b) => {
-        return !!a.whenShouldBeStarted && !!b.whenShouldBeStarted
-          ? new Date(a.whenShouldBeStarted).getTime() -
-              new Date(b.whenShouldBeStarted).getTime()
-          : 0;
+  const propsConfig = useCallendarConfig();
+  const onEventResize = useOnEventResize();
+  const onSelectEvent = useOnSelectEvent();
+  const onSelectSlot = useOnSelectSlot();
+  const onEventDrop = useOnEventDrop();
+  const onNavigate = useOnNavigate(setContentAnimation);
+  const onView = useOnView(setContentAnimation);
+  const onRangeChange = useOnRangeChange(dateRange, setDateRange);
+
+  const events = useMemo(() => {
+    const eventsArr: ICallendarEvent[] = [];
+
+    getUserRemindersForDateRange.data?.forEach((reminder) => {
+      eventsArr.push({
+        ...reminder,
+        id: reminder.taskId,
+        title: reminder.text,
+        start: new Date(reminder.startDate),
+        end: new Date(reminder.finishDate),
       });
     });
-    return dateToSortedTasksMap;
-  }, [dateToTasksMap]);
 
-  const getHighlightedDaysForMonth = (date: Dayjs) => {
-    const monthStartDate = date.startOf("month");
-    const monthEndDate = date.endOf("month");
-
-    const monthDayToTasksMap = new Map(
-      Array.from(dateToSortedTasksMap).filter(([stringDate]) => {
-        const date = dayjs(stringDate);
-        return date.diff(monthStartDate) >= 0 && date.diff(monthEndDate) <= 0;
-      })
-    );
-
-    for (
-      let date = monthStartDate;
-      monthEndDate.diff(date) > 0;
-      date = date.add(1, "day")
-    ) {
-      const day = date.toString();
-      const tasksForDay = monthDayToTasksMap.get(day);
-      monthDayToTasksMap.set(day, tasksForDay ?? []);
-    }
-
-    return monthDayToTasksMap;
-  };
-
-  const [highlightedMonthDays, setHighlightedMonthDays] = useState<
-    Map<string, IExtendedTaskDto[]>
-  >(getHighlightedDaysForMonth(dayjs()));
+    return eventsArr;
+  }, [getUserRemindersForDateRange.data]);
 
   return (
-    <StyledDateCalendar
-      defaultValue={initialValue}
-      onMonthChange={handleMonthChange}
-      slots={{
-        day: CallendarDay,
-      }}
-      slotProps={
-        {
-          day: {
-            highlightedDays: highlightedMonthDays,
+    <StyledCallendarWrapper contentAnimation={contentAnimation}>
+      {!!isLoading && <CallendarLoader />}
+      <DnDCalendar
+        {...propsConfig}
+        components={{
+          agenda: {
+            event: (a) => {
+              if (!a.event) return null;
+              return <CollapsableReminder reminder={a.event} />;
+            },
           },
-        } as any
-      }
-    />
+          week: {
+            event: (calendarEvent) => (
+              <CallendarEvent calendarEvent={calendarEvent} />
+            ),
+          },
+          month: {
+            event: (calendarEvent) => (
+              <CallendarEvent calendarEvent={calendarEvent} />
+            ),
+          },
+          day: {
+            event: (calendarEvent) => (
+              <CallendarEvent calendarEvent={calendarEvent} />
+            ),
+          },
+        }}
+        events={events}
+        onNavigate={onNavigate}
+        onView={onView}
+        onRangeChange={onRangeChange}
+        onSelectEvent={onSelectEvent}
+        onSelectSlot={onSelectSlot}
+        onEventDrop={onEventDrop}
+        onEventResize={onEventResize}
+      />
+    </StyledCallendarWrapper>
   );
 };
 
-export default memo(Callendar);
+export default memo(BigCallendar);

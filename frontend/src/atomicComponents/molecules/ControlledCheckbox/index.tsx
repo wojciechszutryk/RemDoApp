@@ -6,7 +6,7 @@ interface Props<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>
 > extends Omit<CheckboxProps, "name"> {
-  control?: Control<TFieldValues, any> | undefined;
+  control?: Control<TFieldValues, any>;
   name: TName;
   label?: string;
 }

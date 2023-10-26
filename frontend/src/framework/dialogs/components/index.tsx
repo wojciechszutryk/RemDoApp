@@ -1,52 +1,62 @@
 import { lazy, Suspense } from "react";
 import { useDialogs } from "..";
-import ReminderListModal from "./ReminderListModal";
 
-const TodoListModal = lazy(() => import("./TodoListModal"));
-const ShareTodoListModal = lazy(() => import("./ShareTodoListModal"));
-const DeleteTodoListModal = lazy(() => import("./DeleteTodoListModal"));
-const TaskModal = lazy(() => import("./TaskModal"));
-const DeleteTaskModal = lazy(() => import("./DeleteTaskModal"));
-const ReminderModal = lazy(() => import("./ReminderModal"));
+const TodoListDialog = lazy(() => import("./TodoListDialog"));
+const CollaborantsDrawer = lazy(() => import("./CollaborantsDrawer"));
+const ShareTodoListDialog = lazy(() => import("./ShareTodoListDialog"));
+const DeleteTodoListDialog = lazy(() => import("./DeleteTodoListDialog"));
+const TaskDialog = lazy(() => import("./TaskDialog"));
+const DeleteTaskDialog = lazy(() => import("./DeleteTaskDialog"));
+const ReminderDialog = lazy(() => import("./ReminderDialog"));
 
 const Dialogs = (): JSX.Element => {
-  const { dialogsState } = useDialogs();
+  const {
+    dialogsState: {
+      deleteTaskDialog,
+      collaborantsDrawer,
+      deleteTodoListDialog,
+      taskDialog,
+      reminderDialog,
+      todoListDialog,
+      shareTodoListDialog,
+    },
+  } = useDialogs();
 
   return (
     <>
-      {dialogsState.todoListDialog.visible && (
+      {collaborantsDrawer.visible && (
         <Suspense fallback={<></>}>
-          <TodoListModal />
+          <CollaborantsDrawer />
         </Suspense>
       )}
-      {dialogsState.shareTodoListDialog.visible && (
+      {todoListDialog.visible && (
         <Suspense fallback={<></>}>
-          <ShareTodoListModal />
+          <TodoListDialog />
         </Suspense>
       )}
-      {dialogsState.deleteTodoListDialog.visible && (
+      {shareTodoListDialog.visible && (
         <Suspense fallback={<></>}>
-          <DeleteTodoListModal />
+          <ShareTodoListDialog />
         </Suspense>
       )}
-      {dialogsState.taskDialog.visible && (
+      {deleteTodoListDialog.visible && (
         <Suspense fallback={<></>}>
-          <TaskModal />
+          <DeleteTodoListDialog />
         </Suspense>
       )}
-      {dialogsState.deleteTaskDialog.visible && (
+      {taskDialog.visible && (
         <Suspense fallback={<></>}>
-          <DeleteTaskModal />
+          <TaskDialog />
         </Suspense>
       )}
-      {dialogsState.reminderDialog.visible && (
+      {deleteTaskDialog.visible && (
         <Suspense fallback={<></>}>
-          <ReminderModal />
+          <DeleteTaskDialog />
         </Suspense>
       )}
-      {dialogsState.reminderListDialog.visible && (
+      {reminderDialog.visible && (
         <Suspense fallback={<></>}>
-          <ReminderListModal />
+          <ReminderDialog />
         </Suspense>
       )}
     </>

@@ -1,7 +1,9 @@
 import { styled, TextField } from "@mui/material";
 import { AnimatedWaveAltStyles } from "../AnimatedWaveAlt/styles";
 
-export const StyledTextField = styled(TextField)(({ theme }) => ({
+export const StyledTextField = styled(TextField, {
+  shouldForwardProp: (prop) => prop !== "disabled",
+})<{ disabled?: boolean }>(({ theme, disabled }) => ({
   width: "100%",
   height: "54px",
   // backgroundColor: theme.palette.secondary.main,
@@ -14,25 +16,34 @@ export const StyledTextField = styled(TextField)(({ theme }) => ({
   },
 
   "& input, & textarea": {
-    // textTransform: "uppercase",
     color: theme.palette.primary.contrastText,
     // "&::placeholder": { color: "red", opacity: 1 },
     // "&:-ms-input-placeholder": { color: "red" },
     // "&::-ms-input-placeholder": { color: "red" },
   },
 
-  "&:hover input, &:hover textarea": {
-    color: theme.palette.primary.light,
-  },
+  ...(disabled && {
+    pointerEvents: "none",
+    opacity: 0.5,
+  }),
+  ...(!disabled && {
+    "&:hover input, &:hover textarea": {
+      color: theme.palette.primary.light,
+    },
+  }),
 
   "& .Mui-focused input, & .Mui-focused textarea": {
     color: theme.palette.primary.light,
   },
 
+  "&:hover svg": {
+    color: theme.palette.primary.main,
+  },
+
   "& > div": {
     width: "100%",
     height: "100%",
-    ...(AnimatedWaveAltStyles(theme) as {}),
+    ...(AnimatedWaveAltStyles(theme, undefined, disabled) as {}),
   },
 
   "& .Mui-focused div:last-of-type > div > span": {

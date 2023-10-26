@@ -5,6 +5,7 @@ import {
   useScrollTrigger,
   useTheme,
 } from "@mui/material";
+import UserAvatar from "atomicComponents/organisms/UserAvatar";
 import { useSnackbar } from "..";
 import { StyledSnackbar } from "./styles";
 
@@ -35,6 +36,11 @@ export const Snackbar = (): JSX.Element => {
               onClose={handleClose}
               severity={snackbar.severity || "success"}
               sx={{ width: "100%" }}
+              icon={
+                snackbar.userData ? (
+                  <UserAvatar userData={snackbar.userData} altBackground />
+                ) : undefined
+              }
             >
               {snackbar.message}
               {snackbar.content}

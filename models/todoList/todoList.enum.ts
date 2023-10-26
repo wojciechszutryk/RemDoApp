@@ -8,4 +8,7 @@ export enum TodoListIconEnum {
   Family = "Family",
   Shopping = "Shopping",
   Food = "Food",
+  Reminder = "Reminder",
+  /** special type indicating that todoList is wrapper of google calendar's event */
+  Google = "Google",
 }

@@ -1,11 +1,18 @@
 import { styled } from "@mui/material";
 
-export const StyledWrapper = styled("div")({
-  display: "flex",
-  alignItems: "center",
-  width: "100%",
-  height: "20px",
-});
+export const StyledWrapper = styled("div", {
+  shouldForwardProp: (prop) =>
+    prop !== "spacingTop" && prop !== "spacingBottom",
+})<{ spacingTop?: number; spacingBottom?: number }>(
+  ({ spacingTop, spacingBottom }) => ({
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
+    height: "20px",
+    marginTop: spacingTop,
+    marginBottom: spacingBottom,
+  })
+);
 
 export const StyledLine = styled("div", {
   shouldForwardProp: (prop) => prop !== "color",

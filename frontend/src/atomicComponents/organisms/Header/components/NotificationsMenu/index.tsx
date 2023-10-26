@@ -1,78 +1,73 @@
-import { Drawer } from "@mui/material";
-import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
-import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
-import { memo, useMemo, useState } from "react";
+import { Divider, Drawer, Skeleton } from "@mui/material";
+import { useGetUserNotificationsQuery } from "framework/notifications/queries/getUserNotifications.query";
+import { memo, useState } from "react";
+import ActiveNotificationsList from "./components/ActiveNotificationsList";
 import ArchivedNotificationsList from "./components/ArchivedNotificationsList";
-import NewNotificationsList from "./components/NewNotificationsList";
+import EmptyNotificationsInfo from "./components/EmptyNotificationsInfo";
 import NotificationIcon from "./components/NotificationIcon";
 import NotificationsLoader from "./components/NotificationsLoader";
+import RegisterDeviceForPushButton from "./components/RegisterDeviceForPushButton";
+import useCheckPushSubActive from "./hooks/useCheckPushSubActive";
+import useGetNotificationsData from "./hooks/useGetNotificationsData";
 import useMarkFreshNotificationsAsRead from "./hooks/useMarkFreshNotificationsAsRead";
-import useNotificationsData from "./hooks/useNotificationsData";
 import useToggleDrawer from "./hooks/useToggleDrawer";
 import { StyledDrawerListWrapper, StyledNotificationButton } from "./styles";
 
 const NotificationsMenu = (): JSX.Element => {
   const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
 
-  const getUserTodoListsWithTasksQuery = useGetUserExtendedTodoListsQuery({
-    enabled: !!showNotificationDrawer,
-  });
-  const {
-    archivedNotificationIDs,
-    readNotificationIDs,
+  const getUserNotificationsQuery = useGetUserNotificationsQuery();
+  const showNoActivePushSubIcon = useCheckPushSubActive();
+ 
+  const [
+    activeNotificationsData,
+    archivedNotificationsData,
     freshNotificationIDs,
-    todoListIdToActiveNotificationsMap,
-    todoListIdToArchivedNotificationsMap,
-  } = useNotificationsData();
+  ] = useGetNotificationsData(getUserNotificationsQuery.data);
 
   const markFreshNotificationsAsRead =
     useMarkFreshNotificationsAsRead(freshNotificationIDs);
+
   const toggleDrawer = useToggleDrawer({
     setDrawerState: setShowNotificationDrawer,
     onClose: freshNotificationIDs ? markFreshNotificationsAsRead : undefined,
   });
 
-  const todoListsMap = useMemo(() => {
-    const todoListsMap = new Map<string, IExtendedTodoListDto>();
-
-    getUserTodoListsWithTasksQuery.data?.forEach((todoList) => {
-      todoListsMap.set(todoList.id, todoList);
-    });
-
-    return todoListsMap;
-  }, [getUserTodoListsWithTasksQuery.data]);
-
   return (
     <>
-      <StyledNotificationButton onClick={toggleDrawer(true)}>
-        <NotificationIcon
-          freshNotificationsNumber={freshNotificationIDs.length}
-        />
-      </StyledNotificationButton>
+      {getUserNotificationsQuery.isLoading ? (
+        <Skeleton width={40} height={60} />
+      ) : (
+        <StyledNotificationButton onClick={toggleDrawer(true)}>
+          <NotificationIcon
+            showNoActivePushSubIcon={showNoActivePushSubIcon}
+            freshNotificationsNumber={freshNotificationIDs.length}
+          />
+        </StyledNotificationButton>
+      )}
       <Drawer open={showNotificationDrawer} onClose={toggleDrawer(false)}>
         <StyledDrawerListWrapper
           role="presentation"
           onKeyDown={toggleDrawer(false)}
         >
           <NotificationsLoader />
-          <NewNotificationsList
-            freshNotificationIDs={freshNotificationIDs}
-            readNotificationIDs={readNotificationIDs}
-            todoListIdToActiveNotificationsMap={
-              todoListIdToActiveNotificationsMap
-            }
-            todoListsMap={todoListsMap}
-            hideNotificationMenu={toggleDrawer(false)}
-          />
-          {archivedNotificationIDs.length > 0 && (
-            <ArchivedNotificationsList
-              archivedNotificationIDs={archivedNotificationIDs}
-              todoListIdToArchivedNotificationsMap={
-                todoListIdToArchivedNotificationsMap
-              }
-              todoListsMap={todoListsMap}
+          {showNoActivePushSubIcon && <RegisterDeviceForPushButton />}
+          {!!activeNotificationsData?.notifications.length ? (
+            <ActiveNotificationsList
+              notificationsData={activeNotificationsData}
               hideNotificationMenu={toggleDrawer(false)}
             />
+          ) : (
+            <EmptyNotificationsInfo />
+          )}
+          {!!archivedNotificationsData?.notifications.length && (
+            <>
+              <Divider />
+              <ArchivedNotificationsList
+                notificationsData={archivedNotificationsData}
+                hideNotificationMenu={toggleDrawer(false)}
+              />
+            </>
           )}
         </StyledDrawerListWrapper>
       </Drawer>

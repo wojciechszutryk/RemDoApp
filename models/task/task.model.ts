@@ -1,4 +1,3 @@
-import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { IBaseModelAttached } from "../abstraction/base.interface";
 
 export interface ITask {
@@ -6,22 +5,19 @@ export interface ITask {
   text: string;
 
   /** Date when task should be started */
-  whenShouldBeStarted?: Date | null;
+  startDate?: Date | null;
 
   /** Date when task should be finished */
-  whenShouldBeFinished?: Date | null;
-
-  /** Date when task was finished */
   finishDate?: Date | null;
 
-  /** Date when task was started */
-  startDate?: Date | null;
+  /** Date when to notify user about task or reminder - Not saved in DB, used only to create/edit*/
+  notifyDate?: Date | null;
+
+  /** Optional Date when task was finished */
+  completionDate?: Date | null;
 
   /** Boolean to determine if task is important */
   important?: boolean;
-
-  /** Boolean to determine if task is a reminder */
-  isReminder?: boolean;
 }
 
 export interface ITaskWithReadonlyProperties extends ITask {

@@ -1,6 +1,6 @@
-import { styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 
-export const StyledTodoListIconWrapper = styled("div", {
+export const StyledTodoListIconWrapper = styled(Box, {
   shouldForwardProp: (prop) => prop !== "isAuth",
 })<{ disableHover?: boolean }>(({ theme, disableHover }) => ({
   "& svg": {
