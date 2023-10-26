@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "build": "tsc -p ./tsconfig.build.json",
+    "build": "tsc && tsc-alias -p ./tsconfig.build.json",
     "postinstall": "patch-package",
     "test": "jest --config ./tests/jest.unit.config.json",
     "gen_vapid_keys": " web-push generate-vapid-keys [--json]",

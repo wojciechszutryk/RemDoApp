@@ -36,12 +36,18 @@ export const useSubscribeForPushMutation = () => {
     serviceWorkerReg: ServiceWorkerRegistration;
     userId: string;
   }) => {
-    const newSubscription = await serviceWorkerReg.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(
-        process.env.REACT_APP_VAPID_PUBLIC_KEY!
-      ),
-    });
+    const newSubscription = await serviceWorkerReg.pushManager
+      .subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(
+          process.env.REACT_APP_VAPID_PUBLIC_KEY!
+        ),
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    if (!newSubscription) return;
 
     const p256dh = newSubscription.getKey("p256dh");
     const auth = newSubscription.getKey("auth");
@@ -75,6 +81,7 @@ export const useSubscribeForPushMutation = () => {
       queryClient.setQueryData(
         [URL_PUSH],
         (prev?: IPushSubscriptionAttached[]): IPushSubscriptionAttached[] => {
+          if (!newSubscription) return prev || [];
           if (!prev) return [newSubscription];
           return [...prev, newSubscription];
         }

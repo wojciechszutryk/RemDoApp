@@ -4,12 +4,15 @@ import { Button } from "atomicComponents/atoms/Button";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { usePushSWRegistartion } from "framework/pushServiceWorker/context";
 import { useSubscribeForPushMutation } from "framework/pushServiceWorker/mutations/subscribeForPush.mutation";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { memo } from "react";
+import { useTranslation } from "react-i18next";
 
 const RegisterDeviceForPushButton = (): JSX.Element => {
   const subscribeForPushMutation = useSubscribeForPushMutation();
   const { serviceWorkerRegistration } = usePushSWRegistartion();
   const { currentUser } = useCurrentUser();
+  const { t } = useTranslation();
   if (!serviceWorkerRegistration || !currentUser) return <></>;
 
   return (
@@ -23,21 +26,19 @@ const RegisterDeviceForPushButton = (): JSX.Element => {
         padding: 20,
       }}
     >
-      <Typography >
+      <Typography>
         <PriorityHighIcon sx={{ height: 15 }} />
-        You have not registered devices for push notifications yet. To stay in
-        touch with updates of yours todoLists, reminders, collaborants and
-        tasks, please register your device.
+        {t(TranslationKeys.RegisterPushSubscriptionDescription)}
       </Typography>
       <Button
-        onClick={() =>
+        onClick={() => {
           subscribeForPushMutation.mutate({
             serviceWorkerReg: serviceWorkerRegistration,
             userId: currentUser.id,
-          })
-        }
+          });
+        }}
       >
-        Register Device
+        {t(TranslationKeys.RegisterPushSubscription)}
       </Button>
     </div>
   );
