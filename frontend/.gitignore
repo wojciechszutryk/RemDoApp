@@ -11,6 +11,10 @@
 # production
 /build
 
+# linked-models
+/src/linked-models
+src/linked-models
+
 # misc
 .DS_Store
 .env.local
