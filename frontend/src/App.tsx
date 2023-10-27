@@ -9,7 +9,7 @@ import { TranslationKeys } from "framework/translations/translatedTexts/translat
 import UserPage from "pages/UserPage";
 import { lazy, Suspense, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 
 const HomePage = lazy(() => import("pages/HomePage"));
 const LoginPage = lazy(() => import("pages/LoginPage"));
@@ -30,112 +30,100 @@ const App = (): JSX.Element => {
   useAutoLogin();
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path={Pages.HomePage.path}
-          element={
-            <Suspense fallback={false}>
-              <PageTemplate>
-                <HomePage />
-              </PageTemplate>
-            </Suspense>
-          }
-        />
-        <Route
-          path={Pages.LoginPage.path}
-          element={
-            <Suspense fallback={false}>
-              <PageTemplate>
-                <LoginPage />
-              </PageTemplate>
-            </Suspense>
-          }
-        />
-        <Route
-          path={Pages.RegisterPage.path}
-          element={
-            <Suspense fallback={false}>
-              <PageTemplate>
-                <LoginPage />
-              </PageTemplate>
-            </Suspense>
-          }
-        />
-        <Route
-          path={Pages.UserPage.path}
-          element={
-            <Suspense fallback={false}>
-              <PageTemplate>
-                <RequireAuthPageWrapper>
-                  <UserPage />
-                </RequireAuthPageWrapper>
-              </PageTemplate>
-            </Suspense>
-          }
-        />
-        <Route
-          path={Pages.RemindersPage.path}
-          element={
-            <Suspense fallback={false}>
-              <PageTemplate>
-                <RequireAuthPageWrapper>
-                  <RemindersPage />
-                </RequireAuthPageWrapper>
-              </PageTemplate>
-            </Suspense>
-          }
-        />
-        <Route
-          path={Pages.TodoListsPage.path}
-          element={
-            <Suspense fallback={false}>
-              <PageTemplate>
-                <RequireAuthPageWrapper>
-                  <TodoListsPage />
-                </RequireAuthPageWrapper>
-              </PageTemplate>
-            </Suspense>
-          }
-        />
-        <Route
-          path={Pages.TaskPage.path()}
-          element={
-            <Suspense fallback={false}>
-              <PageTemplate>
-                <RequireAuthPageWrapper>
-                  <SingleTodoListPage />
-                </RequireAuthPageWrapper>
-              </PageTemplate>
-            </Suspense>
-          }
-        />
-        <Route
-          path={Pages.TodoListPage.path()}
-          element={
-            <Suspense fallback={false}>
-              <PageTemplate>
-                <RequireAuthPageWrapper>
-                  <SingleTodoListPage />
-                </RequireAuthPageWrapper>
-              </PageTemplate>
-            </Suspense>
-          }
-        />
-        <Route
-          path={Pages.TodoListsPage.path}
-          element={
-            <Suspense fallback={false}>
-              <PageTemplate>
-                <RequireAuthPageWrapper>
-                  <TodoListsPage />
-                </RequireAuthPageWrapper>
-              </PageTemplate>
-            </Suspense>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+      <HashRouter>
+        <Routes>
+          <Route
+            path={Pages.HomePage.path}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
+                  <HomePage />
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
+            path={Pages.LoginPage.path}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
+                  <LoginPage />
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
+            path={Pages.RegisterPage.path}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
+                  <LoginPage />
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
+            path={Pages.UserPage.path}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
+                  <RequireAuthPageWrapper>
+                    <UserPage />
+                  </RequireAuthPageWrapper>
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
+            path={Pages.RemindersPage.path}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
+                  <RequireAuthPageWrapper>
+                    <RemindersPage />
+                  </RequireAuthPageWrapper>
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
+            path={Pages.TodoListsPage.path}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
+                  <RequireAuthPageWrapper>
+                    <TodoListsPage />
+                  </RequireAuthPageWrapper>
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
+            path={Pages.TaskPage.path()}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
+                  <RequireAuthPageWrapper>
+                    <SingleTodoListPage />
+                  </RequireAuthPageWrapper>
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+          <Route
+            path={Pages.TodoListPage.path()}
+            element={
+              <Suspense fallback={false}>
+                <PageTemplate>
+                  <RequireAuthPageWrapper>
+                    <SingleTodoListPage />
+                  </RequireAuthPageWrapper>
+                </PageTemplate>
+              </Suspense>
+            }
+          />
+        </Routes>
+      </HashRouter>
   );
 };
 
