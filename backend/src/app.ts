@@ -46,7 +46,7 @@ server.setConfig((app) => {
   app.use((req, res, next) => {
     res.header(
       "Access-Control-Allow-Origin",
-      "https://wojciechszutryk.github.io"
+      "https://wojciechszutryk.github.io/RemDoApp"
     );
     res.header("Access-Control-Allow-Credentials", "true");
     res.header(
