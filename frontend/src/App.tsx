@@ -25,7 +25,8 @@ const App = (): JSX.Element => {
     document.title = title;
   });
 
-  useNotificationSocket();
+  // DISABLE SOCKET TEMPORARILY
+  // useNotificationSocket();
 
   useAutoLogin();
 
