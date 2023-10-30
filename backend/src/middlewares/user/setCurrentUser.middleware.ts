@@ -11,9 +11,6 @@ export class SetCurrentUser extends BaseMiddleware {
 
   async handler(req: Request, res: Response, next: NextFunction) {
     const user = req.user;
-    console.log("handler user ", user);
-    console.log("handler req", req);
-
     if (!user)
       return res.status(401).send({ message: "No current user found" });
 

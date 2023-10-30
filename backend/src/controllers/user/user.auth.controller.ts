@@ -36,11 +36,10 @@ export class UserAuthController extends BaseHttpController {
     super();
   }
 
-
   @httpGet(URL_PUSH)
   async getPushSubscription(): Promise<OkResult> {
     // const pushSubscription = await this.pushSubscriptionCollection.findOne();
-    return this.json('');
+    return this.json("");
   }
 
   @httpGet(
@@ -72,8 +71,6 @@ export class UserAuthController extends BaseHttpController {
     @request() req: express.Request,
     @response() res: express.Response
   ) {
-    console.log('loginUser');
-    
     res.setHeader("Access-Control-Allow-Origin", process.env.CLIENT_URL!);
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader(
