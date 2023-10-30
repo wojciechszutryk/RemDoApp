@@ -12,7 +12,6 @@ import mongoose from "mongoose";
 
 import passport from "passport";
 
-import cors from "cors";
 import { SocketNotificationService } from "services/notification/socket.notification.service";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -35,15 +34,36 @@ server.setConfig((app) => {
   app.use(passport.session());
   app.use(json({ limit: "100mb" }));
   app.use(urlencoded({ extended: true }));
-  app.use(
-    cors({
-      // origin: process.env.CLIENT_URL,
-      origin: true,
-      methods: "GET,POST,PUT,DELETE",
-      credentials: true,
-      exposedHeaders: ["set-cookie"],
-    })
-  );
+  // app.use(
+  //   cors({
+  //     // origin: process.env.CLIENT_URL,
+  //     origin: true,
+  //     methods: "GET,POST,PUT,DELETE",
+  //     credentials: true,
+  //     exposedHeaders: ["set-cookie"],
+  //   })
+  // );
+  app.use((req, res, next) => {
+    res.header(
+      "Access-Control-Allow-Origin",
+      "https://wojciechszutryk.github.io"
+    );
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, DELETE, OPTIONS"
+    );
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+
+    if (req.method === "OPTIONS") {
+      res.sendStatus(200);
+    } else {
+      next();
+    }
+  });
 });
 
 //Connect to MongoDb
