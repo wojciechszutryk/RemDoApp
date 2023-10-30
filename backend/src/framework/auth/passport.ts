@@ -88,6 +88,8 @@ passport.use(
         return done("Email or password is incorrect", false);
       }
 
+      console.log("foundUser", mapUserToAttachedUser(foundUser));
+
       return done(null, mapUserToAttachedUser(foundUser));
     }
   )
