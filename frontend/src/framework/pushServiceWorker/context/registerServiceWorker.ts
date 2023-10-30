@@ -9,7 +9,8 @@ export async function registerServiceWorker() {
   if ("serviceWorker" in navigator) {
     const url = process.env.PUBLIC_URL + "/sw.js";
     const reg = await navigator.serviceWorker.register(url, {
-      scope: "/build/",
+      scope:
+        process.env.REACT_APP_DEV_ENV === "prod" ? "/RemDoApp/" : "/build/",
     });
     return reg;
   }
