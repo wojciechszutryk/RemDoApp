@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "/RemDoApp/static/js/main.4666cf1c.js",
+    "main.js": "/RemDoApp/static/js/main.3f80fb03.js",
     "static/js/374.8abaf638.chunk.js": "/RemDoApp/static/js/374.8abaf638.chunk.js",
     "static/js/103.0f62a857.chunk.js": "/RemDoApp/static/js/103.0f62a857.chunk.js",
     "static/css/971.2b810b96.chunk.css": "/RemDoApp/static/css/971.2b810b96.chunk.css",
@@ -28,7 +28,7 @@
     "static/js/794.cfd375b1.chunk.js": "/RemDoApp/static/js/794.cfd375b1.chunk.js",
     "static/js/783.23791e93.chunk.js": "/RemDoApp/static/js/783.23791e93.chunk.js",
     "index.html": "/RemDoApp/index.html",
-    "main.4666cf1c.js.map": "/RemDoApp/static/js/main.4666cf1c.js.map",
+    "main.3f80fb03.js.map": "/RemDoApp/static/js/main.3f80fb03.js.map",
     "374.8abaf638.chunk.js.map": "/RemDoApp/static/js/374.8abaf638.chunk.js.map",
     "103.0f62a857.chunk.js.map": "/RemDoApp/static/js/103.0f62a857.chunk.js.map",
     "971.2b810b96.chunk.css.map": "/RemDoApp/static/css/971.2b810b96.chunk.css.map",
@@ -57,6 +57,6 @@
     "783.23791e93.chunk.js.map": "/RemDoApp/static/js/783.23791e93.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.4666cf1c.js"
+    "static/js/main.3f80fb03.js"
   ]
 }
