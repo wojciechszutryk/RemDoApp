@@ -37,10 +37,11 @@ server.setConfig((app) => {
   app.use(urlencoded({ extended: true }));
   app.use(
     cors({
-      origin: process.env.CLIENT_URL,
-      methods: "GET,POST,PUT,DELETE",
-      credentials: true,
-      exposedHeaders: ["set-cookie"],
+      origin: "*",
+      // origin: process.env.CLIENT_URL,
+      // methods: "GET,POST,PUT,DELETE",
+      // credentials: true,
+      // exposedHeaders: ["set-cookie"],
     })
   );
 });
