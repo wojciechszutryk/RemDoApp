@@ -43,6 +43,7 @@ server.setConfig((app) => {
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept"
     );
+    res.header("Access-Control-Expose-Headers:", "set-cookie");
 
     if (req.method === "OPTIONS") {
       res.sendStatus(200);
