@@ -8,7 +8,7 @@ Cloud Run -> Select Service -> Edit and Deploy New Revision
 ```
 
 frontend:
-set REACT_APP_DEV_ENV to "prod" in .env file
+set proper variables in .env file
 set proper homepage in package.json
 run `npm run deploy`
 
