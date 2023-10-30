@@ -1,5 +1,23 @@
 {
-  "extends": "./tsconfig.json",
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "./tests", "./test"]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2021",
+    "types": ["reflect-metadata"],
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "strict": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": "./src",
+    "paths": {
+      "*": ["./*"]
+    }
+  },
+  "typeRoots": ["./src/typings", "./node_modules/@types"],
+  "include": ["src/**/*"], //for build
+  "exclude": ["node_modules", "dist"]
 }
