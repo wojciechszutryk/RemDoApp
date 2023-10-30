@@ -10,6 +10,7 @@ import { buildProviderModule } from "inversify-binding-decorators";
 import { InversifyExpressServer } from "inversify-express-utils";
 import mongoose from "mongoose";
 
+import cors from "cors";
 import passport from "passport";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -32,25 +33,34 @@ server.setConfig((app) => {
   app.use(passport.session());
   app.use(json({ limit: "100mb" }));
   app.use(urlencoded({ extended: true }));
-  app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL);
-    res.header("Access-Control-Allow-Credentials", "true");
-    res.header(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, DELETE, OPTIONS"
-    );
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    res.header("Access-Control-Expose-Headers", "set-cookie");
+  app.use(
+    cors({
+      origin: process.env.CLIENT_URL,
+      // origin: true,
+      methods: "GET,POST,PUT,DELETE",
+      credentials: true,
+      exposedHeaders: ["set-cookie"],
+    })
+  );
+  // app.use((req, res, next) => {
+  //   res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL);
+  //   res.header("Access-Control-Allow-Credentials", "true");
+  //   res.header(
+  //     "Access-Control-Allow-Methods",
+  //     "GET, POST, PUT, DELETE, OPTIONS"
+  //   );
+  //   res.header(
+  //     "Access-Control-Allow-Headers",
+  //     "Origin, X-Requested-With, Content-Type, Accept"
+  //   );
+  //   res.header("Access-Control-Expose-Headers", "set-cookie");
 
-    if (req.method === "OPTIONS") {
-      res.sendStatus(200);
-    } else {
-      next();
-    }
-  });
+  //   if (req.method === "OPTIONS") {
+  //     res.sendStatus(200);
+  //   } else {
+  //     next();
+  //   }
+  // });
 });
 
 //Connect to MongoDb
