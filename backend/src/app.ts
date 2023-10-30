@@ -12,8 +12,6 @@ import mongoose from "mongoose";
 
 import passport from "passport";
 
-import { SocketNotificationService } from "services/notification/socket.notification.service";
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
@@ -34,20 +32,8 @@ server.setConfig((app) => {
   app.use(passport.session());
   app.use(json({ limit: "100mb" }));
   app.use(urlencoded({ extended: true }));
-  // app.use(
-  //   cors({
-  //     // origin: process.env.CLIENT_URL,
-  //     origin: true,
-  //     methods: "GET,POST,PUT,DELETE",
-  //     credentials: true,
-  //     exposedHeaders: ["set-cookie"],
-  //   })
-  // );
   app.use((req, res, next) => {
-    res.header(
-      "Access-Control-Allow-Origin",
-      "https://wojciechszutryk.github.io/RemDoApp"
-    );
+    res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL);
     res.header("Access-Control-Allow-Credentials", "true");
     res.header(
       "Access-Control-Allow-Methods",
@@ -85,8 +71,8 @@ mongoose.connection.on("open", () => {
   const app = server.build();
   const httpServer = createServer(app);
 
-  const socketService = new SocketNotificationService(httpServer);
-  container.bind(SocketNotificationService).toConstantValue(socketService);
+  // const socketService = new SocketNotificationService(httpServer);
+  // container.bind(SocketNotificationService).toConstantValue(socketService);
 
   const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 
