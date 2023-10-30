@@ -8,7 +8,9 @@ import {
 export async function registerServiceWorker() {
   if ("serviceWorker" in navigator) {
     const url = process.env.PUBLIC_URL + "/sw.js";
-    const reg = await navigator.serviceWorker.register(url, { scope: "/" });
+    const reg = await navigator.serviceWorker.register(url, {
+      scope: "/build/",
+    });
     return reg;
   }
 
