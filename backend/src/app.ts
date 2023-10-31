@@ -24,10 +24,8 @@ server.setConfig((app) => {
   app.use(
     cookieSession({
       httpOnly: false,
-      //
-      sameSite: "none",
-      secure: true,
-      //
+      sameSite: process.env.NODE_ENV === "development" ? undefined : "none",
+      secure: process.env.NODE_ENV === "development" ? false : true,
       maxAge: 24 * 60 * 60 * 1000,
       keys: [process.env.COOKIE_KEY!],
     })
