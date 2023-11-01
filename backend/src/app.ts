@@ -23,7 +23,7 @@ server.setConfig((app) => {
   app.set("trust proxy", true);
   app.use(
     cookieSession({
-      domain: process.env.CLIENT_URL,
+      domain: "wojciechszutryk.github.io",
       path: "/",
       sameSite: process.env.NODE_ENV === "development" ? undefined : "none",
       httpOnly: false,
