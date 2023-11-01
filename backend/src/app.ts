@@ -1,10 +1,10 @@
 import "framework/auth/passport";
 import "reflect-metadata";
 //
-import cookieSession from "cookie-session";
 import { container } from "di/container.init";
 import { registerBindings } from "di/di.config";
 import { json, Router, urlencoded } from "express";
+import session from "express-session";
 import { createServer } from "http";
 import { buildProviderModule } from "inversify-binding-decorators";
 import { InversifyExpressServer } from "inversify-express-utils";
@@ -22,15 +22,18 @@ const server = new InversifyExpressServer(container, customRouter);
 server.setConfig((app) => {
   app.set("trust proxy", true);
   app.use(
-    cookieSession({
-      domain: "wojciechszutryk.github.io",
-      path: "/",
-      sameSite: process.env.NODE_ENV === "development" ? undefined : "none",
-      httpOnly: false,
-      secure: false,
-      // secure: process.env.NODE_ENV === "development" ? false : true,
-      maxAge: 24 * 60 * 60 * 1000,
-      keys: [process.env.COOKIE_KEY!],
+    session({
+      secret: process.env.COOKIE_KEY!,
+      resave: false,
+      saveUninitialized: true,
+      cookie: {
+        domain: "wojciechszutryk.github.io",
+        path: "/",
+        sameSite: "none",
+        httpOnly: false,
+        secure: false,
+        maxAge: 24 * 60 * 60 * 1000,
+      },
     })
   );
 
