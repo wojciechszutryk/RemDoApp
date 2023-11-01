@@ -14,8 +14,9 @@ const LoginPage = (): JSX.Element => {
   const email = searchParams.get("email") || undefined;
 
   useLayoutEffect(() => {
-    const title =
-      t(TranslationKeys.PageTitleMain) + t(TranslationKeys.PageTitleHome);
+    const title = `${t(TranslationKeys.PageTitleMain)}${t(
+      TranslationKeys.PageTitleHome
+    )}`;
     document.title = title;
   });
 

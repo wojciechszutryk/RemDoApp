@@ -5,6 +5,7 @@ import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.hel
 import { ILoginUserDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
 import { URL_LOGIN, URL_USERS } from "linked-models/user/user.urls";
+import { getCookie } from "../getCookie.helper";
 import { useCurrentUser } from "../useCurrentUser";
 
 export const useLoginUserMutation = (): UseMutationResult<
@@ -21,6 +22,11 @@ export const useLoginUserMutation = (): UseMutationResult<
     return await apiPost<ILoginUserDTO, IUserAttached>(url, userData, {
       withCredentials: true,
     }).then((res) => {
+      localStorage.setItem("session", getCookie("session"));
+      console.log("session.sig", getCookie("session.sig"));
+
+      localStorage.setItem("session.sig", getCookie("session.sig"));
+
       return res.data;
     });
   };
