@@ -22,9 +22,6 @@ export const useLoginUserWithCookieMutation = () => {
   const url = FRONTIFY_URL(URL_USERS, `${URL_LOGIN}${URL_WITH_COOKIE}`);
 
   const loginUserWithCookie = async (): Promise<IUserAttached> => {
-    setCookie("session.sig", localStorage.getItem("session.sig") || "", 1);
-    setCookie("session", localStorage.getItem("session") || "", 1);
-
     return await apiPost<undefined, IUserAttached>(url, undefined).then(
       (res) => res.data
     );

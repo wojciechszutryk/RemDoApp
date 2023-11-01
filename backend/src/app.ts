@@ -25,13 +25,16 @@ server.setConfig((app) => {
     session({
       secret: process.env.COOKIE_KEY!,
       resave: false,
-      saveUninitialized: true,
+      saveUninitialized: false,
       cookie: {
-        domain: "wojciechszutryk.github.io",
-        path: "/",
-        sameSite: "none",
+        domain:
+          process.env.NODE_ENV === "production"
+            ? "wojciechszutryk.github.io"
+            : "localhost",
+        // path: "/",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         httpOnly: false,
-        secure: false,
+        // secure: true,
         maxAge: 24 * 60 * 60 * 1000,
       },
     })
