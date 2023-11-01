@@ -32,7 +32,7 @@ server.setConfig((app) => {
         // path: "/",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         httpOnly: false,
-        // secure: true,
+        secure: true,
         maxAge: 24 * 60 * 60 * 1000,
       },
     })
