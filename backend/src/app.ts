@@ -29,7 +29,7 @@ server.setConfig((app) => {
       cookie: {
         domain:
           process.env.NODE_ENV === "production"
-            ? "/wojciechszutryk.github.io"
+            ? ".wojciechszutryk.github.io"
             : "localhost",
         // path: "/",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
