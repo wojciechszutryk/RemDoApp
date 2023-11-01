@@ -22,6 +22,7 @@ export const useLoginUserMutation = (): UseMutationResult<
     return await apiPost<ILoginUserDTO, IUserAttached>(url, userData, {
       withCredentials: true,
     }).then((res) => {
+      console.log(document.cookie);
       localStorage.setItem("session", getCookie("session"));
       console.log("session.sig", getCookie("session.sig"));
 
