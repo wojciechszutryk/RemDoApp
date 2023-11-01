@@ -28,9 +28,7 @@ server.setConfig((app) => {
       saveUninitialized: false,
       cookie: {
         domain:
-          process.env.NODE_ENV === "production"
-            ? "wojciechszutryk.github.io"
-            : "localhost",
+          process.env.NODE_ENV === "production" ? ".github.io" : "localhost",
         // path: "/",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         httpOnly: false,
