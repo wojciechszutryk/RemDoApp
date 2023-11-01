@@ -23,9 +23,12 @@ server.setConfig((app) => {
   app.set("trust proxy", true);
   app.use(
     cookieSession({
-      httpOnly: false,
+      domain: process.env.CLIENT_URL,
+      path: "/",
       sameSite: process.env.NODE_ENV === "development" ? undefined : "none",
-      secure: process.env.NODE_ENV === "development" ? false : true,
+      httpOnly: false,
+      secure: false,
+      // secure: process.env.NODE_ENV === "development" ? false : true,
       maxAge: 24 * 60 * 60 * 1000,
       keys: [process.env.COOKIE_KEY!],
     })
