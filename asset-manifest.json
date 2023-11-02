@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.js": "/RemDoApp/static/js/main.c4d3ca24.js",
+    "main.js": "/RemDoApp/static/js/main.1f9b86d9.js",
     "static/js/374.8abaf638.chunk.js": "/RemDoApp/static/js/374.8abaf638.chunk.js",
-    "static/js/275.87167a60.chunk.js": "/RemDoApp/static/js/275.87167a60.chunk.js",
+    "static/js/103.2cc49d4c.chunk.js": "/RemDoApp/static/js/103.2cc49d4c.chunk.js",
     "static/css/971.2b810b96.chunk.css": "/RemDoApp/static/css/971.2b810b96.chunk.css",
     "static/js/971.9891d911.chunk.js": "/RemDoApp/static/js/971.9891d911.chunk.js",
     "static/css/615.cf48c1df.chunk.css": "/RemDoApp/static/css/615.cf48c1df.chunk.css",
@@ -28,9 +28,9 @@
     "static/js/794.3ff018fd.chunk.js": "/RemDoApp/static/js/794.3ff018fd.chunk.js",
     "static/js/783.8c7f686d.chunk.js": "/RemDoApp/static/js/783.8c7f686d.chunk.js",
     "index.html": "/RemDoApp/index.html",
-    "main.c4d3ca24.js.map": "/RemDoApp/static/js/main.c4d3ca24.js.map",
+    "main.1f9b86d9.js.map": "/RemDoApp/static/js/main.1f9b86d9.js.map",
     "374.8abaf638.chunk.js.map": "/RemDoApp/static/js/374.8abaf638.chunk.js.map",
-    "275.87167a60.chunk.js.map": "/RemDoApp/static/js/275.87167a60.chunk.js.map",
+    "103.2cc49d4c.chunk.js.map": "/RemDoApp/static/js/103.2cc49d4c.chunk.js.map",
     "971.2b810b96.chunk.css.map": "/RemDoApp/static/css/971.2b810b96.chunk.css.map",
     "971.9891d911.chunk.js.map": "/RemDoApp/static/js/971.9891d911.chunk.js.map",
     "615.cf48c1df.chunk.css.map": "/RemDoApp/static/css/615.cf48c1df.chunk.css.map",
@@ -57,6 +57,6 @@
     "783.8c7f686d.chunk.js.map": "/RemDoApp/static/js/783.8c7f686d.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.c4d3ca24.js"
+    "static/js/main.1f9b86d9.js"
   ]
 }
