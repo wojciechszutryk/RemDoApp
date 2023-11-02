@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://wojciechszutryk.github.io/RemDoApp/",
+  "homepage": "https://remdo-frontend.lm.r.appspot.com/",
   "dependencies": {
     "@dnd-kit/core": "^6.0.8",
     "@dnd-kit/sortable": "^7.0.2",

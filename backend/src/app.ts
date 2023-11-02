@@ -23,6 +23,10 @@ server.setConfig((app) => {
   app.set("trust proxy", true);
   app.use(
     cookieSession({
+      domain:
+        process.env.NODE_ENV === "development"
+          ? undefined
+          : "remdo-frontend.lm.r.appspot.com",
       httpOnly: false,
       sameSite: process.env.NODE_ENV === "development" ? undefined : "none",
       secure: process.env.NODE_ENV === "development" ? false : true,
