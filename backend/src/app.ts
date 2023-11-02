@@ -31,10 +31,10 @@ server.setConfig((app) => {
           process.env.NODE_ENV === "development"
             ? undefined
             : "remdo-frontend.lm.r.appspot.com",
-        path: "/",
+        // path: "/",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         httpOnly: false,
-        secure: true,
+        // secure: true,
         maxAge: 24 * 60 * 60 * 1000,
       },
     })
