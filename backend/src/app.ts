@@ -27,6 +27,10 @@ server.setConfig((app) => {
       resave: false,
       saveUninitialized: false,
       cookie: {
+        domain:
+          process.env.NODE_ENV === "development"
+            ? undefined
+            : "remdo-frontend.lm.r.appspot.com",
         path: "/",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         httpOnly: false,

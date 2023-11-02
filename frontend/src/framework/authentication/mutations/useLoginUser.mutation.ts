@@ -18,11 +18,11 @@ export const useLoginUserMutation = (): UseMutationResult<
   const url = FRONTIFY_URL(URL_USERS, URL_LOGIN);
 
   const loginUser = async (userData: ILoginUserDTO): Promise<IUserAttached> => {
-    return await apiPost<ILoginUserDTO, IUserAttached>(url, userData, {
-      withCredentials: true,
-    }).then((res) => {
-      return res.data;
-    });
+    return await apiPost<ILoginUserDTO, IUserAttached>(url, userData).then(
+      (res) => {
+        return res.data;
+      }
+    );
   };
 
   return useMutation(loginUser, {
