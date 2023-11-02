@@ -9,7 +9,7 @@ const getAxiosSettings = (
 ): Partial<AxiosRequestHeaders> => {
   const settings = {
     withCredentials: true,
-    Cookie: document.cookie || "",
+    // Cookie: document.cookie || "",
     ...additionalSettings,
   };
 
