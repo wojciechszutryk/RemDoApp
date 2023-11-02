@@ -26,14 +26,10 @@ server.setConfig((app) => {
       secret: process.env.COOKIE_KEY!,
       resave: false,
       saveUninitialized: false,
+      proxy: true,
       cookie: {
-        domain:
-          process.env.NODE_ENV === "development"
-            ? undefined
-            : ".remdo-frontend.lm.r.appspot.com",
-        path: "/",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        httpOnly: false,
+        httpOnly: true,
         secure: true,
         maxAge: 24 * 60 * 60 * 1000,
       },
