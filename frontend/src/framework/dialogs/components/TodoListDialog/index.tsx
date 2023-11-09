@@ -50,7 +50,6 @@ const TodoListDialog = (): JSX.Element => {
     defaultValues: defaultFormValues,
   });
 
-  console.log(defaultFormValues);
   const createTodoListMutation = useCreateTodoListMutation();
   const editTodoListMutation = useEditTodoListMutation();
   const { t } = useTranslation();

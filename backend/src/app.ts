@@ -3,14 +3,15 @@ import "reflect-metadata";
 //
 import { container } from "di/container.init";
 import { registerBindings } from "di/di.config";
-import { json, Router, urlencoded } from "express";
+import { Router, default as express, json, urlencoded } from "express";
 import session from "express-session";
 import { createServer } from "http";
 import { buildProviderModule } from "inversify-binding-decorators";
 import { InversifyExpressServer } from "inversify-express-utils";
 import mongoose from "mongoose";
+import path from "path";
 
-import cors from "cors";
+// import cors from "cors";
 import passport from "passport";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -20,7 +21,6 @@ const customRouter = Router({ mergeParams: true });
 const server = new InversifyExpressServer(container, customRouter);
 
 server.setConfig((app) => {
-  app.set("trust proxy", true);
   app.use(
     session({
       secret: process.env.COOKIE_KEY!,
@@ -28,46 +28,25 @@ server.setConfig((app) => {
       saveUninitialized: false,
       proxy: true,
       cookie: {
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        httpOnly: true,
-        secure: true,
+        sameSite: "strict",
         maxAge: 24 * 60 * 60 * 1000,
       },
     })
   );
-
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(json({ limit: "100mb" }));
   app.use(urlencoded({ extended: true }));
-  app.use(
-    cors({
-      origin: process.env.CLIENT_URL,
-      // origin: true,
-      methods: "GET,POST,PUT,DELETE",
-      credentials: true,
-      exposedHeaders: ["set-cookie"],
-    })
-  );
-  // app.use((req, res, next) => {
-  //   res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL);
-  //   res.header("Access-Control-Allow-Credentials", "true");
-  //   res.header(
-  //     "Access-Control-Allow-Methods",
-  //     "GET, POST, PUT, DELETE, OPTIONS"
-  //   );
-  //   res.header(
-  //     "Access-Control-Allow-Headers",
-  //     "Origin, X-Requested-With, Content-Type, Accept"
-  //   );
-  //   res.header("Access-Control-Expose-Headers", "set-cookie");
 
-  //   if (req.method === "OPTIONS") {
-  //     res.sendStatus(200);
-  //   } else {
-  //     next();
-  //   }
-  // });
+  // Serve static files from the React frontend app
+  app.use(
+    express.static(path.join(__dirname, "..", "..", "frontend", "build"))
+  );
+  app.use("/app", (_, res) => {
+    res.sendFile(
+      path.join(__dirname, "..", "..", "frontend", "build", "index.html")
+    );
+  });
 });
 
 //Connect to MongoDb
