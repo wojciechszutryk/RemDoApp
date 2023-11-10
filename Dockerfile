@@ -16,6 +16,8 @@ COPY models ./src/linked-models
 # Build the assets
 RUN npm run build
 
+COPY ./frontend/build ./backend/public
+
 # Copy the backend code
 COPY ./backend ./backend
 
@@ -31,12 +33,10 @@ RUN npm install
 # Build the backend
 RUN npm run build
 
-COPY ./frontend/build ./backend/public
+WORKDIR ./
 
 # Expose the port (optional, you can specify it in your app code)
 EXPOSE $PORT
-
-WORKDIR /
 
 # Run the backend Node.js app
 CMD ["node", "./backend/dist/app.js"]
