@@ -3,7 +3,7 @@ import { TypedEvent } from "linked-models/event/event.interface";
 import { INotificationDto } from "linked-models/notification/notification.dto";
 import { USER_PARAM } from "linked-models/user/user.urls";
 import { useEffect, useState } from "react";
-import { io, Socket } from "socket.io-client";
+import { Socket, io } from "socket.io-client";
 
 type NotificationOnType = <R>(
   event: TypedEvent<R>,
@@ -23,10 +23,10 @@ export const useInitializeNotificationSocket = () => {
         const query = { [USER_PARAM]: currentUser.id };
         const socket = io(process.env.REACT_APP_SOCKET_URL || "unknown", {
           query,
-          path:
-            process.env.REACT_APP_DEV_ENV === "local" ? "" : "/api/socket.io",
+          path: "",
           transports: ["websocket"],
         });
+
         setNotificationSocketReady(true);
 
         setOn(() => <R>(event: TypedEvent<R>, callback: (args: R) => void) => {

@@ -15,6 +15,7 @@ import path from "path";
 // import cors from "cors";
 import cors from "cors";
 import passport from "passport";
+import { SocketNotificationService } from "services/notification/socket.notification.service";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
@@ -31,10 +32,8 @@ server.setConfig((app) => {
       proxy: true,
       cookie: {
         sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
-        // httpOnly: process.env.NODE_ENV === "production",
-        httpOnly: false,
-        secure: false,
-        // secure: process.env.NODE_ENV === "production",
+        httpOnly: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === "production",
         maxAge: SessionAge,
       },
     })
@@ -54,16 +53,16 @@ server.setConfig((app) => {
     );
   });
 
-  // if (process.env.NODE_ENV === "development") {
-  app.use(
-    cors({
-      origin: process.env.CLIENT_URL,
-      methods: "GET,POST,PUT,DELETE",
-      credentials: true,
-      exposedHeaders: ["set-cookie"],
-    })
-  );
-  // }
+  if (process.env.NODE_ENV === "development") {
+    app.use(
+      cors({
+        origin: process.env.CLIENT_URL,
+        methods: "GET,POST,PUT,DELETE",
+        credentials: true,
+        exposedHeaders: ["set-cookie"],
+      })
+    );
+  }
 });
 
 //Connect to MongoDb
@@ -85,8 +84,8 @@ mongoose.connection.on("open", () => {
   const app = server.build();
   const httpServer = createServer(app);
 
-  // const socketService = new SocketNotificationService(httpServer);
-  // container.bind(SocketNotificationService).toConstantValue(socketService);
+  const socketService = new SocketNotificationService(httpServer);
+  container.bind(SocketNotificationService).toConstantValue(socketService);
 
   const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 
