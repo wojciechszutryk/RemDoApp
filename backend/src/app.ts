@@ -31,8 +31,10 @@ server.setConfig((app) => {
       proxy: true,
       cookie: {
         sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
-        httpOnly: process.env.NODE_ENV === "production",
-        secure: process.env.NODE_ENV === "production",
+        // httpOnly: process.env.NODE_ENV === "production",
+        httpOnly: false,
+        secure: false,
+        // secure: process.env.NODE_ENV === "production",
         maxAge: SessionAge,
       },
     })
@@ -52,16 +54,16 @@ server.setConfig((app) => {
     );
   });
 
-  if (process.env.NODE_ENV === "development") {
-    app.use(
-      cors({
-        origin: process.env.CLIENT_URL,
-        methods: "GET,POST,PUT,DELETE",
-        credentials: true,
-        exposedHeaders: ["set-cookie"],
-      })
-    );
-  }
+  // if (process.env.NODE_ENV === "development") {
+  app.use(
+    cors({
+      origin: process.env.CLIENT_URL,
+      methods: "GET,POST,PUT,DELETE",
+      credentials: true,
+      exposedHeaders: ["set-cookie"],
+    })
+  );
+  // }
 });
 
 //Connect to MongoDb
