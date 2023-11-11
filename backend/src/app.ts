@@ -8,10 +8,12 @@ import session from "express-session";
 import { createServer } from "http";
 import { buildProviderModule } from "inversify-binding-decorators";
 import { InversifyExpressServer } from "inversify-express-utils";
+import { SessionAge } from "linked-models/user/auth.consts";
 import mongoose from "mongoose";
 import path from "path";
 
 // import cors from "cors";
+import cors from "cors";
 import passport from "passport";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -28,8 +30,10 @@ server.setConfig((app) => {
       saveUninitialized: false,
       proxy: true,
       cookie: {
-        sameSite: "strict",
-        maxAge: 24 * 60 * 60 * 1000,
+        sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+        httpOnly: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: SessionAge,
       },
     })
   );
@@ -47,6 +51,17 @@ server.setConfig((app) => {
       path.join(__dirname, "..", "..", "frontend", "build", "index.html")
     );
   });
+
+  if (process.env.NODE_ENV === "development") {
+    app.use(
+      cors({
+        origin: process.env.CLIENT_URL,
+        methods: "GET,POST,PUT,DELETE",
+        credentials: true,
+        exposedHeaders: ["set-cookie"],
+      })
+    );
+  }
 });
 
 //Connect to MongoDb

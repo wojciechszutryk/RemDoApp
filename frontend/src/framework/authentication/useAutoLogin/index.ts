@@ -1,18 +1,22 @@
 import { useEffect } from "react";
-import { getCookie } from "../getCookie.helper";
+import { SessionAgeLSKey } from "../helpers/sessionAge.helper";
 import { useLoginUserWithCookieMutation } from "../mutations/useLoginUserWithCookie.mutation";
 import { useCurrentUser } from "../useCurrentUser";
 
 const useAutoLogin = () => {
   const { currentUser } = useCurrentUser();
   const loginUserWithCookieMutation = useLoginUserWithCookieMutation();
-  const sessionCookie = getCookie("connect.sid");
+  const sessionExpiryDate = localStorage.getItem(SessionAgeLSKey);
 
   useEffect(() => {
-    if (!!sessionCookie && !currentUser) {
+    if (
+      !currentUser &&
+      !!sessionExpiryDate &&
+      new Date().getTime() < parseInt(sessionExpiryDate)
+    ) {
       loginUserWithCookieMutation.mutate();
     }
-  }, [currentUser, sessionCookie]);
+  }, [currentUser, sessionExpiryDate]);
 };
 
 export default useAutoLogin;

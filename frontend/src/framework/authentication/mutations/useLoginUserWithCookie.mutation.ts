@@ -9,13 +9,6 @@ import {
 } from "linked-models/user/user.urls";
 import { useCurrentUser } from "../useCurrentUser";
 
-function setCookie(cname: string, cvalue: string, exdays: number) {
-  const d = new Date();
-  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-  const expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
 export const useLoginUserWithCookieMutation = () => {
   const { setCurrentUser } = useCurrentUser();
 
