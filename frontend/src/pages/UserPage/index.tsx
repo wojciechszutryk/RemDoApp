@@ -13,9 +13,9 @@ const UserPage = (): JSX.Element => {
   const { t } = useTranslation();
 
   useLayoutEffect(() => {
-    const title =
-      t(TranslationKeys.PageTitleMain) +
-      t(TranslationKeys.PageTitleUserSettings);
+    const title = `${t(TranslationKeys.PageTitleMain)}${t(
+      TranslationKeys.PageTitleUserSettings
+    )}`;
     document.title = title;
   });
 

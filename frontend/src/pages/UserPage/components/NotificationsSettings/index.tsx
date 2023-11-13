@@ -1,5 +1,4 @@
 import { Divider, Typography } from "@mui/material";
-import { Button } from "atomicComponents/atoms/Button";
 import { ControlledCheckbox } from "atomicComponents/molecules/ControlledCheckbox";
 import RegisterDeviceForPushButton from "atomicComponents/organisms/Header/components/NotificationsMenu/components/RegisterDeviceForPushButton";
 import useCheckPushSubActive from "atomicComponents/organisms/Header/components/NotificationsMenu/hooks/useCheckPushSubActive";
@@ -14,7 +13,7 @@ import { useChangePreferencesMutation } from "pages/UserPage/mutations/useChange
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { StyledForm } from "./styles";
+import { StyledForm, StyledSubmitButton } from "./styles";
 
 interface INotificationOptions {
   push: boolean;
@@ -90,28 +89,30 @@ const NotificationsSettings = (): JSX.Element => {
       {showNoActivePushSubIcon && <RegisterDeviceForPushButton />}
       {Object.values(EventName).map((event) => {
         return (
-          <>
+          <div key={event}>
             <Typography>{t(TranslationKeys[event as EventName])}</Typography>
             <div style={{ display: "flex" }}>
               <ControlledCheckbox
-                key={event}
+                key={`${event}-push`}
                 name={`${event}.push`}
                 control={control}
                 label={t(TranslationKeys.PushNotification)}
               />
               <ControlledCheckbox
-                key={event}
+                key={`${event}-socket`}
                 name={`${event}.socket`}
                 control={control}
                 label={t(TranslationKeys.SocketNotification)}
               />
             </div>
             <Divider />
-          </>
+          </div>
         );
       })}
 
-      <Button type="submit">{t(TranslationKeys.Save)}</Button>
+      <StyledSubmitButton type="submit">
+        {t(TranslationKeys.Save)}
+      </StyledSubmitButton>
     </StyledForm>
   );
 };
