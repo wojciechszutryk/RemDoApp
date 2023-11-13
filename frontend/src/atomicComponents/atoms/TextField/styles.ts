@@ -16,10 +16,8 @@ export const StyledTextField = styled(TextField, {
   },
 
   "& input, & textarea": {
+    zIndex: 2,
     color: theme.palette.primary.contrastText,
-    // "&::placeholder": { color: "red", opacity: 1 },
-    // "&:-ms-input-placeholder": { color: "red" },
-    // "&::-ms-input-placeholder": { color: "red" },
   },
 
   ...(disabled && {
