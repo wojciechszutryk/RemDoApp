@@ -160,7 +160,7 @@ export enum TranslationKeys {
   ChangePassword = "ChangePassword",
   CurrentPasswordLabel = "CurrentPasswordLabel",
   NewPasswordLabel = "NewPasswordLabel",
-  NewPasswordRepeatLabel = "NewPasswordLabel",
+  NewPasswordRepeatLabel = "NewPasswordRepeatLabel",
   PasswordChanged = "PasswordChanged",
   ChangeDisplayName = "ChangeDisplayName",
   ChangeAvatar = "ChangeAvatar",
