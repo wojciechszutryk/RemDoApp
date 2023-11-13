@@ -29,12 +29,10 @@ const useHandleDrag = ({
 
       if (active.id !== over?.id) {
         setOrderedTodoLists((items) => {
-          const itemIDs = items.map((item) => item.id);
+          const oldIndex = items.findIndex((i) => i.id === active.id);
+          const newIndex = items.findIndex((i) => i.id === over?.id);
 
-          const oldIndex = itemIDs.indexOf(active.id as string);
-          const newIndex = itemIDs.indexOf(over?.id as string);
-
-          if (newIndex) {
+          if (newIndex !== -1) {
             const reorderedItems = arrayMove(items, oldIndex, newIndex);
             if (currentUser)
               localStorage.setItem(
