@@ -128,7 +128,7 @@ const ExtendableUserAvatar = ({
               </Avatar>
             </ListItemAvatar>
             <ListItemText
-              primary={t(TranslationKeys.AddTask)}
+              primary={t(TranslationKeys.JoinDate)}
               secondary={dayjs(whenCreated).toDate().toLocaleDateString()}
             />
           </ListItem>
