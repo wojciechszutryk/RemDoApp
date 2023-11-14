@@ -34,11 +34,20 @@ const useCallendarConfig = () => {
         localizer!.format(date, "dddd, D MMMM", culture),
       timeGutterFormat: (date, culture, localizer) =>
         localizer!.format(date, "HH:mm", culture),
+      dayRangeHeaderFormat: ({ start, end }, culture) =>
+        localizer.format(start, "DD MMM", culture) +
+        " - " +
+        localizer.format(end, "DD MMM", culture),
+      agendaHeaderFormat: ({ start, end }, culture) =>
+        localizer.format(start, "DD.MM.YY", culture) +
+        " - " +
+        localizer.format(end, "DD.MM.YY", culture),
     }),
     [isSmallScreen]
   );
 
   return {
+    scrollToTime: new Date(),
     formats: formats,
     dayLayoutAlgorithm: "no-overlap" as DayLayoutAlgorithm,
     backgroundEvents: [],
