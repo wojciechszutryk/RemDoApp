@@ -63,7 +63,10 @@ const BigCallendar = (): JSX.Element => {
   }, [getUserRemindersForDateRange.data]);
 
   return (
-    <StyledCallendarWrapper contentAnimation={contentAnimation}>
+    <StyledCallendarWrapper
+      contentAnimation={contentAnimation}
+      isLoading={isLoading}
+    >
       {!!isLoading && <CallendarLoader />}
       <DnDCalendar
         {...propsConfig}
