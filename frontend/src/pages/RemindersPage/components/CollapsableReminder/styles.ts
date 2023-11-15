@@ -6,4 +6,11 @@ export const StyledRemindersListItem = styled(ListItem)(({ theme }) => ({
   "& > li > ul > li:first-child": {
     borderTop: "none",
   },
+  "& span, & > svg": {
+    transition: "color 0.15s ease-in-out",
+    "&:hover": {
+      color: theme.palette.primary.main,
+      cursor: "pointer",
+    },
+  },
 }));

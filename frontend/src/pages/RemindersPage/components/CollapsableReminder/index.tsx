@@ -1,4 +1,4 @@
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import EditIcon from "@mui/icons-material/Edit";
 import { ListItemText } from "@mui/material";
 import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import TaskDetailsList from "pages/SingleTodoListPage/components/TodoListCard/components/CardContent/components/TaskListItem/TaskDetailsList";
@@ -6,9 +6,9 @@ import {
   StyledDetailsColapse,
   StyledListItemIcon,
 } from "pages/SingleTodoListPage/components/TodoListCard/components/CardContent/components/TaskListItem/styles";
-import { StyledExpandMore } from "pages/SingleTodoListPage/components/TodoListCard/styles";
 import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
 import { memo, useState } from "react";
+import useOnSelectEvent from "../Callendar/hooks/useOnSelectEvent";
 import { StyledRemindersListItem } from "./styles";
 
 interface Props {
@@ -17,10 +17,22 @@ interface Props {
 
 const CollapsableReminder = ({ reminder }: Props): JSX.Element => {
   const [expanded, setExpanded] = useState(false);
+  const onSelectEvent = useOnSelectEvent();
 
-  const handleExpandClick = (e: React.MouseEvent<HTMLElement>) => {
+  const handleExpandDetails = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     setExpanded(!expanded);
+  };
+
+  const handleOuterClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+  };
+
+  const handleEditReminder = (
+    e: React.MouseEvent<SVGSVGElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+    onSelectEvent(reminder);
   };
 
   return (
@@ -29,22 +41,16 @@ const CollapsableReminder = ({ reminder }: Props): JSX.Element => {
       dense
       disablePadding
       key={reminder.taskId}
+      onClick={handleOuterClick}
     >
       {reminder.icon && (
         <StyledListItemIcon>
-          <TodoListIcon type={reminder.icon} />
+          <TodoListIcon type={reminder.icon} disableHover />
         </StyledListItemIcon>
       )}
-      <ListItemText primary={reminder.text} />
+      <ListItemText primary={reminder.text} onClick={handleExpandDetails} />
 
-      <StyledExpandMore
-        expand={expanded}
-        onClick={handleExpandClick}
-        aria-expanded={expanded}
-        aria-label="show more"
-      >
-        <ExpandMoreIcon />
-      </StyledExpandMore>
+      <EditIcon onClick={handleEditReminder} />
       <StyledDetailsColapse in={expanded}>
         <TaskDetailsList
           task={{
