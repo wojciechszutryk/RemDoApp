@@ -76,8 +76,6 @@ export class RemindersController extends BaseHttpController {
             event.end &&
             event.summary
           ) {
-            console.log("", event.creator);
-
             reminders.push({
               startDate: event.start?.dateTime
                 ? new Date(event.start.dateTime)

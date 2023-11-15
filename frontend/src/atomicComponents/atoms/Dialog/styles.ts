@@ -5,6 +5,7 @@ export const StyledInnerWrapper = styled("div")(({ theme }) => ({
   padding: 10,
   height: "100vh",
   borderRadius: "20px",
+  overflowY: "auto",
 
   [theme.breakpoints.up("sm")]: {
     height: "auto",
