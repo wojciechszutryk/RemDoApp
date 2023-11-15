@@ -118,6 +118,9 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Other]: "Inne",
   [TranslationKeys.BackToTodoLists]: "Powrót do list zadań",
   [TranslationKeys.ManageAccess]: "Zarządzaj dostępem",
+  [TranslationKeys.DeleteReminder]: "Usuń przypomnienie",
+  [TranslationKeys.DeleteReminderWarning]:
+    "Gdy usuniesz przypomnienie, nie będzie ono dostępne dla Ciebie i żadnego z innych przypisanych użytkowników. Jeśli zaplanowano powiadomienie dla tego przypomnienia, nie zostanie ono uruchomione po usunięciu. Nie możesz cofnąć tej akcji.",
   [TranslationKeys.GeneralInfo]: "Informacje ogólne",
   [TranslationKeys.GeneralInfoReminderDescription]:
     "Podaj podstawowe informacje o przypomnieniu, m.in. nazwę, zakres dat, zakres",

@@ -76,6 +76,8 @@ export enum TranslationKeys {
   Other = "Other",
   BackToTodoLists = "BackToTodoLists",
   ManageAccess = "ManageAccess",
+  DeleteReminder = "DeleteReminder",
+  DeleteReminderWarning = "DeleteReminderWarning",
   GeneralInfo = "GeneralInfo",
   GeneralInfoReminderDescription = "GeneralInfoReminderDescription",
   ManageAccessReminderDescription = "ManageAccessReminderDescription",

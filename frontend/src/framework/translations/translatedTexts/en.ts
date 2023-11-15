@@ -116,6 +116,9 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.GeneralInfoReminderDescription]:
     "Provide general informations, like name, description, scope and date rande.",
   [TranslationKeys.ManageAccess]: "Manage access",
+  [TranslationKeys.DeleteReminder]: "Delete reminder",
+  [TranslationKeys.DeleteReminderWarning]:
+    "When you delete reminder it won't be available to you and any of other assigned users. If you planned notification for this reminder it won't fire after deletion. You can't undo this action.",
   [TranslationKeys.ManageAccessReminderDescription]:
     "Manage access to reminder. You can share reminder with your collaborants. You can assign them owner or user role. Owner can manage access to reminder.",
   [TranslationKeys.SetNotification]: "Create notification",

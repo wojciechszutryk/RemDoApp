@@ -1,7 +1,10 @@
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EventIcon from "@mui/icons-material/Event";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FlagCircleIcon from "@mui/icons-material/FlagCircle";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import ShareIcon from "@mui/icons-material/Share";
 import {
   AccordionDetails,
   AccordionSummary,
@@ -21,6 +24,7 @@ import { initialTaskDialog } from "framework/dialogs/models/initialState.const";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IReminder } from "linked-models/reminder/reminder.dto";
 import { useCreateReminderMutation } from "pages/RemindersPage/mutations/createReminder/createReminder.mutation";
+import { useDeleteReminderMutation } from "pages/RemindersPage/mutations/deleteReminder/deleteReminder.mutation";
 import { useEditReminderMutation } from "pages/RemindersPage/mutations/editReminder/editReminder.mutation";
 import { memo, useState } from "react";
 import { Control, FormProvider, useForm } from "react-hook-form";
@@ -46,6 +50,7 @@ const ReminderDialog = (): JSX.Element => {
   } = useDialogs();
   const createReminderMutation = useCreateReminderMutation();
   const editReminderMutation = useEditReminderMutation();
+  const deleteReminderMutation = useDeleteReminderMutation();
   const { t } = useTranslation();
   const [open, onClose] = useAppDialogState(visible, () =>
     updateReminderDialog(initialTaskDialog)
@@ -102,6 +107,17 @@ const ReminderDialog = (): JSX.Element => {
     onClose();
   };
 
+  const handleDeleteReminder = () => {
+    if (!!defaultData?.todoListId || !!editReminderData?.todoListId) {
+      deleteReminderMutation.mutate({
+        todoListId: defaultData?.todoListId || editReminderData?.todoListId,
+        taskId: editReminderData?.taskId,
+      });
+
+      onClose();
+    }
+  };
+
   return (
     <Dialog open={open} onClose={onClose}>
       <FormProvider {...methods}>
@@ -113,7 +129,7 @@ const ReminderDialog = (): JSX.Element => {
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Tooltip title={t(TranslationKeys.GeneralInfoReminderDescription)}>
               <div>
-                <HelpOutlineIcon sx={{ marginRight: "3px" }} />
+                <EventIcon sx={{ transform: "translate(-4px, -2px)" }} />
               </div>
             </Tooltip>
             <Typography>{t(TranslationKeys.GeneralInfo)}</Typography>
@@ -176,7 +192,9 @@ const ReminderDialog = (): JSX.Element => {
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Tooltip title={t(TranslationKeys.ScopeDescription)}>
                 <div>
-                  <StyledHelpOutlineIcon />
+                  <StyledHelpOutlineIcon
+                    sx={{ transform: "translate(-5px, -3px)" }}
+                  />
                 </div>
               </Tooltip>
               {t(TranslationKeys.ScopeChoose)}
@@ -194,7 +212,7 @@ const ReminderDialog = (): JSX.Element => {
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Tooltip title={t(TranslationKeys.ManageAccessReminderDescription)}>
               <div>
-                <StyledHelpOutlineIcon />
+                <ShareIcon sx={{ transform: "translate(-5px, -3px)" }} />
               </div>
             </Tooltip>
             {t(TranslationKeys.ManageAccess)}
@@ -227,7 +245,9 @@ const ReminderDialog = (): JSX.Element => {
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Tooltip title={t(TranslationKeys.SetNotificationDescription)}>
               <div>
-                <StyledHelpOutlineIcon />
+                <NotificationsNoneIcon
+                  sx={{ transform: "translate(-3px, -4px)" }}
+                />
               </div>
             </Tooltip>
             {t(TranslationKeys.SetNotification)}
@@ -251,6 +271,36 @@ const ReminderDialog = (): JSX.Element => {
                 }
               />
             </StyledForm>
+          </AccordionDetails>
+        </StyledAccordion>
+
+        <StyledAccordion
+          expanded={expandedAccordion === "delete"}
+          onChange={handleAccordionChange("delete")}
+          disableGutters
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Tooltip title={t(TranslationKeys.ManageAccessReminderDescription)}>
+              <div>
+                <DeleteForeverIcon
+                  sx={{ transform: "translate(-4px, -4px)" }}
+                />
+              </div>
+            </Tooltip>
+            {t(TranslationKeys.DeleteReminder)}
+          </AccordionSummary>
+          <AccordionDetails
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              justifyContent: "center",
+            }}
+          >
+            <Typography>{t(TranslationKeys.DeleteReminderWarning)}</Typography>
+            <Button onClick={handleDeleteReminder}>
+              {t(TranslationKeys.DeleteReminder)}
+            </Button>
           </AccordionDetails>
         </StyledAccordion>
         <Button
