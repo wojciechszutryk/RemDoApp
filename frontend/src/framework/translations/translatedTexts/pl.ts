@@ -126,6 +126,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "Podaj podstawowe informacje o przypomnieniu, m.in. nazwę, zakres dat, zakres",
   [TranslationKeys.ManageAccessReminderDescription]:
     "Zarządzaj dostępem do przypomnienia. Możesz udostępnić przypomnienie wybranej osobie z listy współpracowników. Możesz przypisać jej rolę właściciela lub użytkownika. Właściciel może zarządzać dostępem do przypomnienia",
+  [TranslationKeys.DeleteReminderDescription]:
+    "Usuń przypomnienie. Nie możesz cofnąć tej akcji.",
   [TranslationKeys.SetNotification]: "Ustaw powiadomienie",
   [TranslationKeys.SetNotificationDescription]:
     "Podaj szczegóły kiedy powiadomienie z przypomnieniem powinno zostać wysłane.",

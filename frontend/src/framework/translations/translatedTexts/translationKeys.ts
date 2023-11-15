@@ -81,6 +81,7 @@ export enum TranslationKeys {
   GeneralInfo = "GeneralInfo",
   GeneralInfoReminderDescription = "GeneralInfoReminderDescription",
   ManageAccessReminderDescription = "ManageAccessReminderDescription",
+  DeleteReminderDescription = "DeleteReminderDescription",
   SetNotification = "SetNotification",
   SetNotificationDescription = "SetNotificationDescription",
 

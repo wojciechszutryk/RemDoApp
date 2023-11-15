@@ -3,7 +3,7 @@ import { TranslationKeys } from "framework/translations/translatedTexts/translat
 import { memo } from "react";
 import { useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { IReminderDialog } from "../models/reminderDialog.model";
+import { IReminderDialog } from "../../models/reminderDialog.model";
 
 const DatesInfo = (): JSX.Element => {
   const watch = useWatch<IReminderDialog>();

@@ -121,6 +121,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
     "When you delete reminder it won't be available to you and any of other assigned users. If you planned notification for this reminder it won't fire after deletion. You can't undo this action.",
   [TranslationKeys.ManageAccessReminderDescription]:
     "Manage access to reminder. You can share reminder with your collaborants. You can assign them owner or user role. Owner can manage access to reminder.",
+  [TranslationKeys.DeleteReminderDescription]:
+    "Delete reminder. This action cannot be undone.",
   [TranslationKeys.SetNotification]: "Create notification",
   [TranslationKeys.SetNotificationDescription]:
     "Provide details when notification with reminder should be send.",
