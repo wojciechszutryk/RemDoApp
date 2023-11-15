@@ -82,7 +82,7 @@ export const StyledCallendarWrapper = styled("div", {
       height: 2,
     },
     "& .rbc-event": {
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: theme.palette.primary.main,
     },
     "& .rbc-calendar": {
       position: "relative",
@@ -196,8 +196,15 @@ export const StyledCallendarWrapper = styled("div", {
       "& .rbc-agenda-content": {
         overflow: "scroll",
       },
+      "& .rbc-event-label": {
+        color: theme.palette.primary.contrastText,
+      },
       "& .rbc-off-range-bg": {
         backgroundColor: theme.palette.background.paper,
+      },
+      "& .rbc-selected": {
+        opacity: 0.8,
+        backgroundColor: theme.palette.primary.main,
       },
       "& .rbc-agenda-empty": {
         height: "calc(100vh - 80px)",
