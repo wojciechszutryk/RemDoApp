@@ -196,6 +196,9 @@ export const StyledCallendarWrapper = styled("div", {
       "& .rbc-agenda-content": {
         overflow: "scroll",
       },
+      "& .rbc-off-range-bg": {
+        backgroundColor: theme.palette.background.paper,
+      },
       "& .rbc-agenda-empty": {
         height: "calc(100vh - 80px)",
         display: "flex",
