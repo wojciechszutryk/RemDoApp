@@ -1,3 +1,4 @@
+import { LAST_PAGE_LS_KEY } from "atomicComponents/organisms/Header/helpers/LS.keys.const.helper";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
@@ -20,7 +21,8 @@ export const LoginPanel = ({ defaultEmail }: LoginPanelProps): JSX.Element => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentUser) navigate(Pages.RemindersPage.path);
+    const lastPageFromLS = localStorage.getItem(LAST_PAGE_LS_KEY);
+    if (currentUser) navigate(lastPageFromLS ?? Pages.RemindersPage.path);
   }, [currentUser, navigate]);
 
   return (

@@ -3,11 +3,13 @@ import dayjs, { locale } from "dayjs";
 import events from "events";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { useLocalisation } from "framework/translations/useLocalisation.context";
+import { LAST_CALLENDAR_VIEW_LS_KEY } from "pages/RemindersPage/helpers/LS.keys.const.helper";
 import { useMemo } from "react";
 import {
   dayjsLocalizer,
   DayLayoutAlgorithm,
   Formats,
+  View,
   Views,
 } from "react-big-calendar";
 import { useTranslation } from "react-i18next";
@@ -54,6 +56,8 @@ const useCallendarConfig = () => {
     events: events,
     localizer: localizer,
     culture: language,
+    defaultView:
+      (localStorage.getItem(LAST_CALLENDAR_VIEW_LS_KEY) as View) || Views.WEEK,
     messages: {
       week: t(TranslationKeys.Week),
       work_week: t(TranslationKeys.WorkWeek),
@@ -73,7 +77,6 @@ const useCallendarConfig = () => {
     showMultiDayTimes: true,
     step: 15,
     timeslots: 2,
-    defaultView: Views.WEEK,
     resizable: true,
     selectable: true,
   };
