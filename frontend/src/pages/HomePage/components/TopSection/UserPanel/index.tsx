@@ -5,7 +5,7 @@ import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.hel
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { URL_GOOGLE, URL_USERS } from "linked-models/user/user.urls";
-import { StyledWrapper } from "pages/LoginPage/LoginPanel/styles";
+import { StyledContentWrapper } from "pages/LoginPage/LoginPanel/styles";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ export const UserPanel = (): JSX.Element => {
   const navigate = useNavigate();
 
   return (
-    <StyledWrapper>
+    <StyledContentWrapper>
       <StyledLoginHeader variant={"h5"}>
         {t(TranslationKeys.LoginPanelHeader)}
       </StyledLoginHeader>
@@ -61,6 +61,6 @@ export const UserPanel = (): JSX.Element => {
       >
         {t(TranslationKeys.SignInGoogle)}
       </Button>
-    </StyledWrapper>
+    </StyledContentWrapper>
   );
 };

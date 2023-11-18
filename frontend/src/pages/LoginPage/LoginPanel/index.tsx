@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
-import { StyledWrapper } from "./styles";
+import { StyledContentWrapper, StyledOuterWave, StyledWrapper } from "./styles";
 
 export interface LoginPanelProps {
   defaultEmail?: string;
@@ -27,20 +27,23 @@ export const LoginPanel = ({ defaultEmail }: LoginPanelProps): JSX.Element => {
 
   return (
     <StyledWrapper>
-      <StyledLoginHeader>
-        {t(TranslationKeys.LoginPanelHeader)}
-      </StyledLoginHeader>
-      {isRegistering ? (
-        <RegisterForm
-          setIsRegistering={setIsRegistering}
-          defaultEmail={defaultEmail}
-        />
-      ) : (
-        <LoginForm
-          setIsRegistering={setIsRegistering}
-          defaultEmail={defaultEmail}
-        />
-      )}
+      <StyledOuterWave></StyledOuterWave>
+      <StyledContentWrapper>
+        <StyledLoginHeader variant="h5">
+          {t(TranslationKeys.LoginPanelHeader)}
+        </StyledLoginHeader>
+        {isRegistering ? (
+          <RegisterForm
+            setIsRegistering={setIsRegistering}
+            defaultEmail={defaultEmail}
+          />
+        ) : (
+          <LoginForm
+            setIsRegistering={setIsRegistering}
+            defaultEmail={defaultEmail}
+          />
+        )}
+      </StyledContentWrapper>
     </StyledWrapper>
   );
 };
