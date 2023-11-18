@@ -9,12 +9,12 @@ export const StyledPageBackground = styled(StyledWave, {
     zIndex: 1,
     "&:before": {
       transition: "bottom 0.5s ease-in-out",
-      bottom: contentVisible ? "15%" : "150%",
+      bottom: contentVisible ? "5%" : "150%",
     },
 
     "&:after": {
       transition: "bottom 0.5s ease-in-out",
-      bottom: contentVisible ? "12%" : "150%",
+      bottom: contentVisible ? "2%" : "150%",
     },
   })
 );

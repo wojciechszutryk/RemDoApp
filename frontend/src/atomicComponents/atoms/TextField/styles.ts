@@ -6,10 +6,11 @@ export const StyledTextField = styled(TextField, {
 })<{ disabled?: boolean }>(({ theme, disabled }) => ({
   width: "100%",
   height: "54px",
-  // backgroundColor: theme.palette.secondary.main,
   boxShadow: `inset 0px 3px 4px ${theme.palette.primary.light}`,
   borderRadius: theme.spacing(3),
   color: theme.palette.primary.contrastText,
+
+  "& .MuiInputBase-root": { paddingRight: 0 },
 
   "& fieldset": {
     border: "none",
@@ -18,6 +19,11 @@ export const StyledTextField = styled(TextField, {
   "& input, & textarea": {
     zIndex: 2,
     color: theme.palette.primary.contrastText,
+  },
+
+  "& input:autofill, & input:-webkit-autofill": {
+    width: "calc(100% + 14px)",
+    borderRadius: theme.spacing(3),
   },
 
   ...(disabled && {
