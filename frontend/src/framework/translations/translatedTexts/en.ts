@@ -1,19 +1,20 @@
 import { TranslationKeys } from "./translationKeys";
 
 export const enTranslation: Record<TranslationKeys, string> = {
-  [TranslationKeys.PageTitleMain]: "TodoList",
+  [TranslationKeys.PageTitleMain]: "RemDo",
   [TranslationKeys.FieldRequired]: "* Required",
 
   [TranslationKeys.NoAccess]: "You are not allowed to access this resources.",
 
   [TranslationKeys.PageTitleHome]: "Home",
-  [TranslationKeys.WelcomeTextHeader]: "TodoList",
+  [TranslationKeys.PageTitleSignIn]: "Sign in",
+  [TranslationKeys.PageTitleSignUp]: "Sign up",
   [TranslationKeys.WelcomeTextDescription]:
     "Welcome to our Todo/Reminder application! With our app, you can easily stay on top of your daily tasks and never forget an important appointment again. Our user-friendly interface and customizable features make it easy to create, organize, and prioritize your to-do lists and reminders. Get started today and take control of your busy schedule!",
   [TranslationKeys.LoginPanelSeparatorText]: "or",
   [TranslationKeys.GoToFeaturesButtonText]: "Explore features",
   [TranslationKeys.LoginPanelHeader]: "Sign in or Sign up",
-  [TranslationKeys.SignInGoogle]: "With google:",
+  [TranslationKeys.SignInGoogle]: "Google",
   [TranslationKeys.IntegrateWithGoogleDesc]:
     "To integrate with google you need to use same email as you current application email. If you use different new account will be created. After clicking button you will be redirected to google login page. After successful login you will be redirected back to our app.",
   [TranslationKeys.UserIntegratedWithGoogle]:

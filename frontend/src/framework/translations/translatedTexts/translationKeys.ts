@@ -3,9 +3,10 @@ export enum TranslationKeys {
   FieldRequired = "FieldRequired",
 
   PageTitleHome = "PageTitleHome",
+  PageTitleSignIn = "PageTitleSignIn",
+  PageTitleSignUp = "PageTitleSignUp",
   NoAccess = "NoAccess",
 
-  WelcomeTextHeader = "WelcomeTextHeader",
   WelcomeTextDescription = "WelcomeTextDescription",
   LoginPanelSeparatorText = "LoginPanelSeparatorText",
   GoToFeaturesButtonText = "GoToFeaturesButtonText",

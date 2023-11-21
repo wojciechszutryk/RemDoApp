@@ -1,19 +1,20 @@
 import { TranslationKeys } from "./translationKeys";
 
 export const plTranslation: Record<TranslationKeys, string> = {
-  [TranslationKeys.PageTitleMain]: "TodoList",
+  [TranslationKeys.PageTitleMain]: "RemDo",
   [TranslationKeys.FieldRequired]: "* Wymagane",
 
   [TranslationKeys.NoAccess]: "Nie posiadasz wymaganych uprawnień.",
 
   [TranslationKeys.PageTitleHome]: "Główna",
-  [TranslationKeys.WelcomeTextHeader]: "TodoList",
+  [TranslationKeys.PageTitleSignIn]: "Logowanie",
+  [TranslationKeys.PageTitleSignUp]: "Rejestracja",
   [TranslationKeys.WelcomeTextDescription]:
     "Witamy w naszej aplikacji Todo/Reminder! Dzięki naszej aplikacji możesz z łatwością być na bieżąco z codziennymi zadaniami i nigdy więcej nie zapomnieć o ważnym spotkaniu. Nasz przyjazny dla użytkownika interfejs i konfigurowalne funkcje ułatwiają tworzenie, organizowanie i ustalanie priorytetów list rzeczy do zrobienia i przypomnień. Zacznij już dziś i przejmij kontrolę nad swoim napiętym harmonogramem!",
   [TranslationKeys.LoginPanelSeparatorText]: "lub",
   [TranslationKeys.GoToFeaturesButtonText]: "Poznaj funkcje",
   [TranslationKeys.LoginPanelHeader]: "Zaloguj się lub zarejestruj",
-  [TranslationKeys.SignInGoogle]: "Za pomocą google",
+  [TranslationKeys.SignInGoogle]: "Google",
   [TranslationKeys.IntegrateWithGoogleDesc]:
     "Aby zintegrować się z google, musisz użyć tego samego adresu e-mail, co w aktualnym koncie. Jeśli używasz innego, zostanie utworzone nowe konto w serwisie. Po kliknięciu przycisku zostaniesz przekierowany na stronę logowania google. Po pomyślnym zalogowaniu zostaniesz przekierowany z powrotem do naszej aplikacji.",
   [TranslationKeys.UserIntegratedWithGoogle]:
