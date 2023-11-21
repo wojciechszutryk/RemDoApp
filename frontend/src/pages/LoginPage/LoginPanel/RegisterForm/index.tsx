@@ -8,25 +8,22 @@ import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { useLocalisation } from "framework/translations/useLocalisation.context";
 import { IRegisterUserDTO } from "linked-models/user/user.dto";
-import { Dispatch, memo, SetStateAction } from "react";
+import { memo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { LoginPanelProps } from "..";
-import { StyledForm } from "../styles";
+import GoogleButton from "../GoogleButton";
+import { LoginFormProps } from "../LoginForm";
+import { StyledForm, StyledGruppedButtons } from "../styles";
 
 interface IRegisterFormValues extends IRegisterUserDTO {
   passwordRepeat: string;
 }
 
-interface Props extends LoginPanelProps {
-  setIsRegistering: Dispatch<SetStateAction<boolean>>;
-}
-
 const RegisterContent = ({
   setIsRegistering,
   defaultEmail,
-}: Props): JSX.Element => {
+}: LoginFormProps): JSX.Element => {
   const { t } = useTranslation();
   const { language } = useLocalisation();
   const { setSnackbar } = useSnackbar();
@@ -124,13 +121,16 @@ const RegisterContent = ({
         {registerUserMutation.isLoading && <CircularProgress size={"20px"} />}
         {t(TranslationKeys.RegisterButtonText)}
       </Button>
-      <Button
-        onClick={() => {
-          setIsRegistering(false);
-        }}
-      >
-        {t(TranslationKeys.LoginButtonText)}
-      </Button>
+      <StyledGruppedButtons>
+        <GoogleButton />
+        <Button
+          onClick={() => {
+            setIsRegistering(false);
+          }}
+        >
+          {t(TranslationKeys.LoginButtonText)}
+        </Button>
+      </StyledGruppedButtons>
     </StyledForm>
   );
 };
