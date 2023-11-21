@@ -89,7 +89,9 @@ export class RemindersController extends BaseHttpController {
                 : new Date(),
               text: event.summary,
               name: event.description || "",
-              creator: event.creator?.self ? currentUser : event.creator,
+              creator: event.creator?.self
+                ? currentUser
+                : (event.creator as any),
               whenCreated: event.created ? new Date(event.created) : new Date(),
               whenUpdated: event.updated ? new Date(event.updated) : new Date(),
               todoListId: `google-${index}`,
