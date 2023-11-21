@@ -1,7 +1,7 @@
 import { Separator } from "atomicComponents/atoms/Separator";
 import { motion } from "framer-motion";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { memo, useLayoutEffect } from "react";
+import { memo, useLayoutEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   FadeINLeftProps,
@@ -29,6 +29,13 @@ import ThemeImgAlt from "./utils/ThemeImgAlt";
 
 const HomePage = (): JSX.Element => {
   const { t } = useTranslation();
+  //sections refs
+  const featuresRef = useRef<HTMLDivElement>(null);
+  const collaborationRef = useRef<HTMLDivElement>(null);
+  const googleRef = useRef<HTMLDivElement>(null);
+  const notificationsRef = useRef<HTMLDivElement>(null);
+  const interfaceRef = useRef<HTMLDivElement>(null);
+  const personalizationRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const title = `${t(TranslationKeys.PageTitleMain)} - ${t(
@@ -37,12 +44,18 @@ const HomePage = (): JSX.Element => {
     document.title = title;
   });
 
+  const handleScroll = (ref: React.RefObject<HTMLDivElement>) => () => {
+    ref.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  };
+
   return (
     <StyledHomePageWrapper>
       <section>
-        <TopSection />
+        <TopSection handleScrollToFeatures={handleScroll(featuresRef)} />
       </section>
-      <StyledFeaturesSection>
+      <StyledFeaturesSection ref={featuresRef}>
         <motion.h2 {...FadeInProps}>Features</motion.h2>
         <ul>
           <li>
@@ -51,7 +64,8 @@ const HomePage = (): JSX.Element => {
             </motion.div>
             <motion.p {...FadeINRightProps}>
               collaboration with other users to create notes, todo lists and
-              reminders <span>more</span>
+              reminders{" "}
+              <span onClick={handleScroll(collaborationRef)}>more</span>
             </motion.p>
           </li>
           <li>
@@ -62,7 +76,7 @@ const HomePage = (): JSX.Element => {
               {
                 "integration with Google to authenticate and import/export user's data from Google Callendar "
               }
-              <span>more</span>
+              <span onClick={handleScroll(googleRef)}>more</span>
             </motion.p>
           </li>
           <li>
@@ -71,7 +85,8 @@ const HomePage = (): JSX.Element => {
             </motion.div>
             <motion.p {...FadeINRightProps}>
               personalized notifications including real time-and push
-              notifications <span>more</span>
+              notifications{" "}
+              <span onClick={handleScroll(notificationsRef)}>more</span>
             </motion.p>
           </li>
           <li>
@@ -80,7 +95,7 @@ const HomePage = (): JSX.Element => {
             </motion.div>
             <motion.p {...FadeINLeftProps}>
               innovative interface based on animations and gestures{" "}
-              <span>more</span>
+              <span onClick={handleScroll(interfaceRef)}>more</span>
             </motion.p>
           </li>
           <li>
@@ -90,12 +105,13 @@ const HomePage = (): JSX.Element => {
 
             <motion.p {...FadeINRightProps}>
               high customization of interface, support of different themes and
-              languages <span>more</span>
+              languages{" "}
+              <span onClick={handleScroll(personalizationRef)}>more</span>
             </motion.p>
           </li>
         </ul>
       </StyledFeaturesSection>
-      <StyledDetaildeSection>
+      <StyledDetaildeSection ref={collaborationRef}>
         <motion.h3 {...FadeInProps}>Collaborations</motion.h3>
         <motion.div {...FadeInTopProps}>
           <CollaborationImgAlt />
@@ -117,7 +133,7 @@ const HomePage = (): JSX.Element => {
           collective task management.
         </motion.p>
       </StyledDetaildeSection>
-      <StyledDetaildeSection>
+      <StyledDetaildeSection ref={googleRef}>
         <motion.h3 {...FadeInProps}>Google Integration</motion.h3>
         <motion.div {...FadeInTopProps}>
           <GoogleIntegrationImgAlt />
@@ -138,7 +154,7 @@ const HomePage = (): JSX.Element => {
           collaboration and data consistency across platforms.
         </motion.p>
       </StyledDetaildeSection>
-      <StyledDetaildeSection>
+      <StyledDetaildeSection ref={notificationsRef}>
         <motion.h3 {...FadeInProps}>Notifications</motion.h3>
         <motion.div {...FadeInTopProps}>
           <NotificationsImgAlt />
@@ -160,7 +176,7 @@ const HomePage = (): JSX.Element => {
           notification system.
         </motion.p>
       </StyledDetaildeSection>
-      <StyledDetaildeSection>
+      <StyledDetaildeSection ref={interfaceRef}>
         <motion.h3 {...FadeInProps}>Interface</motion.h3>
         <motion.div {...FadeInTopProps}>
           <GesturesImgAlt />
@@ -181,7 +197,7 @@ const HomePage = (): JSX.Element => {
           enhancing engagement and making interactions more visually appealing.
         </motion.p>
       </StyledDetaildeSection>
-      <StyledDetaildeSection>
+      <StyledDetaildeSection ref={personalizationRef}>
         <motion.h3 {...FadeInProps}>Personalization</motion.h3>
         <motion.div {...FadeInTopProps}>
           <ThemeImgAlt />

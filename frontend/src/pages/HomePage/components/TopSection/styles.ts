@@ -1,12 +1,15 @@
 import { styled, Typography } from "@mui/material";
+import { Button } from "atomicComponents/atoms/Button";
 
-export const StyledTopSection = styled("div")(({ theme }) => ({
+export const StyledTopSection = styled("div", {
+  shouldForwardProp: (prop) => prop !== "noGap",
+})<{ noGap: boolean }>(({ theme, noGap }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
   minHeight: "80vh",
-  gap: "20px",
+  gap: noGap ? "unset" : "20px",
   textAlign: "center",
   padding: "58px 16px 60px 16px",
 
@@ -18,12 +21,12 @@ export const StyledTopSection = styled("div")(({ theme }) => ({
     padding: "58px 64px 60px 64px",
     flexDirection: "row",
     alignItems: "flex-start",
-    gap: "100px",
+    gap: noGap ? "unset" : "100px",
   },
 
   [theme.breakpoints.up("lg")]: {
-    padding: "90px 128px 60px 128px",
-    gap: "200px",
+    padding: "58px 128px 60px 128px",
+    gap: noGap ? "unset" : "200px",
   },
 }));
 
@@ -32,4 +35,32 @@ export const StyledLoginHeader = styled(Typography)(({ theme }) => ({
     theme.palette.mode === "light"
       ? theme.palette.secondary.contrastText
       : theme.palette.primary.contrastText,
+}));
+
+export const StyledIntroWrapper = styled("div")(({ theme }) => ({
+  zIndex: 3,
+  color: theme.palette.primary.contrastText,
+  "& > svg": {
+    transform: "scale(1.7)",
+    "& path": {
+      fill: theme.palette.primary.contrastText,
+    },
+  },
+}));
+
+export const StyledDescription = styled("p")(({ theme }) => ({
+  fontSize: 16,
+  marginTop: 32,
+  lineHeight: 1.5,
+  [theme.breakpoints.up("xl")]: {
+    fontSize: 24,
+  },
+}));
+
+export const StyledButton = styled(Button)(({ theme }) => ({
+  margin: "32px auto",
+  width: "100%",
+  [theme.breakpoints.up("md")]: {
+    width: 300,
+  },
 }));

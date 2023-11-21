@@ -65,12 +65,16 @@ export const StyledHomePageWrapper = styled("div")(({ theme }) => ({
   width: "100%",
   overflowY: "scroll",
   "& > section": {
-    minHeight: "100vh",
+    minHeight: "calc(100vh - 50px)",
     scrollSnapAlign: "start",
     scrollSnapStop: "always",
     padding: "50px 20px",
     [theme.breakpoints.up("md")]: {
       padding: "50px 100px",
+    },
+    "@media(min-height: 900px)": {
+      paddingTop: 200,
+      minHeight: "calc(100vh - 250px)",
     },
   },
 }));
@@ -90,6 +94,7 @@ export const StyledDetaildeSection = styled("section")(({ theme }) => ({
   },
   "& > div:nth-of-type(2)": {
     width: "100%",
+    maxWidth: 1000,
   },
   "& > div > svg": {
     width: 300,
@@ -101,5 +106,6 @@ export const StyledDetaildeSection = styled("section")(({ theme }) => ({
   },
   "& > p": {
     lineHeight: 1.5,
+    maxWidth: 1000,
   },
 }));
