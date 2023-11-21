@@ -5,12 +5,36 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.FieldRequired]: "* Wymagane",
 
   [TranslationKeys.NoAccess]: "Nie posiadasz wymaganych uprawnień.",
+  [TranslationKeys.Features]: "Funkcje",
+  [TranslationKeys.Collaborations]: "Współpraca",
+  [TranslationKeys.CollaborationsDescShort]:
+    "współpracuj z innymi użytkownikami w celu tworzenia notatek, list zadań i przypomnień",
+  [TranslationKeys.CollaborationsDescLong]:
+    "Użytkownicy mają możliwość zapraszania innych do współpracy przy tworzeniu wspólnych zasobów. Ta funkcja wspiera pracę zespołową, umożliwiając użytkownikom wysyłanie zaproszeń do współpracy z członkami rodziny, przyjaciółmi czy partnerami projektowymi. W ramach współpracy użytkownicy mogą nie tylko tworzyć obszerne listy zadań i przypomnienia, ale także łatwo dzielić się tymi zasobami ze współpracownikami. Ta funkcjonalność ułatwia koordynację, zapewniając, że wszyscy współpracownicy mają dostęp do tych samych zadań i będą świadomi upływających terminów. Dodatkowo, użytkownicy mogą zarządzać swoimi współpracami oraz uprawnieniami do zasobów, co zapewnia dostosowane i bezpieczne środowisko do notatek i przypomnień",
+  [TranslationKeys.GoogleIntegrationDescShort]:
+    "integracja z Google w celu uwierzytelniania i importu/eksportu wydarzeń z kalendarza Google",
+  [TranslationKeys.GoogleIntegrationDescLong]:
+    "Użytkownicy mogą zoptymalizować swoje doświadczenie, korzystając z uwierzytelniania Google dla bezproblemowego procesu logowania i rejestracji. Integracja ta obejmuje synchronizację kalendarza Google, umożliwiając użytkownikom automatyczne importowanie i eksportowanie danych między RemDo a kalendarzem Google. W rezultacie zasoby utworzone w interfejsie kalendarza Google stają się łatwo dostępne w RemDo, tworząc jednolite doświadczenie użytkownika. Ponadto integracja ta działa dwukierunkowo, zapewniając, że zmiany dokonane w RemDo są odzwierciedlane w kalendarzu Google i vice versa, ułatwiając współpracę w czasie rzeczywistym i spójność danych między platformami.",
+  [TranslationKeys.NotificationsDescShort]:
+    "spersonalizowane powiadomienia, w tym powiadomienia czasu rzeczywistego i push",
+  [TranslationKeys.NotificationsDescLong]:
+    "Użytkownicy mają elastyczność w kontekście ustawiania powiadomień przed lub po dacie rozpoczęcia lub zakończenia zadania lub przypomnienia, zapewniając przejrzystość co do daty jego wysłania. Powiadomienia mogą pojawiać się w czasie rzeczywistym w interfejsie użytkownika lub jako powiadomienia push, docierając do użytkowników nawet wtedy, gdy nie korzystają aktywnie z aplikacji. Aby skutecznie zarządzać tymi alertami, użytkownicy mają dedykowany panel, gdzie mogą archiwizować lub usuwać powiadomienia zgodnie z własnymi preferencjami. Dodatkowo, w menu ustawień użytkownika, osoby mogą dostosowywać swoje doświadczenie, personalizując rodzaje powiadomień, jakie chcą otrzymywać, co zapewnia pełny i niezawodny system powiadomień.",
+  [TranslationKeys.Interface]: "Interfejs",
+  [TranslationKeys.InterfaceDescShort]:
+    "innowacyjny interfejs oparty na animacjach i gestach",
+  [TranslationKeys.InterfaceDescLong]:
+    "Aplikacja internetowa RemDo wprowadza innowacyjny design oparty na animacjach i gestach. Charakteryzujący się minimalistycznym podejściem interfejs celowo wyświetla tylko istotne informacje, oferując czyste i skoncentrowane doświadczenie użytkownika. Interakcje są sprytnie ukryte za intuicyjnymi gestami, takimi jak przesuwanie i przełączanie, co zapewnia użytkownikom płynne i efektywne doświadczenie nawigacyjne. Interfejs nie tylko jest minimalistyczny, ale także responsywny, dostosowujący się dynamicznie do różnych rozmiarów ekranów i urządzeń. Podnosząc ogólne doświadczenie użytkownika, w interfejsie zintegrowano mnóstwo animacji, poprawiając zaangażowanie i czyniąc interakcje bardziej atrakcyjnymi wizualnie.",
+  [TranslationKeys.Personalization]: "Personalizacja",
+  [TranslationKeys.PersonalizationDescShort]:
+    "wysoka personalizacja interfejsu, obsługa różnych motywów i języków",
+  [TranslationKeys.PersonalizationDescLong]:
+    "Aplikacja internetowa RemDo zapewnia użytkownikom wysoki stopień dostosowania ich interfejsu. Użytkownicy mają elastyczność przełączania się między różnymi motywami i językami, dostosowując swoje doświadczenie do indywidualnych preferencji. Poza aspektami estetycznymi, personalizacja obejmuje także profil użytkownika, umożliwiając jednostkom dodanie osobistego akcentu, takiego jak zdjęcie profilowe czy niestandardowa nazwa wyświetlana. Ponadto użytkownicy mogą precyzyjnie dostosować swoje preferencje dotyczące powiadomień, wybierając dokładnie, jakie alerty chcą otrzymywać, zapewniając spersonalizowane i uporządkowane doświadczenie komunikacyjne w ramach aplikacji. Ta kompleksowa funkcja personalizacji podnosi zaangażowanie i satysfakcję użytkownika.",
 
   [TranslationKeys.PageTitleHome]: "Główna",
   [TranslationKeys.PageTitleSignIn]: "Logowanie",
   [TranslationKeys.PageTitleSignUp]: "Rejestracja",
   [TranslationKeys.WelcomeTextDescription]:
-    "Witamy w naszej aplikacji Todo/Reminder! Dzięki naszej aplikacji możesz z łatwością być na bieżąco z codziennymi zadaniami i nigdy więcej nie zapomnieć o ważnym spotkaniu. Nasz przyjazny dla użytkownika interfejs i konfigurowalne funkcje ułatwiają tworzenie, organizowanie i ustalanie priorytetów list rzeczy do zrobienia i przypomnień. Zacznij już dziś i przejmij kontrolę nad swoim napiętym harmonogramem!",
+    "Witamy w RemDo! Dzięki naszej aplikacji możesz z łatwością być na bieżąco z codziennymi zadaniami i nigdy więcej nie zapomnieć o ważnym spotkaniu. Nasz przyjazny dla użytkownika interfejs i konfigurowalne funkcje ułatwiają tworzenie, organizowanie i ustalanie priorytetów list rzeczy do zrobienia i przypomnień. Zacznij już dziś i przejmij kontrolę nad swoim napiętym harmonogramem!",
   [TranslationKeys.LoginPanelSeparatorText]: "lub",
   [TranslationKeys.GoToFeaturesButtonText]: "Poznaj funkcje",
   [TranslationKeys.LoginPanelHeader]: "Zaloguj się lub zarejestruj",
