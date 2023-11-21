@@ -44,6 +44,10 @@ export const StyledButton = styled(Button, {
     ...(disabled
       ? {
           cursor: "default",
+
+          ":hover": {
+            backgroundColor: theme.palette.primary.main,
+          },
         }
       : {
           ...(AnimatedWaveAltStyles(theme, noBorder, disabled) as {}),

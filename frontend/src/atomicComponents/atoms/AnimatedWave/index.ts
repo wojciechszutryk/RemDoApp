@@ -30,13 +30,13 @@ export const StyledWave = styled("div")(({ theme }) => ({
   },
 
   "&:before": {
-    bottom: "15%",
+    bottom: "5%",
     borderRadius: "45%",
     animationDuration: "10s",
   },
 
   "&:after": {
-    bottom: "12%",
+    bottom: "2%",
     opacity: ".5",
     borderRadius: "47%",
     animationDuration: "10s",

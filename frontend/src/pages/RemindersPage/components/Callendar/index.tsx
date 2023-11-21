@@ -1,6 +1,6 @@
 import dayjs, { Ls } from "dayjs";
 import useCheckLoader from "hooks/useCheckLoader";
-import useOnEventResize from "pages/RemindersPage/components/Callendar/hooks/useOnEventResize";
+import useEventRangeChange from "pages/RemindersPage/components/Callendar/hooks/useEventRangeChange";
 import { CalendarAnimation } from "pages/RemindersPage/helpers/enums";
 import { ICallendarEvent } from "pages/RemindersPage/helpers/models";
 import { useGetUserRemindersForDateRange } from "pages/RemindersPage/queries/getUserRemindersForDateRange.query";
@@ -13,7 +13,6 @@ import CallendarLoader from "../CallendarLoader";
 import CollapsableReminder from "../CollapsableReminder";
 import CallendarEvent from "./components/CalendarEvent";
 import useCallendarConfig from "./hooks/useCallendarConfig";
-import useOnEventDrop from "./hooks/useOnEventDrop";
 import useOnNavigate from "./hooks/useOnNavigate";
 import useOnRangeChange from "./hooks/useOnRangeChange";
 import useOnSelectEvent from "./hooks/useOnSelectEvent";
@@ -38,10 +37,9 @@ const BigCallendar = (): JSX.Element => {
   const isLoading = useCheckLoader(getUserRemindersForDateRange.isLoading);
 
   const propsConfig = useCallendarConfig();
-  const onEventResize = useOnEventResize();
+  const onEventRangeChange = useEventRangeChange();
   const onSelectEvent = useOnSelectEvent();
   const onSelectSlot = useOnSelectSlot();
-  const onEventDrop = useOnEventDrop();
   const onNavigate = useOnNavigate(setContentAnimation);
   const onView = useOnView(setContentAnimation);
   const onRangeChange = useOnRangeChange(dateRange, setDateRange);
@@ -63,7 +61,10 @@ const BigCallendar = (): JSX.Element => {
   }, [getUserRemindersForDateRange.data]);
 
   return (
-    <StyledCallendarWrapper contentAnimation={contentAnimation}>
+    <StyledCallendarWrapper
+      contentAnimation={contentAnimation}
+      isLoading={isLoading}
+    >
       {!!isLoading && <CallendarLoader />}
       <DnDCalendar
         {...propsConfig}
@@ -96,8 +97,8 @@ const BigCallendar = (): JSX.Element => {
         onRangeChange={onRangeChange}
         onSelectEvent={onSelectEvent}
         onSelectSlot={onSelectSlot}
-        onEventDrop={onEventDrop}
-        onEventResize={onEventResize}
+        onEventDrop={onEventRangeChange}
+        onEventResize={onEventRangeChange}
       />
     </StyledCallendarWrapper>
   );

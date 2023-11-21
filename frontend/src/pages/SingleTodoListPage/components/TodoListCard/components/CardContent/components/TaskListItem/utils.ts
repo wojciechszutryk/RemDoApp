@@ -1,7 +1,8 @@
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
+import { TFunction } from "i18next";
 
 export const dateDiffText = (
-  t: (key: TranslationKeys) => string,
+  t: TFunction<"translation", undefined>,
   date: Date
 ) => {
   const timeNow = new Date().getTime();

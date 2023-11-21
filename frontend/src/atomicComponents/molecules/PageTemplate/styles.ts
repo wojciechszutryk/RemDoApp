@@ -7,14 +7,18 @@ export const StyledPageBackground = styled(StyledWave, {
   ({ contentVisible, imageUrl }) => ({
     backgroundImage: `url(${imageUrl})`,
     zIndex: 1,
+    "& > div:nth-of-type(2)": {
+      transition: "opacity 0.2s ease-in-out",
+      opacity: contentVisible ? 1 : 0,
+    },
     "&:before": {
       transition: "bottom 0.5s ease-in-out",
-      bottom: contentVisible ? "15%" : "150%",
+      bottom: contentVisible ? "5%" : "150%",
     },
 
     "&:after": {
       transition: "bottom 0.5s ease-in-out",
-      bottom: contentVisible ? "12%" : "150%",
+      bottom: contentVisible ? "2%" : "150%",
     },
   })
 );
@@ -31,7 +35,7 @@ export const StyledPageContentWrapper = styled("div", {
   height: "calc(100% - 60px)",
   overflow: "auto",
   position: "absolute",
-  // visibility: contentHidden ? "hidden" : "visible",
+  visibility: contentHidden ? "hidden" : "visible",
   opacity: contentHidden ? 0 : 1,
   transition: "opacity 0.2s ease-in-out",
   zIndex: 1302,

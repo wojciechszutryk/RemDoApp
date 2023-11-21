@@ -9,7 +9,7 @@ export const darkTheme = {
     light: "#928490",
     main: "#928490",
     dark: "#c2b6b9",
-    contrastText: "#F3E8EB",
+    contrastText: "#DBC1AD",
   },
   background: {
     paper: "#322f35",

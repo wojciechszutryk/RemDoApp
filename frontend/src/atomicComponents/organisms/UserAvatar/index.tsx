@@ -10,7 +10,7 @@ interface Props {
 }
 
 const UserAvatar = ({
-  userData: { displayName, avatarUrl },
+  userData: { displayName, email, avatarUrl },
   avatarProps,
   altBackground,
 }: Props): JSX.Element => {
@@ -25,7 +25,7 @@ const UserAvatar = ({
           : undefined,
       }}
     >
-      {displayName[0].toUpperCase()}
+      {displayName ? displayName[0].toUpperCase() : email[0].toUpperCase()}
     </Avatar>
   );
 };

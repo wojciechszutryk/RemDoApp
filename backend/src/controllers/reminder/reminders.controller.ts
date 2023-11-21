@@ -70,7 +70,12 @@ export class RemindersController extends BaseHttpController {
 
       if (googleEvents && googleEvents.length > 0) {
         googleEvents.forEach((event, index) => {
-          if (!reminders.find((reminder) => reminder.taskId === event.id)) {
+          if (
+            !reminders.find((reminder) => reminder.taskId === event.id) &&
+            event.start &&
+            event.end &&
+            event.summary
+          ) {
             reminders.push({
               startDate: event.start?.dateTime
                 ? new Date(event.start.dateTime)
@@ -82,9 +87,9 @@ export class RemindersController extends BaseHttpController {
                 : event.end?.date
                 ? new Date(event.end.date)
                 : new Date(),
-              text: event.summary || event.description || "Google Event",
-              name: event.description || event.summary || "Google Event",
-              creator: currentUser,
+              text: event.summary,
+              name: event.description || "",
+              creator: event.creator?.self ? currentUser : event.creator,
               whenCreated: event.created ? new Date(event.created) : new Date(),
               whenUpdated: event.updated ? new Date(event.updated) : new Date(),
               todoListId: `google-${index}`,

@@ -5,7 +5,7 @@ import { Button } from "atomicComponents/atoms/Button";
 export const StyledHeaderBottomAnimation = styled(StyledWave)(({ theme }) => ({
   opacity: 1,
   transform: "scaleY(0.15)",
-  bottom: "54vh",
+  bottom: "55vh",
   backgroundColor: "transparent",
   "&::before": {
     backgroundColor: theme.palette.secondary.main,

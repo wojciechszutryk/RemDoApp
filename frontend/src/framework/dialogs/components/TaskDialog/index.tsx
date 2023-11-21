@@ -44,7 +44,7 @@ const TaskDialog = (): JSX.Element => {
 
   const defaultFormValues = {
     text: editTaskData?.text || "",
-    startDate: editTaskData?.startDate || null,
+    startDate: editTaskData?.startDate || new Date(),
     finishDate: editTaskData?.finishDate || null,
     minsAccordingToTimePoint:
       defaultSelectsValues?.minsAccordingToTimePoint || 15,

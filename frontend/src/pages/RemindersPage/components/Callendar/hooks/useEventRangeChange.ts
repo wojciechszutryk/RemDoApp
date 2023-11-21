@@ -2,10 +2,10 @@ import { withDragAndDropProps } from "react-big-calendar/lib/addons/dragAndDrop"
 import { ICallendarEvent } from "../../../helpers/models";
 import { useEditReminderMutation } from "../../../mutations/editReminder/editReminder.mutation";
 
-const useOnEventResize = () => {
+const useEventRangeChange = () => {
   const editReminderMutation = useEditReminderMutation();
 
-  const onEventResize: withDragAndDropProps<ICallendarEvent>["onEventResize"] =
+  const onEventRangeChange: withDragAndDropProps<ICallendarEvent>["onEventResize"] =
     (data) => {
       const {
         start,
@@ -23,7 +23,7 @@ const useOnEventResize = () => {
       });
     };
 
-  return onEventResize;
+  return onEventRangeChange;
 };
 
-export default useOnEventResize;
+export default useEventRangeChange;

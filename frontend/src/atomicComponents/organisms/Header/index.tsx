@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import LogoButton from "./components/LogoButton";
 import NotificationsMenu from "./components/NotificationsMenu";
 import SettingsMenu from "./components/SettingsMenu";
+import { LAST_PAGE_LS_KEY } from "./helpers/LS.keys.const.helper";
 import {
   StyledHeaderBottomAnimation,
   StyledHeaderButton,
@@ -24,13 +25,18 @@ export const Header = (): JSX.Element => {
   const currentPagePath = location.pathname.split("/")[1];
   const isMobile = useMediaQuery("(max-width:600px)");
 
+  const handleNavigate = (path: string) => () => {
+    localStorage.setItem(LAST_PAGE_LS_KEY, path);
+    navigate(path);
+  };
+
   return (
     <StyledHeaderWrapper>
       <StyledHeaderContentWrapper>
         {currentUser ? (
           <>
             <StyledHeaderButton
-              onClick={() => navigate(Pages.RemindersPage.path)}
+              onClick={handleNavigate(Pages.RemindersPage.path)}
               disabled={
                 currentPagePath === Pages.RemindersPage.path.substring(1)
               }
@@ -41,7 +47,7 @@ export const Header = (): JSX.Element => {
             <LogoButton />
             <NotificationsMenu />
             <StyledHeaderButton
-              onClick={() => navigate(Pages.TodoListsPage.path)}
+              onClick={handleNavigate(Pages.TodoListsPage.path)}
               disabled={
                 currentPagePath === Pages.TodoListsPage.path.substring(1)
               }
@@ -57,7 +63,7 @@ export const Header = (): JSX.Element => {
           <>
             <LogoButton />
             <StyledHeaderButton
-              onClick={() => navigate(Pages.LoginPage.path)}
+              onClick={handleNavigate(Pages.LoginPage.path)}
               disabled={currentPagePath === Pages.LoginPage.path.substring(1)}
             >
               {`${t(TranslationKeys.LoginButtonText)} / ${t(

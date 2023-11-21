@@ -1,6 +1,7 @@
 import FlagCircleIcon from "@mui/icons-material/FlagCircle";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { List, ListItem, ListItemText } from "@mui/material";
+import UserAvatar from "atomicComponents/organisms/UserAvatar";
 import ExtendableUserAvatar from "atomicComponents/organisms/UserAvatar/ExtendableUserAvatar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
@@ -55,10 +56,14 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
       {task.creator && (
         <ListItem>
           <StyledListItemIcon>
-            <ExtendableUserAvatar userData={task.creator} />
+            {task.creator.displayName ? (
+              <ExtendableUserAvatar userData={task.creator} />
+            ) : (
+              <UserAvatar userData={task.creator} />
+            )}
           </StyledListItemIcon>
           <ListItemText
-            primary={task.creator.displayName}
+            primary={task.creator?.displayName || task.creator?.email}
             secondary={t(TranslationKeys.Creator)}
           />
         </ListItem>

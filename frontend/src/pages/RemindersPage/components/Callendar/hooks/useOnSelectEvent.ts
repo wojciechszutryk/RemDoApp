@@ -1,5 +1,5 @@
 import { useDialogs } from "framework/dialogs";
-import { ICallendarEvent } from "pages/RemindersPage/helpers/models";
+import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import { useCallback } from "react";
 
 const useOnSelectEvent = () => {
@@ -7,7 +7,7 @@ const useOnSelectEvent = () => {
     dialogsActions: { updateReminderDialog },
   } = useDialogs();
   return useCallback(
-    (event: ICallendarEvent) => {
+    (event: IReminderAttached) => {
       updateReminderDialog({
         visible: true,
         editReminderData: { ...event },
