@@ -36,17 +36,6 @@ export const StyledContentWrapper = styled("div")(({ theme }) => ({
     minHeight: "fit-content",
     animation: "borderWave 5s ease-in-out infinite",
   },
-  [theme.breakpoints.up("md")]: {
-    // height: "auto",
-    width: `573px`,
-  },
-  [theme.breakpoints.up("lg")]: {
-    width: `618px`,
-  },
-  [theme.breakpoints.up("xl")]: {
-    // height: "fit-content",
-    width: `750px`,
-  },
 }));
 
 export const StyledOuterWave = styled(StyledContentWrapper)({
@@ -74,3 +63,14 @@ export const StyledForm = styled("form")(({ theme }) => ({
   marginTop: "16px",
   color: theme.palette.primary.main,
 }));
+
+export const StyledGruppedButtons = styled("div")({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  width: "100%",
+  gap: "20px",
+  "& button": {
+    flex: 1,
+  },
+});

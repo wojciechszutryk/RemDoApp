@@ -6,23 +6,27 @@ import { useLoginUserMutation } from "framework/authentication/mutations/useLogi
 import { Pages } from "framework/routing/pages";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { Dispatch, memo, SetStateAction } from "react";
+import { Dispatch, SetStateAction, memo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { LoginPanelProps } from "..";
-import { StyledForm } from "../styles";
+import GoogleButton from "../GoogleButton";
+import { StyledForm, StyledGruppedButtons } from "../styles";
 
 interface ILoginFormValues {
   email: string;
   password: string;
 }
 
-interface Props extends LoginPanelProps {
+export interface LoginFormProps {
+  defaultEmail?: string;
   setIsRegistering: Dispatch<SetStateAction<boolean>>;
 }
 
-const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
+const LoginForm = ({
+  setIsRegistering,
+  defaultEmail,
+}: LoginFormProps): JSX.Element => {
   const { t } = useTranslation();
   const { setSnackbar } = useSnackbar();
   const loginUserMutation = useLoginUserMutation();
@@ -81,13 +85,16 @@ const LoginForm = ({ setIsRegistering, defaultEmail }: Props): JSX.Element => {
         {loginUserMutation.isLoading && <CircularProgress size={"20px"} />}
         {t(TranslationKeys.LoginButtonText)}
       </Button>
-      <Button
-        onClick={() => {
-          setIsRegistering(true);
-        }}
-      >
-        {t(TranslationKeys.RegisterButtonText)}
-      </Button>
+      <StyledGruppedButtons>
+        <GoogleButton />
+        <Button
+          onClick={() => {
+            setIsRegistering(true);
+          }}
+        >
+          {t(TranslationKeys.RegisterButtonText)}
+        </Button>
+      </StyledGruppedButtons>
     </StyledForm>
   );
 };
