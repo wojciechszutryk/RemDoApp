@@ -11,6 +11,7 @@ import {
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { URL_PUSH } from "linked-models/pushSubscription/pushSubscription.urls";
+import { ExpiryParam, SessionAge } from "linked-models/user/auth.consts";
 import { IUserAttached } from "linked-models/user/user.model";
 import {
   URL_GOOGLE,
@@ -51,7 +52,9 @@ export class UserAuthController extends BaseHttpController {
   @httpGet(
     URL_GOOGLE + URL_REDIRECT,
     passport.authenticate("google", {
-      successRedirect: process.env.CLIENT_URL!,
+      successRedirect: `${process.env.CLIENT_URL!}?${ExpiryParam}=${
+        new Date().getTime() + SessionAge
+      }`,
       failureRedirect: process.env.CLIENT_URL!,
       passReqToCallback: true,
       pauseStream: true,
