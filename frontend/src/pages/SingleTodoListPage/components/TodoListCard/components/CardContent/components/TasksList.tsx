@@ -1,4 +1,3 @@
-import "@sandstreamdev/react-swipeable-list/dist/styles.css";
 import { AnimatePresence } from "framer-motion";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { memo } from "react";
