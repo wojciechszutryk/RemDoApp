@@ -1,13 +1,15 @@
 import PageTemplate from "atomicComponents/molecules/PageTemplate";
 import { RequireAuthPageWrapper } from "atomicComponents/organisms/RequireAuthPageWrapper";
+import { SessionAgeLSKey } from "framework/authentication/helpers/sessionAge.helper";
 import useAutoLogin from "framework/authentication/useAutoLogin";
 import useNotificationSocket from "framework/notifications/useNotificationSocket";
 
 import { Pages } from "framework/routing/pages";
 import "framework/translations/i18.config/resources";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
+import { ExpiryParam } from "linked-models/user/auth.consts";
 import UserPage from "pages/UserPage";
-import { lazy, Suspense, useLayoutEffect } from "react";
+import { lazy, Suspense, useEffect, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { HashRouter, Route, Routes } from "react-router-dom";
 
@@ -24,6 +26,16 @@ const App = (): JSX.Element => {
     const title = t(TranslationKeys.PageTitleMain);
     document.title = title;
   });
+
+  useEffect(() => {
+    //for google auth
+    const searchParams = new URLSearchParams(window.location.search);
+    const expiry = searchParams.get(ExpiryParam);
+
+    if (expiry) {
+      localStorage.setItem(SessionAgeLSKey, expiry);
+    }
+  }, []);
 
   useNotificationSocket();
 

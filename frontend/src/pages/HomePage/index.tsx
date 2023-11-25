@@ -1,9 +1,7 @@
 import { Separator } from "atomicComponents/atoms/Separator";
 import { motion } from "framer-motion";
-import { SessionAgeLSKey } from "framework/authentication/helpers/sessionAge.helper";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { ExpiryParam } from "linked-models/user/auth.consts";
-import { memo, useEffect, useLayoutEffect, useRef } from "react";
+import { memo, useLayoutEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   FadeINLeftProps,
@@ -38,15 +36,6 @@ const HomePage = (): JSX.Element => {
   const notificationsRef = useRef<HTMLDivElement>(null);
   const interfaceRef = useRef<HTMLDivElement>(null);
   const personalizationRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const expiry = searchParams.get(ExpiryParam);
-
-    if (expiry) {
-      localStorage.setItem(SessionAgeLSKey, expiry);
-    }
-  }, []);
 
   useLayoutEffect(() => {
     const title = `${t(TranslationKeys.PageTitleMain)} - ${t(
