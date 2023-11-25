@@ -63,8 +63,9 @@ export const createNotifySelectParams = (
     if (notifyDate < startDate) {
       // when notifyDate is before startDate return MINUTES BEFORE START
       return {
-        minsAccordingToTimePoint:
-          (startDate.getTime() - notifyDate.getTime()) / 1000 / 60,
+        minsAccordingToTimePoint: Math.floor(
+          (startDate.getTime() - notifyDate.getTime()) / 1000 / 60
+        ),
         beforeOrAfter: "Before",
         timePoint: "Start",
       };
@@ -73,8 +74,9 @@ export const createNotifySelectParams = (
     if (!finishDate) {
       // when notifyDate is after startDate and there is no finishDate return MINUTES AFTER START
       return {
-        minsAccordingToTimePoint:
-          (notifyDate.getTime() - startDate.getTime()) / 1000 / 60,
+        minsAccordingToTimePoint: Math.floor(
+          (notifyDate.getTime() - startDate.getTime()) / 1000 / 60
+        ),
         beforeOrAfter: "After",
         timePoint: "Start",
       };
@@ -85,8 +87,9 @@ export const createNotifySelectParams = (
     // when notifyDate is after finishDate return MINUTES AFTER FINISH
     if (notifyDate > finishDate) {
       return {
-        minsAccordingToTimePoint:
-          (notifyDate.getTime() - finishDate.getTime()) / 1000 / 60,
+        minsAccordingToTimePoint: Math.floor(
+          (notifyDate.getTime() - finishDate.getTime()) / 1000 / 60
+        ),
         beforeOrAfter: "After",
         timePoint: "Finish",
       };
@@ -96,8 +99,9 @@ export const createNotifySelectParams = (
       // when notifyDate is before finishDate and there is no startDate return MINUTES BEFORE FINISH
 
       return {
-        minsAccordingToTimePoint:
-          (finishDate.getTime() - notifyDate.getTime()) / 1000 / 60,
+        minsAccordingToTimePoint: Math.floor(
+          (finishDate.getTime() - notifyDate.getTime()) / 1000 / 60
+        ),
         beforeOrAfter: "Before",
         timePoint: "Finish",
       };
@@ -105,8 +109,9 @@ export const createNotifySelectParams = (
 
     // when notifyDate is between startDate and finishDate return MINUTES BEFORE FINISH
     return {
-      minsAccordingToTimePoint:
-        (finishDate.getTime() - startDate.getTime()) / 1000 / 60,
+      minsAccordingToTimePoint: Math.floor(
+        (finishDate.getTime() - startDate.getTime()) / 1000 / 60
+      ),
       beforeOrAfter: "Before",
       timePoint: "Finish",
     };

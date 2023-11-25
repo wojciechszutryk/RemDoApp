@@ -60,8 +60,6 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.InvalidCredentials]: "Invalid credentials, try again",
   [TranslationKeys.CurrentAccount]: "Your account",
 
-  [TranslationKeys.PageTitleFeatures]: "Features",
-
   [TranslationKeys.PageTitleReminders]: "Reminders",
   [TranslationKeys.Reminder]: "Reminder",
   [TranslationKeys.ReminderInfo]:
@@ -172,6 +170,10 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Days]: "days",
   [TranslationKeys.Hours]: "hours",
   [TranslationKeys.Ago]: "ago",
+  [TranslationKeys.Finish]: "Finish",
+  [TranslationKeys.Start]: "Start",
+  [TranslationKeys.Before]: "Before",
+  [TranslationKeys.After]: "After",
 
   [TranslationKeys.Notifications]: "Notifications",
   [TranslationKeys.ArchivedNotifications]: "Archived notifications",

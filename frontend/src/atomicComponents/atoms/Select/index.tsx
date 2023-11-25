@@ -29,7 +29,7 @@ const MenuProps: Partial<MuiMenuProps> = {
 };
 
 export interface SelectProps extends MuiSelectProps {
-  options?: string[];
+  options?: string[] | { value: string; label: string }[];
   value: string[] | string;
 }
 
@@ -50,11 +50,17 @@ export const Select = ({
           MenuProps={MenuProps}
         >
           {options
-            ? options.map((item) => (
-                <MenuItem key={item} value={item}>
-                  {item}
-                </MenuItem>
-              ))
+            ? options.map((item) =>
+                typeof item === "string" ? (
+                  <MenuItem key={item} value={item}>
+                    {item}
+                  </MenuItem>
+                ) : (
+                  <MenuItem key={item.value} value={item.value}>
+                    {item.label}
+                  </MenuItem>
+                )
+              )
             : children}
         </StyledSelect>
       </FormControl>

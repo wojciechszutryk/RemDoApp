@@ -60,8 +60,6 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.InvalidCredentials]: "niepoprawne dane, spróbuj ponownie",
   [TranslationKeys.CurrentAccount]: "Twoje konto",
 
-  [TranslationKeys.PageTitleFeatures]: "Funkcje",
-
   [TranslationKeys.PageTitleReminders]: "Przypomnienia",
   [TranslationKeys.Reminder]: "Przypomnienie",
   [TranslationKeys.ReminderInfo]:
@@ -177,6 +175,10 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Days]: "dni",
   [TranslationKeys.Hours]: "godzin",
   [TranslationKeys.Ago]: "temu",
+  [TranslationKeys.Before]: "Przed datą",
+  [TranslationKeys.After]: "Po dacie",
+  [TranslationKeys.Finish]: "Końca",
+  [TranslationKeys.Start]: "Startu",
 
   [TranslationKeys.Notifications]: "Powiadomienia",
   [TranslationKeys.ArchivedNotifications]: "Archiwalne powiadomienia",
