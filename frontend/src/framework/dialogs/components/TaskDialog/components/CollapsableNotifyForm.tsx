@@ -11,9 +11,15 @@ interface Props {
 const CollapsableNotifyForm = ({ control }: Props): JSX.Element => {
   const watch = useWatch<ITaskDialog>();
   return (
-    <Collapse in={watch["notify"]} timeout="auto" unmountOnExit>
-      <NotifyForm control={control} />
-    </Collapse>
+    <>
+      <Collapse
+        in={watch["notify"]}
+        timeout="auto"
+        style={{ minHeight: "unset" }}
+      >
+        <NotifyForm control={control} />
+      </Collapse>
+    </>
   );
 };
 
