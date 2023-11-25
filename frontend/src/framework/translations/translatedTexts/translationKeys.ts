@@ -46,8 +46,6 @@ export enum TranslationKeys {
   InvalidCredentials = "InvalidCredentials",
   CurrentAccount = "CurrentAccount",
 
-  PageTitleFeatures = "PageTitleFeatures",
-
   PageTitleReminders = "PageTitleReminders",
   Reminder = "Reminder",
   ReminderInfo = "ReminderInfo",
@@ -118,6 +116,10 @@ export enum TranslationKeys {
   Days = "Days",
   Hours = "Hours",
   Ago = "ago",
+  Finish = "Finish",
+  Start = "Start",
+  Before = "Before",
+  After = "After",
 
   //collaboration
   Collaborants = "Collaborants",

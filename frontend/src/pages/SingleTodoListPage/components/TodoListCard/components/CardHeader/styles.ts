@@ -1,4 +1,4 @@
-import { Typography, styled } from "@mui/material";
+import { AvatarGroup, Typography, styled } from "@mui/material";
 
 export const StyledHeaderTitle = styled(Typography, {
   shouldForwardProp: (prop) => prop !== "disableHover",
@@ -7,5 +7,11 @@ export const StyledHeaderTitle = styled(Typography, {
   transition: "color 0.15s ease-in-out",
   "&:hover": {
     color: disableHover ? "unset" : theme.palette.primary.main,
+  },
+}));
+
+export const StyledAvatarGroup = styled(AvatarGroup)(({ theme }) => ({
+  "& .MuiAvatar-root": {
+    borderColor: theme.palette.background.paper,
   },
 }));

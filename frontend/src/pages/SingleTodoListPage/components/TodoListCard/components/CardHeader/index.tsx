@@ -1,10 +1,6 @@
 import { DraggableAttributes } from "@dnd-kit/core";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
-import {
-  AvatarGroup,
-  CardHeader as MuiCardHeader,
-  Tooltip,
-} from "@mui/material";
+import { CardHeader as MuiCardHeader, Tooltip } from "@mui/material";
 import ExtendableUserAvatar from "atomicComponents/organisms/UserAvatar/ExtendableUserAvatar";
 import { Pages } from "framework/routing/pages";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
@@ -12,7 +8,7 @@ import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import TodoListIcon from "../../../../../TodoListsPage/components/TodoListIcon";
 import { StyledCardHeaderActions, StyledDragIcon } from "../../styles";
-import { StyledHeaderTitle } from "./styles";
+import { StyledAvatarGroup, StyledHeaderTitle } from "./styles";
 
 export interface IDraggingButtonProps {
   listeners: SyntheticListenerMap | undefined;
@@ -38,7 +34,7 @@ const CardHeader = ({
   return (
     <MuiCardHeader
       avatar={
-        <AvatarGroup max={3}>
+        <StyledAvatarGroup max={3}>
           {Array.from(new Set(allMembers)).map((user) => (
             <ExtendableUserAvatar
               avatarProps={{ sx: { width: 26, height: 26 } }}
@@ -46,7 +42,7 @@ const CardHeader = ({
               userData={user}
             />
           ))}
-        </AvatarGroup>
+        </StyledAvatarGroup>
       }
       action={
         <StyledCardHeaderActions>

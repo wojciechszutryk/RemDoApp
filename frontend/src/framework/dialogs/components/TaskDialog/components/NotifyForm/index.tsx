@@ -4,6 +4,7 @@ import { Select } from "atomicComponents/atoms/Select";
 import { TextField } from "atomicComponents/atoms/TextField";
 import dayjs from "dayjs";
 import { IReminderDialog } from "framework/dialogs/components/ReminderDialog/models/reminderDialog.model";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { ChangeEvent, memo } from "react";
 import {
   Control,
@@ -14,6 +15,7 @@ import {
   useFormContext,
   useWatch,
 } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { ITaskDialog } from "../../models/taskDialog.model";
 import {
   createDateFromSelectValues,
@@ -31,16 +33,25 @@ const NotifyForm = <
 >({
   control,
 }: Props<TFieldValues>): JSX.Element => {
+  const { t } = useTranslation();
   const watch = useWatch<TFormValues>();
   const { setValue } = useFormContext<TFormValues>();
 
   const timePointOptions = watch["startDate"]
     ? watch["finishDate"]
-      ? ["Start", "Finish"]
-      : ["Start"]
+      ? [
+          { value: "Start", label: t(TranslationKeys.Start) },
+          { value: "Finish", label: t(TranslationKeys.Finish) },
+        ]
+      : [{ value: "Start", label: t(TranslationKeys.Start) }]
     : watch["finishDate"]
-    ? ["Finish"]
-    : ["Start"];
+    ? [{ value: "Finish", label: t(TranslationKeys.Finish) }]
+    : [{ value: "Start", label: t(TranslationKeys.Start) }];
+
+  const beforeOrAfterOptions = [
+    { value: "Before", label: t(TranslationKeys.Before) },
+    { value: "After", label: t(TranslationKeys.After) },
+  ];
 
   const disableSelects =
     !watch["notify"] || (!watch["startDate"] && !watch["finishDate"]);
@@ -104,7 +115,7 @@ const NotifyForm = <
         name={"beforeOrAfter" as Path<TFieldValues>}
         render={({ field: { onChange, value } }) => (
           <Select
-            options={["Before", "After"]}
+            options={beforeOrAfterOptions}
             disabled={disableSelects}
             onChange={(event) => {
               const newBeforeOrAfterValue = event.target.value as

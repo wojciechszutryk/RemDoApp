@@ -10,6 +10,7 @@ import { ThemeProvider } from "framework/theme/useTheme.context";
 import { LocalisationProvider } from "framework/translations/useLocalisation.context";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 const queryClient = new QueryClient();
 
@@ -37,3 +38,5 @@ root.render(
     </QueryClientProvider>
   </React.StrictMode>
 );
+
+serviceWorkerRegistration.register();
