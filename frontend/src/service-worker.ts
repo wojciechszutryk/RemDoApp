@@ -19,7 +19,10 @@ registerRoute(({ request, url }: { request: Request; url: URL }) => {
     return false;
   }
 
-  if (url.pathname.startsWith("/_")) {
+  if (
+    url.pathname.startsWith("/_") ||
+    url.pathname.startsWith("/users/google")
+  ) {
     return false;
   }
 
