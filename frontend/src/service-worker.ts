@@ -5,7 +5,7 @@ import { clientsClaim } from "workbox-core";
 import { ExpirationPlugin } from "workbox-expiration";
 import { createHandlerBoundToURL, precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
-import { StaleWhileRevalidate } from "workbox-strategies";
+import { NetworkOnly, StaleWhileRevalidate } from "workbox-strategies";
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -21,7 +21,10 @@ registerRoute(({ request, url }: { request: Request; url: URL }) => {
 
   if (
     url.pathname.startsWith("/_") ||
-    url.pathname.startsWith("/users/google")
+    url.pathname.startsWith("/users/google") ||
+    url.pathname.startsWith("/auth") ||
+    url.pathname.startsWith("/google") ||
+    url.pathname.startsWith("/redirect")
   ) {
     return false;
   }
@@ -40,6 +43,22 @@ registerRoute(
     cacheName: "images",
     plugins: [new ExpirationPlugin({ maxEntries: 50 })],
   })
+);
+
+registerRoute(
+  ({ url }) => url.pathname.startsWith("/users/google"),
+  new NetworkOnly()
+);
+
+registerRoute(({ url }) => url.pathname.startsWith("/auth"), new NetworkOnly());
+registerRoute(
+  ({ url }) => url.pathname.startsWith("/google"),
+  new NetworkOnly()
+);
+
+registerRoute(
+  ({ url }) => url.pathname.startsWith("/redirect"),
+  new NetworkOnly()
 );
 
 self.addEventListener("message", (event) => {
