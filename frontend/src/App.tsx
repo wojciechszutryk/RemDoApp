@@ -27,16 +27,6 @@ const App = (): JSX.Element => {
     document.title = title;
   });
 
-  useEffect(() => {
-    //for google auth
-    const searchParams = new URLSearchParams(window.location.search);
-    const expiry = searchParams.get(ExpiryParam);
-
-    if (expiry) {
-      localStorage.setItem(SessionAgeLSKey, expiry);
-    }
-  }, []);
-
   useNotificationSocket();
 
   useAutoLogin();
