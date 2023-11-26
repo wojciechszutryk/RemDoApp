@@ -1,10 +1,12 @@
 import { Separator } from "atomicComponents/atoms/Separator";
+import { LAST_PAGE_LS_KEY } from "atomicComponents/organisms/Header/helpers/LS.keys.const.helper";
 import { motion } from "framer-motion";
 import { SessionAgeLSKey } from "framework/authentication/helpers/sessionAge.helper";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { ExpiryParam } from "linked-models/user/auth.consts";
 import { memo, useEffect, useLayoutEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import {
   FadeINLeftProps,
   FadeINRightProps,
@@ -31,6 +33,7 @@ import ThemeImgAlt from "./utils/ThemeImgAlt";
 
 const HomePage = (): JSX.Element => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   //sections refs
   const featuresRef = useRef<HTMLDivElement>(null);
   const collaborationRef = useRef<HTMLDivElement>(null);
@@ -59,6 +62,15 @@ const HomePage = (): JSX.Element => {
 
     if (expiry) {
       localStorage.setItem(SessionAgeLSKey, expiry);
+
+      const lastPage = localStorage.getItem(LAST_PAGE_LS_KEY);
+
+      if (lastPage) {
+        navigate(lastPage);
+      } else {
+        navigate("/");
+      }
+
       window.history.pushState({}, document.title, window.location.pathname);
     }
   }, []);

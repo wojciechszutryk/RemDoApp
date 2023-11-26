@@ -104,11 +104,16 @@ export const StyledCallendarWrapper = styled("div", {
             backgroundColor: theme.palette.background.paper,
             transition: "color 0.1s ease-in-out",
             cursor: "pointer",
+            width: 90,
+            outline: "none",
+            boxShadow: "none",
             "&:first-of-type": {
               borderTopLeftRadius: "25px",
+              paddingRight: 0,
             },
             "&:last-of-type": {
               borderTopRightRadius: "25px",
+              paddingLeft: 0,
             },
             "&:hover": {
               color: theme.palette.primary.main,
@@ -138,7 +143,7 @@ export const StyledCallendarWrapper = styled("div", {
           position: "absolute",
           top: "10px",
           left: "75px",
-          width: 250,
+          width: 270,
           textAlign: "center",
         },
         "& span:nth-of-type(3)": {
