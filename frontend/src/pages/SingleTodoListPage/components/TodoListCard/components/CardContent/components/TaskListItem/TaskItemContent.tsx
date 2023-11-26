@@ -6,13 +6,13 @@ import { useSwippableItemContext } from "atomicComponents/molecules/SwippableIte
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { memo, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import TaskDetailsList from "./TaskDetailsList";
 import {
   StyledDetailsColapse,
   StyledListItemIcon,
   StyledListItemText,
   StyledTaskListItem,
 } from "./styles";
-import TaskDetailsList from "./TaskDetailsList";
 
 interface Props {
   task: IExtendedTaskDto;
@@ -33,6 +33,7 @@ const TaskItemContent = ({ task }: Props): JSX.Element => {
       }, 2000);
     }
   }, [task.id, taskId]);
+
   return (
     <StyledTaskListItem
       highlighted={showHighlight}

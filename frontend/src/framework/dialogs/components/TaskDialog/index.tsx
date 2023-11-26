@@ -44,13 +44,13 @@ const TaskDialog = (): JSX.Element => {
 
   const defaultFormValues = {
     text: editTaskData?.text || "",
-    startDate: editTaskData?.startDate || new Date(),
+    startDate: editTaskData?.startDate || new Date(Date.now() + 86400000),
     finishDate: editTaskData?.finishDate || null,
     minsAccordingToTimePoint:
       defaultSelectsValues?.minsAccordingToTimePoint || 15,
     beforeOrAfter: defaultSelectsValues?.beforeOrAfter || "Before",
     timePoint: defaultSelectsValues?.timePoint || "Start",
-    notifyDate: editTaskData?.notifyDate || new Date(),
+    notifyDate: editTaskData?.notifyDate || new Date(Date.now() + 85500000),
     important: editTaskData?.important,
     notify: !!editTaskData?.notifyDate,
   };
@@ -64,6 +64,8 @@ const TaskDialog = (): JSX.Element => {
   const { t } = useTranslation();
 
   const onSubmit = (data: ITaskDialog) => {
+    if (!data.notify) data.notifyDate = null;
+
     if (editTaskData)
       editTaskMutation.mutate({ todoListId, taskId: editTaskData.id, data });
     else createTaskMutation.mutate({ todoListId, data });
