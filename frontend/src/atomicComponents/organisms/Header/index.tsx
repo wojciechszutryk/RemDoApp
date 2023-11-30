@@ -1,6 +1,7 @@
 import EventIcon from "@mui/icons-material/Event";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
 import { useMediaQuery } from "@mui/material";
+import { Button } from "atomicComponents/atoms/Button";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
@@ -62,14 +63,12 @@ export const Header = (): JSX.Element => {
         ) : (
           <>
             <LogoButton />
-            <StyledHeaderButton
+            <Button
               onClick={handleNavigate(Pages.LoginPage.path)}
               disabled={currentPagePath === Pages.LoginPage.path.substring(1)}
             >
-              {`${t(TranslationKeys.LoginButtonText)} / ${t(
-                TranslationKeys.RegisterButtonText
-              )}`}
-            </StyledHeaderButton>
+              {t(TranslationKeys.LoginButtonText)}
+            </Button>
             <SettingsMenu />
           </>
         )}

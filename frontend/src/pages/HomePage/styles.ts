@@ -61,6 +61,7 @@ export const StyledFeaturesSection = styled("section")(({ theme }) => ({
 }));
 
 export const StyledHomePageWrapper = styled("div")(({ theme }) => ({
+  overflowX: "hidden",
   scrollSnapType: "y mandatory",
   width: "100%",
   overflowY: "scroll",

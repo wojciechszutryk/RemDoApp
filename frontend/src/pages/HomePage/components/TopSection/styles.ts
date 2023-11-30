@@ -13,8 +13,16 @@ export const StyledTopSection = styled("div", {
   textAlign: "center",
   padding: "58px 16px 60px 16px",
 
+  "& > div:last-of-type": {
+    width: "120%",
+  },
+
   [theme.breakpoints.up("sm")]: {
     padding: "58px 42px 60px 42px",
+
+    "& > div:last-of-type": {
+      width: "unset",
+    },
   },
 
   [theme.breakpoints.up("md")]: {
