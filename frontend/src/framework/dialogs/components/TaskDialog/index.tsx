@@ -1,11 +1,8 @@
-import FlagCircleIcon from "@mui/icons-material/FlagCircle";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
 import { ControlledCheckbox } from "atomicComponents/molecules/ControlledCheckbox";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
-import dayjs from "dayjs";
 import { useDialogs } from "framework/dialogs";
 import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
 import { initialTaskDialog } from "framework/dialogs/models/initialState.const";
@@ -17,7 +14,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { StyledForm } from "../TodoListDialog/styles";
 import CollapsableNotifyForm from "./components/CollapsableNotifyForm";
-import DateTimePickerWithIcon from "./components/DatePickerWithIcon";
+import DatesPickers from "./components/DatesPickers";
 import { createNotifySelectParams } from "./components/NotifyForm/helpers";
 import { ITaskDialog } from "./models/taskDialog.model";
 import { StyledCheckboxesWrapper } from "./styles";
@@ -44,7 +41,7 @@ const TaskDialog = (): JSX.Element => {
 
   const defaultFormValues = {
     text: editTaskData?.text || "",
-    startDate: editTaskData?.startDate || new Date(Date.now() + 86400000),
+    startDate: editTaskData?.startDate || new Date(Date.now() + 900000),
     finishDate: editTaskData?.finishDate || null,
     minsAccordingToTimePoint:
       defaultSelectsValues?.minsAccordingToTimePoint || 15,
@@ -72,7 +69,7 @@ const TaskDialog = (): JSX.Element => {
     onClose();
   };
 
-  const { handleSubmit, control, getValues } = methods;
+  const { handleSubmit, control } = methods;
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -88,24 +85,7 @@ const TaskDialog = (): JSX.Element => {
             control={control}
             placeholder={t(TranslationKeys.TaskName)}
           />
-          {[
-            {
-              Icon: <PlayCircleOutlineIcon />,
-              tooltipTitle: t(TranslationKeys.StartDate),
-              name: "startDate" as keyof ITaskDialog,
-              control,
-              maxDate: dayjs(getValues("startDate")),
-            },
-            {
-              Icon: <FlagCircleIcon />,
-              tooltipTitle: t(TranslationKeys.FinishDate),
-              name: "finishDate" as keyof ITaskDialog,
-              control,
-              minDate: dayjs(getValues("finishDate")),
-            },
-          ].map((props, index) => (
-            <DateTimePickerWithIcon key={index} {...props} />
-          ))}
+          <DatesPickers />
 
           <StyledCheckboxesWrapper>
             <ControlledCheckbox
