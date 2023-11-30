@@ -6,3 +6,9 @@ dist
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+linked-models
+/src/linked-models
+./src/linked-models
+
+.react-email

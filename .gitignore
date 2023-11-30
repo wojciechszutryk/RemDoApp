@@ -1,6 +1,14 @@
 .env
 /.env
 
+/linked-models
+/frontend/linked-models
+/backend/linked-models
+./linked-models
+./frontend/linked-models
+./backend/linked-models
+./frontend/src/linked-models
+./backend/src/linked-models
 
 # dependencies
 /node_modules
@@ -23,3 +31,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+backend/src/linked-models
+backend/src/linked-models
