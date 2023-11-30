@@ -68,6 +68,7 @@ export const StyledGruppedButtons = styled("div")({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  flexWrap: "wrap",
   width: "100%",
   gap: "20px",
   "& button": {
