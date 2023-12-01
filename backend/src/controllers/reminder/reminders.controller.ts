@@ -5,6 +5,7 @@ import {
   controller,
   httpGet,
   httpPost,
+  interfaces,
   queryParam,
   requestBody,
 } from "inversify-express-utils";
@@ -24,7 +25,10 @@ import { ReminderService } from "services/reminder/reminder.service";
 import { UserAuthService } from "services/user/user.auth.service";
 
 @controller(URL_REMINDERS, SetCurrentUser)
-export class RemindersController extends BaseHttpController {
+export class RemindersController
+  extends BaseHttpController
+  implements interfaces.Controller
+{
   constructor(
     @inject(ReminderService) private readonly reminderService: ReminderService,
     @inject(UserAuthService) private readonly userAuthService: UserAuthService,

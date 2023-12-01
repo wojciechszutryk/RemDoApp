@@ -13,6 +13,6 @@ import "controllers/user/user.notification";
 import { Container } from "inversify";
 
 export const container = new Container({
-  defaultScope: "Request",
-  autoBindInjectable: true,
+  // defaultScope: "Request",
+  // autoBindInjectable: true,
 });

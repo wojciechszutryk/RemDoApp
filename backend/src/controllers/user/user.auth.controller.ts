@@ -1,11 +1,11 @@
 import { currentUser } from "decorators/currentUser.decorator";
 import * as express from "express";
-import { inject } from "inversify";
 import {
   BaseHttpController,
   controller,
   httpGet,
   httpPost,
+  interfaces,
   request,
   response,
 } from "inversify-express-utils";
@@ -24,16 +24,16 @@ import {
 } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import passport from "passport";
-import { UserAuthService } from "services/user/user.auth.service";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
 @controller(URL_USERS)
-export class UserAuthController extends BaseHttpController {
-  constructor(
-    @inject(UserAuthService) private readonly userService: UserAuthService
-  ) {
+export class UserAuthController
+  extends BaseHttpController
+  implements interfaces.Controller
+{
+  constructor() {
     super();
   }
 
