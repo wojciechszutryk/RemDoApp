@@ -6,6 +6,7 @@ import {
   controller,
   httpGet,
   httpPost,
+  interfaces,
   requestBody,
   requestParam,
 } from "inversify-express-utils";
@@ -22,7 +23,10 @@ import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { TaskService } from "services/task/task.service";
 
 @controller(URL_TODO_LIST_TASKS(), SetCurrentUser, SetPermissionsAndScopes)
-export class TodoListTasksController extends BaseHttpController {
+export class TodoListTasksController
+  extends BaseHttpController
+  implements interfaces.Controller
+{
   constructor(@inject(TaskService) private readonly taskServce: TaskService) {
     super();
   }

@@ -2,11 +2,11 @@ import { PARAM_CURRENT_USER } from "decorators/currentUser.decorator";
 import { inject } from "inversify";
 import {
   BaseHttpController,
-  Controller,
   controller,
   httpDelete,
   httpGet,
   httpPut,
+  interfaces,
   queryParam,
   requestBody,
   requestParam,
@@ -22,7 +22,7 @@ import { NotificationService } from "services/notification/notification.service"
 @controller(URL_USERS + URL_USER_NOTIFICATIONS, SetCurrentUser)
 export class NotificationController
   extends BaseHttpController
-  implements Controller
+  implements interfaces.Controller
 {
   constructor(
     @inject(NotificationService)

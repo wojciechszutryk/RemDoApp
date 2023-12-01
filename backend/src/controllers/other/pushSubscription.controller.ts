@@ -5,6 +5,7 @@ import {
   controller,
   httpGet,
   httpPost,
+  interfaces,
   requestBody,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
@@ -21,7 +22,10 @@ import { PushNotificationService } from "services/notification/push.notification
 require("dotenv").config();
 
 @controller(URL_PUSH, SetCurrentUser)
-export class PushSubscriptionController extends BaseHttpController {
+export class PushSubscriptionController
+  extends BaseHttpController
+  implements interfaces.Controller
+{
   constructor(
     @inject(PushNotificationService)
     private readonly pushNotificationService: PushNotificationService

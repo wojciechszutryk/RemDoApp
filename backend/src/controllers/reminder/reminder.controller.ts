@@ -5,6 +5,7 @@ import {
   controller,
   httpDelete,
   httpPut,
+  interfaces,
   requestBody,
   requestParam,
 } from "inversify-express-utils";
@@ -29,7 +30,10 @@ import { ReminderService } from "services/reminder/reminder.service";
   URL_TODO_LISTS + URL_TODO_LIST() + URL_REMINDERS + URL_TASK(),
   SetCurrentUser
 )
-export class ReminderController extends BaseHttpController {
+export class ReminderController
+  extends BaseHttpController
+  implements interfaces.Controller
+{
   constructor(
     @inject(ReminderService) private readonly reminderService: ReminderService
   ) {

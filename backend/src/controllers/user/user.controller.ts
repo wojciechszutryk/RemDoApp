@@ -7,6 +7,7 @@ import {
   controller,
   httpGet,
   httpPut,
+  interfaces,
   queryParam,
   request,
   requestBody,
@@ -43,7 +44,10 @@ import { UserService } from "services/user/user.service";
 const upload = multer(multerConfig);
 
 @controller(URL_USERS)
-export class UserController extends BaseHttpController {
+export class UserController
+  extends BaseHttpController
+  implements interfaces.Controller
+{
   constructor(
     @inject(UserService) private readonly userService: UserService,
     @inject(UserSearchService)

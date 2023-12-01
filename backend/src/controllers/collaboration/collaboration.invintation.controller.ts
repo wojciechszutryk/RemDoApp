@@ -5,6 +5,7 @@ import {
   controller,
   httpPost,
   httpPut,
+  interfaces,
   requestParam,
 } from "inversify-express-utils";
 import { CollaborationState } from "linked-models/collaboration/collaboration.enum";
@@ -20,7 +21,10 @@ import { CollaborantsService } from "services/collaboration/collaborants.service
 import { CollaborationInvintationService } from "services/collaboration/collaboration.invintation.service";
 
 @controller(URL_USERS + URL_USER() + URL_INVITE_COLLABORANT, SetCurrentUser)
-export class UserCollaborationInvintationController extends BaseHttpController {
+export class UserCollaborationInvintationController
+  extends BaseHttpController
+  implements interfaces.Controller
+{
   constructor(
     @inject(CollaborationInvintationService)
     private readonly collaborationInvintationService: CollaborationInvintationService,

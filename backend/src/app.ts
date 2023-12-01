@@ -1,27 +1,27 @@
 import "framework/auth/passport";
 import "reflect-metadata";
 //
+import MongoStore from "connect-mongo";
+import cors from "cors";
 import { container } from "di/container.init";
 import { registerBindings } from "di/di.config";
-import { Router, default as express, json, urlencoded } from "express";
+import { default as express, json, urlencoded } from "express";
 import session from "express-session";
 import { createServer } from "http";
 import { buildProviderModule } from "inversify-binding-decorators";
 import { InversifyExpressServer } from "inversify-express-utils";
 import { SessionAge } from "linked-models/user/auth.consts";
 import mongoose from "mongoose";
-import path from "path";
-
-// import cors from "cors";
-import cors from "cors";
 import passport from "passport";
+import path from "path";
 import { SocketNotificationService } from "services/notification/socket.notification.service";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
-const customRouter = Router({ mergeParams: true });
-const server = new InversifyExpressServer(container, customRouter);
+registerBindings(container);
+
+const server = new InversifyExpressServer(container);
 
 server.setConfig((app) => {
   app.use(
@@ -36,6 +36,10 @@ server.setConfig((app) => {
         secure: process.env.NODE_ENV === "production",
         maxAge: SessionAge,
       },
+      store: MongoStore.create({
+        mongoUrl: process.env.DB_URI!,
+        ttl: SessionAge,
+      }),
     })
   );
   app.use(passport.initialize());
@@ -65,6 +69,12 @@ server.setConfig((app) => {
   }
 });
 
+container.load(buildProviderModule());
+const app = server.build();
+const httpServer = createServer(app);
+const socketService = new SocketNotificationService(httpServer);
+container.bind(SocketNotificationService).toConstantValue(socketService);
+
 //Connect to MongoDb
 if (!process.env.DB_URI) throw new Error("DB_URI undefined");
 
@@ -77,16 +87,7 @@ mongoose.connection.on("error", (error) => {
 });
 
 mongoose.connection.on("open", () => {
-  //register instances once the connection has been established
-  registerBindings(container);
-  container.load(buildProviderModule());
-
-  const app = server.build();
-  const httpServer = createServer(app);
-
-  const socketService = new SocketNotificationService(httpServer);
-  container.bind(SocketNotificationService).toConstantValue(socketService);
-
+  console.log("Connected to MongoDB");
   const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 
   httpServer.listen(port, () => {

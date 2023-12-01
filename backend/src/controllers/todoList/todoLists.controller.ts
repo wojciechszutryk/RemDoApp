@@ -5,6 +5,7 @@ import {
   controller,
   httpGet,
   httpPost,
+  interfaces,
   queryParam,
   requestBody,
 } from "inversify-express-utils";
@@ -21,7 +22,10 @@ import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { TodoListService } from "services/todoList/todoList.service";
 
 @controller(URL_TODO_LISTS, SetCurrentUser)
-export class TodoListsController extends BaseHttpController {
+export class TodoListsController
+  extends BaseHttpController
+  implements interfaces.Controller
+{
   constructor(
     @inject(TodoListService) private readonly todoListService: TodoListService,
     @inject(TodoListCacheService)
