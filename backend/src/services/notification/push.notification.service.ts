@@ -11,6 +11,7 @@ import webpush from "web-push";
 
 @injectable()
 export class PushNotificationService {
+  private webpush: typeof webpush;
   constructor(
     @inject(PushSubscriptionCollectionName)
     private readonly pushSubscriptionCollection: PushSubscriptionCollectionType
@@ -23,8 +24,6 @@ export class PushNotificationService {
     );
     this.webpush = webpush;
   }
-
-  private webpush = webpush;
 
   public async getSubscriptionsForUsers(userIDs: string[]) {
     const pushSubscriptions = await this.pushSubscriptionCollection.find({
