@@ -11,10 +11,19 @@ import webpush from "web-push";
 
 @injectable()
 export class PushNotificationService {
+  private webpush: typeof webpush;
   constructor(
     @inject(PushSubscriptionCollectionName)
     private readonly pushSubscriptionCollection: PushSubscriptionCollectionType
-  ) {}
+  ) {
+    webpush.setGCMAPIKey(process.env.GOOGLE_API_KEY!);
+    webpush.setVapidDetails(
+      "mailto:wojtekszutryk@gmail.com",
+      process.env.VAPID_PUBLIC_KEY!,
+      process.env.VAPID_PRIVATE_KEY!
+    );
+    this.webpush = webpush;
+  }
 
   public async getSubscriptionsForUsers(userIDs: string[]) {
     const pushSubscriptions = await this.pushSubscriptionCollection.find({
@@ -45,13 +54,6 @@ export class PushNotificationService {
       [userId: string]: AppLanguages;
     }
   ) {
-    webpush.setGCMAPIKey(process.env.GOOGLE_API_KEY!);
-    webpush.setVapidDetails(
-      "mailto:wojtekszutryk@gmail.com",
-      process.env.VAPID_PUBLIC_KEY!,
-      process.env.VAPID_PRIVATE_KEY!
-    );
-
     const userIDs = notifications.map((n) => n.userId);
 
     const subscriptions = await this.getSubscriptionsForUsers(userIDs);
@@ -60,14 +62,22 @@ export class PushNotificationService {
     const notificationsRequests = subscriptions.map((s) => {
       const notification = notifications.find((n) => n.userId === s.userId);
 
-      return webpush.sendNotification(
-        s,
-        JSON.stringify({
-          notification,
-          payload,
-          language: languagePreferences[s.userId] || AppLanguages.en,
-        })
-      );
+      return this.webpush
+        .sendNotification(
+          s,
+          JSON.stringify({
+            notification,
+            payload,
+            language: languagePreferences[s.userId] || AppLanguages.en,
+          })
+        )
+        .catch((error) => {
+          console.error(
+            `error while sending push notification, payload: ${JSON.stringify(
+              payload
+            )}, error: ${error}`
+          );
+        });
     });
 
     //do not await to not block the process
