@@ -34,7 +34,6 @@ import {
 import { DeleteUserAvatar } from "middlewares/user/deleteUserAvatar.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { AVATARS_BULK_NAME } from "models/storage.const";
-import { GridFSBucket } from "mongodb";
 import mongoose from "mongoose";
 import multer from "multer";
 import { UserAuthService } from "services/user/user.auth.service";
@@ -84,7 +83,7 @@ export class UserController
     try {
       const { db } = mongoose.connection;
 
-      const imageBucket = new GridFSBucket(db, {
+      const imageBucket = new mongoose.mongo.GridFSBucket(db, {
         bucketName: AVATARS_BULK_NAME,
       });
       res.writeHead(200, { "Content-type": "image/png" });
