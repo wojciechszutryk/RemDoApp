@@ -69,7 +69,7 @@ export const StyledHomePageWrapper = styled("div")(({ theme }) => ({
     minHeight: "calc(100vh - 50px)",
     scrollSnapAlign: "start",
     scrollSnapStop: "always",
-    padding: "50px 20px",
+    padding: "50px 20px 20%",
     [theme.breakpoints.up("md")]: {
       padding: "50px 100px",
     },
@@ -80,7 +80,7 @@ export const StyledHomePageWrapper = styled("div")(({ theme }) => ({
   },
 }));
 
-export const StyledDetaildeSection = styled("section")(({ theme }) => ({
+export const StyledDetailedSection = styled("section")(({ theme }) => ({
   display: "flex",
   gap: 10,
   flexWrap: "wrap",

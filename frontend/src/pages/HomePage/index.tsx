@@ -16,7 +16,7 @@ import {
 } from "./animationProps";
 import TopSection from "./components/TopSection";
 import {
-  StyledDetaildeSection,
+  StyledDetailedSection,
   StyledFeaturesSection,
   StyledHomePageWrapper,
 } from "./styles";
@@ -140,7 +140,7 @@ const HomePage = (): JSX.Element => {
           </li>
         </ul>
       </StyledFeaturesSection>
-      <StyledDetaildeSection ref={collaborationRef}>
+      <StyledDetailedSection ref={collaborationRef}>
         <motion.h3 {...FadeInProps}>
           {t(TranslationKeys.Collaborations)}
         </motion.h3>
@@ -153,8 +153,8 @@ const HomePage = (): JSX.Element => {
         <motion.p {...FadeInBottomProps}>
           {t(TranslationKeys.CollaborationsDescLong)}
         </motion.p>
-      </StyledDetaildeSection>
-      <StyledDetaildeSection ref={googleRef}>
+      </StyledDetailedSection>
+      <StyledDetailedSection ref={googleRef}>
         <motion.h3 {...FadeInProps}>
           {t(TranslationKeys.GoogleIntegration)}
         </motion.h3>
@@ -167,8 +167,8 @@ const HomePage = (): JSX.Element => {
         <motion.p {...FadeInBottomProps}>
           {t(TranslationKeys.GoogleIntegrationDescLong)}
         </motion.p>
-      </StyledDetaildeSection>
-      <StyledDetaildeSection ref={notificationsRef}>
+      </StyledDetailedSection>
+      <StyledDetailedSection ref={notificationsRef}>
         <motion.h3 {...FadeInProps}>
           {t(TranslationKeys.Notifications)}
         </motion.h3>
@@ -181,8 +181,8 @@ const HomePage = (): JSX.Element => {
         <motion.p {...FadeInBottomProps}>
           {t(TranslationKeys.NotificationsDescLong)}
         </motion.p>
-      </StyledDetaildeSection>
-      <StyledDetaildeSection ref={interfaceRef}>
+      </StyledDetailedSection>
+      <StyledDetailedSection ref={interfaceRef}>
         <motion.h3 {...FadeInProps}>{t(TranslationKeys.Interface)}</motion.h3>
         <motion.div {...FadeInTopProps}>
           <GesturesImgAlt />
@@ -193,8 +193,8 @@ const HomePage = (): JSX.Element => {
         <motion.p {...FadeInBottomProps}>
           {t(TranslationKeys.InterfaceDescLong)}
         </motion.p>
-      </StyledDetaildeSection>
-      <StyledDetaildeSection ref={personalizationRef}>
+      </StyledDetailedSection>
+      <StyledDetailedSection ref={personalizationRef}>
         <motion.h3 {...FadeInProps}>
           {t(TranslationKeys.Personalization)}
         </motion.h3>
@@ -209,7 +209,7 @@ const HomePage = (): JSX.Element => {
           {" "}
           {t(TranslationKeys.PersonalizationDescLong)}
         </motion.p>
-      </StyledDetaildeSection>
+      </StyledDetailedSection>
     </StyledHomePageWrapper>
   );
 };
