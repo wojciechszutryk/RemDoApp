@@ -117,6 +117,7 @@ export class UserService {
     const updateValues = extractPropertiesToUpdate(data, [
       "language",
       "theme",
+      "disableBgcAnimations",
       "notificationPreferences",
     ]);
 
@@ -128,6 +129,11 @@ export class UserService {
 
     if (updateValues.theme) {
       updateObject["preferences.theme"] = updateValues.theme;
+    }
+
+    if (updateValues.disableBgcAnimations) {
+      updateObject["preferences.disableBgcAnimations"] =
+        updateValues.disableBgcAnimations;
     }
 
     if (updateValues.notificationPreferences) {

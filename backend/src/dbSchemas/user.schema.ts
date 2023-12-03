@@ -26,6 +26,7 @@ const UserSchema = new mongoose.Schema({
   preferences: {
     language: String,
     theme: String,
+    disableBgcAnimations: { type: Boolean, default: false },
     notificationPreferences: {
       [EventName.CollaboartionAccepted]: {
         type: String,
