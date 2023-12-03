@@ -263,6 +263,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.RegisterPushSubscription]: "Register Device",
   [TranslationKeys.RegisterPushSubscriptionDescription]:
     "You have not registered devices for push notifications yet. To stay in touch with updates of yours todoLists, reminders, collaborants and tasks, please register your device.",
+  [TranslationKeys.DisableBackgroundAnimation]: "Disable background animation",
 
   [TranslationKeys.Save]: "Save",
   [TranslationKeys.Cancel]: "Cancel",

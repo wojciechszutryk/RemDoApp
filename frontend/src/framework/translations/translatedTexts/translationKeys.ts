@@ -215,6 +215,7 @@ export enum TranslationKeys {
   SocketNotification = "SocketNotification",
   RegisterPushSubscription = "RegisterPushSubscription",
   RegisterPushSubscriptionDescription = "RegisterPushSubscriptionDescription",
+  DisableBackgroundAnimation = "DisableBackgroundAnimation",
 
   Save = "Save",
   Cancel = "Cancel",

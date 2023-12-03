@@ -41,6 +41,8 @@ export interface IUserPreferences {
   language: AppLanguages;
   /** User's prefered theme */
   theme: AppTheme;
+  /** Disable animations of background */
+  disableBgcAnimations: boolean;
   /** User's notification preferences */
   notificationPreferences: NotificationPreferences;
 }
