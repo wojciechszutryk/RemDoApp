@@ -1,4 +1,5 @@
 import { Header } from "atomicComponents/organisms/Header";
+import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import Dialogs from "framework/dialogs/components";
 import { memo, useEffect, useState } from "react";
 import { Outlet, useLocation, useParams } from "react-router-dom";
@@ -12,6 +13,7 @@ const PageTemplate = ({ children }: Props): JSX.Element => {
   const location = useLocation();
   const { todoListId } = useParams();
   const [contentVisible, setContentVisible] = useState(true);
+  const { currentUser } = useCurrentUser();
 
   useEffect(() => {
     if (!todoListId) {
@@ -22,12 +24,15 @@ const PageTemplate = ({ children }: Props): JSX.Element => {
     }
   }, [location.pathname, todoListId]);
 
+  const disableBgcAnimation = currentUser?.preferences.disableBgcAnimations;
+
   return (
     <StyledPageBackground
+      disableBgcAnimation={disableBgcAnimation}
       contentVisible={contentVisible}
       imageUrl={`${process.env.PUBLIC_URL}/images/wave-doodles.png`}
     >
-      <Header />
+      <Header disableBgcAnimation={disableBgcAnimation} />
       <StyledPageContentWrapper contentHidden={!contentVisible}>
         <Outlet />
         {children}

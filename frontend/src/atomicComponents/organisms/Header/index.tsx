@@ -18,7 +18,11 @@ import {
   StyledHeaderWrapper,
 } from "./styles";
 
-export const Header = (): JSX.Element => {
+interface Props {
+  disableBgcAnimation?: boolean;
+}
+
+export const Header = ({ disableBgcAnimation }: Props): JSX.Element => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { currentUser } = useCurrentUser();
@@ -73,7 +77,7 @@ export const Header = (): JSX.Element => {
           </>
         )}
       </StyledHeaderContentWrapper>
-      <StyledHeaderBottomAnimation />
+      <StyledHeaderBottomAnimation disableBgcAnimation={disableBgcAnimation} />
     </StyledHeaderWrapper>
   );
 };
