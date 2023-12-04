@@ -7,7 +7,7 @@ import useCheckLoader from "hooks/useCheckLoader";
 import TodoListCard from "pages/SingleTodoListPage/components/TodoListCard";
 import EmptyTodoLists from "pages/TodoListsPage/components/EmptyTodoLists";
 import { getTodoListsOrderLSKey } from "pages/TodoListsPage/components/TodoListsContainer/helpers";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useLayoutEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { TodoListCardLoader } from "./components/TodoListCardLoader";
@@ -42,6 +42,13 @@ const SingleTodoListPage = (): JSX.Element => {
   const { t } = useTranslation();
   const getTodoListWithTasksQuery = useGetExtendedTodoListQuery(todoListId);
   const showLoader = useCheckLoader(getTodoListWithTasksQuery.isLoading);
+
+  useLayoutEffect(() => {
+    const title = `${t(TranslationKeys.PageTitleMain)} - ${t(
+      TranslationKeys.PageTitleTodoLists
+    )}`;
+    document.title = title;
+  }, []);
 
   const todoListsOrderFromLS: string[] = JSON.parse(
     localStorage.getItem(getTodoListsOrderLSKey(currentUser?.id || "")) || "[]"

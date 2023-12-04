@@ -47,7 +47,7 @@ const HomePage = (): JSX.Element => {
       TranslationKeys.PageTitleHome
     )}`;
     document.title = title;
-  });
+  }, []);
 
   const handleScroll = (ref: React.RefObject<HTMLDivElement>) => () => {
     ref.current?.scrollIntoView({

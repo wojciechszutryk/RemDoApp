@@ -23,7 +23,8 @@ const LoginPage = (): JSX.Element => {
         : t(TranslationKeys.PageTitleSignIn)
     }`;
     document.title = title;
-  });
+  }),
+    [];
 
   useEffect(() => {
     if (currentUser) navigate(Pages.HomePage.path);
