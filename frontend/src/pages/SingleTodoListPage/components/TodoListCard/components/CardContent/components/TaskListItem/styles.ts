@@ -42,6 +42,7 @@ export const StyledListItemText = styled(ListItemText, {
   isTaskFinished?: boolean;
 }>(({ isTaskFinished }) => ({
   flexBasis: "calc(100% - 40px)",
+  wordBreak: "break-word",
   "& span": {
     fontFamily: "Lato",
     fontSize: "16px",
