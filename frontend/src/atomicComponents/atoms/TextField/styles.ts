@@ -12,6 +12,24 @@ export const StyledTextField = styled(TextField, {
 
   "& .MuiInputBase-root": { paddingRight: 0 },
 
+  "& > .Mui-error:before": {
+    borderColor: theme.palette.error.main + " !important",
+  },
+
+  "& > .MuiFormHelperText-root": {
+    position: "absolute",
+    zIndex: 2,
+    margin: 0,
+    top: "-8px",
+    left: "14px",
+    padding: "0 10px",
+    background: theme.palette.primary.light,
+    borderRadius: "10px",
+    "&.Mui-error": {
+      outline: `1.5px solid ${theme.palette.error.main}`,
+    },
+  },
+
   "& fieldset": {
     border: "none",
   },

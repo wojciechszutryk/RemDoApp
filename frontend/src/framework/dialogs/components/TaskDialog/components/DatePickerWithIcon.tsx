@@ -17,6 +17,7 @@ function DateTimePickerWithIcon<T extends object>({
   tooltipTitle,
   name,
   control,
+  slotProps,
   ...props
 }: Props<T>) {
   /**
@@ -70,6 +71,7 @@ function DateTimePickerWithIcon<T extends object>({
         control={control}
         name={name}
         slotProps={{
+          ...slotProps,
           popper: {
             modifiers,
           },

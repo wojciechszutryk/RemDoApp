@@ -30,6 +30,11 @@ const DatesPickers = (): JSX.Element => {
           name: "finishDate" as keyof DatePickerValues,
           control,
           minDateTime: dayjs(watch["startDate"]),
+          slotProps: {
+            textField: {
+              error: false,
+            },
+          },
         },
       ].map((props, index) => (
         <DateTimePickerWithIcon key={index} {...props} />

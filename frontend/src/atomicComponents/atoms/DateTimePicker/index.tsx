@@ -13,6 +13,7 @@ const DateTimePicker = ({
   ...props
 }: MuiDateTimePickerProps<Dayjs>): JSX.Element => {
   const [open, setOpen] = useState(false);
+
   return (
     <>
       {label && <InputLabel>{label}</InputLabel>}
