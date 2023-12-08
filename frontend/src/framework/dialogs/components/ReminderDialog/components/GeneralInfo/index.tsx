@@ -31,7 +31,14 @@ const GeneralInfo = ({
   onSubmit,
 }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const { handleSubmit, control } = useFormContext<IReminderDialogState>();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useFormContext<IReminderDialogState>();
+
+  const markAccordionError =
+    (!!errors.name || !!errors.text) && expandedAccordion !== "general";
 
   return (
     <StyledAccordion
@@ -42,7 +49,10 @@ const GeneralInfo = ({
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Tooltip title={t(TranslationKeys.GeneralInfoReminderDescription)}>
           <div>
-            <EventIcon sx={{ transform: "translate(-4px, -2px)" }} />
+            <EventIcon
+              sx={{ transform: "translate(-4px, -2px)" }}
+              color={markAccordionError ? "error" : undefined}
+            />
           </div>
         </Tooltip>
         <Typography>{t(TranslationKeys.GeneralInfo)}</Typography>
@@ -61,12 +71,22 @@ const GeneralInfo = ({
           <ControlledTextField
             name={"name"}
             required
+            error={!!errors.name}
+            helperText={
+              errors.name?.type === "required" &&
+              t(TranslationKeys.FieldRequired)
+            }
             control={control}
             placeholder={t(TranslationKeys.ReminderName)}
           />
           <ControlledTextField
             name={"text"}
             required
+            error={!!errors.text}
+            helperText={
+              errors.text?.type === "required" &&
+              t(TranslationKeys.FieldRequired)
+            }
             control={control}
             placeholder={t(TranslationKeys.ReminderDescription)}
           />

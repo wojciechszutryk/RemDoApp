@@ -23,6 +23,7 @@ export const AnimatedWaveAltStyles = (
     height: "100%",
     border: `2px solid ${theme.palette.primary.contrastText}`,
     borderRadius: "30px",
+    transition: "border 0.2s",
   },
   "&:after": {
     content: "''",

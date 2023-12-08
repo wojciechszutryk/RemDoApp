@@ -82,6 +82,11 @@ const TaskDialog = (): JSX.Element => {
           </Typography>
           <ControlledTextField
             name={"text"}
+            error={!!methods.formState.errors?.text}
+            helperText={
+              methods.formState.errors.text?.type === "required" &&
+              t(TranslationKeys.FieldRequired)
+            }
             control={control}
             placeholder={t(TranslationKeys.TaskName)}
           />
