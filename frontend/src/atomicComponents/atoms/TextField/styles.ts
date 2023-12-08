@@ -10,7 +10,7 @@ export const StyledTextField = styled(TextField, {
   borderRadius: theme.spacing(3),
   color: theme.palette.primary.contrastText,
 
-  "& .MuiInputBase-root": { paddingRight: 0 },
+  // "& .MuiInputBase-root": { paddingRight: 0 },
 
   "& > .Mui-error:before": {
     borderColor: theme.palette.error.main + " !important",
