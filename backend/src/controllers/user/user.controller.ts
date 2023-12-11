@@ -15,18 +15,27 @@ import {
   response,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import { EventName } from "linked-models/event/event.enum";
 import { AVATAR_FILENAME } from "linked-models/images/avatar";
 import { SEARCH_PHRASE } from "linked-models/search/search.urls";
 import {
   IChangePasswordDTO,
   IUserPublicDataDTO,
 } from "linked-models/user/user.dto";
-import { IUserAttached, IUserPreferences } from "linked-models/user/user.model";
 import {
+  IUserAttached,
+  IUserPreferences,
+  NotificationPreference,
+  NotificationPreferences,
+} from "linked-models/user/user.model";
+import {
+  EMAIL_UNSUB_TOKEN_PARAM,
   URL_AVATAR,
+  URL_EMAIL,
   URL_PASSWORD,
   URL_PREFERENCES,
   URL_PUBLIC_DATA,
+  URL_UNSUBSCRIBE,
   URL_USER,
   URL_USERS,
   USER_PARAM,
@@ -73,6 +82,42 @@ export class UserController
         error,
       });
     }
+  }
+
+  @httpGet(`${URL_USER()}${URL_EMAIL}${URL_UNSUBSCRIBE()}`)
+  async unsubscribeEmail(
+    @requestParam(USER_PARAM) userId: string,
+    @requestParam(EMAIL_UNSUB_TOKEN_PARAM) token: string
+  ) {
+    const user = await this.userService.getUserByAuthId(userId);
+    if (!user) {
+      return this.json("User not found", 404);
+    }
+    if (user.preferences.emailUnsubscribeToken !== token) {
+      return this.json("Invalid token", 400);
+    }
+
+    const updatedNotificationPreferences = (
+      Object.keys(user.preferences.notificationPreferences) as EventName[]
+    ).reduce((acc: NotificationPreferences, key: EventName) => {
+      const value = user.preferences.notificationPreferences[key];
+      if (value === "SOCKET_AND_EMAIL") {
+        acc[key] = NotificationPreference.SOCKET;
+      } else if (value === "PUSH_AND_EMAIL") {
+        acc[key] = NotificationPreference.PUSH;
+      } else if (value === "ALL") {
+        acc[key] = NotificationPreference.PUSH_AND_SOCKET;
+      } else {
+        acc[key] = value;
+      }
+      return acc;
+    }, {} as NotificationPreferences);
+
+    await this.userService.updateUserPreferences(user, {
+      notificationPreferences: updatedNotificationPreferences,
+    });
+
+    return this.ok();
   }
 
   @httpGet(URL_USER() + URL_AVATAR)
