@@ -16,6 +16,7 @@ import {
   VerifyCallback,
 } from "passport-google-oauth20";
 import { Strategy as LocalStrategy } from "passport-local";
+import { v4 as uuidv4 } from "uuid";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
@@ -48,6 +49,7 @@ passport.use(
         password: encryptedPassword,
         whenCreated: new Date(),
         preferences: {
+          emailUnsubscribeToken: uuidv4(),
           language,
         },
         authId: "",
@@ -140,6 +142,7 @@ passport.use(
           displayName: profile.displayName,
           email,
           preferences: {
+            emailUnsubscribeToken: uuidv4(),
             language: profile._json.locale,
           },
           integratedWithGoogle: true,

@@ -9,7 +9,12 @@ export enum NotificationPreference {
   PUSH = "PUSH",
   /** only socket notifications */
   SOCKET = "SOCKET",
-  /** both push and socket notifications */
+  /** only email notifications */
+  EMAIL = "EMAIL",
+  PUSH_AND_SOCKET = "PUSH_AND_SOCKET",
+  PUSH_AND_EMAIL = "PUSH_AND_EMAIL",
+  SOCKET_AND_EMAIL = "SOCKET_AND_EMAIL",
+  /** all push, email and socket notifications */
   ALL = "ALL",
   /** no notifications */
   NONE = "NONE",
@@ -43,6 +48,8 @@ export interface IUserPreferences {
   theme: AppTheme;
   /** Disable animations of background */
   disableBgcAnimations: boolean;
+  /** User's email unsubscribe token */
+  emailUnsubscribeToken: string;
   /** User's notification preferences */
   notificationPreferences: NotificationPreferences;
 }

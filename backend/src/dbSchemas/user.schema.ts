@@ -27,6 +27,7 @@ const UserSchema = new mongoose.Schema({
     language: String,
     theme: String,
     disableBgcAnimations: { type: Boolean, default: false },
+    emailUnsubscribeToken: String,
     notificationPreferences: {
       [EventName.CollaboartionAccepted]: {
         type: String,
