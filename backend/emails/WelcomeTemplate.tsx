@@ -1,35 +1,109 @@
-import { Button, Link, Text } from "@react-email/components";
+import { Container, Link, Text } from "@react-email/components";
 import React, { CSSProperties } from "react";
 import EmailWrapper from "./EmailWrapper";
 
 interface Props {
   name: string;
   isDarkTheme?: boolean;
+  language?: "pl" | "en";
 }
 
-const WelcomeTemplate = ({ name, isDarkTheme }: Props) => {
+const translations = {
+  hello: {
+    en: "Hello",
+    pl: "Cześć",
+  },
+  welcomeText: {
+    en: "Welcome to our app",
+    pl: "Witaj w naszej aplikacji",
+  },
+  whatsNext: {
+    en: "What's next?",
+    pl: "Co dalej?",
+  },
+  createTodo: {
+    en: "Create your first todo list and task",
+    pl: "Stwórz swoją pierwszą listę zadań i zadanie",
+  },
+  toNeverForget: {
+    en: "To never forget what you need to do",
+    pl: "By nigdy nie zapomnieć co musisz zrobić",
+  },
+  createReminder: {
+    en: "Create your first reminder",
+    pl: "Stwórz swoje pierwsze przypomnienie",
+  },
+  toBeNotified: {
+    en: "To be notified about important events",
+    pl: "By być powiadamianym o ważnych wydarzeniach",
+  },
+  configureSettings: {
+    en: "Check your settings",
+    pl: "Sprawdź swoje ustawienia",
+  },
+  addCollaborators: {
+    en: "Add collaborants",
+    pl: "Dodaj współpracowników",
+  },
+  and: {
+    en: "And",
+    pl: "Oraz",
+  },
+};
+
+const WelcomeTemplate = ({ name, isDarkTheme, language = "en" }: Props) => {
   return (
-    <EmailWrapper name={name} isDarkTheme={isDarkTheme}>
-      <Text className="font-bold text-3xl">Hello World {name}</Text>
-      <Text className="font-bold text-3xl">hiii {name}</Text>
-      <Button className="bg-slate-800 text-slate-50 p-10 rounded-md">
-        Click
-      </Button>
-      <Link href="https://todoreact-deploy-z3nszrxrrq-ew.a.run.app/">
-        https://todoreact-deploy-z3nszrxrrq-ew.a.run.app/
+    <EmailWrapper isDarkTheme={isDarkTheme}>
+      <Text className="text-xl text-center">
+        {translations.hello[language]} {name}
+      </Text>
+      <Text className="text-xl text-center">
+        {translations.welcomeText[language]}!
+      </Text>
+      <Text className="text-lg text-center">
+        {translations.whatsNext[language]}:
+      </Text>
+      <Link
+        href="https://remdo.com.pl/#/todoLists"
+        className="bg-primaryMain text-slate-50 p-2 rounded-xl mx-auto text-center block w-fit"
+      >
+        {translations.createTodo[language]}
       </Link>
+      <Text className="text-center">
+        ...{translations.toNeverForget[language]}:
+      </Text>
+      <Link
+        href="https://remdo.com.pl/#/reminders"
+        className="bg-primaryMain text-slate-50 p-2 rounded-xl mx-auto text-center block w-fit"
+      >
+        {translations.createReminder[language]}
+      </Link>
+      <Text className="text-center">
+        ...{translations.toBeNotified[language]}:
+      </Text>
+      <Container
+        className="border-solid border-2 border-primaryMain p-2"
+        style={borderStyle}
+      >
+        <Text className="text-center italic text-lg m-0">
+          {translations.and[language]}...
+        </Text>
+        <Text className="text-center m-0">
+          {translations.configureSettings[language]}
+        </Text>
+        <Text className="text-center m-0">
+          {translations.addCollaborators[language]}
+        </Text>
+      </Container>
     </EmailWrapper>
   );
 };
 
-const body: CSSProperties = {
-  background: "#fff",
-};
-
-const heading: CSSProperties = {
-  fontSize: 20,
-  fontWeight: "bold",
-  marginBottom: 20,
+const borderStyle: CSSProperties = {
+  borderTopRightRadius: "45px",
+  borderTopLeftRadius: "50px",
+  borderBottomLeftRadius: "30px",
+  borderBottomRightRadius: "40px",
 };
 
 export default WelcomeTemplate;
