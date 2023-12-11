@@ -10,7 +10,8 @@ import {
 import React from "react";
 
 interface Props {
-  userId?: string;
+  unsubToken: string;
+  userId: string;
   isDarkTheme?: boolean;
   children?: React.ReactNode;
   preview?: string;
@@ -62,6 +63,7 @@ const EmailWrapper = ({
   isDarkTheme = false,
   preview,
   userId,
+  unsubToken,
 }: Props) => {
   const tailwindConfig = getTailwindConfig(isDarkTheme);
   return (
@@ -108,7 +110,7 @@ const EmailWrapper = ({
             </Container>
             <Container>
               <Link
-                href={`https://remdo.com.pl/users/email/unsubscribe/${userId}`}
+                href={`https://todoreact-deploy-z3nszrxrrq-ew.a.run.app/users/${userId}/email/unsubscribe/${unsubToken}`}
                 className="mx-auto my-2 text-secondaryLight font-sans text-center"
               >
                 {translations.unsubscribe["en"]}
