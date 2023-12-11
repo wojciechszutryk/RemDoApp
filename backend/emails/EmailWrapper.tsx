@@ -10,7 +10,7 @@ import {
 import React from "react";
 
 interface Props {
-  name: string;
+  userId?: string;
   isDarkTheme?: boolean;
   children?: React.ReactNode;
   preview?: string;
@@ -50,11 +50,18 @@ const getTailwindConfig = (isDark: boolean) => ({
   },
 });
 
+const translations = {
+  unsubscribe: {
+    en: "unsubscribe",
+    pl: "wypisz się",
+  },
+};
+
 const EmailWrapper = ({
-  name,
   children,
   isDarkTheme = false,
   preview,
+  userId,
 }: Props) => {
   const tailwindConfig = getTailwindConfig(isDarkTheme);
   return (
@@ -83,16 +90,30 @@ const EmailWrapper = ({
             </Link>
           </Container>
           <Container
-            className="bg-secondaryLight flex justify-center items-center gap-2 min-h-max min-w-max"
+            className="bg-secondaryLight flex justify-center items-center gap-2 min-h-max p-12 text-secondaryContrastText font-sans"
             style={{
               borderRadius: "200px 210px 200px 155px",
             }}
           >
             {children}
           </Container>
-          <Container>
-            <Link href="https://remdo.com.pl/">remdo.com.pl</Link>
-            <Link href="https://remdo.com.pl/">remdo.com.pl</Link>
+          <Container className="w-min text-center">
+            <Container>
+              <Link
+                href="https://remdo.com.pl/"
+                className="mx-auto my-2 text-secondaryLight font-sans text-center"
+              >
+                remdo.com.pl
+              </Link>
+            </Container>
+            <Container>
+              <Link
+                href={`https://remdo.com.pl/users/email/unsubscribe/${userId}`}
+                className="mx-auto my-2 text-secondaryLight font-sans text-center"
+              >
+                {translations.unsubscribe["en"]}
+              </Link>
+            </Container>
           </Container>
         </Body>
       </Tailwind>
