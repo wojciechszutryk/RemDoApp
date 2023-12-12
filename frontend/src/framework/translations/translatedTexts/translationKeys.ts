@@ -213,6 +213,7 @@ export enum TranslationKeys {
   SCHEDULE_REMINDER_NOTIFICATION = "SCHEDULE_REMINDER_NOTIFICATION",
   PushNotification = "PushNotification",
   SocketNotification = "SocketNotification",
+  EmailNotification = "EmailNotification",
   RegisterPushSubscription = "RegisterPushSubscription",
   RegisterPushSubscriptionDescription = "RegisterPushSubscriptionDescription",
   DisableBackgroundAnimation = "DisableBackgroundAnimation",

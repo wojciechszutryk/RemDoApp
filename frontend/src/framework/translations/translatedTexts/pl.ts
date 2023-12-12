@@ -272,6 +272,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "Zaplanowano przypomnienie do wykonania",
   [TranslationKeys.PushNotification]: "Powiadomienia push",
   [TranslationKeys.SocketNotification]: "Powiadomienia w czasie rzeczywistym",
+  [TranslationKeys.EmailNotification]: "Email",
   [TranslationKeys.RegisterPushSubscription]: "Zarejestruj urządzenie",
   [TranslationKeys.RegisterPushSubscriptionDescription]:
     "Nie zarejestrowałeś/aś jeszcze urządzenia do otrzymywania powiadomień push. Aby być na bieżąco z aktualizacjami list zadań, przypomnień, współpracowników i zadań, zarejestruj swoje urządzenie.",
