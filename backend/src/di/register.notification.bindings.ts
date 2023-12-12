@@ -11,6 +11,7 @@ import {
   getUserNotificationCollection,
 } from "dbSchemas/userNotification.schema";
 import { Container } from "inversify";
+import { EmailNotificationService } from "services/notification/email.notification.service";
 import { NotificationService } from "services/notification/notification.service";
 import { NotifyService } from "services/notification/notify.service";
 import { PushNotificationService } from "services/notification/push.notification.service";
@@ -24,6 +25,7 @@ export const registerNotificationBindings = (container: Container) => {
     .bind(UserNotificationCollectionName)
     .toDynamicValue(() => getUserNotificationCollection());
   container.bind(NotificationService).toSelf();
+  container.bind(EmailNotificationService).toSelf();
 
   container.bind(PushNotificationService).toSelf();
   container

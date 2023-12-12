@@ -6,6 +6,8 @@ interface Props {
   name: string;
   isDarkTheme?: boolean;
   language?: "pl" | "en";
+  userId: string;
+  unsubToken: string;
 }
 
 const translations = {
@@ -51,9 +53,9 @@ const translations = {
   },
 };
 
-const WelcomeTemplate = ({ name, isDarkTheme, language = "en" }: Props) => {
+const WelcomeTemplate = ({ name, language = "en", ...rest }: Props) => {
   return (
-    <EmailWrapper isDarkTheme={isDarkTheme}>
+    <EmailWrapper {...rest}>
       <Text className="text-xl text-center">
         {translations.hello[language]} {name}
       </Text>
