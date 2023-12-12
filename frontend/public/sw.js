@@ -28,10 +28,6 @@ self.addEventListener("push", async function (event) {
   try {
     const { payload, notification, language } = await event.data?.json();
 
-    console.log("payload", payload);
-    console.log("notification", notification);
-    console.log("language", language);
-
     if (!payload) return;
 
     let description = "";
@@ -134,8 +130,6 @@ self.addEventListener("push", async function (event) {
         else description = `Reminder${taskTitlePart}was scheduled`;
         break;
     }
-
-    console.log("description", description);
 
     await event.waitUntil(
       self.registration.showNotification(description, {
