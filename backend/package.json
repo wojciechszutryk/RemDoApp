@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@jest/globals": "^29.5.0",
-    "@react-email/components": "0.0.11",
+    "@react-email/components": "0.0.7",
     "@react-email/render": "^0.0.10",
     "@sendgrid/mail": "^8.1.0",
     "axios": "^1.5.0",
@@ -44,7 +44,7 @@
     "passport-local": "^1.0.0",
     "patch-package": "^8.0.0",
     "prettier": "^2.8.2",
-    "react-email": "1.9.5",
+    "react-email": "1.9.4",
     "reflect-metadata": "^0.1.13",
     "socket.io": "^4.6.2",
     "tsc-alias": "^1.8.8",
