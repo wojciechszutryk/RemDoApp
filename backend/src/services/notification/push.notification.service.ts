@@ -4,9 +4,9 @@ import {
   mapPushSubscriptionToAttachedPushSubscription,
 } from "dbSchemas/pushSubscription.schema";
 import { inject, injectable } from "inversify";
-import { AppLanguages } from "linked-models/language/languages.enum";
-import { INotificationDto } from "linked-models/notification/notification.dto";
 import { IPushSubscription } from "linked-models/pushSubscription/pushSubscription.model";
+import { IUserAttached } from "linked-models/user/user.model";
+import { INotificationsTexts } from "models/notification.text.model";
 import webpush from "web-push";
 
 @injectable()
@@ -47,35 +47,38 @@ export class PushNotificationService {
     );
   }
 
-  public async notifyUsers<T>(
-    notifications: INotificationDto[],
-    payload: T,
-    languagePreferences: {
-      [userId: string]: AppLanguages;
-    }
+  public async notifyUsers(
+    notificationTexts: INotificationsTexts,
+    notificationLink: string | null,
+    usersToNotify: IUserAttached[],
+    eventCreatorImg: string | undefined
   ) {
-    const userIDs = notifications.map((n) => n.userId);
+    const userIDs = usersToNotify.map((n) => n.id);
+
+    const usersMap = usersToNotify.reduce((map, user) => {
+      map[user.id] = user;
+      return map;
+    }, {} as { [userId: string]: IUserAttached });
 
     const subscriptions = await this.getSubscriptionsForUsers(userIDs);
 
     //send notifications for each users device
     const notificationsRequests = subscriptions.map((s) => {
-      const notification = notifications.find((n) => n.userId === s.userId);
+      const user = usersMap[s.userId];
 
       return this.webpush
         .sendNotification(
           s,
           JSON.stringify({
-            notification,
-            payload,
-            language: languagePreferences[s.userId] || AppLanguages.en,
+            title: notificationTexts.title[user.preferences.language],
+            body: notificationTexts.description[user.preferences.language],
+            link: notificationLink,
+            img: eventCreatorImg,
           })
         )
         .catch((error) => {
           console.error(
-            `error while sending push notification, payload: ${JSON.stringify(
-              payload
-            )}, error: ${error}`
+            `error while sending push notification, payload: ${notificationTexts.title.en}, error: ${error}`
           );
         });
     });
