@@ -9,7 +9,7 @@ import {
 } from "@react-email/components";
 import React from "react";
 
-interface Props {
+export interface EmailProps {
   unsubToken: string;
   userId: string;
   isDarkTheme?: boolean;
@@ -64,7 +64,7 @@ const EmailWrapper = ({
   preview,
   userId,
   unsubToken,
-}: Props) => {
+}: EmailProps) => {
   const tailwindConfig = getTailwindConfig(isDarkTheme);
   return (
     <Html>
