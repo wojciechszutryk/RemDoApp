@@ -8,8 +8,7 @@
     "postinstall": "patch-package",
     "test": "jest --config ./tests/jest.unit.config.json",
     "gen_vapid_keys": " web-push generate-vapid-keys [--json]",
-    "start": "cross-env ts-node-dev -r tsconfig-paths/register --respawn --transpile-only ./src/app.ts",
-    "email": "email dev -p 3030"
+    "start": "cross-env ts-node-dev -r tsconfig-paths/register --respawn --transpile-only ./src/app.ts"
   },
   "author": "",
   "license": "ISC",

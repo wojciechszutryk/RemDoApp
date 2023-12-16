@@ -1,13 +1,9 @@
 import { Container, Link, Text } from "@react-email/components";
 import React, { CSSProperties } from "react";
-import EmailWrapper from "./EmailWrapper";
+import EmailWrapper, { EmailProps } from "./EmailWrapper";
 
-interface Props {
+interface Props extends EmailProps {
   name: string;
-  isDarkTheme?: boolean;
-  language?: "pl" | "en";
-  userId: string;
-  unsubToken: string;
 }
 
 const translations = {
