@@ -1,21 +1,17 @@
 import { render } from "@react-email/render";
 import sendgrid, { MailService } from "@sendgrid/mail";
-import { inject, injectable } from "inversify";
+import { injectable } from "inversify";
 import { AppLanguages } from "linked-models/language/languages.enum";
 import { IUserAttached } from "linked-models/user/user.model";
 import { INotificationsTexts } from "models/notification.text.model";
 import React from "react";
-import { UserService } from "services/user/user.service";
-import EventTemplate from "../../../emails/EventTemplate";
+import EventTemplate from "../../../emails/emails/EventTemplate";
 
 @injectable()
 export class EmailNotificationService {
   private readonly sendGridClient: MailService;
 
-  constructor(
-    @inject(UserService)
-    private readonly userService: UserService
-  ) {
+  constructor() {
     this.sendGridClient = sendgrid;
     this.sendGridClient.setApiKey(process.env.SENDGRID_API_KEY!);
   }
@@ -41,6 +37,8 @@ export class EmailNotificationService {
             link: notificationLink,
             isDarkTheme: userTheme === "dark",
             eventCreatorImg: eventCreatorImg,
+            language: userLang,
+            name: user.displayName,
             userId: user.id,
             unsubToken: user.preferences.emailUnsubscribeToken,
           })

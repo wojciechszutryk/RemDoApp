@@ -291,7 +291,7 @@ export class NotifyService {
       taskId = null;
     }
 
-    let link = `${process.env.CLIENT_URL}${URL_TODO_LISTS}${URL_TODO_LIST(
+    const link = `${process.env.CLIENT_URL}${URL_TODO_LISTS}${URL_TODO_LIST(
       todoListId
     )}`;
 
