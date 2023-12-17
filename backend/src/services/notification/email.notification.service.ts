@@ -27,7 +27,7 @@ export class EmailNotificationService {
       const userTheme = user.preferences.theme || "light";
 
       return {
-        from: "wscode@wscode.com.pl",
+        from: process.env.FROM_EMAIL!,
         to: user.email,
         subject: notificationTexts.title[AppLanguages.pl],
         html: render(
@@ -46,7 +46,9 @@ export class EmailNotificationService {
       };
     });
 
-    await this.sendGridClient.send(emails);
+    await this.sendGridClient.send(emails).catch((error) => {
+      console.error(error);
+    });
   }
 
   public async sendEmail(
@@ -58,7 +60,7 @@ export class EmailNotificationService {
     const emailHtml = render(template);
 
     const options = {
-      from: "wscode@wscode.com.pl",
+      from: process.env.FROM_EMAIL!,
       to: email,
       subject: subject,
       html: emailHtml,

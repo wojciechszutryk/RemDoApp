@@ -18,12 +18,12 @@ import {
   NotificationPreference,
 } from "linked-models/user/user.model";
 import { URL_USER } from "linked-models/user/user.urls";
+import { INotificationsTexts } from "models/notification.text.model";
 import { UserService } from "services/user/user.service";
 import { EmailNotificationService } from "./email.notification.service";
 import { NotificationService } from "./notification.service";
 import { PushNotificationService } from "./push.notification.service";
 import { SocketNotificationService } from "./socket.notification.service";
-import { INotificationsTexts } from "models/notification.text.model";
 
 /**
  * for collaboration - IUserPublicDataDTO
@@ -386,7 +386,7 @@ export class NotifyService {
     this.emailNotificationService.sendEmailNotifications(
       notificationTexts,
       notificationLink,
-      usersToNotifyByPush,
+      usersToNotifyByEmail,
       eventCreator?.avatarUrl
     );
     /** EMAIL END */

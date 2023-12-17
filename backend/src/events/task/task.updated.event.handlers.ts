@@ -49,7 +49,7 @@ export class TaskUpdatedEventHandler
       eventCreatorId,
       EventName.TaskUpdated,
       EventSubject.Task,
-      updatedTask,
+      { payload: updatedTask, eventCreator },
       {
         todoListId: updatedTask.todoListId,
         taskId: updatedTask.id,
