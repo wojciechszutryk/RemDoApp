@@ -7,7 +7,7 @@ self.addEventListener("activate", function (event) {
 self.addEventListener("notificationclick", function (event) {
   //TODO check if works properly
   const clickedNotification = event.notification;
-  const link = event.notification.data.link;
+  const link = event.notification.data;
 
   event.waitUntil(
     clients
@@ -29,8 +29,6 @@ self.addEventListener("notificationclick", function (event) {
 self.addEventListener("push", async function (event) {
   try {
     const { title, link, body, img } = await event.data?.json();
-
-    if (!payload) return;
 
     await event.waitUntil(
       self.registration.showNotification(title, {

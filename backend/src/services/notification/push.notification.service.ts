@@ -47,6 +47,10 @@ export class PushNotificationService {
     );
   }
 
+  private async deletePushSubscription(subscriptionId: string) {
+    await this.pushSubscriptionCollection.deleteOne({ _id: subscriptionId });
+  }
+
   public async notifyUsers(
     notificationTexts: INotificationsTexts,
     notificationLink: string | null,
@@ -72,20 +76,19 @@ export class PushNotificationService {
           JSON.stringify({
             title: notificationTexts.title[user.preferences.language],
             body: notificationTexts.description[user.preferences.language],
-            link: notificationLink,
+            data: notificationLink,
             img: eventCreatorImg,
           })
         )
-        .catch((error) => {
-          console.error(
-            `error while sending push notification, payload: ${notificationTexts.title.en}, error: ${error}`
-          );
+        .catch(async (err) => {
+          if (err.statusCode === 410) await this.deletePushSubscription(s.id);
+          else console.log("Error sending notification, reason: ", err);
         });
     });
 
     //do not await to not block the process
     try {
-      Promise.all([notificationsRequests]).catch((error) => {
+      Promise.all(notificationsRequests).catch((error) => {
         console.error(error);
       });
     } catch (error) {
