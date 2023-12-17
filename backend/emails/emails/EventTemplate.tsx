@@ -34,10 +34,13 @@ const EventTemplate = ({
 }: Props) => {
   return (
     <EmailWrapper {...rest} language={language}>
-      <Text className="text-xl text-center text-secondaryContrastText">
+      <Text
+        className="text-xl text-center text-secondaryContrastText"
+        key={name}
+      >
         {translations.hello[language]} {name},
       </Text>
-      <Text className="text-lg text-center text-infoMain">
+      <Text className="text-lg text-center text-infoMain" key={language}>
         {translations.somethinhHappened[language]}
       </Text>
       <Hr className="border-infoMain" />
@@ -48,17 +51,15 @@ const EventTemplate = ({
           </Text>
         </Column>
         {eventCreatorImg && (
-          <>
-            <Column>
-              <Img
-                src={eventCreatorImg}
-                width={90}
-                height={90}
-                alt="author"
-                className="rounded-full mt-3 p-2 border-2 border-infoMain border-solid"
-              />
-            </Column>
-          </>
+          <Column>
+            <Img
+              src={eventCreatorImg}
+              width={90}
+              height={90}
+              alt="author"
+              className="rounded-full mt-3 p-2 border-2 border-infoMain border-solid"
+            />
+          </Column>
         )}
       </Row>
       {link && (

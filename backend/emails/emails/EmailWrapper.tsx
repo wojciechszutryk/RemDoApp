@@ -77,7 +77,7 @@ const EmailWrapper = ({
       <Tailwind config={tailwindConfig}>
         <Body className="m-0 bg-backgroundPaper">
           <Section>
-            <Row className="mb-10">
+            <Row className="mb-10" key={"header"}>
               <Column
                 className="bg-secondaryLight p-2 "
                 style={{
@@ -108,12 +108,13 @@ const EmailWrapper = ({
               style={{
                 borderRadius: "200px 210px 200px 155px",
               }}
+              key={"main"}
             >
               <Column>{children}</Column>
             </Row>
-            <Row className="w-min text-center mb-15">
+            <Row className="w-min text-center mb-15" key={"footer"}>
               <Column>
-                <Container>
+                <Container key={"remdo"}>
                   <Link
                     href="https://remdo.com.pl/"
                     className="mx-auto my-2 text-secondaryLight font-sans text-center"
@@ -121,7 +122,7 @@ const EmailWrapper = ({
                     remdo.com.pl
                   </Link>
                 </Container>
-                <Container>
+                <Container key={"unsub"}>
                   <Link
                     href={`https://todoreact-deploy-z3nszrxrrq-ew.a.run.app/users/${userId}/email/unsubscribe/${unsubToken}`}
                     className="mx-auto my-2 text-secondaryLight font-sans text-center"

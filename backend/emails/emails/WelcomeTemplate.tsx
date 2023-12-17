@@ -83,13 +83,13 @@ const WelcomeTemplate = ({ name, language = "en", ...rest }: Props) => {
         className="border-solid border-2 border-primaryMain p-2"
         style={borderStyle}
       >
-        <Text className="text-center italic text-lg m-0">
+        <Text className="text-center italic text-lg m-0" key={"and"}>
           {translations.and[language]}...
         </Text>
-        <Text className="text-center m-0">
+        <Text className="text-center m-0" key={"configure"}>
           {translations.configureSettings[language]}
         </Text>
-        <Text className="text-center m-0">
+        <Text className="text-center m-0" key={"collaborant"}>
           {translations.addCollaborators[language]}
         </Text>
       </Container>
