@@ -1,6 +1,17 @@
+import {
+  URL_COLLABORANTS,
+  URL_COLLABORATION,
+} from "linked-models/collaboration/collaboration.urls";
+
 export const Pages = {
   HomePage: {
     path: "/",
+  },
+  CollaborantsPage: {
+    path: URL_COLLABORANTS,
+    Collaborant: {
+      path: `${URL_COLLABORANTS}${URL_COLLABORATION()}`,
+    },
   },
   FeaturesPage: {
     path: "/features",

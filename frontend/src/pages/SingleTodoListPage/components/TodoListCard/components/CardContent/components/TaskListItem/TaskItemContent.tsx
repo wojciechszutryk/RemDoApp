@@ -23,7 +23,7 @@ const TaskItemContent = ({ task }: Props): JSX.Element => {
   const { dragStartPosition } = useSwippableItemContext();
   const isTaskCompleted = !!task.completionDate;
   const [showHighlight, setShowHighlight] = useState(false);
-  const { taskId } = useParams();
+  const { taskId } = useParams(); 
 
   useEffect(() => {
     if (taskId === task.id) {

@@ -1,13 +1,15 @@
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { Collapse, ListItem, ListItemAvatar } from "@mui/material";
+import { Collapse, ListItemAvatar } from "@mui/material";
 import UserAvatar from "atomicComponents/organisms/UserAvatar";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { ICollaborantDTO } from "linked-models/collaboration/collaboration.dto";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { StyledCollaborantListItemText } from "../../styles";
 import CollaborationActions from "../CollaborationActions";
 import CollaborationStateIcon from "../CollaborationStateIcon";
+import { StyledCollListItem } from "./styles";
 
 interface Props {
   collaborant: ICollaborantDTO;
@@ -16,6 +18,7 @@ interface Props {
 const CollabrantListItem = ({ collaborant }: Props): JSX.Element => {
   const [open, setOpen] = useState(false);
   const { currentUser } = useCurrentUser();
+  const { collaborationId } = useParams();
 
   const handleClick = () => {
     setOpen(!open);
@@ -32,7 +35,7 @@ const CollabrantListItem = ({ collaborant }: Props): JSX.Element => {
 
   return (
     <>
-      <ListItem onClick={handleClick} sx={{ cursor: "pointer" }}>
+      <StyledCollListItem onClick={handleClick} highlighted={collaborationId == collaborant.id}>
         <ListItemAvatar sx={{ position: "relative" }}>
           <UserAvatar userData={collaborantPublicData} />
           <CollaborationStateIcon
@@ -50,7 +53,7 @@ const CollabrantListItem = ({ collaborant }: Props): JSX.Element => {
           secondary={collaborantPublicData.email}
         />
         {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
+      </StyledCollListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <CollaborationActions collaborant={collaborant} />
       </Collapse>
