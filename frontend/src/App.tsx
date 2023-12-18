@@ -41,7 +41,10 @@ const App = (): JSX.Element => {
               </PageTemplate>
             </Suspense>
           }
-        />
+        >
+          <Route path={Pages.CollaborantsPage.path} />
+          <Route path={Pages.CollaborantsPage.Collaborant.path} />
+        </Route>
         <Route
           path={Pages.LoginPage.path}
           element={

@@ -27,6 +27,7 @@ const SettingsMenu = (): JSX.Element => {
   const menuOpen = Boolean(anchorEl);
   const { t } = useTranslation();
   const {
+    dialogsState: { collaborantsDrawer },
     dialogsActions: { updateCollaborantsDrawer },
   } = useDialogs();
 
