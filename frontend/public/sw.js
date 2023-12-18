@@ -35,6 +35,7 @@ self.addEventListener("push", async function (event) {
         vibrate: [200, 100, 200, 100, 200, 100, 200],
         body,
         icon: img,
+        data: link,
       })
     );
   } catch (err) {

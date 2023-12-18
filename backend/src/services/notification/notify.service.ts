@@ -253,14 +253,16 @@ export class NotifyService {
   ): string | null {
     if (eventName === EventName.TodoListDeleted) return null;
 
+    const baseUrl = process.env.CLIENT_URL?.includes("#")
+      ? process.env.CLIENT_URL
+      : process.env.CLIENT_URL + "/#";
+
     let todoListId: string | null = null;
     let taskId = null;
 
     if ("displayName" in payload) {
       //user case (IUserPublicDataDTO)
-      return `${process.env.CLIENT_URL}${URL_COLLABORANTS}${URL_USER(
-        payload.id
-      )}`;
+      return `${baseUrl}${URL_COLLABORANTS}${URL_USER(payload.id)}`;
     } else if ("name" in payload && "id" in payload) {
       //todoList case (ITodoListWithMembersDto| ITodoListAttached)
       todoListId = payload.id;
@@ -291,9 +293,7 @@ export class NotifyService {
       taskId = null;
     }
 
-    const link = `${process.env.CLIENT_URL}${URL_TODO_LISTS}${URL_TODO_LIST(
-      todoListId
-    )}`;
+    const link = `${baseUrl}${URL_TODO_LISTS}${URL_TODO_LIST(todoListId)}`;
 
     if (!!taskId) {
       return `${link}${URL_TASKS}${URL_TASK(taskId)}`;
