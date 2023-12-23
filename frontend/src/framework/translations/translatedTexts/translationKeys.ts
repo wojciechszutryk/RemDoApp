@@ -21,6 +21,9 @@ export enum TranslationKeys {
   Personalization = "Personalization",
   PersonalizationDescShort = "PersonalizationDescShort",
   PersonalizationDescLong = "PersonalizationDescLong",
+  ForgetPasswordSuccess = "ForgetPasswordSuccess",
+  ForgetPasswordError = "ForgetPasswordError",
+  ForgetPassword = "ForgetPassword",
 
   WelcomeTextDescription = "WelcomeTextDescription",
   LoginPanelSeparatorText = "LoginPanelSeparatorText",

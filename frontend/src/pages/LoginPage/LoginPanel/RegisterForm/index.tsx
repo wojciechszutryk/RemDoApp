@@ -1,6 +1,5 @@
 import { CircularProgress } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
-import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { useRegisterUserMutation } from "framework/authentication/mutations/useRegisterUser.mutation";
 import { Pages } from "framework/routing/pages";
@@ -89,34 +88,30 @@ const RegisterContent = ({
         control={control}
         placeholder={t(TranslationKeys.DisplayName)}
       />
-      {errors.displayName?.message && (
-        <ErrorText>{errors.displayName.message}</ErrorText>
-      )}
       <ControlledTextField
         name={"email"}
         control={control}
         type="email"
+        error={!!errors.email?.message}
+        helperText={errors.email?.message}
         placeholder={t(TranslationKeys.Email)}
       />
-      {errors.email?.message && <ErrorText>{errors.email.message}</ErrorText>}
       <ControlledTextField
         name={"password"}
         control={control}
         type="password"
+        error={!!errors.password?.message}
+        helperText={errors.password?.message}
         placeholder={t(TranslationKeys.Password)}
       />
-      {errors.password?.message && (
-        <ErrorText>{errors.password.message}</ErrorText>
-      )}
       <ControlledTextField
         name={"passwordRepeat"}
         control={control}
         type="password"
+        error={!!errors.passwordRepeat?.message}
+        helperText={errors.passwordRepeat?.message}
         placeholder={t(TranslationKeys.PasswordRepeat)}
       />
-      {errors.passwordRepeat?.message && (
-        <ErrorText>{errors.passwordRepeat.message}</ErrorText>
-      )}
       <Button type="submit">
         {registerUserMutation.isLoading && <CircularProgress size={"20px"} />}
         {t(TranslationKeys.RegisterButtonText)}
