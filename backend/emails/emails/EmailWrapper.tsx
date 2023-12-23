@@ -13,12 +13,17 @@ import {
 import React from "react";
 
 export interface EmailProps {
-  unsubToken: string;
-  userId: string;
   language?: "pl" | "en";
   isDarkTheme?: boolean;
   children?: React.ReactNode;
   preview?: string;
+  /**
+   * Used to unsubscribe from emails notifications, if null, unsubscribe link will not be displayed
+   */
+  unsubNotifyParams: {
+    userId: string;
+    unsubToken: string;
+  } | null;
 }
 
 const getTailwindConfig = (isDark: boolean) => ({
@@ -67,8 +72,7 @@ const EmailWrapper = ({
   isDarkTheme = false,
   language = "en",
   preview,
-  userId,
-  unsubToken,
+  unsubNotifyParams,
 }: EmailProps) => {
   const tailwindConfig = getTailwindConfig(isDarkTheme);
   return (
@@ -122,14 +126,16 @@ const EmailWrapper = ({
                     remdo.com.pl
                   </Link>
                 </Container>
-                <Container key={"unsub"}>
-                  <Link
-                    href={`https://todoreact-deploy-z3nszrxrrq-ew.a.run.app/users/${userId}/email/unsubscribe/${unsubToken}`}
-                    className="mx-auto my-2 text-secondaryLight font-sans text-center"
-                  >
-                    {translations.unsubscribe[language]}
-                  </Link>
-                </Container>
+                {unsubNotifyParams && (
+                  <Container key={"unsub"}>
+                    <Link
+                      href={`https://todoreact-deploy-z3nszrxrrq-ew.a.run.app/users/${unsubNotifyParams.userId}/email/unsubscribe/${unsubNotifyParams.unsubToken}`}
+                      className="mx-auto my-2 text-secondaryLight font-sans text-center"
+                    >
+                      {translations.unsubscribe[language]}
+                    </Link>
+                  </Container>
+                )}
               </Column>
             </Row>
           </Section>

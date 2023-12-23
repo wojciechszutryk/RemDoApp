@@ -39,8 +39,10 @@ export class EmailNotificationService {
             eventCreatorImg: eventCreatorImg,
             language: userLang,
             name: user.displayName,
-            userId: user.id,
-            unsubToken: user.preferences.emailUnsubscribeToken,
+            unsubNotifyParams: {
+              userId: user.id,
+              unsubToken: user.preferences.emailUnsubscribeToken,
+            },
           })
         ),
       };
