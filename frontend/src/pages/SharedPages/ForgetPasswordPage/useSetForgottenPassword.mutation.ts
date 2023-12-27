@@ -15,19 +15,12 @@ export const useSetForgottenPassword = () => {
     userId: string;
     newPassword: string;
   }): Promise<void> => {
+    
     const url = FRONTIFY_URL(
       URL_FORGET_PASSWORD,
       `${URL_USERS}${URL_USER(userId)}`
     );
-    await apiPost<{ newPassword: string }, void>(
-      url,
-      { newPassword },
-      {
-        headers: {
-          "custom-token": "header",
-        },
-      }
-    );
+    await apiPost<{ newPassword: string }, void>(url, { newPassword });
   };
 
   return useMutation(forgetPassword);
