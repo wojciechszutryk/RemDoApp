@@ -4,6 +4,7 @@ import {
   getUserCollection,
   mapUserToAttachedUser,
 } from "dbSchemas/user.schema";
+import { ACCESS_LINK_HEADER } from "linked-models/accessLink/accessLink.url";
 import { TODO_LIST_PARAM } from "linked-models/todoList/todoList.urls";
 import { IUserAttached, IUserPreferences } from "linked-models/user/user.model";
 import {
@@ -111,11 +112,9 @@ passport.use(
 passport.use(
   new UniqueTokenStrategy(
     {
-      tokenQuery: "custom-token",
-      tokenParams: "custom-token",
-      tokenField: "custom-token",
-      tokenHeader: "custom-token",
-      failOnMissing: true,
+      tokenHeader: ACCESS_LINK_HEADER,
+      failOnMissing: false,
+      session: false,
     },
     async (token, done) => {
       const accessLinkId = decodeHash(token).split(".")[0];
@@ -135,8 +134,8 @@ passport.use(
         return done(new Error("Access link expired"), undefined);
 
       const tempUser: IUserAttached = {
-        id: accessToken.id,
-        authId: accessToken.id,
+        id: accessToken[USER_PARAM] || accessLinkId,
+        authId: accessToken[USER_PARAM] || accessLinkId,
         password: "",
         integratedWithGoogle: false,
         displayName: "Temporary user",

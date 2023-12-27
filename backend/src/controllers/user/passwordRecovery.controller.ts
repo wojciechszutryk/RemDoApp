@@ -5,8 +5,8 @@ import {
   controller,
   httpPost,
   interfaces,
-  queryParam,
   requestBody,
+  requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { IUserAttached } from "linked-models/user/user.model";
@@ -16,8 +16,8 @@ import {
   URL_USERS,
   USER_PARAM,
 } from "linked-models/user/user.urls";
+import { AuthAnonymouslyWithToken } from "middlewares/user/authAnonymouslyWithToken.middleware";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
-import passport from "passport";
 import { UserAuthService } from "services/user/user.auth.service";
 import { PasswordRecoverService } from "services/user/user.passwordRecover.service";
 import { UserService } from "services/user/user.service";
@@ -64,20 +64,16 @@ export class PasswordRecoveryController
 
   @httpPost(
     `${URL_USERS}${URL_USER()}`,
-    passport.authenticate("token"),
+    AuthAnonymouslyWithToken,
     SetCurrentUser
   )
   async changePassword(
-    @queryParam(USER_PARAM) userId: string,
+    @requestParam(USER_PARAM) userId: string,
     @currentUser() currentUser: IUserAttached,
     @requestBody() body: { newPassword: string }
   ): Promise<OkResult> {
     //currentUser is temporary user set in passport middleware - it should have set proper access scope and it should match userId from query params
-    if (
-      currentUser.accessScopes?.[USER_PARAM] !== currentUser.id ||
-      currentUser.id !== userId ||
-      currentUser.accessScopes?.[USER_PARAM] !== userId
-    ) {
+    if (currentUser.accessScopes?.[USER_PARAM] !== userId) {
       return this.json("Authentication failed", 403);
     }
 
