@@ -37,6 +37,18 @@ export class UserService {
     return mapUserToAttachedUser(foundUser);
   }
 
+  public async getUserByEmail(
+    emails: string
+  ): Promise<IUserAttached | undefined> {
+    const foundUser = await this.userCollection.findOne({ email: emails });
+
+    if (!foundUser) {
+      return undefined;
+    }
+
+    return mapUserToAttachedUser(foundUser);
+  }
+
   public async getUsersByEmails(emails: string[]): Promise<IUserAttached[]> {
     const foundUsers = await this.userCollection.find({
       email: { $in: emails },
