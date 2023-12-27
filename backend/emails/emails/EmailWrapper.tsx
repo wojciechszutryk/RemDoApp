@@ -20,7 +20,7 @@ export interface EmailProps {
   /**
    * Used to unsubscribe from emails notifications, if null, unsubscribe link will not be displayed
    */
-  unsubNotifyParams: {
+  unsubNotifyParams?: {
     userId: string;
     unsubToken: string;
   } | null;
