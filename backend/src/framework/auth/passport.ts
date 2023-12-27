@@ -1,12 +1,16 @@
 import { compare, hash } from "bcrypt";
+import { getAccessLinkCollection } from "dbSchemas/accessLink.schema";
 import {
   getUserCollection,
   mapUserToAttachedUser,
 } from "dbSchemas/user.schema";
+import { TODO_LIST_PARAM } from "linked-models/todoList/todoList.urls";
+import { IUserAttached, IUserPreferences } from "linked-models/user/user.model";
 import {
   URL_GOOGLE,
   URL_REDIRECT,
   URL_USERS,
+  USER_PARAM,
 } from "linked-models/user/user.urls";
 import passport from "passport";
 import {
@@ -16,6 +20,8 @@ import {
   VerifyCallback,
 } from "passport-google-oauth20";
 import { Strategy as LocalStrategy } from "passport-local";
+import { UniqueTokenStrategy } from "passport-unique-token";
+import { decodeHash } from "services/accessLink/accessLink.helpers";
 import { v4 as uuidv4 } from "uuid";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
@@ -32,13 +38,16 @@ passport.use(
       const { displayName, email, password, language } = req.body;
 
       if (!(email && password && displayName)) {
-        return done("No email or password or displayName provided", false);
+        return done(
+          { message: "No email or password or displayName provided" },
+          false
+        );
       }
 
       const existingUser = await getUserCollection().findOne({ email });
 
       if (existingUser) {
-        return done("That email is already taken.", false);
+        return done({ message: "That email is already taken." }, false);
       }
 
       const encryptedPassword = await hash(password, 10);
@@ -58,7 +67,7 @@ passport.use(
         authId: user._id,
       });
 
-      if (!user) return done("Registration failed", false);
+      if (!user) return done({ message: "Registration failed" }, false);
       const attachedUser = mapUserToAttachedUser(user);
       done(null, { ...attachedUser, authId: attachedUser.id });
     }
@@ -76,21 +85,72 @@ passport.use(
         done({ message: "Email or password is empty" }, false);
       const foundUser = await getUserCollection().findOne({ email });
 
-      if (!foundUser) return done("Email or password is incorrect", false);
+      if (!foundUser)
+        return done({ message: "Email or password is incorrect" }, false);
 
       if (!foundUser.password)
         return done(
-          "User was registered with third party service and can't be logged in with password. Please use third party service to log in.",
+          {
+            message:
+              "User was registered with third party service and can't be logged in with password. Please use third party service to log in.",
+          },
           false
         );
 
       const isPasswordCorrect = await compare(password, foundUser.password);
 
       if (!isPasswordCorrect) {
-        return done("Email or password is incorrect", false);
+        return done({ message: "Email or password is incorrect" }, false);
       }
 
       return done(null, mapUserToAttachedUser(foundUser));
+    }
+  )
+);
+
+passport.use(
+  new UniqueTokenStrategy(
+    {
+      tokenQuery: "custom-token",
+      tokenParams: "custom-token",
+      tokenField: "custom-token",
+      tokenHeader: "custom-token",
+      failOnMissing: true,
+    },
+    async (token, done) => {
+      const accessLinkId = decodeHash(token).split(".")[0];
+      if (!accessLinkId)
+        return done(new Error("Access link not found"), undefined);
+
+      let accessToken;
+      try {
+        accessToken = await getAccessLinkCollection().findOne({
+          _id: accessLinkId,
+        });
+      } catch (error) {
+        return done(new Error("Access link not found"), undefined);
+      }
+
+      if (!accessToken || accessToken.expiryDate < new Date())
+        return done(new Error("Access link expired"), undefined);
+
+      const tempUser: IUserAttached = {
+        id: accessToken.id,
+        authId: accessToken.id,
+        password: "",
+        integratedWithGoogle: false,
+        displayName: "Temporary user",
+        email: "Temporary user",
+        accessScopes: {
+          [USER_PARAM]: accessToken[USER_PARAM],
+          [TODO_LIST_PARAM]: accessToken[TODO_LIST_PARAM],
+        },
+        isTemporary: true,
+        whenCreated: new Date(),
+        preferences: {} as IUserPreferences,
+      };
+
+      return done(null, tempUser);
     }
   )
 );
