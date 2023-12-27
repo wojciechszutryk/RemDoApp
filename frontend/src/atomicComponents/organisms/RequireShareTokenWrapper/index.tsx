@@ -35,11 +35,11 @@ export const RequireShareTokenWrapper = ({ children }: Props): JSX.Element => {
     return <CircularProgress />;
   }
 
-  if (!shareParam || checkShareTokenValidityQuery.data?.isValid === false) {
+  if (!!shareParam && checkShareTokenValidityQuery.data?.isValid === true) {
+    return children;
+  } else {
     return (
       <NoPermissionTemplate altText={t(TranslationKeys.NoValidTokenInfo)} />
     );
-  } else {
-    return children;
   }
 };
