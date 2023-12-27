@@ -1,11 +1,13 @@
 import PageTemplate from "atomicComponents/molecules/PageTemplate";
 import { RequireAuthPageWrapper } from "atomicComponents/organisms/RequireAuthPageWrapper";
+import { RequireShareTokenWrapper } from "atomicComponents/organisms/RequireShareTokenWrapper";
 import useAutoLogin from "framework/authentication/useAutoLogin";
 import useNotificationSocket from "framework/notifications/useNotificationSocket";
 
 import { Pages } from "framework/routing/pages";
 import "framework/translations/i18.config/resources";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
+import { URL_SHARED } from "linked-models/accessLink/accessLink.url";
 import UserPage from "pages/UserPage";
 import { lazy, Suspense, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,6 +18,9 @@ const LoginPage = lazy(() => import("pages/LoginPage"));
 const RemindersPage = lazy(() => import("pages/RemindersPage"));
 const TodoListsPage = lazy(() => import("pages/TodoListsPage"));
 const SingleTodoListPage = lazy(() => import("pages/SingleTodoListPage"));
+const ForgetPasswordPage = lazy(
+  () => import("pages/SharedPages/ForgetPasswordPage")
+);
 
 const App = (): JSX.Element => {
   const { t } = useTranslation();
@@ -121,6 +126,34 @@ const App = (): JSX.Element => {
                 <RequireAuthPageWrapper>
                   <SingleTodoListPage />
                 </RequireAuthPageWrapper>
+              </PageTemplate>
+            </Suspense>
+          }
+        />
+        <Route
+          path={Pages.SharedForgotPasswordPage.path()}
+          element={
+            <Suspense fallback={false}>
+              <PageTemplate>
+                <RequireShareTokenWrapper>
+                  <ForgetPasswordPage />
+                </RequireShareTokenWrapper>
+              </PageTemplate>
+            </Suspense>
+          }
+        />
+        <Route
+          path={URL_SHARED}
+          element={<Suspense fallback={false}>{"TODO: shared page"}</Suspense>}
+        />
+        <Route
+          path={Pages.SharedTodoListPage.path()}
+          element={
+            <Suspense fallback={false}>
+              <PageTemplate>
+                <RequireShareTokenWrapper>
+                  <SingleTodoListPage disableListsNavigate />
+                </RequireShareTokenWrapper>
               </PageTemplate>
             </Suspense>
           }

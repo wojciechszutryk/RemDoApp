@@ -6,6 +6,7 @@ export enum TranslationKeys {
   PageTitleSignIn = "PageTitleSignIn",
   PageTitleSignUp = "PageTitleSignUp",
   NoAccess = "NoAccess",
+  NoValidTokenInfo = "NoValidTokenInfo",
 
   Features = "Features",
   Collaborations = "Collaborations",
@@ -23,6 +24,7 @@ export enum TranslationKeys {
   PersonalizationDescLong = "PersonalizationDescLong",
   ForgetPasswordSuccess = "ForgetPasswordSuccess",
   ForgetPasswordError = "ForgetPasswordError",
+  ForgetPasswordChangeError = "ForgetPasswordChangeError",
   ForgetPassword = "ForgetPassword",
 
   WelcomeTextDescription = "WelcomeTextDescription",

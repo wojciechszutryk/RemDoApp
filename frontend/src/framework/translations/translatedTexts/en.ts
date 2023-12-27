@@ -5,6 +5,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.FieldRequired]: "* Required",
 
   [TranslationKeys.NoAccess]: "You are not allowed to access this resources.",
+  [TranslationKeys.NoValidTokenInfo]:
+    "To access this resource you need valid token. There is no token or token is invalid or token expired.",
 
   [TranslationKeys.Features]: "Features",
   [TranslationKeys.Collaborations]: "Collaborations",
@@ -32,6 +34,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
     "RemDo web application is dedicated to providing users with a high degree of customization for their interface. Users have the flexibility to switch between different themes and languages, tailoring their experience to suit individual preferences. Beyond the aesthetics, personalization extends to the user profile, allowing individuals to add a personal touch with features such as photo display and a customizable display name. Moreover, users can finely tune their notification preferences, selecting exactly which alerts they wish to receive, ensuring a personalized and streamlined communication experience within the application. This comprehensive personalization feature enhances user engagement and satisfaction.",
   [TranslationKeys.ForgetPasswordSuccess]: "Email with reset link sent.",
   [TranslationKeys.ForgetPasswordError]: "Error while sending email.",
+  [TranslationKeys.ForgetPasswordChangeError]: "Error while changing password. Try again.",
   [TranslationKeys.ForgetPassword]: "Forgot password",
 
   [TranslationKeys.PageTitleHome]: "Home",

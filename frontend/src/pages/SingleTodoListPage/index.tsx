@@ -33,7 +33,11 @@ const variants = {
   },
 };
 
-const SingleTodoListPage = (): JSX.Element => {
+interface Props {
+  disableListsNavigate?: boolean;
+}
+
+const SingleTodoListPage = ({ disableListsNavigate }: Props): JSX.Element => {
   const { todoListId } = useParams();
   const [direction, setDirection] = useState(0);
   const { currentUser } = useCurrentUser();
@@ -106,10 +110,12 @@ const SingleTodoListPage = (): JSX.Element => {
 
   return (
     <StyledSingleTodoListPageWrapper key={animationKey}>
-      <StyledBackButton onClick={() => navigate(Pages.TodoListsPage.path)}>
-        <ArrowBackIcon />
-        <p>{t(TranslationKeys.BackToTodoLists)}</p>
-      </StyledBackButton>
+      {!disableListsNavigate && (
+        <StyledBackButton onClick={() => navigate(Pages.TodoListsPage.path)}>
+          <ArrowBackIcon />
+          <p>{t(TranslationKeys.BackToTodoLists)}</p>
+        </StyledBackButton>
+      )}
       <motion.div
         custom={direction}
         variants={variants}
@@ -122,7 +128,7 @@ const SingleTodoListPage = (): JSX.Element => {
       >
         {content}
       </motion.div>
-      {todoListsOrderFromLS.length > 2 && (
+      {todoListsOrderFromLS.length > 2 && !disableListsNavigate && (
         <>
           <StyledSwipeIndicator onClick={() => paginate(1)} />
           <StyledSwipeIndicator right onClick={() => paginate(-1)} />

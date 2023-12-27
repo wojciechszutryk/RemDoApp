@@ -5,6 +5,9 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.FieldRequired]: "* Wymagane",
 
   [TranslationKeys.NoAccess]: "Nie posiadasz wymaganych uprawnień.",
+  [TranslationKeys.NoValidTokenInfo]:
+    "Aby uzyskać dostęp do tej strony, musisz posiadać ważny token. Nie wykryto żadnego tokenu, jest on nieprawidłowy lub wygasł.",
+
   [TranslationKeys.Features]: "Funkcje",
   [TranslationKeys.Collaborations]: "Współpraca",
   [TranslationKeys.CollaborationsDescShort]:
@@ -31,6 +34,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "Aplikacja internetowa RemDo zapewnia użytkownikom wysoki stopień dostosowania ich interfejsu. Użytkownicy mają elastyczność przełączania się między różnymi motywami i językami, dostosowując swoje doświadczenie do indywidualnych preferencji. Poza aspektami estetycznymi, personalizacja obejmuje także profil użytkownika, umożliwiając jednostkom dodanie osobistego akcentu, takiego jak zdjęcie profilowe czy niestandardowa nazwa wyświetlana. Ponadto użytkownicy mogą precyzyjnie dostosować swoje preferencje dotyczące powiadomień, wybierając dokładnie, jakie alerty chcą otrzymywać, zapewniając spersonalizowane i uporządkowane doświadczenie komunikacyjne w ramach aplikacji. Ta kompleksowa funkcja personalizacji podnosi zaangażowanie i satysfakcję użytkownika.",
   [TranslationKeys.ForgetPasswordSuccess]: "Wysłano link do resetu hasła.",
   [TranslationKeys.ForgetPasswordError]: "Nie udało się wysłać linku.",
+  [TranslationKeys.ForgetPasswordChangeError]:
+    "Nie udało się zmienić hasła. Spróbuj ponownie.",
   [TranslationKeys.ForgetPassword]: "Zapomniałeś hasła?",
 
   [TranslationKeys.PageTitleHome]: "Główna",

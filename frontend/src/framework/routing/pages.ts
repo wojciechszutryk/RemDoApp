@@ -1,3 +1,4 @@
+import { URL_SHARED } from "linked-models/accessLink/accessLink.url";
 import {
   URL_COLLABORANTS,
   URL_COLLABORATION,
@@ -7,6 +8,11 @@ import {
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
+import {
+  URL_FORGET_PASSWORD,
+  URL_USER,
+  URL_USERS,
+} from "linked-models/user/user.urls";
 
 export const Pages = {
   HomePage: {
@@ -54,5 +60,13 @@ export const Pages = {
       `${URL_TODO_LISTS}${URL_TODO_LIST(todoListId)}${URL_TASKS}${URL_TASK(
         taskId
       )}`,
+  },
+  SharedForgotPasswordPage: {
+    path: (userId?: string) =>
+      `${URL_SHARED}${URL_FORGET_PASSWORD}${URL_USERS}${URL_USER(userId)}`,
+  },
+  SharedTodoListPage: {
+    path: (todoListId?: string) =>
+      `${URL_SHARED}${URL_TODO_LISTS}${URL_TODO_LIST(todoListId)}`,
   },
 };
