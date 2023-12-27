@@ -75,8 +75,12 @@ export class UserAuthService {
       throw new Error("invalid password");
     }
 
+    await this.setPassword(user.id, newPassword);
+  }
+
+  public async setPassword(userId: string, newPassword: string): Promise<void> {
     const encryptedPassword = await bcrypt.hash(newPassword, 10);
-    await this.userCollection.findByIdAndUpdate(user.id, {
+    await this.userCollection.findByIdAndUpdate(userId, {
       password: encryptedPassword,
     });
   }
