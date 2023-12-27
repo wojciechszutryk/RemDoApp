@@ -1,3 +1,4 @@
+import { IAccessLinkScopes } from "linked-models/accessLink/accessLink.model";
 import { EventName } from "linked-models/event/event.enum";
 import { IBaseModelAttached } from "../abstraction/base.interface";
 import { AppLanguages } from "../language/languages.enum";
@@ -89,6 +90,12 @@ export interface IUserWithReadonlyProperties extends IUser {
 
   /** Google access token expiry time. Applicable only for users who are integrated with google */
   readonly googleTokenExpiryDate?: number;
+
+  /** For temporary user (authenticated with link/token) - access scopes determined by link model */
+  readonly accessScopes?: IAccessLinkScopes;
+
+  /** Determines whether user is temporary or not (authenticated with link/token) */
+  readonly isTemporary?: boolean;
 }
 
 export type IUserAttached = IUserWithReadonlyProperties & IBaseModelAttached;
