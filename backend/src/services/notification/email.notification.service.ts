@@ -55,9 +55,9 @@ export class EmailNotificationService {
 
   public async sendEmail(
     email: string[] | string,
+    subject: string,
     /** React.Element - template of email to send */
-    template: any,
-    subject: string
+    template: any
   ): Promise<void> {
     const emailHtml = render(template);
 
@@ -68,6 +68,12 @@ export class EmailNotificationService {
       html: emailHtml,
     };
 
-    await this.sendGridClient.send(options);
+    try {
+      await this.sendGridClient.send(options).catch((error) => {
+        console.error(error);
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
