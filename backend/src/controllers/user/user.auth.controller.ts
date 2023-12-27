@@ -69,7 +69,26 @@ export class UserAuthController
     return this.ok();
   }
 
-  @httpPost(URL_LOGIN, passport.authenticate("local"))
+  @httpPost(URL_LOGIN, function (req, res, next) {
+    passport.authenticate(
+      "local",
+      function (err: { message?: string }, user: Express.User | undefined) {
+        if (err || !user) {
+          if (err?.message) {
+            res.statusCode = 403;
+            return res.send(err?.message);
+          }
+          return res.sendStatus(500);
+        }
+        req.logIn(user, function (err) {
+          if (err) {
+            return next(err);
+          }
+          next();
+        });
+      }
+    )(req, res, next);
+  })
   async loginUser(
     @request() req: express.Request,
     @response() res: express.Response
@@ -85,7 +104,26 @@ export class UserAuthController
     return this.ok(req.user);
   }
 
-  @httpPost(URL_REGISTER, passport.authenticate("local-signup"))
+  @httpPost(URL_REGISTER, function (req, res, next) {
+    passport.authenticate(
+      "local-signup",
+      function (err: { message?: string }, user: Express.User | undefined) {
+        if (err || !user) {
+          if (err?.message) {
+            res.statusCode = 403;
+            return res.send(err?.message);
+          }
+          return res.sendStatus(500);
+        }
+        req.logIn(user, function (err) {
+          if (err) {
+            return next(err);
+          }
+          next();
+        });
+      }
+    )(req, res, next);
+  })
   async registerUser(
     @request() req: express.Request,
     @response() res: express.Response
