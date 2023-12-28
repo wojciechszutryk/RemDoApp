@@ -19,7 +19,7 @@ const TabWrapper = ({
 }: Props): JSX.Element => {
   return (
     <motion.div
-      style={{ position: "absolute", top: "60px" }}
+      style={{ position: "absolute" }}
       key={key}
       initial={{
         opacity: 0,
