@@ -38,7 +38,7 @@ export class AccessLinkService {
     return base64Hash;
   };
 
-  private getAccessLinkByHash = async (
+  public getAccessLinkByHash = async (
     hash: string
   ): Promise<IAccessLinkAttached | undefined> => {
     const decodedHash = decodeHash(hash);
@@ -93,6 +93,7 @@ export class AccessLinkService {
     if (scopes?.[USER_PARAM]) newAccessLink[USER_PARAM] = scopes[USER_PARAM];
     if (scopes?.[TODO_LIST_PARAM])
       newAccessLink[TODO_LIST_PARAM] = scopes[TODO_LIST_PARAM];
+    if (scopes?.todoListRole) newAccessLink.todoListRole = scopes.todoListRole;
 
     const createdAccessLink = await this.accessLinkCollection.create(
       newAccessLink

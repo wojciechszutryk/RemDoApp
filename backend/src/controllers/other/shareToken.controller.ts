@@ -5,7 +5,6 @@ import {
   httpGet,
   interfaces,
   queryParam,
-  request,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { IAccessLinkScopes } from "linked-models/accessLink/accessLink.model";
@@ -34,8 +33,7 @@ export class ShareTokenController
   async checkHashValidity(
     @queryParam(SHARE_HASH_PARAM) hash: string,
     @queryParam(USER_PARAM) userId: string | undefined,
-    @queryParam(TODO_LIST_PARAM) todoListId: string | undefined,
-    @request() req: Request
+    @queryParam(TODO_LIST_PARAM) todoListId: string | undefined
   ): Promise<OkResult> {
     const scope: Partial<IAccessLinkScopes> = {};
     if (userId) scope[USER_PARAM] = userId;
