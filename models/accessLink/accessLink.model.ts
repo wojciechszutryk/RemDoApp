@@ -1,3 +1,4 @@
+import { TodoListRole } from "linked-models/permissions/todoList.permissions.enum";
 import { TODO_LIST_PARAM } from "linked-models/todoList/todoList.urls";
 import { USER_PARAM } from "linked-models/user/user.urls";
 
@@ -6,4 +7,6 @@ export interface IAccessLinkScopes {
   [USER_PARAM]?: string;
   /** TodoList scope of access token */
   [TODO_LIST_PARAM]?: string;
+  /** Role of user in TodoList */
+  todoListRole?: TodoListRole;
 }
