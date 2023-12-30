@@ -6,3 +6,9 @@ export enum TodoListPermissions {
   CanEditTask = "CAN_EDIT_TASK",
   CanDeleteTask = "CAN_DELETE_TASK",
 }
+
+export enum TodoListRole {
+  Viewer = "VIEWER",
+  Member = "MEMBER",
+  Admin = "ADMIN",
+}
