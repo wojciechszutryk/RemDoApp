@@ -13,7 +13,7 @@ const AccessLinkSchema = new Schema({
   },
   expiryDate: {
     type: Date,
-    required: true,
+    required: false,
   },
   whenCreated: {
     type: Date,
@@ -24,6 +24,10 @@ const AccessLinkSchema = new Schema({
     required: false,
   },
   [TODO_LIST_PARAM]: {
+    type: String,
+    required: false,
+  },
+  todoListRole: {
     type: String,
     required: false,
   },
@@ -54,5 +58,6 @@ export const mapAccessLinkToAttached = (
     whenCreated: accessLink.whenCreated,
     [USER_PARAM]: accessLink[USER_PARAM],
     [TODO_LIST_PARAM]: accessLink[TODO_LIST_PARAM],
+    todoListRole: accessLink.todoListRole,
   };
 };
