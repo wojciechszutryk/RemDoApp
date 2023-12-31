@@ -18,7 +18,7 @@ const ShareTodoListDialog = (): JSX.Element => {
   const [tabIndex, setTabIndex] = useState(0);
   const {
     dialogsState: {
-      shareTodoListDialog: { visible },
+      shareTodoListDialog: { visible, todoListId },
     },
     dialogsActions: { updateShareTodoListDialog },
   } = useDialogs();
@@ -70,7 +70,7 @@ const ShareTodoListDialog = (): JSX.Element => {
             key={`${tabIndex}-0`}
             width={width}
           >
-            <CreateShareLink />
+            <CreateShareLink todoListId={todoListId} />
           </TabWrapper>
           <TabWrapper
             value={1}
