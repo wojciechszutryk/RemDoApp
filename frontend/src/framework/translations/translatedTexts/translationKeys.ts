@@ -104,6 +104,19 @@ export enum TranslationKeys {
   SetNotification = "SetNotification",
   SetNotificationDescription = "SetNotificationDescription",
 
+  CreateTodoShareLink = "CreateTodoShareLink",
+  CreateTodoShareLinkDescription = "CreateTodoShareLinkDescription",
+  InviteCollaborantsToTodoList = "InviteCollaborantsToTodoList",
+  CreateTodoAccessLink = "CreateTodoAccessLink",
+  Copied = "Copied",
+  // TodoListRole
+  VIEWER = "VIEWER",
+  VIEWERDESCRIPTION = "VIEWERDESCRIPTION",
+  MEMBER = "MEMBER",
+  MEMBERDESCRIPTION = "MEMBERDESCRIPTION",
+  ADMIN = "ADMIN",
+  ADMINDESCRIPTION = "ADMINDESCRIPTION",
+
   EmptyTasksList = "EmptyTasksList",
   DelteTask = "DelteTask",
   AddTask = "AddTask",

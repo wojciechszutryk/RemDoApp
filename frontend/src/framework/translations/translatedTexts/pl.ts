@@ -163,6 +163,22 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.SetNotificationDescription]:
     "Podaj szczegóły kiedy powiadomienie z przypomnieniem powinno zostać wysłane.",
 
+  [TranslationKeys.CreateTodoShareLink]: "Utwórz link dostępu",
+  [TranslationKeys.CreateTodoShareLinkDescription]:
+    "Wybierz uprawnienia dla użytkowników z linkiem dostępu.",
+  [TranslationKeys.InviteCollaborantsToTodoList]: "Zaproś współpracowników",
+  [TranslationKeys.CreateTodoAccessLink]: "Utwórz link dostępu",
+  [TranslationKeys.Copied]: "Skopiowano",
+  [TranslationKeys.VIEWER]: "Przeglądający",
+  [TranslationKeys.VIEWERDESCRIPTION]:
+    "Wszyscy z linkiem mogą przeglądać tę listę i wszystkie zadania utworzone przez jej członków i administratorów, ale nie mogą niczego tworzyć, edytować i usuwać.",
+  [TranslationKeys.MEMBER]: "Członek",
+  [TranslationKeys.MEMBERDESCRIPTION]:
+    "Członek z linkiem może przeglądać tę listę i wszystkie jej zadania, może tworzyć nowe zadania, ale nie może niczego edytować i usuwać.",
+  [TranslationKeys.ADMIN]: "Administrator",
+  [TranslationKeys.ADMINDESCRIPTION]:
+    "Administratorzy mają pełny dostęp do tej listy. Mogą tworzyć, edytować i usuwać wszystkie zadania oraz zapraszać innych użytkowników. Uważaj, kogo zapraszasz jako administratora.",
+
   [TranslationKeys.EmptyTasksList]: "Brak zadań na liście. Dodaj nowe zadanie!",
   [TranslationKeys.DelteTask]: "Usuń zadanie",
   [TranslationKeys.AddTask]: "Dodaj zadanie",

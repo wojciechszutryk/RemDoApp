@@ -34,7 +34,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
     "RemDo web application is dedicated to providing users with a high degree of customization for their interface. Users have the flexibility to switch between different themes and languages, tailoring their experience to suit individual preferences. Beyond the aesthetics, personalization extends to the user profile, allowing individuals to add a personal touch with features such as photo display and a customizable display name. Moreover, users can finely tune their notification preferences, selecting exactly which alerts they wish to receive, ensuring a personalized and streamlined communication experience within the application. This comprehensive personalization feature enhances user engagement and satisfaction.",
   [TranslationKeys.ForgetPasswordSuccess]: "Email with reset link sent.",
   [TranslationKeys.ForgetPasswordError]: "Error while sending email.",
-  [TranslationKeys.ForgetPasswordChangeError]: "Error while changing password. Try again.",
+  [TranslationKeys.ForgetPasswordChangeError]:
+    "Error while changing password. Try again.",
   [TranslationKeys.ForgetPassword]: "Forgot password",
 
   [TranslationKeys.PageTitleHome]: "Home",
@@ -156,6 +157,21 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.SetNotification]: "Create notification",
   [TranslationKeys.SetNotificationDescription]:
     "Provide details when notification with reminder should be send.",
+  [TranslationKeys.CreateTodoShareLink]: "Create share link",
+  [TranslationKeys.CreateTodoShareLinkDescription]:
+    "Choose a previliges for for users with share link.",
+  [TranslationKeys.InviteCollaborantsToTodoList]: "Invite collaborants",
+  [TranslationKeys.CreateTodoAccessLink]: "Create access link",
+  [TranslationKeys.Copied]: "Copied",
+  [TranslationKeys.VIEWER]: "Viewer",
+  [TranslationKeys.VIEWERDESCRIPTION]:
+    "Everyone with link can view this list and all tasks created by it's members and admins, but can't create, edit and delete anything.",
+  [TranslationKeys.MEMBER]: "Member",
+  [TranslationKeys.MEMBERDESCRIPTION]:
+    "Member with link can view this list and all tasks created by it's members, can create new tasks, but can't edit and delete anything.",
+  [TranslationKeys.ADMIN]: "Admin",
+  [TranslationKeys.ADMINDESCRIPTION]:
+    "Admins have full access to this list. They can create, edit and delete all tasks and invite other users. Be careful who you invite as admin.",
 
   [TranslationKeys.EmptyTasksList]: "No tasks in this list.",
   [TranslationKeys.DelteTask]: "Delete task",
