@@ -130,7 +130,10 @@ passport.use(
         return done(new Error("Access link not found"), undefined);
       }
 
-      if (!accessToken || accessToken.expiryDate < new Date())
+      if (
+        !accessToken ||
+        (accessToken?.expiryDate && accessToken.expiryDate < new Date())
+      )
         return done(new Error("Access link expired"), undefined);
 
       const tempUser: IUserAttached = {
