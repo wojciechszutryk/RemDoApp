@@ -38,6 +38,14 @@ export class AccessLinkService {
     return base64Hash;
   };
 
+  public getAccessLinksByScope = async (
+    scope: IAccessLinkScopes
+  ): Promise<IAccessLinkAttached[]> => {
+    const accessLinks = await this.accessLinkCollection.find(scope);
+
+    return accessLinks.map(mapAccessLinkToAttached);
+  };
+
   public getAccessLinkByHash = async (
     hash: string
   ): Promise<IAccessLinkAttached | undefined> => {
@@ -56,7 +64,11 @@ export class AccessLinkService {
     scope?: Partial<IAccessLinkScopes>
   ) => {
     const accessLink = await this.getAccessLinkByHash(hash);
-    if (!accessLink || accessLink.expiryDate < new Date()) return false;
+    if (
+      !accessLink ||
+      (accessLink.expiryDate && accessLink.expiryDate < new Date())
+    )
+      return false;
     if (accessLink[USER_PARAM] && !scope?.[USER_PARAM]) return false;
     if (accessLink[TODO_LIST_PARAM] && !scope?.[TODO_LIST_PARAM]) return false;
     if (scope?.[USER_PARAM] && accessLink[USER_PARAM] !== scope[USER_PARAM])
@@ -79,7 +91,7 @@ export class AccessLinkService {
   };
 
   public createAccessLink = async (
-    expiryDate: Date,
+    expiryDate?: Date,
     scopes?: IAccessLinkScopes
   ): Promise<IAccessLinkAttached> => {
     const nonce = this.createNonce();
@@ -100,5 +112,9 @@ export class AccessLinkService {
     );
 
     return mapAccessLinkToAttached(createdAccessLink);
+  };
+
+  public deleteAccessLinksByScope = async (scope: IAccessLinkScopes) => {
+    await this.accessLinkCollection.deleteMany(scope);
   };
 }
