@@ -53,18 +53,20 @@ const ShareTodoListDialog = (): JSX.Element => {
           <Tab
             label={t(TranslationKeys.CreateTodoShareLink)}
             value={0}
+            sx={{ width: width / 2 }}
             id={"CollaborantsList"}
           />
           <Tab
             label={t(TranslationKeys.InviteCollaborantsToTodoList)}
             value={1}
+            sx={{ width: width / 2 }}
             id={"CollaborantsSearch"}
           />
         </Tabs>
       </StyledTabsWrapper>
       <div
         style={{
-          height: 400,
+          height: 420,
           overflow: "hidden",
           position: "relative",
         }}
