@@ -6,7 +6,7 @@ import { CardActions as MUICardActions } from "@mui/material";
 import { useDialogs } from "framework/dialogs";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledExpandMore } from "../../styles";
 import ActionsButtons from "./components/ActionsButtons";
@@ -19,6 +19,10 @@ interface Props {
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
   showExpandIcon?: boolean;
   actionsVariant: "buttons" | "menu";
+  showEditButton?: boolean;
+  showShareButton?: boolean;
+  showDeleteButton?: boolean;
+  showCreateTaskButton?: boolean;
 }
 
 const CardActions = ({
@@ -27,13 +31,19 @@ const CardActions = ({
   setExpanded,
   showExpandIcon,
   actionsVariant,
+  showEditButton,
+  showShareButton,
+  showDeleteButton,
+  showCreateTaskButton,
 }: Props): JSX.Element => {
   const { dialogsActions } = useDialogs();
   const { t } = useTranslation();
 
-  const interactions = useMemo(() => {
-    return [
-      {
+  const getInteractions = () => {
+    const interactions = [];
+
+    if (showEditButton) {
+      interactions.push({
         onClick: () =>
           dialogsActions.updateTodoListDialog({
             visible: true,
@@ -47,8 +57,11 @@ const CardActions = ({
           }),
         label: t(TranslationKeys.EditTodoListDialogHeader),
         icon: <EditIcon />,
-      },
-      {
+      });
+    }
+
+    if (showShareButton) {
+      interactions.push({
         onClick: () =>
           dialogsActions.updateShareTodoListDialog({
             visible: true,
@@ -59,8 +72,11 @@ const CardActions = ({
           }),
         label: t(TranslationKeys.ShareTodoList),
         icon: <ShareIcon />,
-      },
-      {
+      });
+    }
+
+    if (showDeleteButton) {
+      interactions.push({
         onClick: () =>
           dialogsActions.updateDeleteTodoListDialog({
             visible: true,
@@ -68,24 +84,28 @@ const CardActions = ({
           }),
         label: t(TranslationKeys.DelteTodoList),
         icon: <DeleteIcon />,
-      },
-    ];
-  }, [t, dialogsActions, id, name, icon, assignedOwners, assignedUsers]);
+      });
+    }
+
+    return interactions;
+  };
 
   return (
     <MUICardActions disableSpacing>
-      <StyledCreateTaskButton
-        noBorder
-        onClick={() =>
-          dialogsActions.updateTaskDialog({ visible: true, todoListId: id })
-        }
-      >
-        {t(TranslationKeys.AddTask)}
-      </StyledCreateTaskButton>
+      {showCreateTaskButton && (
+        <StyledCreateTaskButton
+          noBorder
+          onClick={() =>
+            dialogsActions.updateTaskDialog({ visible: true, todoListId: id })
+          }
+        >
+          {t(TranslationKeys.AddTask)}
+        </StyledCreateTaskButton>
+      )}
       {actionsVariant === "buttons" ? (
-        <ActionsButtons interactions={interactions} />
+        <ActionsButtons interactions={getInteractions()} />
       ) : (
-        <ActionsMenu interactions={interactions} />
+        <ActionsMenu interactions={getInteractions()} />
       )}
 
       {showExpandIcon && (

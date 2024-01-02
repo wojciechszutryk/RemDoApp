@@ -63,7 +63,11 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
             )}
           </StyledListItemIcon>
           <ListItemText
-            primary={task.creator?.displayName || task.creator?.email}
+            primary={
+              task.creator?.displayName ||
+              task.creator?.email ||
+              t(TranslationKeys.AnonymousUser)
+            }
             secondary={t(TranslationKeys.Creator)}
           />
         </ListItem>

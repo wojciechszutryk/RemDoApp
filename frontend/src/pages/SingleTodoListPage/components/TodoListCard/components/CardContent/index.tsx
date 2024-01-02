@@ -10,6 +10,7 @@ interface Props {
   completedTasks: IExtendedTaskDto[];
   expanded: boolean;
   scrollable?: boolean;
+  todoListId: string;
 }
 
 const CardContent = ({
@@ -17,6 +18,7 @@ const CardContent = ({
   completedTasks,
   expanded,
   scrollable,
+  todoListId,
 }: Props): JSX.Element => {
   return (
     <StyledCardContent scrollable={scrollable}>
@@ -24,16 +26,28 @@ const CardContent = ({
         <EmptyTasksList />
       ) : (
         <>
-          <TasksList tasks={activeTasks} />
+          <TasksList
+            tasks={activeTasks}
+            tasksState="active"
+            todoListId={todoListId}
+          />
           {scrollable ? (
-            <TasksList tasks={completedTasks} />
+            <TasksList
+              tasks={completedTasks}
+              tasksState="completed"
+              todoListId={todoListId}
+            />
           ) : (
             <Collapse
               in={expanded || activeTasks.length === 0}
               timeout="auto"
               unmountOnExit
             >
-              <TasksList tasks={completedTasks} />
+              <TasksList
+                tasks={completedTasks}
+                tasksState="completed"
+                todoListId={todoListId}
+              />
             </Collapse>
           )}
         </>

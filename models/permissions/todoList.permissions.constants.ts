@@ -10,5 +10,6 @@ export const AssignedToTodoListPermissions = [
 export const AssignedToTodoListAndTaskCreatorPermissions = [
   ...AssignedToTodoListPermissions,
   TodoListPermissions.CanEditTask,
+  TodoListPermissions.CanArchiveTask,
   TodoListPermissions.CanDeleteTask,
 ];

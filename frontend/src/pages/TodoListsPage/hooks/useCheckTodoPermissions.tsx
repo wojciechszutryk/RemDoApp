@@ -10,14 +10,27 @@ import {
   TodoListPermissions,
   TodoListRole,
 } from "linked-models/permissions/todoList.permissions.enum";
+import { useGetExtendedTodoListQuery } from "pages/SingleTodoListPage/queries/getTodoList.query";
 import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
 import { useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 const useCheckTodoPermissions = () => {
-  const getUserTodoListsWithTasksQuery = useGetUserExtendedTodoListsQuery();
-  const params = useParams();
-  const isAccessViaLink = !!params[SHARE_HASH_PARAM];
+  const { todoListId } = useParams();
+  const getUserTodoListsWithTasksQuery = useGetUserExtendedTodoListsQuery({
+    enabled: !todoListId,
+  });
+  const getTodoListWithTasksQuery = useGetExtendedTodoListQuery(todoListId, {
+    enabled: !!todoListId,
+  });
+
+  const data = todoListId
+    ? getTodoListWithTasksQuery.data
+    : getUserTodoListsWithTasksQuery.data;
+
+  const [searchParams] = useSearchParams();
+  const isAccessViaLink = !!searchParams.get(SHARE_HASH_PARAM);
+
   const getCurrentAccessLinkQuery = useGetCurrentAccessLinkScopesQuery({
     enabled: isAccessViaLink,
   });
@@ -31,9 +44,11 @@ const useCheckTodoPermissions = () => {
           ? accessScopes.todoListRole
           : null;
 
-      const todoList = getUserTodoListsWithTasksQuery.data?.find(
-        (todoList) => todoList.id === todoListId
-      );
+      const todoList = Array.isArray(data)
+        ? data?.find((todoList) => todoList.id === todoListId)
+        : data?.id === todoListId
+        ? data
+        : null;
 
       if (!todoList) {
         return false;
@@ -77,11 +92,7 @@ const useCheckTodoPermissions = () => {
 
       if (isViewer) return TodoListViewerPermissions.includes(permission);
     },
-    [
-      currentUser?.id,
-      getCurrentAccessLinkQuery.data,
-      getUserTodoListsWithTasksQuery.data,
-    ]
+    [currentUser?.id, data, getCurrentAccessLinkQuery.data]
   );
 };
 

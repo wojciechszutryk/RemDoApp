@@ -11,21 +11,36 @@ import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { useEditTaskInTodoListMutation } from "pages/SingleTodoListPage/mutations/editTask/editTask.mutation";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
+import SwippableTaskItemContent from "./SwippableTaskItemContent";
 import TaskItemContent from "./TaskItemContent";
 import { StyledCancelExitTaskText } from "./styles";
 
 interface Props {
   task: IExtendedTaskDto;
+  canArchive?: boolean;
+  canDelete?: boolean;
+  canEdit?: boolean;
 }
 
-const TaskListItem = ({ task }: Props): JSX.Element => {
+const TaskListItem = ({
+  task,
+  canArchive,
+  canEdit,
+  canDelete,
+}: Props): JSX.Element => {
   const isTaskCompleted = !!task.completionDate;
   const editTaskInTodoListMutation = useEditTaskInTodoListMutation();
   const { setSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const { dialogsActions } = useDialogs();
 
+  const isSwippable = canArchive || canDelete || canEdit;
+
   const theme = useTheme();
+
+  if (!isSwippable) {
+    return <TaskItemContent task={task} />;
+  }
 
   return (
     <SwippableItem
@@ -103,7 +118,7 @@ const TaskListItem = ({ task }: Props): JSX.Element => {
         },
       }}
     >
-      <TaskItemContent task={task} />
+      <SwippableTaskItemContent task={task} />
     </SwippableItem>
   );
 };

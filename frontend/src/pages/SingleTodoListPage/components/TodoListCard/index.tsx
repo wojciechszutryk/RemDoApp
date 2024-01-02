@@ -1,5 +1,7 @@
+import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
+import useCheckTodoPermissions from "pages/TodoListsPage/hooks/useCheckTodoPermissions";
 import * as React from "react";
 import { memo } from "react";
 import CardActions from "./components/CardActions";
@@ -25,6 +27,7 @@ const TodoListCard = ({
   actionsVariant,
 }: Props): JSX.Element => {
   const [expanded, setExpanded] = React.useState(false);
+  const checkPermission = useCheckTodoPermissions();
 
   const { activeTasks, completedTasks } = React.useMemo(() => {
     const activeTasks: IExtendedTaskDto[] = [];
@@ -51,6 +54,7 @@ const TodoListCard = ({
         activeTasks={activeTasks}
         completedTasks={completedTasks}
         expanded={expanded}
+        todoListId={todoList.id}
       />
       <CardActions
         actionsVariant={actionsVariant}
@@ -62,6 +66,22 @@ const TodoListCard = ({
         setExpanded={setExpanded}
         expanded={expanded}
         todoList={todoList}
+        showCreateTaskButton={checkPermission(
+          TodoListPermissions.CanCreateTask,
+          todoList.id
+        )}
+        showEditButton={checkPermission(
+          TodoListPermissions.CanEditTodoList,
+          todoList.id
+        )}
+        showShareButton={checkPermission(
+          TodoListPermissions.CanShareTodoList,
+          todoList.id
+        )}
+        showDeleteButton={checkPermission(
+          TodoListPermissions.CanDeleteTodoList,
+          todoList.id
+        )}
       />
     </StyledTodoListCard>
   );
