@@ -8,7 +8,7 @@ import {
 import { Button } from "atomicComponents/atoms/Button";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { TodoListRole } from "linked-models/permissions/todoList.permissions.enum";
-import { memo, useState } from "react";
+import { SyntheticEvent, memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CopyArea from "./components/CopyArea";
 import { useCreateAccessLinkInTodoListMutation } from "./mutations/createAccessLinkInTodoList.mutation";
@@ -40,9 +40,11 @@ const CreateShareLink = ({ todoListId }: Props): JSX.Element => {
 
   const [expanded, setExpanded] = useState<string | false>(false);
 
-  const handleChange = (panel: string) => (_, isExpanded: boolean) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  const handleChange =
+    (panel: string) =>
+    (_: SyntheticEvent<Element, Event>, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false);
+    };
 
   return (
     <>

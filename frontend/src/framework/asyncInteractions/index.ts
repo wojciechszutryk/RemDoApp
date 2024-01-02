@@ -57,8 +57,6 @@ export const apiPost = async <T, K>(
   payload: T,
   axiosSettings?: AxiosRequestConfig
 ): Promise<AxiosResponse<K>> => {
-  console.log(getAxiosSettings(axiosSettings));
-
   return axios.post<K>(url, payload, {
     ...getAxiosSettings(axiosSettings),
   } as AxiosRequestConfig);

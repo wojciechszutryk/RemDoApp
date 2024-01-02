@@ -7,7 +7,6 @@ import useNotificationSocket from "framework/notifications/useNotificationSocket
 import { Pages } from "framework/routing/pages";
 import "framework/translations/i18.config/resources";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { URL_SHARED } from "linked-models/accessLink/accessLink.url";
 import UserPage from "pages/UserPage";
 import { lazy, Suspense, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -141,10 +140,6 @@ const App = (): JSX.Element => {
               </PageTemplate>
             </Suspense>
           }
-        />
-        <Route
-          path={URL_SHARED}
-          element={<Suspense fallback={false}>{"TODO: shared page"}</Suspense>}
         />
         <Route
           path={Pages.SharedTodoListPage.path()}

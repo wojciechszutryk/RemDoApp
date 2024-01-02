@@ -16,30 +16,18 @@ export class SetCurrentUser extends BaseMiddleware {
 
     if (!user) {
       // user from token
-      passport.authenticate(
+      await passport.authenticate(
         "token",
         { session: false },
         function (err: Error, user: Express.User | undefined) {
-          if (err || !user) {
-            if (err?.message) {
-              res.statusCode = 403;
-              return res.send(err?.message);
-            }
-            return res.sendStatus(500);
-          }
-          req.logIn(user, function (err) {
-            if (err) {
-              return next(err);
-            }
-
+          if (!err && user) {
             req.params[PARAM_CURRENT_USER] = user as unknown as string;
-
             return next();
-          });
+          }
         }
       )(req, res, next);
 
-      return res.status(401).send({ message: "No current user found" });
+      return res.status(401);
     }
 
     req.params[PARAM_CURRENT_USER] = user as unknown as string;
