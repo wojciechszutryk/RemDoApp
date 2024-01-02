@@ -3,6 +3,7 @@ import {
   TodoListCollectionName,
   TodoListCollectionType,
 } from "dbSchemas/todoList.schema";
+import { getTemUser, TEMP_USER_ID } from "framework/auth/tempUser.helper";
 import { EventService } from "framework/events/event.service";
 import { inject, injectable } from "inversify";
 import {
@@ -181,15 +182,26 @@ export class TodoListService {
 
     if (!todoListWithMembers) throw new Error("TodoList does not exist.");
 
+    const membersMap = new Map<string, IUserPublicDataDTO>();
+
     const todoListMembers = [
       /** exlamation mark - service always return array  */
       ...todoListWithMembers!.assignedOwners,
       ...todoListWithMembers!.assignedUsers,
     ];
 
+    todoListMembers.forEach((u) => membersMap.set(u.id, u));
+
     const mappedTasks: IExtendedTaskDto[] = [];
     tasks.forEach((t) => {
-      const creator = todoListMembers.find((u) => u.id === t.creatorId);
+      let creator = membersMap.get(t.creatorId);
+      if (!creator && t.creatorId.includes(TEMP_USER_ID)) {
+        const [_, annonymousId] = t.creatorId.split(TEMP_USER_ID);
+        if (annonymousId) {
+          membersMap.set(annonymousId, getTemUser(annonymousId, {}));
+        }
+        creator = membersMap.get(annonymousId);
+      }
       if (creator)
         mappedTasks.push({
           ...t,

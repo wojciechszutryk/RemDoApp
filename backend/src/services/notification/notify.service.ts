@@ -1,3 +1,4 @@
+import { TEMP_USER_ID, getTemUser } from "framework/auth/tempUser.helper";
 import { inject, injectable } from "inversify";
 import { URL_COLLABORANTS } from "linked-models/collaboration/collaboration.urls";
 import { EventName, EventSubject } from "linked-models/event/event.enum";
@@ -322,7 +323,9 @@ export class NotifyService {
       : memberUsers.filter((u) => u.id !== eventCreatorId);
     const usersToNotifyIDs = memberUsers.map((u) => u.id);
 
-    let eventCreator = this.getEventCreatorFromPayload(payload);
+    let eventCreator = eventCreatorId.includes(TEMP_USER_ID)
+      ? getTemUser(eventCreatorId, {})
+      : this.getEventCreatorFromPayload(payload);
 
     const [createdNotifications, fetchedCreator] = await Promise.all([
       this.notificationService.createNotificationForUsers(
