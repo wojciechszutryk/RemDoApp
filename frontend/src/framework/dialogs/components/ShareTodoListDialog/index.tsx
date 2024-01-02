@@ -62,7 +62,13 @@ const ShareTodoListDialog = (): JSX.Element => {
           />
         </Tabs>
       </StyledTabsWrapper>
-      <div style={{ height: 400, overflow: "hidden", position: "relative" }}>
+      <div
+        style={{
+          height: 400,
+          overflow: "hidden",
+          position: "relative",
+        }}
+      >
         <AnimatePresence>
           <TabWrapper
             value={0}

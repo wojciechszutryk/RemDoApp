@@ -47,7 +47,7 @@ const CollaborantsDrawer = (): JSX.Element => {
 
   return (
     <StyledDrawer open={open} onClose={onClose} anchor={"right"}>
-      <StyledTabsWrapper style={{ width: `${width}px` }}>
+      <StyledTabsWrapper style={{ width: `${width}px`, zIndex: 1 }}>
         <Tabs value={tabIndex} onChange={handleChangeTabIndex}>
           <Tab
             label={t(TranslationKeys.Collaborants)}
@@ -67,6 +67,7 @@ const CollaborantsDrawer = (): JSX.Element => {
           index={tabIndex}
           key={`${tabIndex}-0`}
           width={width}
+          offsetTop={30}
         >
           <UserCollaborantsTabContent
             collaborants={userCollaborantsQuery.data || []}
@@ -78,6 +79,7 @@ const CollaborantsDrawer = (): JSX.Element => {
           index={tabIndex}
           key={`${tabIndex}-1`}
           width={width}
+          offsetTop={50}
         >
           <UserSearch userCollaborants={userCollaborantsQuery.data || []} />
         </TabWrapper>
