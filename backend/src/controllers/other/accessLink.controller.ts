@@ -128,7 +128,7 @@ export class AccessLinkController
       ? process.env.CLIENT_URL
       : process.env.CLIENT_URL + "/#";
 
-    const todoListUrl = `${baseUrl}${URL_TODO_LISTS}${URL_TODO_LIST(
+    const todoListUrl = `${baseUrl}${URL_SHARED}${URL_TODO_LISTS}${URL_TODO_LIST(
       todoListId
     )}`;
 
