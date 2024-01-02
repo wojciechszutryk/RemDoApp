@@ -39,56 +39,52 @@ const CardActions = ({
   const { dialogsActions } = useDialogs();
   const { t } = useTranslation();
 
-  const getInteractions = () => {
-    const interactions = [];
+  const interactions = [];
 
-    if (showEditButton) {
-      interactions.push({
-        onClick: () =>
-          dialogsActions.updateTodoListDialog({
-            visible: true,
-            editTodoListData: {
-              id,
-              name,
-              icon,
-              assignedOwners,
-              assignedUsers,
-            },
-          }),
-        label: t(TranslationKeys.EditTodoListDialogHeader),
-        icon: <EditIcon />,
-      });
-    }
-
-    if (showShareButton) {
-      interactions.push({
-        onClick: () =>
-          dialogsActions.updateShareTodoListDialog({
-            visible: true,
-            todoListId: id,
+  if (showEditButton) {
+    interactions.push({
+      onClick: () =>
+        dialogsActions.updateTodoListDialog({
+          visible: true,
+          editTodoListData: {
+            id,
+            name,
+            icon,
             assignedOwners,
             assignedUsers,
-            todoListName: name || t(TranslationKeys.Reminder),
-          }),
-        label: t(TranslationKeys.ShareTodoList),
-        icon: <ShareIcon />,
-      });
-    }
+          },
+        }),
+      label: t(TranslationKeys.EditTodoListDialogHeader),
+      icon: <EditIcon />,
+    });
+  }
 
-    if (showDeleteButton) {
-      interactions.push({
-        onClick: () =>
-          dialogsActions.updateDeleteTodoListDialog({
-            visible: true,
-            todoListId: id,
-          }),
-        label: t(TranslationKeys.DelteTodoList),
-        icon: <DeleteIcon />,
-      });
-    }
+  if (showShareButton) {
+    interactions.push({
+      onClick: () =>
+        dialogsActions.updateShareTodoListDialog({
+          visible: true,
+          todoListId: id,
+          assignedOwners,
+          assignedUsers,
+          todoListName: name || t(TranslationKeys.Reminder),
+        }),
+      label: t(TranslationKeys.ShareTodoList),
+      icon: <ShareIcon />,
+    });
+  }
 
-    return interactions;
-  };
+  if (showDeleteButton) {
+    interactions.push({
+      onClick: () =>
+        dialogsActions.updateDeleteTodoListDialog({
+          visible: true,
+          todoListId: id,
+        }),
+      label: t(TranslationKeys.DelteTodoList),
+      icon: <DeleteIcon />,
+    });
+  }
 
   return (
     <MUICardActions disableSpacing>
@@ -102,11 +98,12 @@ const CardActions = ({
           {t(TranslationKeys.AddTask)}
         </StyledCreateTaskButton>
       )}
-      {actionsVariant === "buttons" ? (
-        <ActionsButtons interactions={getInteractions()} />
-      ) : (
-        <ActionsMenu interactions={getInteractions()} />
-      )}
+      {interactions.length > 0 &&
+        (actionsVariant === "buttons" ? (
+          <ActionsButtons interactions={interactions} />
+        ) : (
+          <ActionsMenu interactions={interactions} />
+        ))}
 
       {showExpandIcon && (
         <StyledExpandMore

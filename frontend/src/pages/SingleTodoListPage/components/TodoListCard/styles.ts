@@ -18,6 +18,7 @@ export const StyledTodoListCardWrapper = styled("div", {
   transform,
   transition: transition || undefined,
   borderRadius: "20px",
+  overflow: "hidden",
 }));
 
 export const StyledTodoListCard = styled(Card, {
