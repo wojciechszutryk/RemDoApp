@@ -86,9 +86,13 @@ export class AccessLinkController
 
     const linksDTO = {} as AccessHashesForTodoListDTO;
 
-    const todoListUrl = `${
-      process.env.CLIENT_URL
-    }${URL_TODO_LISTS}${URL_TODO_LIST(todoListId)}`;
+    const baseUrl = process.env.CLIENT_URL?.includes("#")
+      ? process.env.CLIENT_URL
+      : process.env.CLIENT_URL + "/#";
+
+    const todoListUrl = `${baseUrl}${URL_SHARED}${URL_TODO_LISTS}${URL_TODO_LIST(
+      todoListId
+    )}`;
 
     for (const link of links) {
       if (!link.todoListRole) continue;
@@ -102,11 +106,9 @@ export class AccessLinkController
 
   @httpPost(URL_TODO_LISTS + URL_TODO_LIST() + URL_ROLES + URL_ROLE())
   async createLinkForTodoListAndRole(
-    @request() req: Express.Request,
     @requestParam(TODO_LIST_PARAM) todoListId: string,
     @requestParam(ROLE_PARAM) role: TodoListRole
   ): Promise<OkResult> {
-    
     if (!todoListId) return this.json("todoListId is required", 400);
     if (!role) return this.json("role is required", 400);
 
@@ -122,9 +124,13 @@ export class AccessLinkController
       todoListRole: role,
     });
 
-    const todoListUrl = `${
-      process.env.CLIENT_URL
-    }${URL_TODO_LISTS}${URL_TODO_LIST(todoListId)}`;
+    const baseUrl = process.env.CLIENT_URL?.includes("#")
+      ? process.env.CLIENT_URL
+      : process.env.CLIENT_URL + "/#";
+
+    const todoListUrl = `${baseUrl}${URL_TODO_LISTS}${URL_TODO_LIST(
+      todoListId
+    )}`;
 
     const fullLink = this.accessLinkService.composeLink(todoListUrl, newLink);
 
