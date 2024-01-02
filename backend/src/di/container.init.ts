@@ -1,4 +1,4 @@
-import "controllers/collaboration/collaboration.invintation.controller";
+import "controllers/collaboration/collaboration.invitation.controller";
 import "controllers/collaboration/user.collaborants.controller";
 import "controllers/other/accessLink.controller";
 import "controllers/other/pushSubscription.controller";

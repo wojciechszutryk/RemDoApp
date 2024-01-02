@@ -6,7 +6,6 @@ import {
 } from "dbSchemas/user.schema";
 import { ACCESS_LINK_HEADER } from "linked-models/accessLink/accessLink.url";
 import { TODO_LIST_PARAM } from "linked-models/todoList/todoList.urls";
-import { IUserAttached, IUserPreferences } from "linked-models/user/user.model";
 import {
   URL_GOOGLE,
   URL_REDIRECT,
@@ -24,6 +23,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { UniqueTokenStrategy } from "passport-unique-token";
 import { decodeHash } from "services/accessLink/accessLink.helpers";
 import { v4 as uuidv4 } from "uuid";
+import { TEMP_USER_ID, getTemUser } from "./tempUser.helper";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
@@ -136,21 +136,11 @@ passport.use(
       )
         return done(new Error("Access link expired"), undefined);
 
-      const tempUser: IUserAttached = {
-        id: accessToken[USER_PARAM] || accessLinkId,
-        authId: accessToken[USER_PARAM] || accessLinkId,
-        password: "",
-        integratedWithGoogle: false,
-        displayName: "Temporary user",
-        email: "Temporary user",
-        accessScopes: {
-          [USER_PARAM]: accessToken[USER_PARAM],
-          [TODO_LIST_PARAM]: accessToken[TODO_LIST_PARAM],
-        },
-        isTemporary: true,
-        whenCreated: new Date(),
-        preferences: {} as IUserPreferences,
-      };
+      const tempUser = getTemUser(accessToken.id, {
+        [USER_PARAM]: accessToken[USER_PARAM],
+        [TODO_LIST_PARAM]: accessToken[TODO_LIST_PARAM],
+        todoListRole: accessToken.todoListRole,
+      });
 
       return done(null, tempUser);
     }
@@ -220,10 +210,26 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
+  if (user.isTemporary) return done(null, user.authId);
   done(null, user.authId);
 });
 
-passport.deserializeUser(async (authId, done) => {
+passport.deserializeUser(async (authId: string, done) => {
+  const [_, annonymousId] = authId.split(TEMP_USER_ID);
+
+  if (annonymousId) {
+    const accessLink = await getAccessLinkCollection().findById(annonymousId);
+    if (!accessLink) return done("Access link not found", null);
+
+    const tempUser = getTemUser(annonymousId, {
+      [USER_PARAM]: accessLink[USER_PARAM],
+      [TODO_LIST_PARAM]: accessLink[TODO_LIST_PARAM],
+      todoListRole: accessLink.todoListRole,
+    });
+
+    done(null, tempUser);
+  }
+
   const user = await getUserCollection().findOne({ authId });
   if (!user) return done("User not found", null);
 
