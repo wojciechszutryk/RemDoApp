@@ -14,8 +14,8 @@ export const getTemUser = (
     authId: accessTokenScopes[USER_PARAM] || TEMP_USER_ID + id,
     password: "",
     integratedWithGoogle: false,
-    displayName: "Temporary user",
-    email: "Temporary user",
+    displayName: "",
+    email: "",
     accessScopes: {
       [USER_PARAM]: accessTokenScopes[USER_PARAM],
       [TODO_LIST_PARAM]: accessTokenScopes[TODO_LIST_PARAM],

@@ -109,6 +109,7 @@ export enum TranslationKeys {
   InviteCollaborantsToTodoList = "InviteCollaborantsToTodoList",
   CreateTodoAccessLink = "CreateTodoAccessLink",
   Copied = "Copied",
+  AnonymousUser = "AnonymousUser",
   // TodoListRole
   VIEWER = "VIEWER",
   VIEWERDESCRIPTION = "VIEWERDESCRIPTION",

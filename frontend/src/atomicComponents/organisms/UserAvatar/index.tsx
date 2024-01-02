@@ -25,7 +25,11 @@ const UserAvatar = ({
           : undefined,
       }}
     >
-      {displayName ? displayName[0].toUpperCase() : email[0].toUpperCase()}
+      {displayName
+        ? displayName[0].toUpperCase()
+        : email
+        ? email[0].toUpperCase()
+        : "A"}
     </Avatar>
   );
 };

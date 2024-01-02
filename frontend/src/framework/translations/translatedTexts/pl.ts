@@ -166,9 +166,11 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.CreateTodoShareLink]: "Utwórz link dostępu",
   [TranslationKeys.CreateTodoShareLinkDescription]:
     "Wybierz uprawnienia dla użytkowników z linkiem dostępu.",
-  [TranslationKeys.InviteCollaborantsToTodoList]: "Zaproś współpracowników",
+  [TranslationKeys.InviteCollaborantsToTodoList]: "Zaproś",
   [TranslationKeys.CreateTodoAccessLink]: "Utwórz link dostępu",
   [TranslationKeys.Copied]: "Skopiowano",
+  [TranslationKeys.AnonymousUser]:
+    "Anonimowy użytkownik, który użył linku dostępu",
   [TranslationKeys.VIEWER]: "Przeglądający",
   [TranslationKeys.VIEWERDESCRIPTION]:
     "Wszyscy z linkiem mogą przeglądać tę listę i wszystkie zadania utworzone przez jej członków i administratorów, ale nie mogą niczego tworzyć, edytować i usuwać.",

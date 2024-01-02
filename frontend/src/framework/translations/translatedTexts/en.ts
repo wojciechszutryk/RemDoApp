@@ -160,9 +160,10 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.CreateTodoShareLink]: "Create share link",
   [TranslationKeys.CreateTodoShareLinkDescription]:
     "Choose a previliges for for users with share link.",
-  [TranslationKeys.InviteCollaborantsToTodoList]: "Invite collaborants",
+  [TranslationKeys.InviteCollaborantsToTodoList]: "Invite",
   [TranslationKeys.CreateTodoAccessLink]: "Create access link",
   [TranslationKeys.Copied]: "Copied",
+  [TranslationKeys.AnonymousUser]: "Anonymous user, who has link to this list",
   [TranslationKeys.VIEWER]: "Viewer",
   [TranslationKeys.VIEWERDESCRIPTION]:
     "Everyone with link can view this list and all tasks created by it's members and admins, but can't create, edit and delete anything.",
