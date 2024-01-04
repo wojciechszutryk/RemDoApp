@@ -1,9 +1,10 @@
-import { Container, Link, Text } from "@react-email/components";
+import { Container, Hr, Link, Text } from "@react-email/components";
 import React, { CSSProperties } from "react";
 import EmailWrapper, { EmailProps } from "./EmailWrapper";
 
 interface Props extends EmailProps {
   name: string;
+  verifyAccountLink?: string;
 }
 
 const translations = {
@@ -14,6 +15,18 @@ const translations = {
   welcomeText: {
     en: "Welcome to our app",
     pl: "Witaj w naszej aplikacji",
+  },
+  verifyAccount: {
+    en: "Before you start using our app, please verify your account, by clicking on the button below:",
+    pl: "Zanim zaczniesz korzystać z naszej aplikacji, proszę zweryfikuj swoje konto, klikając w poniższy przycisk:",
+  },
+  verifyAccountLink: {
+    en: "Verify account",
+    pl: "Zweryfikuj konto",
+  },
+  afterVerifyYouWillBeAble: {
+    en: "After verify you will be able to:",
+    pl: "Po weryfikacji będziesz mógł:",
   },
   whatsNext: {
     en: "What's next?",
@@ -49,18 +62,41 @@ const translations = {
   },
 };
 
-const WelcomeTemplate = ({ name, language = "en", ...rest }: Props) => {
+const WelcomeTemplate = ({
+  name,
+  verifyAccountLink,
+  language = "en",
+  ...rest
+}: Props) => {
   return (
     <EmailWrapper {...rest}>
-      <Text className="text-xl text-center">
+      <Text className="text-xl text-center text-infoMain">
         {translations.hello[language]} {name}
       </Text>
       <Text className="text-xl text-center">
         {translations.welcomeText[language]}!
       </Text>
-      <Text className="text-lg text-center">
-        {translations.whatsNext[language]}:
-      </Text>
+      {verifyAccountLink ? (
+        <>
+          <Text className="text-lg text-center text-infoMain">
+            {translations.verifyAccount[language]}
+          </Text>
+          <Link
+            href={verifyAccountLink}
+            className="border-2 border-infoMain border-solid text-secondaryContrastText p-2 rounded-xl mx-auto text-center block w-fit mt-3"
+          >
+            {translations.verifyAccountLink[language]}
+          </Link>
+          <Hr className="border-infoMain mt-6" />
+          <Text className="text-lg text-center text-infoMain">
+            {translations.afterVerifyYouWillBeAble[language]}
+          </Text>
+        </>
+      ) : (
+        <Text className="text-lg text-center">
+          {translations.whatsNext[language]}:
+        </Text>
+      )}
       <Link
         href="https://remdo.com.pl/#/todoLists"
         className="bg-primaryMain text-slate-50 p-2 rounded-xl mx-auto text-center block w-fit"
@@ -80,7 +116,7 @@ const WelcomeTemplate = ({ name, language = "en", ...rest }: Props) => {
         ...{translations.toBeNotified[language]}:
       </Text>
       <Container
-        className="border-solid border-2 border-primaryMain p-2"
+        className="border-solid border-2 border-primaryMain p-2 w-60"
         style={borderStyle}
       >
         <Text className="text-center italic text-lg m-0" key={"and"}>
