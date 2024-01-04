@@ -48,8 +48,16 @@ export enum TranslationKeys {
   WrongPassword = "WrongPassword",
   PasswordsNoMatch = "PasswordsNoMatch",
   LoginSuccess = "LoginSuccess",
+  RegisterSuccess = "RegisterSuccess",
   InvalidCredentials = "InvalidCredentials",
   CurrentAccount = "CurrentAccount",
+
+  EmailNotVerified = "EmailNotVerified",
+  ResendVerificationEmail = "ResendVerificationEmail",
+  EmailSent = "EmailSent",
+  VerifyAccountTitle = "VerifyAccountTitle",
+  VerifyAccountDescription = "VerifyAccountDescription",
+  VerifyAccountSuccess = "VerifyAccountSuccess",
 
   PageTitleReminders = "PageTitleReminders",
   Reminder = "Reminder",

@@ -65,8 +65,20 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.WrongPassword]: "wrong password",
   [TranslationKeys.PasswordsNoMatch]: "passwords don't match",
   [TranslationKeys.LoginSuccess]: "Logged in successfully.",
+  [TranslationKeys.RegisterSuccess]:
+    "Registered successfully. Don't forget to verify your account, check your inbox.",
   [TranslationKeys.InvalidCredentials]: "Invalid credentials, try again",
   [TranslationKeys.CurrentAccount]: "Your account",
+  [TranslationKeys.EmailNotVerified]:
+    "To sign in you need to verify account. We send you verification email. Check your inbox.",
+  [TranslationKeys.ResendVerificationEmail]: "Resend verification email",
+  [TranslationKeys.EmailSent]: "Email sent",
+
+  [TranslationKeys.VerifyAccountTitle]: "Verify account",
+  [TranslationKeys.VerifyAccountDescription]:
+    "Before signing in, verify account",
+  [TranslationKeys.VerifyAccountSuccess]:
+    "Account verified successfully, you can sign in now.",
 
   [TranslationKeys.PageTitleReminders]: "Reminders",
   [TranslationKeys.Reminder]: "Reminder",

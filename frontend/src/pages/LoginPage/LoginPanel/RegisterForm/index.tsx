@@ -68,8 +68,9 @@ const RegisterContent = ({
       { ...data, language },
       {
         onSuccess: () => {
-          navigate(Pages.RemindersPage.path);
-          setSnackbar({ message: t(TranslationKeys.LoginSuccess) });
+          setIsRegistering(false);
+          navigate(Pages.LoginPage.path);
+          setSnackbar({ message: t(TranslationKeys.RegisterSuccess) });
         },
         onError: (error) => {
           setSnackbar({

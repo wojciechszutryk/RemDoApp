@@ -11,13 +11,14 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import GoogleButton from "../GoogleButton";
+import VerifyAccountAlert from "../VerifyAccountAlert";
 import {
   StyledForgetPassBtn,
   StyledForm,
   StyledGruppedButtons,
 } from "../styles";
 
-interface ILoginFormValues {
+export interface ILoginFormValues {
   email: string;
   password: string;
 }
@@ -61,10 +62,14 @@ const LoginForm = ({
         setSnackbar({ message: t(TranslationKeys.LoginSuccess) });
       },
       onError: (error) => {
-        setSnackbar({
-          message: error.response?.data || error.message,
-          severity: "error",
-        });
+        if (error.response?.data === "Email is not verified") {
+          setError("root", { message: t(TranslationKeys.EmailNotVerified) });
+        } else {
+          setSnackbar({
+            message: error.response?.data || error.message,
+            severity: "error",
+          });
+        }
       },
     });
   };
@@ -101,6 +106,9 @@ const LoginForm = ({
         type="password"
         placeholder={t(TranslationKeys.Password)}
       />
+      {errors.root?.message && (
+        <VerifyAccountAlert email={getValues("email")} setError={setError} />
+      )}
       <StyledForgetPassBtn onClick={(e) => handleHorgetPassword(e)}>
         {t(TranslationKeys.ForgetPassword)}
       </StyledForgetPassBtn>

@@ -65,8 +65,21 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.WrongPassword]: "hasło nieprawidłowe",
   [TranslationKeys.PasswordsNoMatch]: "hasła nie są identyczne",
   [TranslationKeys.LoginSuccess]: "Zalogowano pomyślnie.",
+  [TranslationKeys.RegisterSuccess]:
+    "Zarejestrowano pomyślnie. Nie zapomnij zweryfikować konta. Sprawdź swoją skrzynkę.",
   [TranslationKeys.InvalidCredentials]: "niepoprawne dane, spróbuj ponownie",
   [TranslationKeys.CurrentAccount]: "Twoje konto",
+  [TranslationKeys.EmailNotVerified]:
+    "Aby się zalogować musisz zweryfikować konto. Wysłaliśmy Ci link do weryfikacji na email. Sprawdź swoją skrzynkę.",
+  [TranslationKeys.ResendVerificationEmail]:
+    "Wyślij ponownie link weryfikacyjny",
+  [TranslationKeys.EmailSent]: "Wysłano email.",
+
+  [TranslationKeys.VerifyAccountTitle]: "Zweryfikuj konto",
+  [TranslationKeys.VerifyAccountDescription]:
+    "Przed zalogowaniem zweryfikuj konto",
+  [TranslationKeys.VerifyAccountSuccess]:
+    "Konto zweryfikowane pomyślnie, możesz się teraz zalogować.",
 
   [TranslationKeys.PageTitleReminders]: "Przypomnienia",
   [TranslationKeys.Reminder]: "Przypomnienie",
