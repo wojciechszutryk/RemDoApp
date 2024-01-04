@@ -91,6 +91,22 @@ export class UserService {
     }));
   }
 
+  public async verifyUserAccount(userId: string): Promise<IUserAttached> {
+    const updatedUser = await this.userCollection.findByIdAndUpdate(
+      userId,
+      { emailVerified: true, whenUpdated: new Date() } as Partial<IUserAttached>,
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      throw new Error(
+        `Cannot update user: ${userId}, because it does not exist.`
+      );
+    }
+
+    return mapUserToAttachedUser(updatedUser);
+  }
+
   /**
    * Warning this service doesn't check if can be updated. It is assumed that proper check is done before using this service
    */

@@ -23,6 +23,7 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  emailVerified: { type: Boolean, default: false },
   preferences: {
     language: String,
     theme: String,
@@ -129,6 +130,7 @@ export const mapUserToAttachedUser = (user: IUserDocument): IUserAttached => {
     googleRefreshToken: user.googleRefreshToken,
     googleTokenExpiryDate: user.googleTokenExpiryDate,
     integratedWithGoogle: user.integratedWithGoogle,
+    emailVerified: user.emailVerified,
     whenCreated: user.whenCreated,
     preferences: user.preferences._doc.preferences,
   };

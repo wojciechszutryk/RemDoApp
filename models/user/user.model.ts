@@ -96,6 +96,9 @@ export interface IUserWithReadonlyProperties extends IUser {
 
   /** Determines whether user is temporary or not (authenticated with link/token) */
   readonly isTemporary?: boolean;
+
+  /** Determines whether user verified email, not applicable for temporary users and users authenticated with third party providers */
+  readonly emailVerified?: boolean;
 }
 
 export type IUserAttached = IUserWithReadonlyProperties & IBaseModelAttached;

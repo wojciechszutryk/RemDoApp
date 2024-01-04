@@ -12,6 +12,7 @@ import {
   URL_USERS,
   USER_PARAM,
 } from "linked-models/user/user.urls";
+import { IGoogleAuthUser } from "models/auth.models";
 import passport from "passport";
 import {
   GoogleCallbackParameters,
@@ -33,6 +34,7 @@ passport.use(
     {
       usernameField: "email",
       passwordField: "password",
+      session: false,
       passReqToCallback: true,
     },
     async function (req, _, __, done) {
@@ -102,6 +104,10 @@ passport.use(
 
       if (!isPasswordCorrect) {
         return done({ message: "Email or password is incorrect" }, false);
+      }
+
+      if (!foundUser.emailVerified) {
+        return done({ message: "Email is not verified" }, false);
       }
 
       return done(null, mapUserToAttachedUser(foundUser));
@@ -203,15 +209,17 @@ passport.use(
           googleRefreshToken: refreshToken,
           whenCreated: new Date(),
         });
-        done(null, mapUserToAttachedUser(newUser));
+        done(null, {
+          ...mapUserToAttachedUser(newUser),
+          registered: true,
+        } as IGoogleAuthUser);
       }
     }
   )
 );
 
 passport.serializeUser((user, done) => {
-  if (user.isTemporary) return done(null, user.authId);
-  done(null, user.authId);
+  if (user) done(null, user.authId);
 });
 
 passport.deserializeUser(async (authId: string, done) => {

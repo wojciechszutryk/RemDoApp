@@ -6,6 +6,9 @@ export const URL_USER = (userId?: string) => `/${userId || ":" + USER_PARAM}`;
 export const URL_USERS = `/users`;
 
 export const URL_REGISTER = `/register`;
+export const URL_VERIFY_ACCOUNT = `/verifyAccount`;
+export const URL_RESEND_EMAIL = `/resendEmail`;
+
 export const URL_LOGIN = `/login`;
 export const URL_FORGET_PASSWORD = `/forgetPassword`;
 export const URL_LOGOUT = `/logout`;

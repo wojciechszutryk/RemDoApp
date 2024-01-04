@@ -6,6 +6,7 @@ import {
   BaseHttpController,
   controller,
   httpGet,
+  httpPost,
   httpPut,
   interfaces,
   queryParam,
@@ -35,9 +36,11 @@ import {
   URL_PASSWORD,
   URL_PREFERENCES,
   URL_PUBLIC_DATA,
+  URL_RESEND_EMAIL,
   URL_UNSUBSCRIBE,
   URL_USER,
   URL_USERS,
+  URL_VERIFY_ACCOUNT,
   USER_PARAM,
 } from "linked-models/user/user.urls";
 import { DeleteUserAvatar } from "middlewares/user/deleteUserAvatar.middleware";
@@ -45,6 +48,7 @@ import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { AVATARS_BULK_NAME } from "models/storage.const";
 import mongoose from "mongoose";
 import multer from "multer";
+import { EmailNotificationService } from "services/notification/email.notification.service";
 import { UserAuthService } from "services/user/user.auth.service";
 import { UserSearchService } from "services/user/user.search.service";
 import { UserService } from "services/user/user.service";
@@ -58,6 +62,8 @@ export class UserController
 {
   constructor(
     @inject(UserService) private readonly userService: UserService,
+    @inject(EmailNotificationService)
+    private readonly emailNotificationService: EmailNotificationService,
     @inject(UserSearchService)
     private readonly userSearchService: UserSearchService,
     @inject(UserAuthService) private readonly userAuthService: UserAuthService
@@ -148,15 +154,40 @@ export class UserController
       downloadStream.on("end", () => {
         res.end();
       });
-
-      // return res.status(404).send({
-      //   message: "User avatar not found",
-      // });
     } catch (error) {
       res.status(500).send({
         message: "Error Something went wrong",
         error,
       });
+    }
+  }
+
+  @httpPost(URL_VERIFY_ACCOUNT + URL_RESEND_EMAIL)
+  async resendVerificationEmail(@requestBody() body: { email?: string }) {
+    try {
+      if (!body.email) {
+        return this.json("User not found", 404);
+      }
+      const user = await this.userService.getUserByEmail(body.email);
+      if (!user) {
+        return this.json("User not found", 404);
+      }
+      await this.emailNotificationService.sendWelcomeEmail(user, true);
+    } catch (error) {
+      return this.json(error, 400);
+    }
+  }
+
+  @httpPost(URL_USER() + URL_VERIFY_ACCOUNT, SetCurrentUser)
+  async verifyAccount(@currentUser() currentUser: IUserAttached | undefined) {
+    try {
+      if (!currentUser) {
+        return this.json("User not found", 404);
+      }
+      await this.userService.verifyUserAccount(currentUser.id);
+      return this.ok();
+    } catch (error) {
+      return this.json(error, 400);
     }
   }
 
