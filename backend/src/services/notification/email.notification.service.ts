@@ -1,17 +1,29 @@
 import { render } from "@react-email/render";
 import sendgrid, { MailService } from "@sendgrid/mail";
-import { injectable } from "inversify";
+import { getWelcomeEmailSubject } from "helpers/emails/welcomeEmail.translations";
+import { inject, injectable } from "inversify";
 import { AppLanguages } from "linked-models/language/languages.enum";
 import { IUserAttached } from "linked-models/user/user.model";
+import {
+  URL_USER,
+  URL_USERS,
+  URL_VERIFY_ACCOUNT,
+  USER_PARAM,
+} from "linked-models/user/user.urls";
 import { INotificationsTexts } from "models/notification.text.model";
 import React from "react";
+import { AccessLinkService } from "services/accessLink/accessLink.service";
 import EventTemplate from "../../../emails/emails/EventTemplate";
+import WelcomeTemplate from "../../../emails/emails/WelcomeTemplate";
 
 @injectable()
 export class EmailNotificationService {
   private readonly sendGridClient: MailService;
 
-  constructor() {
+  constructor(
+    @inject(AccessLinkService)
+    private readonly accessLinkService: AccessLinkService
+  ) {
     this.sendGridClient = sendgrid;
     this.sendGridClient.setApiKey(process.env.SENDGRID_API_KEY!);
   }
@@ -50,6 +62,47 @@ export class EmailNotificationService {
 
     await this.sendGridClient.send(emails).catch((error) => {
       console.error(error);
+    });
+  }
+
+  public async sendWelcomeEmail(user: IUserAttached, withVerify: boolean) {
+    let verifyAccountLink = undefined;
+    if (withVerify) {
+      const datePlusOneDay = new Date();
+      datePlusOneDay.setDate(datePlusOneDay.getDate() + 1);
+
+      const accessLink = await this.accessLinkService.createAccessLink(
+        datePlusOneDay,
+        {
+          [USER_PARAM]: user.id,
+        }
+      );
+
+      const baseUrl = process.env.CLIENT_URL?.includes("#")
+        ? process.env.CLIENT_URL
+        : process.env.CLIENT_URL + "/#";
+
+      verifyAccountLink = this.accessLinkService.composeLink(
+        `${baseUrl}${URL_USERS}${URL_USER(user.id)}${URL_VERIFY_ACCOUNT}`,
+        accessLink
+      );
+    }
+
+    const subject = getWelcomeEmailSubject(user?.preferences?.language);
+
+    this.sendGridClient.send({
+      from: process.env.FROM_EMAIL!,
+      to: user.email,
+      subject,
+      html: render(
+        React.createElement(WelcomeTemplate, {
+          preview: subject,
+          name: user.displayName,
+          language: user.preferences.language,
+          isDarkTheme: user.preferences.theme === "dark",
+          verifyAccountLink,
+        })
+      ),
     });
   }
 
