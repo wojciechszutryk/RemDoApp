@@ -5,8 +5,13 @@ import { LoginPanel } from "pages/LoginPage/LoginPanel";
 import { memo, useEffect, useLayoutEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import VerifyAccountPanel from "./VerifyAccountPanel";
 
-const LoginPage = (): JSX.Element => {
+interface Props {
+  showAccountVerifyPanel?: boolean;
+}
+
+const LoginPage = ({ showAccountVerifyPanel }: Props): JSX.Element => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const { currentUser } = useCurrentUser();
@@ -36,7 +41,10 @@ const LoginPage = (): JSX.Element => {
         defaultEmail={email}
         setIsRegistering={setIsRegistering}
         isRegistering={isRegistering}
-      />
+        disableAutoRedirect={showAccountVerifyPanel}
+      >
+        {showAccountVerifyPanel && <VerifyAccountPanel />}
+      </LoginPanel>
     </>
   );
 };

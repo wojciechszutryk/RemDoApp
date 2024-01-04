@@ -12,6 +12,7 @@ import {
   URL_FORGET_PASSWORD,
   URL_USER,
   URL_USERS,
+  URL_VERIFY_ACCOUNT,
 } from "linked-models/user/user.urls";
 
 export const Pages = {
@@ -44,6 +45,10 @@ export const Pages = {
   },
   LoginPage: {
     path: "/login",
+  },
+  VerifyAccountPage: {
+    path: (userId?: string) =>
+      `${URL_USERS}${URL_USER(userId)}${URL_VERIFY_ACCOUNT}`,
   },
   RemindersPage: {
     path: "/reminders",

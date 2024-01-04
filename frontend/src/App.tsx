@@ -60,6 +60,18 @@ const App = (): JSX.Element => {
           }
         />
         <Route
+          path={Pages.VerifyAccountPage.path()}
+          element={
+            <Suspense fallback={false}>
+              <PageTemplate>
+                <RequireShareTokenWrapper>
+                  <LoginPage showAccountVerifyPanel />
+                </RequireShareTokenWrapper>
+              </PageTemplate>
+            </Suspense>
+          }
+        />
+        <Route
           path={Pages.RegisterPage.path}
           element={
             <Suspense fallback={false}>
