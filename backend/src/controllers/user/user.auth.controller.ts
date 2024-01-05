@@ -60,11 +60,7 @@ export class UserAuthController
       accessType: "offline",
     })
   )
-  async googleAuth(): Promise<OkResult> {
-    return this.ok();
-  }
-  @httpGet(
-    URL_GOOGLE + URL_REDIRECT,
+  @httpGet(URL_GOOGLE + URL_REDIRECT, function (req, res, next) {
     passport.authenticate(
       "google",
       {
@@ -72,8 +68,8 @@ export class UserAuthController
           new Date().getTime() + SessionAge
         }`,
         failureRedirect: process.env.CLIENT_URL!,
-        passReqToCallback: true,
-        pauseStream: true,
+        // passReqToCallback: true,
+        // pauseStream: true,
         accessType: "offline",
       },
       function (err, user: IGoogleAuthUser) {
@@ -96,9 +92,20 @@ export class UserAuthController
             ),
           });
         }
+
+        req.logIn(user, function (err) {
+          if (err) {
+            return next(err);
+          }
+          return res.redirect(
+            `${process.env.CLIENT_URL!}?${ExpiryParam}=${
+              new Date().getTime() + SessionAge
+            }`
+          );
+        });
       }
-    )
-  )
+    )(req, res, next);
+  })
   @httpGet(URL_LOGOUT)
   async logout(@request() req: express.Request) {
     req.logout({ keepSessionInfo: false }, (err) => {
