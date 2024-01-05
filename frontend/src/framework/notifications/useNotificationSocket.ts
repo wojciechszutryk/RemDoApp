@@ -32,16 +32,12 @@ import useUpdateQueriesAfterEditingTodoList from "pages/SingleTodoListPage/mutat
 import useUpdateQueriesAfterCreatingTodoList from "pages/TodoListsPage/mutations/createTodoList/useUpdateQueriesAfterCreatingTodoList";
 import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
 import { useEffect, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import { createCollaborationNotificationMsg } from "./helpers/createCollaborationNotificationMsg";
-import { createTodoNotificationMsg } from "./helpers/createTodoNotificationMsg";
 import useAddNewNotification from "./hooks/useAddNewNotification";
 import { useInitializeNotificationSocket } from "./useInitializeNotificationSocket";
 
 const useNotificationSocket = () => {
   const { notificationSocketReady, on } = useInitializeNotificationSocket();
   const addNewNotification = useAddNewNotification();
-  const { t } = useTranslation();
 
   const updateQueriesAfterCreatingTodoList =
     useUpdateQueriesAfterCreatingTodoList();
@@ -82,237 +78,92 @@ const useNotificationSocket = () => {
       if (notificationSocketReady) {
         on(
           TodoListCreatedEvent,
-          ({ notification, payload: createdTodoList }) => {
+          ({ notification, payload: createdTodoList, message }) => {
             const creator = createdTodoList.assignedOwners.find(
               (u) => u.id === notification.actionCreatorId
             );
-            addNewNotification(
-              notification,
-              createTodoNotificationMsg(
-                {
-                  action: notification.action,
-                  actionCreatorDisplayName: creator?.displayName,
-                  todoListName: createdTodoList.name,
-                },
-                t
-              ),
-              creator
-            );
+            addNewNotification(notification, message, creator);
             updateQueriesAfterCreatingTodoList(createdTodoList);
           }
         );
         on(
           TodoListUpdatedEvent,
-          ({ notification, payload: updatedTodoList }) => {
+          ({ notification, payload: updatedTodoList, message }) => {
             const creator = updatedTodoList.assignedOwners.find(
               (u) => u.id === notification.actionCreatorId
             );
-            addNewNotification(
-              notification,
-              createTodoNotificationMsg(
-                {
-                  action: notification.action,
-                  actionCreatorDisplayName: creator?.displayName,
-                  todoListName: updatedTodoList.name,
-                },
-                t
-              ),
-              creator
-            );
+            addNewNotification(notification, message, creator);
             updateQueriesAfterEditingTodoList(updatedTodoList);
           }
         );
         on(
           TodoListDeletedEvent,
-          ({ notification, payload: deletedTodoList }) => {
+          ({ notification, payload: deletedTodoList, message }) => {
             const creator = userIdToUserMap.get(notification.actionCreatorId);
-            addNewNotification(
-              notification,
-              createTodoNotificationMsg(
-                {
-                  action: notification.action,
-                  actionCreatorDisplayName: creator?.displayName,
-                  todoListName: deletedTodoList.name,
-                },
-                t
-              ),
-              creator
-            );
+            addNewNotification(notification, message, creator);
             updateQueriesAfterDeletingTodoList(deletedTodoList);
           }
         );
 
         on(
           TaskCreatedEvent,
-          ({ notification, payload: { payload, eventCreator } }) => {
-            addNewNotification(
-              notification,
-              createTodoNotificationMsg(
-                {
-                  action: notification.action,
-                  actionCreatorDisplayName: eventCreator?.displayName,
-                  todoListName: todoLists?.find(
-                    (td) => td.id === payload.todoListId
-                  )?.name,
-                  taskName: payload.text,
-                },
-                t
-              ),
-              eventCreator
-            );
+          ({ notification, payload: { payload, eventCreator }, message }) => {
+            addNewNotification(notification, message, eventCreator);
             updateQueriesAfterCreatingTask(payload);
           }
         );
         on(
           TaskUpdatedEvent,
-          ({ notification, payload: { payload, eventCreator } }) => {
-            addNewNotification(
-              notification,
-              createTodoNotificationMsg(
-                {
-                  action: notification.action,
-                  actionCreatorDisplayName: eventCreator.displayName,
-                  todoListName: todoLists?.find(
-                    (td) => td.id === payload.todoListId
-                  )?.name,
-                  taskName: payload.text,
-                },
-                t
-              ),
-              eventCreator
-            );
+          ({ notification, payload: { payload, eventCreator }, message }) => {
+            addNewNotification(notification, message, eventCreator);
             updateQueriesAfterEditingTask(payload, {
               todoListId: payload.todoListId,
             });
           }
         );
-        on(TaskDeletedEvent, ({ notification, payload: deletedTask }) => {
-          const creator = userIdToUserMap.get(notification.actionCreatorId);
-          addNewNotification(
-            notification,
-            createTodoNotificationMsg(
-              {
-                action: notification.action,
-                actionCreatorDisplayName: creator?.displayName,
-                todoListName: todoLists?.find(
-                  (td) => td.id === deletedTask.todoListId
-                )?.name,
-                taskName: deletedTask.text,
-              },
-              t
-            ),
-            creator
-          );
-          updateQueriesAfterDeletingTask(deletedTask);
+        on(
+          TaskDeletedEvent,
+          ({ notification, payload: deletedTask, message }) => {
+            const creator = userIdToUserMap.get(notification.actionCreatorId);
+            addNewNotification(notification, message, creator);
+            updateQueriesAfterDeletingTask(deletedTask);
+          }
+        );
+        on(
+          CollaborationRequestedEvent,
+          ({ notification, payload, message }) => {
+            addNewNotification(notification, message, payload);
+          }
+        );
+        on(CollaborationAcceptedEvent, ({ notification, payload, message }) => {
+          addNewNotification(notification, message, payload);
         });
-        on(CollaborationRequestedEvent, ({ notification, payload }) => {
-          addNewNotification(
-            notification,
-            createCollaborationNotificationMsg(
-              notification.action,
-              payload.displayName,
-              t
-            ),
-            payload
-          );
+        on(CollaborationRejectedEvent, ({ notification, payload, message }) => {
+          addNewNotification(notification, message, payload);
         });
-        on(CollaborationAcceptedEvent, ({ notification, payload }) => {
-          addNewNotification(
-            notification,
-            createCollaborationNotificationMsg(
-              notification.action,
-              payload.displayName,
-              t
-            ),
-            payload
-          );
+        on(CollaborationReopenedEvent, ({ notification, payload, message }) => {
+          addNewNotification(notification, message, payload);
         });
-        on(CollaborationRejectedEvent, ({ notification, payload }) => {
-          addNewNotification(
-            notification,
-            createCollaborationNotificationMsg(
-              notification.action,
-              payload.displayName,
-              t
-            ),
-            payload
-          );
-        });
-        on(CollaborationReopenedEvent, ({ notification, payload }) => {
-          addNewNotification(
-            notification,
-            createCollaborationNotificationMsg(
-              notification.action,
-              payload.displayName,
-              t
-            ),
-            payload
-          );
-        });
-        on(CollaborationBlockedEvent, ({ notification, payload }) => {
-          addNewNotification(
-            notification,
-            createCollaborationNotificationMsg(
-              notification.action,
-              payload.displayName,
-              t
-            ),
-            payload
-          );
+        on(CollaborationBlockedEvent, ({ notification, payload, message }) => {
+          addNewNotification(notification, message, payload);
         });
         on(
           ReminderCreatedEvent,
-          ({ notification, payload: { payload, eventCreator } }) => {
-            addNewNotification(
-              notification,
-              createTodoNotificationMsg(
-                {
-                  action: notification.action,
-                  actionCreatorDisplayName: eventCreator.displayName,
-                  todoListName: payload.name,
-                  taskName: payload.text,
-                },
-                t
-              ),
-              eventCreator
-            );
+          ({ notification, payload: { payload, eventCreator }, message }) => {
+            addNewNotification(notification, message, eventCreator);
             updateQueriesAfterCreatingReminder(payload);
           }
         );
         on(
           ReminderUpdatedEvent,
-          ({ notification, payload: { payload, eventCreator } }) => {
-            addNewNotification(
-              notification,
-              createTodoNotificationMsg(
-                {
-                  action: notification.action,
-                  actionCreatorDisplayName: eventCreator?.displayName,
-                  todoListName: payload.name,
-                  taskName: payload.text,
-                },
-                t
-              ),
-              eventCreator
-            );
+          ({ notification, payload: { payload, eventCreator }, message }) => {
+            addNewNotification(notification, message, eventCreator);
             updateQueriesAfterEditingReminder(payload);
           }
         );
-        on(ReminderDeletedEvent, ({ notification, payload }) => {
+        on(ReminderDeletedEvent, ({ notification, payload, message }) => {
           const creator = userIdToUserMap.get(notification.actionCreatorId);
-          addNewNotification(
-            notification,
-            createTodoNotificationMsg(
-              {
-                action: notification.action,
-                actionCreatorDisplayName: creator?.displayName,
-                todoListName: payload.name,
-                taskName: payload.text,
-              },
-              t
-            ),
-            creator
-          );
+          addNewNotification(notification, message, creator);
           updateQueriesAfterDeletingReminder(payload);
         });
       }

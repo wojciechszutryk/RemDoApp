@@ -267,6 +267,9 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.NotificationsSettings]: "Notifications preferences",
   [TranslationKeys.TASK_CREATED]: "Task created in your todo list",
   [TranslationKeys.TASK_UPDATED]: "Task updated in your todo list",
+  [TranslationKeys.TASK_RESCHEDULED]: "Date of task changed in your todo list",
+  [TranslationKeys.TASK_STATE_CHANGED]:
+    "State of task changed in your todo list",
   [TranslationKeys.TASK_DELETED]: "Task deleted in your todo list",
   [TranslationKeys.REMINDER_CREATED]: "You were assigned to new reminder",
   [TranslationKeys.REMINDER_UPDATED]:

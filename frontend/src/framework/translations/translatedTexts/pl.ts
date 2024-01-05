@@ -277,6 +277,10 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "Zadanie zostało utworzone w liście zadań do której jesteś przypisany/a",
   [TranslationKeys.TASK_UPDATED]:
     "Zadanie zostało zmodyfikowane w liście zadań do której jesteś przypisany/a",
+  [TranslationKeys.TASK_RESCHEDULED]:
+    "Data zadania została zmieniona w liście zadań do której jesteś przypisany/a",
+  [TranslationKeys.TASK_STATE_CHANGED]:
+    "Status zadania został zmieniony w liście zadań do której jesteś przypisany/a",
   [TranslationKeys.TASK_DELETED]:
     "Zadanie zostało usunięte z listy zadań do której jesteś przypisany/a",
   [TranslationKeys.REMINDER_CREATED]:

@@ -7,7 +7,11 @@ import { Socket, io } from "socket.io-client";
 
 type NotificationOnType = <R>(
   event: TypedEvent<R>,
-  callback: (args: { notification: INotificationDto; payload: R }) => void
+  callback: (args: {
+    notification: INotificationDto;
+    payload: R;
+    message: string;
+  }) => void
 ) => void;
 
 export const useInitializeNotificationSocket = () => {
