@@ -74,6 +74,14 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: NotificationPreference.ALL,
       },
+      [EventName.TaskStateChanged]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.TaskRescheduled]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
       [EventName.TodoListCreated]: {
         type: String,
         default: NotificationPreference.ALL,

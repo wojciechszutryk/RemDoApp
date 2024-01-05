@@ -33,6 +33,10 @@ export interface NotificationPreferences {
   [EventName.TaskCreated]: NotificationPreference;
   [EventName.TaskDeleted]: NotificationPreference;
   [EventName.TaskUpdated]: NotificationPreference;
+  [EventName.TaskRescheduled]: NotificationPreference;
+  [EventName.TaskStateChanged]: NotificationPreference;
+  [EventName.TaskRescheduled]: NotificationPreference;
+  [EventName.TaskStateChanged]: NotificationPreference;
   [EventName.TodoListCreated]: NotificationPreference;
   [EventName.TodoListDeleted]: NotificationPreference;
   [EventName.TodoListUpdated]: NotificationPreference;
