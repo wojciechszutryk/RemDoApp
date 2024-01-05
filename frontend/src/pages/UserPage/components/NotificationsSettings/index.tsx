@@ -33,6 +33,8 @@ type NotificationsSettingsForm = {
   [EventName.TaskCreated]: INotificationOptions;
   [EventName.TaskDeleted]: INotificationOptions;
   [EventName.TaskUpdated]: INotificationOptions;
+  [EventName.TaskRescheduled]: INotificationOptions;
+  [EventName.TaskStateChanged]: INotificationOptions;
   [EventName.TodoListCreated]: INotificationOptions;
   [EventName.TodoListDeleted]: INotificationOptions;
   [EventName.TodoListUpdated]: INotificationOptions;

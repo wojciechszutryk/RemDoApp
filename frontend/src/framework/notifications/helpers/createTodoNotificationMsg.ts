@@ -21,13 +21,13 @@ export const createTodoNotificationMsg = (
 ) => {
   const actionCreatorPart = `${
     actionCreatorDisplayName
-      ? t(TranslationKeys.NotificationByUserPart) +
-        `"${actionCreatorDisplayName}"`
+      ? `${t(TranslationKeys.NotificationByUserPart)} 
+        "${actionCreatorDisplayName}"`
       : ""
   }`;
   const todoListPart = `${
     todoListName
-      ? t(TranslationKeys.NotificationInTodoListPart) + `"${todoListName}"`
+      ? `${t(TranslationKeys.NotificationInTodoListPart)} "${todoListName}"`
       : ""
   }`;
 

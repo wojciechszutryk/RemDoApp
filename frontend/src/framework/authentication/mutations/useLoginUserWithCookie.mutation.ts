@@ -22,7 +22,12 @@ export const useLoginUserWithCookieMutation = () => {
 
   return useMutation(loginUserWithCookie, {
     onSuccess: (user) => {
-      setCurrentUser(user);
+      if (
+        user instanceof Object &&
+        user.hasOwnProperty("id") &&
+        !user.isTemporary
+      )
+        setCurrentUser(user);
     },
   });
 };
