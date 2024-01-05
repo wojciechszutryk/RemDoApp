@@ -74,8 +74,10 @@ export class PushNotificationService {
         .sendNotification(
           s,
           JSON.stringify({
-            title: notificationTexts.title[user.preferences.language],
-            body: notificationTexts.description[user.preferences.language],
+            title: notificationTexts.title[user.preferences.language || "en"],
+            body: notificationTexts.description[
+              user.preferences.language || "en"
+            ],
             link: notificationLink,
             img: eventCreatorImg,
           })

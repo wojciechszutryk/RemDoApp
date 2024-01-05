@@ -1,4 +1,5 @@
 import { TEMP_USER_ID, getTemUser } from "framework/auth/tempUser.helper";
+import { formatDateTime } from "helpers/date/dateFormat.helper";
 import { inject, injectable } from "inversify";
 import { URL_COLLABORANTS } from "linked-models/collaboration/collaboration.urls";
 import { EventName, EventSubject } from "linked-models/event/event.enum";
@@ -131,16 +132,24 @@ export class NotifyService {
     const byUserPLPart = ` przez ${eventCreatorName}`;
     const byUserENPart = ` by ${eventCreatorName}`;
     const plannedStartDatePLPart = plannedStartDate
-      ? ` Rozpocznie się ono: ${plannedStartDate}.`
+      ? ` Rozpocznie się ono: ${formatDateTime(
+          plannedStartDate,
+          "pl-PL",
+          false
+        )}.`
       : "";
     const plannedStartDateENPart = plannedStartDate
-      ? ` It will start at ${plannedStartDate}.`
+      ? ` It will start at ${formatDateTime(plannedStartDate, "en-US", true)}.`
       : "";
     const plannedFinishDatePLPart = plannedFinishDate
-      ? ` Będzie trwać do ${plannedFinishDate}.`
+      ? ` Będzie trwać do ${formatDateTime(plannedFinishDate, "pl-PL", false)}.`
       : "";
     const plannedFinishDateENPart = plannedFinishDate
-      ? ` It will last until ${plannedFinishDate}.`
+      ? ` It will last until ${formatDateTime(
+          plannedFinishDate,
+          "en-US",
+          true
+        )}.`
       : "";
 
     switch (eventName) {
@@ -184,7 +193,20 @@ export class NotifyService {
         titlePL = "Zaktualizowano zadanie";
         descriptionPL = `Zadanie${taskTitlePart} zostało zaktualizowane w liście zadań${todoListNamePart}${byUserPLPart}${plannedStartDatePLPart}${plannedFinishDatePLPart}`;
         titleEN = "Task was updated";
-        descriptionEN = `Task${taskTitlePart} was updated in todo list${todoListNamePart}${byUserENPart}${plannedStartDateENPart}${plannedFinishDateENPart}}`;
+        descriptionEN = `Task${taskTitlePart} was updated in todo list${todoListNamePart}${byUserENPart}${plannedStartDateENPart}${plannedFinishDateENPart}`;
+        break;
+
+      case EventName.TaskRescheduled:
+        titlePL = "Zmiana datę zadania";
+        descriptionPL = `Zadanie${taskTitlePart} zostało przesunięte w czasie w liście zadań${todoListNamePart}${byUserPLPart}${plannedStartDatePLPart}${plannedFinishDatePLPart}`;
+        titleEN = "Task was rescheduled";
+        descriptionEN = `Task${taskTitlePart} was rescheduled in todo list${todoListNamePart}${byUserENPart}${plannedStartDateENPart}${plannedFinishDateENPart}`;
+        break;
+      case EventName.TaskStateChanged:
+        titlePL = "Zmiana stanu zadania";
+        descriptionPL = `Zadanie${taskTitlePart} zmieniło swój stan w liście zadań${todoListNamePart}${byUserPLPart}`;
+        titleEN = "Task state was changed";
+        descriptionEN = `Task${taskTitlePart} changed its state in todo list${todoListNamePart}${byUserENPart}`;
         break;
       case EventName.TaskDeleted:
         titlePL = "Usunięto zadanie";
@@ -343,26 +365,34 @@ export class NotifyService {
       eventCreator = fetchedCreator?.[0];
     }
 
+    const notificationTexts = this.createNotificationTexts(
+      eventName,
+      payload,
+      eventCreator?.displayName
+    );
+
     /** SOCKET START */
     const usersToNotifyBySocket = this.getUsersToNotiftByPreference(
       usersToNotify,
       eventName,
       NotificationPreference.SOCKET
     );
-    const notificationsToSendBySocket = createdNotifications.filter((n) =>
-      usersToNotifyBySocket.some((u) => u.id === n.userId)
-    );
+    const notificationsToSendBySocket = createdNotifications
+      .filter((n) => usersToNotifyBySocket.some((u) => u.id === n.userId))
+      .map((n) =>
+        //we handle all subevents (TaskRescheduled, etc.) on client side as TaskUpdated
+        ({
+          ...n,
+          action: EventName.TaskUpdated,
+        })
+      );
     this.socketNotificationService.notifyUsers(
       notificationsToSendBySocket,
-      payload
+      payload,
+      notificationTexts,
+      usersToNotifyBySocket
     );
     /** SOCKET END */
-
-    const notificationTexts = this.createNotificationTexts(
-      eventName,
-      payload,
-      eventCreator?.displayName
-    );
 
     const notificationLink = this.createNotificationLink(eventName, payload);
 
