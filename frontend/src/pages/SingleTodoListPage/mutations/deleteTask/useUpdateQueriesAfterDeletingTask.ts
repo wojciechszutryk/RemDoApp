@@ -1,5 +1,4 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { ITaskAttached } from "linked-models/task/task.model";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import {
   PARAM_EXTENDED,
@@ -14,7 +13,7 @@ const useUpdateQueriesAfterDeletingTask = () => {
   const { todoListId: todoListIdParam } = useParams();
 
   return useCallback(
-    (deletedTask: ITaskAttached) => {
+    (deletedTaskId: string) => {
       // update single todo list query data only on singletodolist page
       if (todoListIdParam) {
         queryClient.setQueryData(
@@ -23,7 +22,7 @@ const useUpdateQueriesAfterDeletingTask = () => {
             if (!prev) return {} as IExtendedTodoListDto;
             const todoListWithFilteredTasks = {
               ...prev,
-              tasks: prev.tasks.filter((task) => task.id !== deletedTask.id),
+              tasks: prev.tasks.filter((task) => task.id !== deletedTaskId),
             };
             return todoListWithFilteredTasks;
           }
@@ -37,7 +36,7 @@ const useUpdateQueriesAfterDeletingTask = () => {
           if (!prev) return [];
           const updatedTodoLists = prev.map((todoList) => {
             const filteredTasks = todoList.tasks.filter(
-              (task) => task.id !== deletedTask.id
+              (task) => task.id !== deletedTaskId
             );
             return {
               ...todoList,

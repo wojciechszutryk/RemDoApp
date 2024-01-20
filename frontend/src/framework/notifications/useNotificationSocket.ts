@@ -126,7 +126,7 @@ const useNotificationSocket = () => {
           ({ notification, payload: deletedTask, message }) => {
             const creator = userIdToUserMap.get(notification.actionCreatorId);
             addNewNotification(notification, message, creator);
-            updateQueriesAfterDeletingTask(deletedTask);
+            updateQueriesAfterDeletingTask(deletedTask.id);
           }
         );
         on(
