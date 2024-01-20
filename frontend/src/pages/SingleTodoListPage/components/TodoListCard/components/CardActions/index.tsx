@@ -6,11 +6,14 @@ import { CardActions as MUICardActions } from "@mui/material";
 import { useDialogs } from "framework/dialogs";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
-import { memo } from "react";
+import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledExpandMore } from "../../styles";
 import ActionsButtons from "./components/ActionsButtons";
 import ActionsMenu from "./components/ActionsMenu";
+import QuickTaskCreateBtn, {
+  QUICK_TASK_ID,
+} from "./components/QuickTaskCreateBtn";
 import { StyledCreateTaskButton } from "./styles";
 
 interface Props {
@@ -26,7 +29,7 @@ interface Props {
 }
 
 const CardActions = ({
-  todoList: { name, id, icon, assignedOwners, assignedUsers },
+  todoList: { name, id, icon, assignedOwners, assignedUsers, tasks },
   expanded,
   setExpanded,
   showExpandIcon,
@@ -86,6 +89,12 @@ const CardActions = ({
     });
   }
 
+  //we should not allow to create another task with empty text (quick task) if there is already one
+  const isQuickTaskCreated = useMemo(
+    () => tasks.some((t) => t.id === QUICK_TASK_ID),
+    [tasks]
+  );
+
   return (
     <MUICardActions disableSpacing>
       {showCreateTaskButton && (
@@ -95,6 +104,7 @@ const CardActions = ({
             dialogsActions.updateTaskDialog({ visible: true, todoListId: id })
           }
         >
+          <QuickTaskCreateBtn todoListId={id} disabled={isQuickTaskCreated} />
           {t(TranslationKeys.AddTask)}
         </StyledCreateTaskButton>
       )}
