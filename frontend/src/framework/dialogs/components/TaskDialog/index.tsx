@@ -9,7 +9,7 @@ import { initialTaskDialog } from "framework/dialogs/models/initialState.const";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { useCreateTaskMutation } from "pages/SingleTodoListPage/mutations/createTask/createTask.mutation";
 import { useEditTaskInTodoListMutation } from "pages/SingleTodoListPage/mutations/editTask/editTask.mutation";
-import { memo } from "react";
+import { memo, useEffect, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { StyledForm } from "../TodoListDialog/styles";
@@ -27,6 +27,8 @@ const TaskDialog = (): JSX.Element => {
     dialogsActions: { updateTaskDialog },
   } = useDialogs();
 
+  const taskRef = useRef<HTMLInputElement | null>(null);
+
   const [open, onClose] = useAppDialogState(visible, () =>
     updateTaskDialog(initialTaskDialog)
   );
@@ -41,7 +43,7 @@ const TaskDialog = (): JSX.Element => {
 
   const defaultFormValues = {
     text: editTaskData?.text || "",
-    startDate: editTaskData?.startDate || new Date(Date.now() + 900000),
+    startDate: editTaskData?.startDate,
     finishDate: editTaskData?.finishDate || null,
     minsAccordingToTimePoint:
       defaultSelectsValues?.minsAccordingToTimePoint || 15,
@@ -69,7 +71,11 @@ const TaskDialog = (): JSX.Element => {
     onClose();
   };
 
-  const { handleSubmit, control } = methods;
+  const { handleSubmit, control, setFocus } = methods;
+
+  useEffect(() => {
+    setFocus("text");
+  }, [setFocus]);
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -81,6 +87,8 @@ const TaskDialog = (): JSX.Element => {
               : t(TranslationKeys.AddTask)}
           </Typography>
           <ControlledTextField
+            autoFocus
+            ref={taskRef}
             name={"text"}
             error={!!methods.formState.errors?.text}
             helperText={

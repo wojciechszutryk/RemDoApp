@@ -12,7 +12,7 @@ import { ControlledTextField } from "atomicComponents/molecules/ControlledInputT
 import DatesPickers from "framework/dialogs/components/TaskDialog/components/DatesPickers";
 import { StyledForm } from "framework/dialogs/components/TodoListDialog/styles";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { IReminderDialogState } from "../../models/reminderDialogState.model";
@@ -35,10 +35,15 @@ const GeneralInfo = ({
     handleSubmit,
     control,
     formState: { errors },
+    setFocus,
   } = useFormContext<IReminderDialogState>();
 
   const markAccordionError =
     (!!errors.name || !!errors.text) && expandedAccordion !== "general";
+
+  useEffect(() => {
+    setFocus("name");
+  }, [setFocus]);
 
   return (
     <StyledAccordion
@@ -69,6 +74,7 @@ const GeneralInfo = ({
             spacingTop={-5}
           />
           <ControlledTextField
+            autoFocus
             name={"name"}
             required
             error={!!errors.name}

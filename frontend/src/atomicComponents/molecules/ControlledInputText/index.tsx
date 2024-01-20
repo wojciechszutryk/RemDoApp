@@ -27,13 +27,13 @@ export const ControlledTextField = <
   ...otherProps
 }: Props<TFieldValues, TName>): JSX.Element => {
   return (
-      <Controller
-        name={name}
-        control={control}
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <TextField onChange={onChange} value={value} {...otherProps} />
-        )}
-      />
+    <Controller
+      name={name}
+      control={control}
+      rules={{ required: true }}
+      render={({ field: { onChange, value } }) => (
+        <TextField onChange={onChange} value={value} {...otherProps} />
+      )}
+    />
   );
 };
