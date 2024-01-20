@@ -3,6 +3,8 @@ import { TodoListPermissions } from "linked-models/permissions/todoList.permissi
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import useCheckTodoPermissions from "pages/TodoListsPage/hooks/useCheckTodoPermissions";
 import { memo } from "react";
+import { QUICK_TASK_ID } from "../../CardActions/components/QuickTaskCreateBtn";
+import QuickTaskListItem from "./QuickTaskListItem";
 import TaskListItem from "./TaskListItem";
 
 interface Props {
@@ -17,6 +19,16 @@ const TasksList = ({ tasks, tasksState, todoListId }: Props): JSX.Element => {
   return (
     <AnimatePresence>
       {tasks.map((task) => {
+        if (task.id === QUICK_TASK_ID) {
+          return (
+            <QuickTaskListItem
+              key={task.id}
+              task={task}
+              todoListId={todoListId}
+            />
+          );
+        }
+
         return (
           <TaskListItem
             key={task.id}
