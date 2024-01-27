@@ -82,7 +82,7 @@
 # CMD ["node", "./backend/dist/app.js"]
 
 # Use Node.js as the base image
-FROM node:16
+FROM node:16-alpine
 
 # Create a directory for the app
 RUN mkdir -p /usr/src/app
@@ -139,7 +139,7 @@ RUN npm run build
 WORKDIR /usr/src/app
 
 # Copy the React app build files into the backend directory
-COPY ./frontend/build ./backend/public
+COPY ./frontend/build ./usr/src/app/backend/public
 
 # Expose the port (optional, you can specify it in your app code)
 EXPOSE $PORT
