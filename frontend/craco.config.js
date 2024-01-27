@@ -9,7 +9,7 @@ const updateWebpackConfig = {
 
     webpackConfig.resolve.plugins.splice(scopePluginIndex, 1);
 
-    const loader = webpackConfig.module.rules[0].oneOf.find(
+    const loader = webpackConfig.module.rules[1].oneOf.find(
       (r) => r.loader && r.loader.indexOf("babel-loader") !== -1
     );
 
