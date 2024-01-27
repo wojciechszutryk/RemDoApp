@@ -1,4 +1,4 @@
-import { TodoListRole } from "linked-models/permissions/todoList.permissions.enum";
+import { TodoListRole } from "../permissions/todoList.permissions.enum";
 
 export const SHARE_HASH_PARAM = "share";
 export const ROLE_PARAM = "role";

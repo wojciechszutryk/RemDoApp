@@ -139,10 +139,68 @@ RUN npm run build
 WORKDIR /usr/src/app
 
 # Copy the React app build files into the backend directory
-COPY ./frontend/build ./usr/src/app/backend/public
+COPY ./frontend/build ./backend/public
 
 # Expose the port (optional, you can specify it in your app code)
 EXPOSE $PORT
 
 # Run the backend Node.js app
 CMD ["node", "./backend/dist/app.js"]
+
+
+# Stage 1: Build the frontend
+# FROM node:16-alpine AS frontend-builder
+
+# WORKDIR /usr/src/app
+
+# COPY ./frontend ./frontend
+# COPY ./models ./frontend/src/linked-models
+
+# WORKDIR /usr/src/app/frontend
+
+# RUN npm install
+# RUN npm run build
+
+# # Stage 2: Build the backend
+# FROM node:16-alpine AS backend-builder
+
+# WORKDIR /usr/src/app
+
+# COPY ./backend ./backend
+# COPY ./models ./backend/src/linked-models
+
+# WORKDIR /usr/src/app/backend
+
+# RUN npm install
+# RUN npm run build
+
+# # Stage 3: Final image
+# FROM node:16-alpine
+
+# WORKDIR /usr/src/app
+
+# # Set environment variables
+# ENV DB_URI $DB_URI
+# ENV COOKIE_KEY $COOKIE_KEY
+# ENV TOKEN_KEY $TOKEN_KEY
+# ENV SERVER_URL $SERVER_URL
+# ENV CLIENT_URL $CLIENT_URL
+# ENV NODE_ENV $NODE_ENV
+# ENV GOOGLE_AUTH_CLIENT_ID $GOOGLE_AUTH_CLIENT_ID
+# ENV GOOGLE_AUTH_CLIENT_SECRET $GOOGLE_AUTH_CLIENT_SECRET
+# ENV GOOGLE_API_KEY $GOOGLE_API_KEY
+# ENV VAPID_PUBLIC_KEY $VAPID_PUBLIC_KEY
+# ENV VAPID_PRIVATE_KEY $VAPID_PRIVATE_KEY
+# ENV PORT $PORT
+
+# # Copy the built backend code
+# COPY --from=backend-builder /usr/src/app/backend/dist ./backend
+
+# # Copy the built frontend code
+# COPY --from=frontend-builder /usr/src/app/frontend/build ./backend/public
+
+# # Expose the port
+# EXPOSE $PORT
+
+# # Run the backend Node.js app
+# CMD ["node", "./backend/app.js"]
