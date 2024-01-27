@@ -11,7 +11,11 @@
       "request": "launch",
       "args": ["./src/app.ts"],
       "sourceMaps": true,
-      "skipFiles": ["${workspaceRoot}/node_modules/**/*.js"],
+      "skipFiles": [
+        // "${workspaceRoot}/node_modules/**/*.js",
+        "<node_internals>/**/*.js",
+        "<node_internals>/**"
+      ],
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/ts-node-dev",
       "runtimeArgs": [

@@ -37,6 +37,18 @@ export class UserService {
     return mapUserToAttachedUser(foundUser);
   }
 
+  public async getUserByEmail(
+    emails: string
+  ): Promise<IUserAttached | undefined> {
+    const foundUser = await this.userCollection.findOne({ email: emails });
+
+    if (!foundUser) {
+      return undefined;
+    }
+
+    return mapUserToAttachedUser(foundUser);
+  }
+
   public async getUsersByEmails(emails: string[]): Promise<IUserAttached[]> {
     const foundUsers = await this.userCollection.find({
       email: { $in: emails },
@@ -77,6 +89,22 @@ export class UserService {
       email: u.email,
       whenCreated: u.whenCreated,
     }));
+  }
+
+  public async verifyUserAccount(userId: string): Promise<IUserAttached> {
+    const updatedUser = await this.userCollection.findByIdAndUpdate(
+      userId,
+      { emailVerified: true, whenUpdated: new Date() } as Partial<IUserAttached>,
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      throw new Error(
+        `Cannot update user: ${userId}, because it does not exist.`
+      );
+    }
+
+    return mapUserToAttachedUser(updatedUser);
   }
 
   /**

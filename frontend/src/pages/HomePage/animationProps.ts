@@ -5,6 +5,7 @@ export const FadeINRightProps = {
   },
   transition: { duration: 0.5 },
   whileInView: { opacity: 1, x: 0 },
+  viewport: { once: true },
 };
 
 export const FadeINLeftProps = {
@@ -22,6 +23,7 @@ export const FadeInTopProps = {
   },
   transition: { duration: 0.5, delay: 0.3 },
   whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
 };
 
 export const FadeInBottomProps = {
@@ -39,4 +41,5 @@ export const FadeInProps = {
   },
   transition: { duration: 0.7 },
   whileInView: { opacity: 1 },
+  viewport: { once: true },
 };

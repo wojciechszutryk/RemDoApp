@@ -7,6 +7,7 @@ interface Props {
   value: number;
   key: string;
   width: number;
+  offsetTop?: number;
 }
 
 const TabWrapper = ({
@@ -15,11 +16,15 @@ const TabWrapper = ({
   value,
   index,
   key,
+  offsetTop,
   ...other
 }: Props): JSX.Element => {
   return (
     <motion.div
-      style={{ position: "absolute", top: "60px" }}
+      style={{
+        position: "absolute",
+        top: offsetTop ?? 0,
+      }}
       key={key}
       initial={{
         opacity: 0,

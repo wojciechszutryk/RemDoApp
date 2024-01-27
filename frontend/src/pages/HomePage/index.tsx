@@ -2,11 +2,13 @@ import { Separator } from "atomicComponents/atoms/Separator";
 import { LAST_PAGE_LS_KEY } from "atomicComponents/organisms/Header/helpers/LS.keys.const.helper";
 import { motion } from "framer-motion";
 import { SessionAgeLSKey } from "framework/authentication/helpers/sessionAge.helper";
+import { useDialogs } from "framework/dialogs";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
+import { URL_COLLABORANTS } from "linked-models/collaboration/collaboration.urls";
 import { ExpiryParam } from "linked-models/user/auth.consts";
 import { memo, useEffect, useLayoutEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   FadeINLeftProps,
   FadeINRightProps,
@@ -16,7 +18,7 @@ import {
 } from "./animationProps";
 import TopSection from "./components/TopSection";
 import {
-  StyledDetaildeSection,
+  StyledDetailedSection,
   StyledFeaturesSection,
   StyledHomePageWrapper,
 } from "./styles";
@@ -34,6 +36,7 @@ import ThemeImgAlt from "./utils/ThemeImgAlt";
 const HomePage = (): JSX.Element => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   //sections refs
   const featuresRef = useRef<HTMLDivElement>(null);
   const collaborationRef = useRef<HTMLDivElement>(null);
@@ -42,12 +45,22 @@ const HomePage = (): JSX.Element => {
   const interfaceRef = useRef<HTMLDivElement>(null);
   const personalizationRef = useRef<HTMLDivElement>(null);
 
+  const {
+    dialogsActions: { updateCollaborantsDrawer },
+  } = useDialogs();
+
+  useEffect(() => {
+    if (location.pathname.includes(URL_COLLABORANTS)) {
+      updateCollaborantsDrawer({ visible: true });
+    }
+  }, []);
+
   useLayoutEffect(() => {
     const title = `${t(TranslationKeys.PageTitleMain)} - ${t(
       TranslationKeys.PageTitleHome
     )}`;
     document.title = title;
-  });
+  }, []);
 
   const handleScroll = (ref: React.RefObject<HTMLDivElement>) => () => {
     ref.current?.scrollIntoView({
@@ -83,133 +96,89 @@ const HomePage = (): JSX.Element => {
       <StyledFeaturesSection ref={featuresRef}>
         <motion.h2 {...FadeInProps}>{t(TranslationKeys.Features)}</motion.h2>
         <ul>
-          <li>
-            <motion.div {...FadeINLeftProps}>
-              <CollaborationImg />
-            </motion.div>
-            <motion.p {...FadeINRightProps}>
-              {t(TranslationKeys.CollaborationsDescShort)}{" "}
-              <span onClick={handleScroll(collaborationRef)}>
-                {t(TranslationKeys.More)}
-              </span>
-            </motion.p>
-          </li>
-          <li>
-            <motion.div {...FadeINRightProps}>
-              <GoogleIntegrationImg />
-            </motion.div>
-            <motion.p {...FadeINLeftProps}>
-              {t(TranslationKeys.GoogleIntegrationDescShort)}{" "}
-              <span onClick={handleScroll(googleRef)}>
-                {t(TranslationKeys.More)}
-              </span>
-            </motion.p>
-          </li>
-          <li>
-            <motion.div {...FadeINLeftProps}>
-              <NotificationsImg />
-            </motion.div>
-            <motion.p {...FadeINRightProps}>
-              {t(TranslationKeys.NotificationsDescShort)}{" "}
-              <span onClick={handleScroll(notificationsRef)}>
-                {t(TranslationKeys.More)}
-              </span>
-            </motion.p>
-          </li>
-          <li>
-            <motion.div {...FadeINRightProps}>
-              <GesturesImg />
-            </motion.div>
-            <motion.p {...FadeINLeftProps}>
-              {t(TranslationKeys.InterfaceDescShort)}{" "}
-              <span onClick={handleScroll(interfaceRef)}>
-                {t(TranslationKeys.More)}
-              </span>
-            </motion.p>
-          </li>
-          <li>
-            <motion.div {...FadeINLeftProps}>
-              <ThemeImg />
-            </motion.div>
-            <motion.p {...FadeINRightProps}>
-              {t(TranslationKeys.PersonalizationDescShort)}{" "}
-              <span onClick={handleScroll(personalizationRef)}>
-                {t(TranslationKeys.More)}
-              </span>
-            </motion.p>
-          </li>
+          {[
+            {
+              img: <CollaborationImg />,
+              text: t(TranslationKeys.CollaborationsDescShort),
+              ref: collaborationRef,
+            },
+            {
+              img: <GoogleIntegrationImg />,
+              text: t(TranslationKeys.GoogleIntegrationDescShort),
+              ref: googleRef,
+            },
+            {
+              img: <NotificationsImg />,
+              text: t(TranslationKeys.NotificationsDescShort),
+              ref: notificationsRef,
+            },
+            {
+              img: <GesturesImg />,
+              text: t(TranslationKeys.InterfaceDescShort),
+              ref: interfaceRef,
+            },
+            {
+              img: <ThemeImg />,
+              text: t(TranslationKeys.PersonalizationDescShort),
+              ref: personalizationRef,
+            },
+          ].map(({ img, text, ref }) => (
+            <li key={text}>
+              <motion.div {...FadeINLeftProps}>{img}</motion.div>
+              <motion.p {...FadeINRightProps}>
+                {text}{" "}
+                <span onClick={handleScroll(ref)}>
+                  {t(TranslationKeys.More)}
+                </span>
+              </motion.p>
+            </li>
+          ))}
         </ul>
       </StyledFeaturesSection>
-      <StyledDetaildeSection ref={collaborationRef}>
-        <motion.h3 {...FadeInProps}>
-          {t(TranslationKeys.Collaborations)}
-        </motion.h3>
-        <motion.div {...FadeInTopProps}>
-          <CollaborationImgAlt />
-        </motion.div>
-        <motion.div {...FadeInProps}>
-          <Separator text={t(TranslationKeys.Details)} />
-        </motion.div>
-        <motion.p {...FadeInBottomProps}>
-          {t(TranslationKeys.CollaborationsDescLong)}
-        </motion.p>
-      </StyledDetaildeSection>
-      <StyledDetaildeSection ref={googleRef}>
-        <motion.h3 {...FadeInProps}>
-          {t(TranslationKeys.GoogleIntegration)}
-        </motion.h3>
-        <motion.div {...FadeInTopProps}>
-          <GoogleIntegrationImgAlt />
-        </motion.div>
-        <motion.div {...FadeInProps}>
-          <Separator text={t(TranslationKeys.Details)} />
-        </motion.div>
-        <motion.p {...FadeInBottomProps}>
-          {t(TranslationKeys.GoogleIntegrationDescLong)}
-        </motion.p>
-      </StyledDetaildeSection>
-      <StyledDetaildeSection ref={notificationsRef}>
-        <motion.h3 {...FadeInProps}>
-          {t(TranslationKeys.Notifications)}
-        </motion.h3>
-        <motion.div {...FadeInTopProps}>
-          <NotificationsImgAlt />
-        </motion.div>
-        <motion.div {...FadeInProps}>
-          <Separator text={t(TranslationKeys.Details)} />
-        </motion.div>
-        <motion.p {...FadeInBottomProps}>
-          {t(TranslationKeys.NotificationsDescLong)}
-        </motion.p>
-      </StyledDetaildeSection>
-      <StyledDetaildeSection ref={interfaceRef}>
-        <motion.h3 {...FadeInProps}>{t(TranslationKeys.Interface)}</motion.h3>
-        <motion.div {...FadeInTopProps}>
-          <GesturesImgAlt />
-        </motion.div>
-        <motion.div {...FadeInProps}>
-          <Separator text={t(TranslationKeys.Details)} />
-        </motion.div>
-        <motion.p {...FadeInBottomProps}>
-          {t(TranslationKeys.InterfaceDescLong)}
-        </motion.p>
-      </StyledDetaildeSection>
-      <StyledDetaildeSection ref={personalizationRef}>
-        <motion.h3 {...FadeInProps}>
-          {t(TranslationKeys.Personalization)}
-        </motion.h3>
-        <motion.div {...FadeInTopProps}>
-          <ThemeImgAlt />
-        </motion.div>
-
-        <motion.div {...FadeInProps}>
-          <Separator text={t(TranslationKeys.Details)} />
-        </motion.div>
-        <motion.p {...FadeInBottomProps}>
-          {" "}
-          {t(TranslationKeys.PersonalizationDescLong)}
-        </motion.p>
-      </StyledDetaildeSection>
+      {[
+        {
+          title: t(TranslationKeys.Collaborations),
+          img: <CollaborationImgAlt />,
+          text: t(TranslationKeys.CollaborationsDescLong),
+          ref: collaborationRef,
+        },
+        {
+          title: t(TranslationKeys.GoogleIntegration),
+          img: <GoogleIntegrationImgAlt />,
+          text: t(TranslationKeys.GoogleIntegrationDescLong),
+          ref: googleRef,
+        },
+        {
+          title: t(TranslationKeys.Notifications),
+          img: <NotificationsImgAlt />,
+          text: t(TranslationKeys.NotificationsDescLong),
+          ref: notificationsRef,
+        },
+        {
+          title: t(TranslationKeys.Interface),
+          img: <GesturesImgAlt />,
+          text: t(TranslationKeys.InterfaceDescLong),
+          ref: interfaceRef,
+        },
+        {
+          title: t(TranslationKeys.Personalization),
+          img: <ThemeImgAlt />,
+          text: t(TranslationKeys.PersonalizationDescLong),
+          ref: personalizationRef,
+        },
+      ].map(
+        ({ title, img, text, ref }) =>
+          ref && (
+            <StyledDetailedSection ref={ref} key={title}>
+              <motion.h3 {...FadeInProps}>{title}</motion.h3>
+              <motion.div {...FadeInTopProps}>{img}</motion.div>
+              <motion.div {...FadeInProps}>
+                <Separator text={t(TranslationKeys.Details)} />
+              </motion.div>
+              <motion.p {...FadeInBottomProps}>{text}</motion.p>
+            </StyledDetailedSection>
+          )
+      )}
     </StyledHomePageWrapper>
   );
 };

@@ -4,9 +4,9 @@ import {
   mapPushSubscriptionToAttachedPushSubscription,
 } from "dbSchemas/pushSubscription.schema";
 import { inject, injectable } from "inversify";
-import { AppLanguages } from "linked-models/language/languages.enum";
-import { INotificationDto } from "linked-models/notification/notification.dto";
 import { IPushSubscription } from "linked-models/pushSubscription/pushSubscription.model";
+import { IUserAttached } from "linked-models/user/user.model";
+import { INotificationsTexts } from "models/notification.text.model";
 import webpush from "web-push";
 
 @injectable()
@@ -47,42 +47,50 @@ export class PushNotificationService {
     );
   }
 
-  public async notifyUsers<T>(
-    notifications: INotificationDto[],
-    payload: T,
-    languagePreferences: {
-      [userId: string]: AppLanguages;
-    }
+  private async deletePushSubscription(subscriptionId: string) {
+    await this.pushSubscriptionCollection.deleteOne({ _id: subscriptionId });
+  }
+
+  public async notifyUsers(
+    notificationTexts: INotificationsTexts,
+    notificationLink: string | null,
+    usersToNotify: IUserAttached[],
+    eventCreatorImg: string | undefined
   ) {
-    const userIDs = notifications.map((n) => n.userId);
+    const userIDs = usersToNotify.map((n) => n.id);
+
+    const usersMap = usersToNotify.reduce((map, user) => {
+      map[user.id] = user;
+      return map;
+    }, {} as { [userId: string]: IUserAttached });
 
     const subscriptions = await this.getSubscriptionsForUsers(userIDs);
 
     //send notifications for each users device
     const notificationsRequests = subscriptions.map((s) => {
-      const notification = notifications.find((n) => n.userId === s.userId);
+      const user = usersMap[s.userId];
 
       return this.webpush
         .sendNotification(
           s,
           JSON.stringify({
-            notification,
-            payload,
-            language: languagePreferences[s.userId] || AppLanguages.en,
+            title: notificationTexts.title[user.preferences.language || "en"],
+            body: notificationTexts.description[
+              user.preferences.language || "en"
+            ],
+            link: notificationLink,
+            img: eventCreatorImg,
           })
         )
-        .catch((error) => {
-          console.error(
-            `error while sending push notification, payload: ${JSON.stringify(
-              payload
-            )}, error: ${error}`
-          );
+        .catch(async (err) => {
+          if (err.statusCode === 410) await this.deletePushSubscription(s.id);
+          else console.log("Error sending notification, reason: ", err);
         });
     });
 
     //do not await to not block the process
     try {
-      Promise.all([notificationsRequests]).catch((error) => {
+      Promise.all(notificationsRequests).catch((error) => {
         console.error(error);
       });
     } catch (error) {

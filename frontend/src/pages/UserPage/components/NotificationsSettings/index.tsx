@@ -18,6 +18,7 @@ import { StyledForm, StyledSubmitButton } from "./styles";
 interface INotificationOptions {
   push: boolean;
   socket: boolean;
+  email: boolean;
 }
 
 type NotificationsSettingsForm = {
@@ -32,6 +33,8 @@ type NotificationsSettingsForm = {
   [EventName.TaskCreated]: INotificationOptions;
   [EventName.TaskDeleted]: INotificationOptions;
   [EventName.TaskUpdated]: INotificationOptions;
+  [EventName.TaskRescheduled]: INotificationOptions;
+  [EventName.TaskStateChanged]: INotificationOptions;
   [EventName.TodoListCreated]: INotificationOptions;
   [EventName.TodoListDeleted]: INotificationOptions;
   [EventName.TodoListUpdated]: INotificationOptions;
@@ -52,10 +55,19 @@ const NotificationsSettings = (): JSX.Element => {
   ).reduce((acc, [key, value]) => {
     acc[key as EventName] = {
       push:
+        value === NotificationPreference.PUSH_AND_EMAIL ||
+        value === NotificationPreference.PUSH_AND_SOCKET ||
         value === NotificationPreference.PUSH ||
         value === NotificationPreference.ALL,
       socket:
+        value === NotificationPreference.SOCKET_AND_EMAIL ||
+        value === NotificationPreference.PUSH_AND_SOCKET ||
         value === NotificationPreference.SOCKET ||
+        value === NotificationPreference.ALL,
+      email:
+        value === NotificationPreference.SOCKET_AND_EMAIL ||
+        value === NotificationPreference.PUSH_AND_EMAIL ||
+        value === NotificationPreference.EMAIL ||
         value === NotificationPreference.ALL,
     };
     return acc;
@@ -69,13 +81,24 @@ const NotificationsSettings = (): JSX.Element => {
     const updatedPreferences: Partial<IUserPreferences> = {
       notificationPreferences: Object.entries(data).reduce(
         (acc, [key, value]) => {
-          acc[key as EventName] = value.push
-            ? value.socket
-              ? NotificationPreference.ALL
-              : NotificationPreference.PUSH
-            : value.socket
-            ? NotificationPreference.SOCKET
-            : NotificationPreference.NONE;
+          if (value.push && value.socket && value.email) {
+            acc[key as EventName] = NotificationPreference.ALL;
+          } else if (value.push && value.socket) {
+            acc[key as EventName] = NotificationPreference.PUSH_AND_SOCKET;
+          } else if (value.push && value.email) {
+            acc[key as EventName] = NotificationPreference.PUSH_AND_EMAIL;
+          } else if (value.socket && value.email) {
+            acc[key as EventName] = NotificationPreference.SOCKET_AND_EMAIL;
+          } else if (value.push) {
+            acc[key as EventName] = NotificationPreference.PUSH;
+          } else if (value.socket) {
+            acc[key as EventName] = NotificationPreference.SOCKET;
+          } else if (value.email) {
+            acc[key as EventName] = NotificationPreference.EMAIL;
+          } else {
+            acc[key as EventName] = NotificationPreference.NONE;
+          }
+
           return acc;
         },
         {} as IUserPreferences["notificationPreferences"]
@@ -91,7 +114,7 @@ const NotificationsSettings = (): JSX.Element => {
         return (
           <div key={event}>
             <Typography>{t(TranslationKeys[event as EventName])}</Typography>
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
               <ControlledCheckbox
                 key={`${event}-push`}
                 name={`${event}.push`}
@@ -103,6 +126,12 @@ const NotificationsSettings = (): JSX.Element => {
                 name={`${event}.socket`}
                 control={control}
                 label={t(TranslationKeys.SocketNotification)}
+              />
+              <ControlledCheckbox
+                key={`${event}-email`}
+                name={`${event}.email`}
+                control={control}
+                label={t(TranslationKeys.EmailNotification)}
               />
             </div>
             <Divider />

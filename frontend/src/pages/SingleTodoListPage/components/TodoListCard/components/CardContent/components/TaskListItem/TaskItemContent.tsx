@@ -2,7 +2,6 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import NotificationImportantIcon from "@mui/icons-material/NotificationImportant";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import { useSwippableItemContext } from "atomicComponents/molecules/SwippableItem/context";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { memo, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -16,11 +15,11 @@ import {
 
 interface Props {
   task: IExtendedTaskDto;
+  isDragging?: boolean;
 }
 
-const TaskItemContent = ({ task }: Props): JSX.Element => {
+const TaskItemContent = ({ task, isDragging }: Props): JSX.Element => {
   const [expanded, setExpanded] = useState(false);
-  const { dragStartPosition } = useSwippableItemContext();
   const isTaskCompleted = !!task.completionDate;
   const [showHighlight, setShowHighlight] = useState(false);
   const { taskId } = useParams();
@@ -39,7 +38,7 @@ const TaskItemContent = ({ task }: Props): JSX.Element => {
       highlighted={showHighlight}
       role={undefined}
       onClick={() => {
-        if (!dragStartPosition) setExpanded((prev) => !prev);
+        if (!isDragging) setExpanded((prev) => !prev);
       }}
     >
       <StyledListItemIcon>

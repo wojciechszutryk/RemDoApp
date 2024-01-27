@@ -5,7 +5,6 @@ import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.hel
 import { IRegisterUserDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
 import { URL_REGISTER, URL_USERS } from "linked-models/user/user.urls";
-import { useSuccessAuthHandler } from "../helpers/useSuccessAuthHandler.helper";
 
 export const useRegisterUserMutation = (): UseMutationResult<
   IUserAttached,
@@ -13,8 +12,6 @@ export const useRegisterUserMutation = (): UseMutationResult<
   IRegisterUserDTO,
   unknown
 > => {
-  const successAuthHandler = useSuccessAuthHandler();
-
   const url = FRONTIFY_URL(URL_USERS, URL_REGISTER);
 
   const registerUser = async (
@@ -25,7 +22,5 @@ export const useRegisterUserMutation = (): UseMutationResult<
     );
   };
 
-  return useMutation((userData: IRegisterUserDTO) => registerUser(userData), {
-    onSuccess: successAuthHandler,
-  });
+  return useMutation((userData: IRegisterUserDTO) => registerUser(userData));
 };

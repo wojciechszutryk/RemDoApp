@@ -8,6 +8,7 @@ import { Avatar } from "atomicComponents/atoms/Avatar";
 import UserAvatar from "atomicComponents/organisms/UserAvatar";
 import { apiGet } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
+import { SessionAgeLSKey } from "framework/authentication/helpers/sessionAge.helper";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useDialogs } from "framework/dialogs";
 import { Pages } from "framework/routing/pages";
@@ -27,6 +28,7 @@ const SettingsMenu = (): JSX.Element => {
   const menuOpen = Boolean(anchorEl);
   const { t } = useTranslation();
   const {
+    dialogsState: { collaborantsDrawer },
     dialogsActions: { updateCollaborantsDrawer },
   } = useDialogs();
 
@@ -91,6 +93,7 @@ const SettingsMenu = (): JSX.Element => {
               await apiGet(FRONTIFY_URL(URL_USERS, URL_LOGOUT));
               document.cookie = "";
               setCurrentUser(undefined);
+              localStorage.removeItem(SessionAgeLSKey);
               handleClose();
               navigate(Pages.HomePage.path);
             }}

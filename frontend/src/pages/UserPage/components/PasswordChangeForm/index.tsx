@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { StyledForm } from "./styles";
 
-interface IChangePasswordFormValues {
+export interface IChangePasswordFormValues {
   currentPassword: string;
   newPassword: string;
   newPasswordRepeat: string;

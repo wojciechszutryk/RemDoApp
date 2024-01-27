@@ -5,6 +5,9 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.FieldRequired]: "* Wymagane",
 
   [TranslationKeys.NoAccess]: "Nie posiadasz wymaganych uprawnień.",
+  [TranslationKeys.NoValidTokenInfo]:
+    "Aby uzyskać dostęp do tej strony, musisz posiadać ważny token. Nie wykryto żadnego tokenu, jest on nieprawidłowy lub wygasł.",
+
   [TranslationKeys.Features]: "Funkcje",
   [TranslationKeys.Collaborations]: "Współpraca",
   [TranslationKeys.CollaborationsDescShort]:
@@ -29,6 +32,11 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "wysoka personalizacja interfejsu, obsługa różnych motywów i języków",
   [TranslationKeys.PersonalizationDescLong]:
     "Aplikacja internetowa RemDo zapewnia użytkownikom wysoki stopień dostosowania ich interfejsu. Użytkownicy mają elastyczność przełączania się między różnymi motywami i językami, dostosowując swoje doświadczenie do indywidualnych preferencji. Poza aspektami estetycznymi, personalizacja obejmuje także profil użytkownika, umożliwiając jednostkom dodanie osobistego akcentu, takiego jak zdjęcie profilowe czy niestandardowa nazwa wyświetlana. Ponadto użytkownicy mogą precyzyjnie dostosować swoje preferencje dotyczące powiadomień, wybierając dokładnie, jakie alerty chcą otrzymywać, zapewniając spersonalizowane i uporządkowane doświadczenie komunikacyjne w ramach aplikacji. Ta kompleksowa funkcja personalizacji podnosi zaangażowanie i satysfakcję użytkownika.",
+  [TranslationKeys.ForgetPasswordSuccess]: "Wysłano link do resetu hasła.",
+  [TranslationKeys.ForgetPasswordError]: "Nie udało się wysłać linku.",
+  [TranslationKeys.ForgetPasswordChangeError]:
+    "Nie udało się zmienić hasła. Spróbuj ponownie.",
+  [TranslationKeys.ForgetPassword]: "Zapomniałeś hasła?",
 
   [TranslationKeys.PageTitleHome]: "Główna",
   [TranslationKeys.PageTitleSignIn]: "Logowanie",
@@ -57,8 +65,21 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.WrongPassword]: "hasło nieprawidłowe",
   [TranslationKeys.PasswordsNoMatch]: "hasła nie są identyczne",
   [TranslationKeys.LoginSuccess]: "Zalogowano pomyślnie.",
+  [TranslationKeys.RegisterSuccess]:
+    "Zarejestrowano pomyślnie. Nie zapomnij zweryfikować konta. Sprawdź swoją skrzynkę.",
   [TranslationKeys.InvalidCredentials]: "niepoprawne dane, spróbuj ponownie",
   [TranslationKeys.CurrentAccount]: "Twoje konto",
+  [TranslationKeys.EmailNotVerified]:
+    "Aby się zalogować musisz zweryfikować konto. Wysłaliśmy Ci link do weryfikacji na email. Sprawdź swoją skrzynkę.",
+  [TranslationKeys.ResendVerificationEmail]:
+    "Wyślij ponownie link weryfikacyjny",
+  [TranslationKeys.EmailSent]: "Wysłano email.",
+
+  [TranslationKeys.VerifyAccountTitle]: "Zweryfikuj konto",
+  [TranslationKeys.VerifyAccountDescription]:
+    "Przed zalogowaniem zweryfikuj konto",
+  [TranslationKeys.VerifyAccountSuccess]:
+    "Konto zweryfikowane pomyślnie, możesz się teraz zalogować.",
 
   [TranslationKeys.PageTitleReminders]: "Przypomnienia",
   [TranslationKeys.Reminder]: "Przypomnienie",
@@ -155,6 +176,24 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.SetNotificationDescription]:
     "Podaj szczegóły kiedy powiadomienie z przypomnieniem powinno zostać wysłane.",
 
+  [TranslationKeys.CreateTodoShareLink]: "Utwórz link dostępu",
+  [TranslationKeys.CreateTodoShareLinkDescription]:
+    "Wybierz uprawnienia dla użytkowników z linkiem dostępu.",
+  [TranslationKeys.InviteCollaborantsToTodoList]: "Zaproś",
+  [TranslationKeys.CreateTodoAccessLink]: "Utwórz link dostępu",
+  [TranslationKeys.Copied]: "Skopiowano",
+  [TranslationKeys.AnonymousUser]:
+    "Anonimowy użytkownik, który użył linku dostępu",
+  [TranslationKeys.VIEWER]: "Przeglądający",
+  [TranslationKeys.VIEWERDESCRIPTION]:
+    "Wszyscy z linkiem mogą przeglądać tę listę i wszystkie zadania utworzone przez jej członków i administratorów, ale nie mogą niczego tworzyć, edytować i usuwać.",
+  [TranslationKeys.MEMBER]: "Członek",
+  [TranslationKeys.MEMBERDESCRIPTION]:
+    "Członek z linkiem może przeglądać tę listę i wszystkie jej zadania, może tworzyć nowe zadania, ale nie może niczego edytować i usuwać.",
+  [TranslationKeys.ADMIN]: "Administrator",
+  [TranslationKeys.ADMINDESCRIPTION]:
+    "Administratorzy mają pełny dostęp do tej listy. Mogą tworzyć, edytować i usuwać wszystkie zadania oraz zapraszać innych użytkowników. Uważaj, kogo zapraszasz jako administratora.",
+
   [TranslationKeys.EmptyTasksList]: "Brak zadań na liście. Dodaj nowe zadanie!",
   [TranslationKeys.DelteTask]: "Usuń zadanie",
   [TranslationKeys.AddTask]: "Dodaj zadanie",
@@ -238,6 +277,10 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "Zadanie zostało utworzone w liście zadań do której jesteś przypisany/a",
   [TranslationKeys.TASK_UPDATED]:
     "Zadanie zostało zmodyfikowane w liście zadań do której jesteś przypisany/a",
+  [TranslationKeys.TASK_RESCHEDULED]:
+    "Data zadania została zmieniona w liście zadań do której jesteś przypisany/a",
+  [TranslationKeys.TASK_STATE_CHANGED]:
+    "Status zadania został zmieniony w liście zadań do której jesteś przypisany/a",
   [TranslationKeys.TASK_DELETED]:
     "Zadanie zostało usunięte z listy zadań do której jesteś przypisany/a",
   [TranslationKeys.REMINDER_CREATED]:
@@ -272,9 +315,10 @@ export const plTranslation: Record<TranslationKeys, string> = {
     "Zaplanowano przypomnienie do wykonania",
   [TranslationKeys.PushNotification]: "Powiadomienia push",
   [TranslationKeys.SocketNotification]: "Powiadomienia w czasie rzeczywistym",
+  [TranslationKeys.EmailNotification]: "Email",
   [TranslationKeys.RegisterPushSubscription]: "Zarejestruj urządzenie",
   [TranslationKeys.RegisterPushSubscriptionDescription]:
-    "Nie zarejestrowałeś/aś jeszcze urządzenia do otrzymywania powiadomień push. Aby być na bieżąco z aktualizacjami list zadań, przypomnień, współpracowników i zadań, zarejestruj swoje urządzenie.",
+    "Nie zarejestrowałeś/aś jeszcze urządzenia do otrzymywania powiadomień push lub Twoja subskrybcja wygasła. Aby być na bieżąco z aktualizacjami list zadań, przypomnień, współpracowników i zadań, zarejestruj swoje urządzenie.",
   [TranslationKeys.DisableBackgroundAnimation]: "Wyłącz animacje tła",
 
   [TranslationKeys.Save]: "Zapisz",

@@ -1,7 +1,5 @@
 import EventIcon from "@mui/icons-material/Event";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import FlagCircleIcon from "@mui/icons-material/FlagCircle";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import {
   AccordionDetails,
   AccordionSummary,
@@ -11,15 +9,13 @@ import {
 import { StyledAccordion } from "atomicComponents/atoms/Accordion/styles";
 import { Separator } from "atomicComponents/atoms/Separator";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
-import dayjs from "dayjs";
-import DateTimePickerWithIcon from "framework/dialogs/components/TaskDialog/components/DatePickerWithIcon";
+import DatesPickers from "framework/dialogs/components/TaskDialog/components/DatesPickers";
+import { StyledForm } from "framework/dialogs/components/TodoListDialog/styles";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { IReminder } from "linked-models/reminder/reminder.dto";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { IReminderDialogState } from "../../models/reminderDialogState.model";
-import { StyledForm } from "framework/dialogs/components/TodoListDialog/styles";
 
 interface Props {
   expandedAccordion: string;
@@ -35,8 +31,19 @@ const GeneralInfo = ({
   onSubmit,
 }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const { handleSubmit, control, getValues } =
-    useFormContext<IReminderDialogState>();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    setFocus,
+  } = useFormContext<IReminderDialogState>();
+
+  const markAccordionError =
+    (!!errors.name || !!errors.text) && expandedAccordion !== "general";
+
+  useEffect(() => {
+    setFocus("name");
+  }, [setFocus]);
 
   return (
     <StyledAccordion
@@ -47,7 +54,10 @@ const GeneralInfo = ({
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Tooltip title={t(TranslationKeys.GeneralInfoReminderDescription)}>
           <div>
-            <EventIcon sx={{ transform: "translate(-4px, -2px)" }} />
+            <EventIcon
+              sx={{ transform: "translate(-4px, -2px)" }}
+              color={markAccordionError ? "error" : undefined}
+            />
           </div>
         </Tooltip>
         <Typography>{t(TranslationKeys.GeneralInfo)}</Typography>
@@ -64,38 +74,29 @@ const GeneralInfo = ({
             spacingTop={-5}
           />
           <ControlledTextField
+            autoFocus
             name={"name"}
             required
+            error={!!errors.name}
+            helperText={
+              errors.name?.type === "required" &&
+              t(TranslationKeys.FieldRequired)
+            }
             control={control}
             placeholder={t(TranslationKeys.ReminderName)}
           />
-
           <ControlledTextField
             name={"text"}
             required
+            error={!!errors.text}
+            helperText={
+              errors.text?.type === "required" &&
+              t(TranslationKeys.FieldRequired)
+            }
             control={control}
             placeholder={t(TranslationKeys.ReminderDescription)}
           />
-          {[
-            {
-              Icon: <PlayCircleOutlineIcon />,
-              tooltipTitle: t(TranslationKeys.StartDate),
-              name: "startDate" as keyof IReminder,
-              required: true,
-              control: control,
-              maxDate: dayjs(getValues("startDate")),
-            },
-            {
-              Icon: <FlagCircleIcon />,
-              tooltipTitle: t(TranslationKeys.FinishDate),
-              name: "finishDate" as keyof IReminder,
-              required: true,
-              control: control,
-              minDate: dayjs(getValues("finishDate")),
-            },
-          ].map((props, index) => (
-            <DateTimePickerWithIcon key={index} {...props} />
-          ))}
+          <DatesPickers />
         </StyledForm>
       </AccordionDetails>
     </StyledAccordion>

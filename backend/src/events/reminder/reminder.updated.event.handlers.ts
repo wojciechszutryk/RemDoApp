@@ -52,7 +52,10 @@ export class ReminderUpdatedEventHandler
       eventCreator.id,
       EventName.ReminderUpdated,
       EventSubject.Reminder,
-      updatedReminder,
+      {
+        payload: updatedReminder,
+        eventCreator,
+      },
       {
         todoListId: updatedReminder.todoListId,
         taskId: updatedReminder.taskId,
@@ -71,7 +74,10 @@ export class ReminderUpdatedEventHandler
             eventCreator.id,
             EventName.ScheduleReminderNotification,
             EventSubject.ScheduleNotification,
-            updatedReminder,
+            {
+              payload: updatedReminder,
+              eventCreator,
+            },
             {
               todoListId: updatedReminder.todoListId,
               taskId: updatedReminder.taskId,

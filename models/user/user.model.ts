@@ -1,3 +1,4 @@
+import { IAccessLinkScopes } from "linked-models/accessLink/accessLink.model";
 import { EventName } from "linked-models/event/event.enum";
 import { IBaseModelAttached } from "../abstraction/base.interface";
 import { AppLanguages } from "../language/languages.enum";
@@ -9,7 +10,12 @@ export enum NotificationPreference {
   PUSH = "PUSH",
   /** only socket notifications */
   SOCKET = "SOCKET",
-  /** both push and socket notifications */
+  /** only email notifications */
+  EMAIL = "EMAIL",
+  PUSH_AND_SOCKET = "PUSH_AND_SOCKET",
+  PUSH_AND_EMAIL = "PUSH_AND_EMAIL",
+  SOCKET_AND_EMAIL = "SOCKET_AND_EMAIL",
+  /** all push, email and socket notifications */
   ALL = "ALL",
   /** no notifications */
   NONE = "NONE",
@@ -27,6 +33,10 @@ export interface NotificationPreferences {
   [EventName.TaskCreated]: NotificationPreference;
   [EventName.TaskDeleted]: NotificationPreference;
   [EventName.TaskUpdated]: NotificationPreference;
+  [EventName.TaskRescheduled]: NotificationPreference;
+  [EventName.TaskStateChanged]: NotificationPreference;
+  [EventName.TaskRescheduled]: NotificationPreference;
+  [EventName.TaskStateChanged]: NotificationPreference;
   [EventName.TodoListCreated]: NotificationPreference;
   [EventName.TodoListDeleted]: NotificationPreference;
   [EventName.TodoListUpdated]: NotificationPreference;
@@ -43,6 +53,8 @@ export interface IUserPreferences {
   theme: AppTheme;
   /** Disable animations of background */
   disableBgcAnimations: boolean;
+  /** User's email unsubscribe token */
+  emailUnsubscribeToken: string;
   /** User's notification preferences */
   notificationPreferences: NotificationPreferences;
 }
@@ -82,6 +94,15 @@ export interface IUserWithReadonlyProperties extends IUser {
 
   /** Google access token expiry time. Applicable only for users who are integrated with google */
   readonly googleTokenExpiryDate?: number;
+
+  /** For temporary user (authenticated with link/token) - access scopes determined by link model */
+  readonly accessScopes?: IAccessLinkScopes;
+
+  /** Determines whether user is temporary or not (authenticated with link/token) */
+  readonly isTemporary?: boolean;
+
+  /** Determines whether user verified email, not applicable for temporary users and users authenticated with third party providers */
+  readonly emailVerified?: boolean;
 }
 
 export type IUserAttached = IUserWithReadonlyProperties & IBaseModelAttached;

@@ -23,10 +23,12 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  emailVerified: { type: Boolean, default: false },
   preferences: {
     language: String,
     theme: String,
     disableBgcAnimations: { type: Boolean, default: false },
+    emailUnsubscribeToken: String,
     notificationPreferences: {
       [EventName.CollaboartionAccepted]: {
         type: String,
@@ -69,6 +71,14 @@ const UserSchema = new mongoose.Schema({
         default: NotificationPreference.ALL,
       },
       [EventName.TaskUpdated]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.TaskStateChanged]: {
+        type: String,
+        default: NotificationPreference.ALL,
+      },
+      [EventName.TaskRescheduled]: {
         type: String,
         default: NotificationPreference.ALL,
       },
@@ -128,6 +138,7 @@ export const mapUserToAttachedUser = (user: IUserDocument): IUserAttached => {
     googleRefreshToken: user.googleRefreshToken,
     googleTokenExpiryDate: user.googleTokenExpiryDate,
     integratedWithGoogle: user.integratedWithGoogle,
+    emailVerified: user.emailVerified,
     whenCreated: user.whenCreated,
     preferences: user.preferences._doc.preferences,
   };

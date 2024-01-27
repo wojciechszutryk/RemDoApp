@@ -1,7 +1,7 @@
 import { CircularProgress } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
-import { ErrorText } from "atomicComponents/atoms/textHelpers/Error";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
+import { useForgetPasswordMutation } from "framework/authentication/mutations/useForgetPassword.mutation";
 import { useLoginUserMutation } from "framework/authentication/mutations/useLoginUser.mutation";
 import { Pages } from "framework/routing/pages";
 import { useSnackbar } from "framework/snackBar";
@@ -11,9 +11,14 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import GoogleButton from "../GoogleButton";
-import { StyledForm, StyledGruppedButtons } from "../styles";
+import VerifyAccountAlert from "../VerifyAccountAlert";
+import {
+  StyledForgetPassBtn,
+  StyledForm,
+  StyledGruppedButtons,
+} from "../styles";
 
-interface ILoginFormValues {
+export interface ILoginFormValues {
   email: string;
   password: string;
 }
@@ -30,10 +35,12 @@ const LoginForm = ({
   const { t } = useTranslation();
   const { setSnackbar } = useSnackbar();
   const loginUserMutation = useLoginUserMutation();
+  const forgetPasswordMutation = useForgetPasswordMutation();
   const navigate = useNavigate();
   const {
     control,
     setError,
+    getValues,
     formState: { errors },
     handleSubmit,
   } = useForm<ILoginFormValues>({ defaultValues: { email: defaultEmail } });
@@ -55,32 +62,56 @@ const LoginForm = ({
         setSnackbar({ message: t(TranslationKeys.LoginSuccess) });
       },
       onError: (error) => {
-        setSnackbar({
-          message: error.response?.data || error.message,
-          severity: "error",
-        });
+        if (error.response?.data === "Email is not verified") {
+          setError("root", { message: t(TranslationKeys.EmailNotVerified) });
+        } else {
+          setSnackbar({
+            message: error.response?.data || error.message,
+            severity: "error",
+          });
+        }
       },
     });
+  };
+
+  const handleHorgetPassword = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    const email = getValues("email");
+
+    if (!email) {
+      setError("email", { message: t(TranslationKeys.EmailRequired) });
+      return;
+    }
+
+    forgetPasswordMutation.mutate(email);
   };
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <ControlledTextField
+        error={!!errors.email?.message}
+        helperText={errors.email?.message}
         name={"email"}
         control={control}
         type="email"
         placeholder={t(TranslationKeys.Email)}
       />
-      {errors.email?.message && <ErrorText>{errors.email.message}</ErrorText>}
       <ControlledTextField
+        error={!!errors.password?.message}
+        helperText={errors.password?.message}
         name={"password"}
         control={control}
         type="password"
         placeholder={t(TranslationKeys.Password)}
       />
-      {errors.password?.message && (
-        <ErrorText>{errors.password.message}</ErrorText>
+      {errors.root?.message && (
+        <VerifyAccountAlert email={getValues("email")} setError={setError} />
       )}
+      <StyledForgetPassBtn onClick={(e) => handleHorgetPassword(e)}>
+        {t(TranslationKeys.ForgetPassword)}
+      </StyledForgetPassBtn>
       <Button type="submit">
         {loginUserMutation.isLoading && <CircularProgress size={"20px"} />}
         {t(TranslationKeys.LoginButtonText)}

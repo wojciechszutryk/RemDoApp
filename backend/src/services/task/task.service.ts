@@ -5,7 +5,9 @@ import {
   TaskCollectionType,
 } from "dbSchemas/task.schema";
 import { EventService } from "framework/events/event.service";
+import { extractPropertiesToUpdate } from "helpers/extractPropertiesToUpdate";
 import { inject, injectable } from "inversify";
+import { EventName } from "linked-models/event/event.enum";
 import {
   TaskCreatedEvent,
   TaskDeletedEvent,
@@ -165,15 +167,27 @@ export class TaskService {
     editor: IUserAttached,
     generateEvent = true
   ): Promise<ITaskAttached> {
-    const update = {
-      ...updateData,
-      important: updateData.important ?? false,
-      whenUpdated: new Date(),
-    };
+    const taskKeys: (keyof ITask)[] = [
+      "text",
+      "startDate",
+      "finishDate",
+      "completionDate",
+      "important",
+      "notifyDate",
+    ];
+
+    const validUpdateProperties = extractPropertiesToUpdate(
+      updateData,
+      taskKeys
+    );
 
     const updatedTask = await this.taskCollection.findByIdAndUpdate(
       taskId,
-      update,
+      {
+        ...validUpdateProperties,
+        whenUpdated: new Date(),
+        important: updateData.important ?? false,
+      },
       { new: true }
     );
 
@@ -184,11 +198,32 @@ export class TaskService {
 
     const mappedUpdatedTask = mapTaskToAttachedTask(updatedTask);
 
-    if (generateEvent)
+    if (generateEvent) {
+      const updateFieldsSize = Object.values(validUpdateProperties).filter(
+        (v) => v !== undefined
+      ).length;
+
+      let eventName = EventName.TaskUpdated;
+
+      if (updateFieldsSize === 1 && validUpdateProperties.hasOwnProperty("completionDate")) {
+        eventName = EventName.TaskStateChanged;
+      } else if (
+        (updateFieldsSize === 1 || updateFieldsSize === 2) &&
+        (!!validUpdateProperties.startDate ||
+          !!validUpdateProperties.finishDate)
+      ) {
+        eventName = EventName.TaskRescheduled;
+      }
+
       this.eventService.emit(TaskUpdatedEvent, editor.id, {
-        payload: { ...mappedUpdatedTask, notifyDate: updateData.notifyDate },
+        payload: {
+          ...mappedUpdatedTask,
+          notifyDate: updateData.notifyDate,
+          updateType: eventName,
+        },
         eventCreator: editor,
       });
+    }
 
     return { ...mappedUpdatedTask, notifyDate: updateData.notifyDate };
   }

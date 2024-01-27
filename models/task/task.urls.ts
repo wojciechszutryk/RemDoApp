@@ -1,6 +1,6 @@
 import { URL_TODO_LIST, URL_TODO_LISTS } from "../todoList/todoList.urls";
 
-export const TASK_PARAM = "task";
+export const TASK_PARAM = "taskId";
 export const URL_TASKS = "/tasks";
 
 export const URL_TASK = (taskId?: string) => `/${taskId || ":" + TASK_PARAM}`;

@@ -11,4 +11,8 @@ linked-models
 /src/linked-models
 ./src/linked-models
 
+/email/node_modules
+
 .react-email
+
+

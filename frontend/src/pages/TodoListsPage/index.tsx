@@ -1,4 +1,6 @@
-import { memo, useMemo } from "react";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
+import { memo, useLayoutEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import EmptyTodoLists from "./components/EmptyTodoLists";
 import TodoListsContainer from "./components/TodoListsContainer";
 import { TodoListsLoader } from "./components/TodoListsLoader";
@@ -7,7 +9,15 @@ import { useGetUserExtendedTodoListsQuery } from "./queries/getUserExtendedTodoL
 import { StyledTodoListsPageWrapper } from "./styles";
 
 const TodoListsPage = (): JSX.Element => {
+  const { t } = useTranslation();
   const getUserTodoListsWithTasksQuery = useGetUserExtendedTodoListsQuery();
+
+  useLayoutEffect(() => {
+    const title = `${t(TranslationKeys.PageTitleMain)} - ${t(
+      TranslationKeys.PageTitleTodoLists
+    )}`;
+    document.title = title;
+  }, []);
 
   const pageContent = useMemo(() => {
     let pageContent = null;

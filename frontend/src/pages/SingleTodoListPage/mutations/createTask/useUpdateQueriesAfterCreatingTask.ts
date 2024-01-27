@@ -11,11 +11,17 @@ import { useCallback } from "react";
 import { useParams } from "react-router-dom";
 
 const useUpdateQueriesAfterCreatingTask = (
-  updateOnlyAllTodoListsData?: boolean
+  updateOnlyAllTodoListsData?: boolean,
+  /**
+   * if not provided, it will be taken from url params
+   */
+  todoListId?: string
 ) => {
   const queryClient = useQueryClient();
   const { currentUser } = useCurrentUser();
   const { todoListId: todoListIdParam } = useParams();
+
+  const properTodoListId = todoListId || todoListIdParam;
 
   return useCallback(
     (createdTask: ITaskAttached) => {
@@ -25,14 +31,14 @@ const useUpdateQueriesAfterCreatingTask = (
       };
 
       // update single todo list query data only on singletodolist page
-      if (todoListIdParam && !updateOnlyAllTodoListsData) {
+      if (properTodoListId && !updateOnlyAllTodoListsData) {
         queryClient.setQueryData(
-          [URL_TODO_LISTS, URL_TODO_LIST(todoListIdParam), PARAM_EXTENDED],
+          [URL_TODO_LISTS, URL_TODO_LIST(properTodoListId), PARAM_EXTENDED],
           (prev?: IExtendedTodoListDto): IExtendedTodoListDto => {
             if (!prev) return {} as IExtendedTodoListDto;
             const todoListWithNewTask = {
               ...prev,
-              tasks: [...prev.tasks, mappedTask],
+              tasks: [...(prev.tasks || []), mappedTask],
             };
             return todoListWithNewTask;
           }
@@ -56,7 +62,7 @@ const useUpdateQueriesAfterCreatingTask = (
         }
       );
     },
-    [currentUser, queryClient, todoListIdParam]
+    [currentUser, queryClient, properTodoListId]
   );
 };
 

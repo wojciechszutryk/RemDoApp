@@ -15,7 +15,14 @@ import { TodoListService } from "services/todoList/todoList.service";
 
 @EventHandler(TaskUpdatedEvent)
 export class TaskUpdatedEventHandler
-  implements TypedEventHandler<CreatorScopedEventPayload<ITaskAttached>>
+  implements
+    TypedEventHandler<
+      CreatorScopedEventPayload<
+        ITaskAttached & {
+          updateType: EventName;
+        }
+      >
+    >
 {
   constructor(
     @inject(TodoListCacheService)
@@ -29,12 +36,22 @@ export class TaskUpdatedEventHandler
   ) {}
 
   async handle(
-    _: TypedEvent<CreatorScopedEventPayload<ITaskAttached>>,
+    _: TypedEvent<
+      CreatorScopedEventPayload<
+        ITaskAttached & {
+          updateType: EventName;
+        }
+      >
+    >,
     eventCreatorId: string,
     {
       payload: updatedTask,
       eventCreator,
-    }: CreatorScopedEventPayload<ITaskAttached>
+    }: CreatorScopedEventPayload<
+      ITaskAttached & {
+        updateType: EventName;
+      }
+    >
   ) {
     const { todoListMembers, todoList } =
       await this.todoListService.getTodoListWithAttachedMembers(
@@ -47,9 +64,9 @@ export class TaskUpdatedEventHandler
     this.notifyService.notifyUsers(
       todoListMembers,
       eventCreatorId,
-      EventName.TaskUpdated,
+      updatedTask.updateType || EventName.TaskUpdated,
       EventSubject.Task,
-      updatedTask,
+      { payload: updatedTask, eventCreator },
       {
         todoListId: updatedTask.todoListId,
         taskId: updatedTask.id,

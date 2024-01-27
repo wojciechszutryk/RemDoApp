@@ -11,14 +11,14 @@ export const StyledTopSection = styled("div", {
   minHeight: "80vh",
   gap: noGap ? "unset" : "20px",
   textAlign: "center",
-  padding: "58px 16px 60px 16px",
+  padding: "58px 16px 60px",
 
   "& > div:last-of-type": {
     width: "120%",
   },
 
   [theme.breakpoints.up("sm")]: {
-    padding: "58px 42px 60px 42px",
+    padding: "58px 42px 60px",
 
     "& > div:last-of-type": {
       width: "unset",
@@ -26,14 +26,14 @@ export const StyledTopSection = styled("div", {
   },
 
   [theme.breakpoints.up("md")]: {
-    padding: "58px 64px 60px 64px",
+    padding: "58px 64px 60px",
     flexDirection: "row",
     alignItems: "flex-start",
     gap: noGap ? "unset" : "100px",
   },
 
   [theme.breakpoints.up("lg")]: {
-    padding: "58px 128px 60px 128px",
+    padding: "58px 128px 60px",
     gap: noGap ? "unset" : "200px",
   },
 }));

@@ -8,9 +8,11 @@ import { useTranslation } from "react-i18next";
 import { ITaskDialog } from "../models/taskDialog.model";
 import DateTimePickerWithIcon from "./DatePickerWithIcon";
 
+type DatePickerValues = Pick<ITaskDialog, "finishDate" | "startDate">;
+
 const DatesPickers = (): JSX.Element => {
-  const watch = useWatch<ITaskDialog>();
-  const { control } = useFormContext<ITaskDialog>();
+  const watch = useWatch<DatePickerValues>();
+  const { control } = useFormContext<DatePickerValues>();
   const { t } = useTranslation();
   return (
     <>
@@ -18,16 +20,21 @@ const DatesPickers = (): JSX.Element => {
         {
           Icon: <PlayCircleOutlineIcon />,
           tooltipTitle: t(TranslationKeys.StartDate),
-          name: "startDate" as keyof ITaskDialog,
+          name: "startDate" as keyof DatePickerValues,
           control,
-          maxDate: dayjs(watch["finishDate"]),
+          maxDateTime: dayjs(watch["finishDate"]),
         },
         {
           Icon: <FlagCircleIcon />,
           tooltipTitle: t(TranslationKeys.FinishDate),
-          name: "finishDate" as keyof ITaskDialog,
+          name: "finishDate" as keyof DatePickerValues,
           control,
-          minDate: dayjs(watch["startDate"]),
+          minDateTime: dayjs(watch["startDate"]),
+          slotProps: {
+            textField: {
+              error: false,
+            },
+          },
         },
       ].map((props, index) => (
         <DateTimePickerWithIcon key={index} {...props} />

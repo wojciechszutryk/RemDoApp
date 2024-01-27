@@ -10,11 +10,15 @@ import {
   StyledWrapper,
 } from "./styles";
 
-const NoPermissionTemplate = (): JSX.Element => {
+interface Props {
+  altText?: string;
+}
+
+const NoPermissionTemplate = ({ altText }: Props): JSX.Element => {
   const { t } = useTranslation();
   return (
     <StyledWrapper>
-      <StyledHeader>{t(TranslationKeys.NoAccess)}</StyledHeader>
+      <StyledHeader>{altText || t(TranslationKeys.NoAccess)}</StyledHeader>
       <StyledImageWrapper>
         <LockImage />
       </StyledImageWrapper>

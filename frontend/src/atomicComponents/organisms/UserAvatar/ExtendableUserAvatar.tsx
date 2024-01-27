@@ -41,6 +41,7 @@ const ExtendableUserAvatar = ({
   const { displayName, email, whenCreated, id } = userData;
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
 
@@ -107,7 +108,9 @@ const ExtendableUserAvatar = ({
             </ListItemAvatar>
             <ListItemText
               primary={t(TranslationKeys.DisplayName)}
-              secondary={displayName}
+              secondary={
+                displayName ? displayName : t(TranslationKeys.AnonymousUser)
+              }
             />
           </ListItem>
           <ListItem>

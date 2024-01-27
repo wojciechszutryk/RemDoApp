@@ -5,6 +5,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.FieldRequired]: "* Required",
 
   [TranslationKeys.NoAccess]: "You are not allowed to access this resources.",
+  [TranslationKeys.NoValidTokenInfo]:
+    "To access this resource you need valid token. There is no token or token is invalid or token expired.",
 
   [TranslationKeys.Features]: "Features",
   [TranslationKeys.Collaborations]: "Collaborations",
@@ -30,6 +32,12 @@ export const enTranslation: Record<TranslationKeys, string> = {
     "high customization of interface, support of different themes and languages",
   [TranslationKeys.PersonalizationDescLong]:
     "RemDo web application is dedicated to providing users with a high degree of customization for their interface. Users have the flexibility to switch between different themes and languages, tailoring their experience to suit individual preferences. Beyond the aesthetics, personalization extends to the user profile, allowing individuals to add a personal touch with features such as photo display and a customizable display name. Moreover, users can finely tune their notification preferences, selecting exactly which alerts they wish to receive, ensuring a personalized and streamlined communication experience within the application. This comprehensive personalization feature enhances user engagement and satisfaction.",
+  [TranslationKeys.ForgetPasswordSuccess]: "Email with reset link sent.",
+  [TranslationKeys.ForgetPasswordError]: "Error while sending email.",
+  [TranslationKeys.ForgetPasswordChangeError]:
+    "Error while changing password. Try again.",
+  [TranslationKeys.ForgetPassword]: "Forgot password",
+
   [TranslationKeys.PageTitleHome]: "Home",
   [TranslationKeys.PageTitleSignIn]: "Sign in",
   [TranslationKeys.PageTitleSignUp]: "Sign up",
@@ -57,8 +65,20 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.WrongPassword]: "wrong password",
   [TranslationKeys.PasswordsNoMatch]: "passwords don't match",
   [TranslationKeys.LoginSuccess]: "Logged in successfully.",
+  [TranslationKeys.RegisterSuccess]:
+    "Registered successfully. Don't forget to verify your account, check your inbox.",
   [TranslationKeys.InvalidCredentials]: "Invalid credentials, try again",
   [TranslationKeys.CurrentAccount]: "Your account",
+  [TranslationKeys.EmailNotVerified]:
+    "To sign in you need to verify account. We send you verification email. Check your inbox.",
+  [TranslationKeys.ResendVerificationEmail]: "Resend verification email",
+  [TranslationKeys.EmailSent]: "Email sent",
+
+  [TranslationKeys.VerifyAccountTitle]: "Verify account",
+  [TranslationKeys.VerifyAccountDescription]:
+    "Before signing in, verify account",
+  [TranslationKeys.VerifyAccountSuccess]:
+    "Account verified successfully, you can sign in now.",
 
   [TranslationKeys.PageTitleReminders]: "Reminders",
   [TranslationKeys.Reminder]: "Reminder",
@@ -149,6 +169,22 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.SetNotification]: "Create notification",
   [TranslationKeys.SetNotificationDescription]:
     "Provide details when notification with reminder should be send.",
+  [TranslationKeys.CreateTodoShareLink]: "Create share link",
+  [TranslationKeys.CreateTodoShareLinkDescription]:
+    "Choose a previliges for for users with share link.",
+  [TranslationKeys.InviteCollaborantsToTodoList]: "Invite",
+  [TranslationKeys.CreateTodoAccessLink]: "Create access link",
+  [TranslationKeys.Copied]: "Copied",
+  [TranslationKeys.AnonymousUser]: "Anonymous user, who has link to this list",
+  [TranslationKeys.VIEWER]: "Viewer",
+  [TranslationKeys.VIEWERDESCRIPTION]:
+    "Everyone with link can view this list and all tasks created by it's members and admins, but can't create, edit and delete anything.",
+  [TranslationKeys.MEMBER]: "Member",
+  [TranslationKeys.MEMBERDESCRIPTION]:
+    "Member with link can view this list and all tasks created by it's members, can create new tasks, but can't edit and delete anything.",
+  [TranslationKeys.ADMIN]: "Admin",
+  [TranslationKeys.ADMINDESCRIPTION]:
+    "Admins have full access to this list. They can create, edit and delete all tasks and invite other users. Be careful who you invite as admin.",
 
   [TranslationKeys.EmptyTasksList]: "No tasks in this list.",
   [TranslationKeys.DelteTask]: "Delete task",
@@ -231,6 +267,9 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.NotificationsSettings]: "Notifications preferences",
   [TranslationKeys.TASK_CREATED]: "Task created in your todo list",
   [TranslationKeys.TASK_UPDATED]: "Task updated in your todo list",
+  [TranslationKeys.TASK_RESCHEDULED]: "Date of task changed in your todo list",
+  [TranslationKeys.TASK_STATE_CHANGED]:
+    "State of task changed in your todo list",
   [TranslationKeys.TASK_DELETED]: "Task deleted in your todo list",
   [TranslationKeys.REMINDER_CREATED]: "You were assigned to new reminder",
   [TranslationKeys.REMINDER_UPDATED]:
@@ -258,11 +297,12 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.SCHEDULE_TASK_NOTIFICATION]: "Task notification scheduled",
   [TranslationKeys.SCHEDULE_REMINDER_NOTIFICATION]:
     "Reminder notification scheduled",
-  [TranslationKeys.PushNotification]: "Push notification",
-  [TranslationKeys.SocketNotification]: "Real time notification",
+  [TranslationKeys.PushNotification]: "Push",
+  [TranslationKeys.SocketNotification]: "Real-time",
+  [TranslationKeys.EmailNotification]: "Email",
   [TranslationKeys.RegisterPushSubscription]: "Register Device",
   [TranslationKeys.RegisterPushSubscriptionDescription]:
-    "You have not registered devices for push notifications yet. To stay in touch with updates of yours todoLists, reminders, collaborants and tasks, please register your device.",
+    "You have not registered devices for push notifications yet or your subscription expired. To stay in touch with updates of yours todoLists, reminders, collaborants and tasks, please register your device.",
   [TranslationKeys.DisableBackgroundAnimation]: "Disable background animation",
 
   [TranslationKeys.Save]: "Save",

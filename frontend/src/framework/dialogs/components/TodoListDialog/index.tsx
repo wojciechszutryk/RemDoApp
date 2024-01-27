@@ -81,6 +81,11 @@ const TodoListDialog = (): JSX.Element => {
             <IconPicker />
             <ControlledTextField
               name={"name"}
+              error={!!methods.formState.errors?.name}
+              helperText={
+                methods.formState.errors.name?.type === "required" &&
+                t(TranslationKeys.FieldRequired)
+              }
               control={methods.control}
               placeholder={t(TranslationKeys.TodoListDialogInputTitle)}
             />

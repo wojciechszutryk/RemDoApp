@@ -20,6 +20,6 @@ export const useDeleteTaskMutation = () => {
   };
 
   return useMutation(deleteTask, {
-    onSuccess: updateQueriesAfterDeletingTask,
+    onSuccess: ({ id }) => updateQueriesAfterDeletingTask(id),
   });
 };

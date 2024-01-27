@@ -1,6 +1,14 @@
 export enum EventName {
   TaskCreated = "TASK_CREATED",
   TaskUpdated = "TASK_UPDATED",
+  /**
+   * Subtype of TaskUpdated, handled with same handler as TaskUpdated on BE, used to distinguish general update from changing start/finish date
+   */
+  TaskRescheduled = "TASK_RESCHEDULED",
+  /**
+   * Subtype of TaskUpdated, handled with same handler as TaskUpdated on BE, used to distinguish general update from changing completion date
+   */
+  TaskStateChanged = "TASK_STATE_CHANGED",
   TaskDeleted = "TASK_DELETED",
   TodoListCreated = "TODOLIST_CREATED",
   TodoListUpdated = "TODOLIST_UPDATED",

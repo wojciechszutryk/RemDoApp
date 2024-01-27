@@ -3,9 +3,12 @@ import { Tab } from "atomicComponents/atoms/Tab";
 import { AnimatePresence } from "framer-motion";
 import { useDialogs } from "framework/dialogs";
 import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
+import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
+import { URL_COLLABORANTS } from "linked-models/collaboration/collaboration.urls";
 import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
 import TabWrapper from "./components/TabWrapper";
 import UserCollaborantsTabContent from "./components/UserCollaborantsTabContent";
 import UserSearch from "./components/UserSearch";
@@ -19,9 +22,14 @@ const CollaborantsDrawer = (): JSX.Element => {
     },
     dialogsActions: { updateCollaborantsDrawer },
   } = useDialogs();
-  const [open, onClose] = useAppDialogState(visible, () =>
-    updateCollaborantsDrawer({ visible: false })
-  );
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [open, onClose] = useAppDialogState(visible, () => {
+    updateCollaborantsDrawer({ visible: false });
+    if (location.pathname.includes(URL_COLLABORANTS))
+      navigate(Pages.HomePage.path);
+  });
   const isMobile = useMediaQuery("(max-width:500px)");
   const width = isMobile ? 300 : 450;
 
@@ -39,7 +47,7 @@ const CollaborantsDrawer = (): JSX.Element => {
 
   return (
     <StyledDrawer open={open} onClose={onClose} anchor={"right"}>
-      <StyledTabsWrapper style={{ width: `${width}px` }}>
+      <StyledTabsWrapper style={{ width: `${width}px`, zIndex: 1 }}>
         <Tabs value={tabIndex} onChange={handleChangeTabIndex}>
           <Tab
             label={t(TranslationKeys.Collaborants)}
@@ -59,6 +67,7 @@ const CollaborantsDrawer = (): JSX.Element => {
           index={tabIndex}
           key={`${tabIndex}-0`}
           width={width}
+          offsetTop={30}
         >
           <UserCollaborantsTabContent
             collaborants={userCollaborantsQuery.data || []}
@@ -70,6 +79,7 @@ const CollaborantsDrawer = (): JSX.Element => {
           index={tabIndex}
           key={`${tabIndex}-1`}
           width={width}
+          offsetTop={50}
         >
           <UserSearch userCollaborants={userCollaborantsQuery.data || []} />
         </TabWrapper>

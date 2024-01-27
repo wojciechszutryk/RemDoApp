@@ -1,77 +1,95 @@
-import { Typography } from "@mui/material";
-import { Button } from "atomicComponents/atoms/Button";
+import { Tabs, useMediaQuery } from "@mui/material";
 import Dialog from "atomicComponents/atoms/Dialog";
+import { Tab } from "atomicComponents/atoms/Tab";
+import { AnimatePresence } from "framer-motion";
 import { useDialogs } from "framework/dialogs";
 import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
 import { initialShareTodoListDialog } from "framework/dialogs/models/initialState.const";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { useEditTodoListMutation } from "pages/SingleTodoListPage/mutations/editTodoList/editTodoList.mutation";
-import { memo } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import CollaborantAutocomplete from "../ReminderDialog/components/CollaborantAutocomplete";
-import { StyledForm } from "../TodoListDialog/styles";
-import { ShareTodoListDialogValues } from "./models";
+import TabWrapper from "../CollaborantsDrawer/components/TabWrapper";
+import { StyledTabsWrapper } from "../CollaborantsDrawer/styles";
+import CreateShareLink from "./components/CreateShareLink";
+import InviteUsersForm from "./components/InviteUsersForm";
 
 const ShareTodoListDialog = (): JSX.Element => {
+  const { t } = useTranslation();
+  const [tabIndex, setTabIndex] = useState(0);
   const {
     dialogsState: {
-      shareTodoListDialog: {
-        visible,
-        assignedOwners,
-        assignedUsers,
-        todoListId,
-        todoListName,
-      },
+      shareTodoListDialog: { visible, todoListId },
     },
     dialogsActions: { updateShareTodoListDialog },
   } = useDialogs();
-
   const [open, onClose] = useAppDialogState(visible, () =>
     updateShareTodoListDialog(initialShareTodoListDialog)
   );
 
-  const defaultFormValues = {
-    assignedOwners,
-    assignedUsers,
-  };
-  const methods = useForm<ShareTodoListDialogValues>({
-    defaultValues: defaultFormValues,
-  });
-  const editTodoListMutation = useEditTodoListMutation();
-  const { t } = useTranslation();
+  const isMobile = useMediaQuery("(max-width:500px)");
+  const width = isMobile ? 300 : 400;
 
-  const onSubmit = (data: ShareTodoListDialogValues) => {
-    editTodoListMutation.mutate({
-      todoListId,
-      data: {
-        assignedUsers: data.assignedUsers.map((u) => u.email),
-        assignedOwners: data.assignedOwners.map((u) => u.email),
-      },
-    });
-    onClose();
+  const handleChangeTabIndex = (_: React.SyntheticEvent, newValue: number) => {
+    setTabIndex(newValue);
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
-        <FormProvider {...methods}>
-          <Typography variant="h4">
-            {t(TranslationKeys.ShareTodoList)}: {todoListName}
-          </Typography>
-          <Typography>{t(TranslationKeys.CurrentOwners)}</Typography>
-          <CollaborantAutocomplete
-            name="assignedOwners"
-            defaultValues={defaultFormValues?.assignedOwners}
+    <Dialog
+      open={open}
+      onClose={onClose}
+      sx={{
+        "& .MuiDialog-paper": {
+          overflow: "hidden",
+          "& > div": { position: "relative" },
+        },
+      }}
+    >
+      <StyledTabsWrapper
+        style={{
+          width: `${width}px`,
+        }}
+      >
+        <Tabs value={tabIndex} onChange={handleChangeTabIndex}>
+          <Tab
+            label={t(TranslationKeys.CreateTodoShareLink)}
+            value={0}
+            sx={{ width: width / 2 }}
+            id={"CollaborantsList"}
           />
-          <Typography>{t(TranslationKeys.CurrentUsers)}</Typography>
-          <CollaborantAutocomplete
-            name="assignedUsers"
-            defaultValues={defaultFormValues?.assignedUsers}
+          <Tab
+            label={t(TranslationKeys.InviteCollaborantsToTodoList)}
+            value={1}
+            sx={{ width: width / 2 }}
+            id={"CollaborantsSearch"}
           />
-          <Button type="submit">{t(TranslationKeys.Save)}</Button>
-        </FormProvider>
-      </StyledForm>
+        </Tabs>
+      </StyledTabsWrapper>
+      <div
+        style={{
+          height: 420,
+          overflow: "hidden",
+          position: "relative",
+        }}
+      >
+        <AnimatePresence>
+          <TabWrapper
+            value={0}
+            index={tabIndex}
+            key={`${tabIndex}-0`}
+            width={width}
+          >
+            <CreateShareLink todoListId={todoListId} />
+          </TabWrapper>
+          <TabWrapper
+            value={1}
+            index={tabIndex}
+            key={`${tabIndex}-1`}
+            width={width}
+          >
+            <InviteUsersForm onSuccess={onClose} />
+          </TabWrapper>
+        </AnimatePresence>
+      </div>
     </Dialog>
   );
 };

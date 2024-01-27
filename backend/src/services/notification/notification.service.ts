@@ -7,6 +7,7 @@ import {
   UserNotificationCollectionType,
   mapUserNotificationToAttachedUserNotification,
 } from "dbSchemas/userNotification.schema";
+import { TEMP_USER_ID, getTemUser } from "framework/auth/tempUser.helper";
 import { inject, injectable } from "inversify";
 import { EventName, EventSubject } from "linked-models/event/event.enum";
 import {
@@ -161,8 +162,12 @@ export class NotificationService {
         taskId,
         whenCreated: new Date(),
       }),
-      this.userService.getUserPublicData(actionCreatorId),
+      actionCreatorId.includes(TEMP_USER_ID)
+        ? getTemUser(actionCreatorId, {})
+        : this.userService.getUserPublicData(actionCreatorId),
     ]);
+
+    if (!actionCreator) throw new Error("Action creator could not be found.");
 
     const userNotifications = await this.userNotificationCollection.create(
       userIDs.map((userId) => ({
@@ -172,8 +177,6 @@ export class NotificationService {
         whenCreated: new Date(),
       }))
     );
-
-    if (!actionCreator) throw new Error("Action creator could not be found.");
 
     return userNotifications.map((un) => ({
       notificationId: notification._id,

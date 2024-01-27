@@ -8,7 +8,11 @@ export const TaskCreatedEvent = new TypedEvent<
 >(EventName.TaskCreated);
 
 export const TaskUpdatedEvent = new TypedEvent<
-  CreatorScopedEventPayload<ITaskAttached>
+  CreatorScopedEventPayload<
+    ITaskAttached & {
+      updateType: EventName;
+    }
+  >
 >(EventName.TaskUpdated);
 
 export const TaskDeletedEvent = new TypedEvent<ITaskAttached>(

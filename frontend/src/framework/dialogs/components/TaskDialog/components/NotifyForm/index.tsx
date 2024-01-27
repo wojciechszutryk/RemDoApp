@@ -198,7 +198,6 @@ const NotifyForm = <
         name={"notifyDate" as Path<TFieldValues>}
         render={({ field: { ref, onChange, value } }) => (
           <DateTimePicker
-            minDate={dayjs()}
             disabled={!watch["notify"]}
             onChange={(date) => {
               const selectParams = createNotifySelectParams(
