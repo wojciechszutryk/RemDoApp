@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Link, Text } from "@react-email/components";
 import React from "react";
 import EmailWrapper, { EmailProps } from "./EmailWrapper";

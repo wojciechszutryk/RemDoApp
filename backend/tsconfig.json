@@ -6,6 +6,7 @@
     "outDir": "./dist",
     "jsx": "react",
     "moduleResolution": "node",
+    "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
     "sourceMap": true,

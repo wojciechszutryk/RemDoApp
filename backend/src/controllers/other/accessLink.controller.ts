@@ -60,12 +60,17 @@ export class AccessLinkController
   }
 
   @httpGet(URL_SCOPES)
-  async getScopesForToken(@request() req: Express.Request): Promise<OkResult> {
+  async getScopesForToken(
+    @request()
+    req: Express.Request & { headers: { [ACCESS_LINK_HEADER]?: string } }
+  ): Promise<OkResult> {
     const hash = req.headers[ACCESS_LINK_HEADER];
+
+    if (!hash) return this.statusCode(403);
 
     const accessLink = await this.accessLinkService.getAccessLinkByHash(hash);
 
-    if (!accessLink) return this.statusCode(404);
+    if (!accessLink) return this.statusCode(403);
 
     const scopes: IAccessLinkScopes = {
       [USER_PARAM]: accessLink[USER_PARAM],

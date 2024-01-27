@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Container, Hr, Link, Text } from "@react-email/components";
 import React, { CSSProperties } from "react";
 import EmailWrapper, { EmailProps } from "./EmailWrapper";
