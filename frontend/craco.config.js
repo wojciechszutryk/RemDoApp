@@ -9,12 +9,14 @@ const updateWebpackConfig = {
 
     webpackConfig.resolve.plugins.splice(scopePluginIndex, 1);
 
-    const loader = webpackConfig.module.rules[1].oneOf.find(
+    const loader = webpackConfig.module.rules[0].oneOf.find(
       (r) => r.loader && r.loader.indexOf("babel-loader") !== -1
     );
+
     loader.include = [
       path.join(__dirname, "src"),
       path.join(__dirname, "../models"), // This is the directory containing the symlinked-to files
+      path.join(__dirname, "./src/linked-models"), // This is the directory containing the symlinked-to files
     ];
 
     return webpackConfig;
