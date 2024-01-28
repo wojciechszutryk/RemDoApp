@@ -31,7 +31,7 @@ import { IGoogleAuthUser } from "models/auth.models";
 import passport from "passport";
 import React from "react";
 import { EmailNotificationService } from "services/notification/email.notification.service";
-import WelcomeTemplateplate from "../../../emails/emails/WelcomeTemplate";
+import WelcomeTemplateplate from "../../emails/emails/WelcomeTemplate";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();

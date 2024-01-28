@@ -20,6 +20,6 @@
     }
   },
   "typeRoots": ["./src/typings", "./node_modules/@types"],
-  "include": ["src/**/*", "emails"], //for build
+  "include": ["src/**/*", "src/emails"], //for build
   "exclude": ["node_modules", "dist"]
 }
