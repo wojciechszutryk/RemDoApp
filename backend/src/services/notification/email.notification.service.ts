@@ -13,8 +13,8 @@ import {
 import { INotificationsTexts } from "models/notification.text.model";
 import React from "react";
 import { AccessLinkService } from "services/accessLink/accessLink.service";
-import EventTemplate from "../../../emails/emails/EventTemplate";
-import WelcomeTemplate from "../../../emails/emails/WelcomeTemplate";
+import EventTemplate from "../../emails/emails/EventTemplate";
+import WelcomeTemplate from "../../emails/emails/WelcomeTemplate";
 
 @injectable()
 export class EmailNotificationService {

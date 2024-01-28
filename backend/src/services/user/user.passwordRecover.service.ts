@@ -11,7 +11,7 @@ import {
 import React from "react";
 import { AccessLinkService } from "services/accessLink/accessLink.service";
 import { EmailNotificationService } from "services/notification/email.notification.service";
-import ForgetPasswordTemplate from "../../../emails/emails/ForgetPasswordTemplate";
+import ForgetPasswordTemplate from "../../emails/emails/ForgetPasswordTemplate";
 
 @injectable()
 export class PasswordRecoverService {
