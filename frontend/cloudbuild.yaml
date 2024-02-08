@@ -1,16 +1,26 @@
 steps:
   # Build the Docker image
   - name: "gcr.io/cloud-builders/docker"
-    args: [
+    args:
+      [
         "build",
-        "./frontend",
         "-t",
         "gcr.io/$PROJECT_ID/remdo-frontend:$SHORT_SHA",
         "-f",
-        "Dockerfile",
+        "./frontend/Dockerfile",
         "--build-arg",
-        "GENERIC_ENV_VARIABLE=${_GENERIC_ENV_VARIABLE}", # Customize this variable for your project
+        "GENERIC_ENV_VARIABLE=${_GENERIC_ENV_VARIABLE}",
+        "./frontend",
       ]
+    # args: [
+    #     "build",
+    #     "./frontend",
+    #     "-t",
+    #     "gcr.io/$PROJECT_ID/remdo-frontend:$SHORT_SHA",
+    #     "-f",
+    #     "Dockerfile",
+    #     "--build-arg"
+    #   ]
 
   # Push the Docker image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
@@ -21,7 +31,7 @@ steps:
     args:
       - "run"
       - "deploy"
-      - "remdo-frontend" # Change "remdo-frontend" to your project name
+      - "remdo-frontend"
       - "--region=${_REGION}" # Customize the region as needed
       - "--platform=managed"
       - "--allow-unauthenticated"
