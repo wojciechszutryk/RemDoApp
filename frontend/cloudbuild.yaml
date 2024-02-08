@@ -7,7 +7,7 @@ steps:
         "-t",
         "gcr.io/$PROJECT_ID/remdo-frontend:$SHORT_SHA",
         "-f",
-        "./frontend/Dockerfile",
+        "./frontend.Dockerfile",
         "--build-arg",
         "GENERIC_ENV_VARIABLE=${_GENERIC_ENV_VARIABLE}",
         "./frontend",
