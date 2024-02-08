@@ -10,7 +10,7 @@ steps:
         "./frontend.Dockerfile",
         "--build-arg",
         "GENERIC_ENV_VARIABLE=${_GENERIC_ENV_VARIABLE}",
-        "./frontend",
+        "./",
       ]
     # args: [
     #     "build",
