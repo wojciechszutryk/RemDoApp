@@ -22,7 +22,11 @@ RUN npm run build
 
 # Step 2: Set up the production environment
 FROM nginx:stable-alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy the built artifacts from the builder stage
+COPY --from=builder /usr/src/app/frontend/build /usr/share/nginx/html
+
+# Copy nginx configuration
 COPY ./frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
