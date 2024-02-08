@@ -32,7 +32,7 @@ steps:
       - "run"
       - "deploy"
       - "remdo-frontend"
-      - "--region=${_REGION}" # Customize the region as needed
+      - "--region=europe-west1"
       - "--platform=managed"
       - "--allow-unauthenticated"
       - "--image=gcr.io/${PROJECT_ID}/remdo-frontend:$SHORT_SHA"
