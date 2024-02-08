@@ -3,7 +3,7 @@ steps:
   - name: "gcr.io/cloud-builders/docker"
     args: [
         "build",
-        ".",
+        "./frontend",
         "-t",
         "gcr.io/$PROJECT_ID/remdo-frontend:$SHORT_SHA",
         "-f",
