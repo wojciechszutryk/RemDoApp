@@ -5,26 +5,27 @@ steps:
         "build",
         ".",
         "-t",
-        "gcr.io/remdo-frontend-413713", # Change "react-project" to your project name
+        "gcr.io/$PROJECT_ID/remdo-frontend:$SHORT_SHA",
         "-f",
         "Dockerfile",
         "--build-arg",
+        "GENERIC_ENV_VARIABLE=${_GENERIC_ENV_VARIABLE}", # Customize this variable for your project
       ]
 
   # Push the Docker image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/remdo-frontend-413713"] # Change "react-project" to your project name
+    args: ["push", "gcr.io/$PROJECT_ID/remdo-frontend:$SHORT_SHA"]
 
   # Deploy the Docker image to Cloud Run
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       - "run"
       - "deploy"
-      - "react-project" # Change "react-project" to your project name
+      - "remdo-frontend" # Change "remdo-frontend" to your project name
       - "--region=${_REGION}" # Customize the region as needed
       - "--platform=managed"
       - "--allow-unauthenticated"
-      - "--image=gcr.io/remdo-frontend-413713" # Change "react-project" to your project name
+      - "--image=gcr.io/${PROJECT_ID}/remdo-frontend:$SHORT_SHA"
       - "--port=8080"
 
 options:
