@@ -9,6 +9,7 @@ import {
   requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import { API_PREFIX_URL } from "linked-models/abstraction/api.prefix.url";
 import { IUserAttached } from "linked-models/user/user.model";
 import {
   URL_FORGET_PASSWORD,
@@ -25,7 +26,7 @@ import { UserService } from "services/user/user.service";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
-@controller(URL_FORGET_PASSWORD)
+@controller(API_PREFIX_URL + URL_FORGET_PASSWORD)
 export class PasswordRecoveryController
   extends BaseHttpController
   implements interfaces.Controller

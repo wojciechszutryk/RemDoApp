@@ -10,6 +10,7 @@ import {
   requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import { API_PREFIX_URL } from "linked-models/abstraction/api.prefix.url";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { IReminderDTO } from "linked-models/reminder/reminder.dto";
 import { URL_REMINDERS } from "linked-models/reminder/reminder.urls";
@@ -27,7 +28,11 @@ import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { ReminderService } from "services/reminder/reminder.service";
 
 @controller(
-  URL_TODO_LISTS + URL_TODO_LIST() + URL_REMINDERS + URL_TASK(),
+  API_PREFIX_URL +
+    URL_TODO_LISTS +
+    URL_TODO_LIST() +
+    URL_REMINDERS +
+    URL_TASK(),
   SetCurrentUser
 )
 export class ReminderController

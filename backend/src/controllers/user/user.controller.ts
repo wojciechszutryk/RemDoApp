@@ -16,6 +16,7 @@ import {
   response,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import { API_PREFIX_URL } from "linked-models/abstraction/api.prefix.url";
 import { EventName } from "linked-models/event/event.enum";
 import { AVATAR_FILENAME } from "linked-models/images/avatar";
 import { SEARCH_PHRASE } from "linked-models/search/search.urls";
@@ -55,7 +56,7 @@ import { UserService } from "services/user/user.service";
 
 const upload = multer(multerConfig);
 
-@controller(URL_USERS)
+@controller(API_PREFIX_URL + URL_USERS)
 export class UserController
   extends BaseHttpController
   implements interfaces.Controller

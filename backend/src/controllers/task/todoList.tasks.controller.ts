@@ -11,6 +11,7 @@ import {
   requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import { API_PREFIX_URL } from "linked-models/abstraction/api.prefix.url";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { ITaskDTO, parseTaskDateFields } from "linked-models/task/task.dto";
 import { URL_TODO_LIST_TASKS } from "linked-models/task/task.urls";
@@ -22,7 +23,11 @@ import { SetPermissionsAndScopes } from "middlewares/permissions/setPermissionsA
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { TaskService } from "services/task/task.service";
 
-@controller(URL_TODO_LIST_TASKS(), SetCurrentUser, SetPermissionsAndScopes)
+@controller(
+  API_PREFIX_URL + URL_TODO_LIST_TASKS(),
+  SetCurrentUser,
+  SetPermissionsAndScopes
+)
 export class TodoListTasksController
   extends BaseHttpController
   implements interfaces.Controller

@@ -10,6 +10,7 @@ import {
   requestBody,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import { API_PREFIX_URL } from "linked-models/abstraction/api.prefix.url";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import {
   PARAM_EXTENDED,
@@ -21,7 +22,7 @@ import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { TodoListService } from "services/todoList/todoList.service";
 
-@controller(URL_TODO_LISTS, SetCurrentUser)
+@controller(API_PREFIX_URL + URL_TODO_LISTS, SetCurrentUser)
 export class TodoListsController
   extends BaseHttpController
   implements interfaces.Controller

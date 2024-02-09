@@ -10,6 +10,7 @@ import {
   requestBody,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import { API_PREFIX_URL } from "linked-models/abstraction/api.prefix.url";
 import { IReminder, IReminderDTO } from "linked-models/reminder/reminder.dto";
 import {
   PARAM_END_DATE,
@@ -24,7 +25,7 @@ import { GoogleEventService } from "services/googleEvent/googleEvent.service";
 import { ReminderService } from "services/reminder/reminder.service";
 import { UserAuthService } from "services/user/user.auth.service";
 
-@controller(URL_REMINDERS, SetCurrentUser)
+@controller(API_PREFIX_URL + URL_REMINDERS, SetCurrentUser)
 export class RemindersController
   extends BaseHttpController
   implements interfaces.Controller
