@@ -12,7 +12,6 @@ import {
   requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
-import { API_PREFIX_URL } from "linked-models/abstraction/api.prefix.url";
 import { IUpdateUserNotificationDto } from "linked-models/notification/notification.dto";
 import { URL_USER_NOTIFICATIONS } from "linked-models/notification/notification.urls";
 import { IUserAttached } from "linked-models/user/user.model";
@@ -20,7 +19,7 @@ import { URL_USERS } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { NotificationService } from "services/notification/notification.service";
 
-@controller(API_PREFIX_URL + URL_USERS + URL_USER_NOTIFICATIONS, SetCurrentUser)
+@controller(URL_USERS + URL_USER_NOTIFICATIONS, SetCurrentUser)
 export class NotificationController
   extends BaseHttpController
   implements interfaces.Controller

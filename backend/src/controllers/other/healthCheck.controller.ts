@@ -5,9 +5,8 @@ import {
   interfaces,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
-import { API_PREFIX_URL } from "linked-models/abstraction/api.prefix.url";
 
-@controller(API_PREFIX_URL)
+@controller("")
 export class HealthCheckController
   extends BaseHttpController
   implements interfaces.Controller

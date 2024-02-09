@@ -8,7 +8,6 @@ import {
   interfaces,
   requestParam,
 } from "inversify-express-utils";
-import { API_PREFIX_URL } from "linked-models/abstraction/api.prefix.url";
 import { CollaborationState } from "linked-models/collaboration/collaboration.enum";
 import {
   COLLABORATION_PARAM,
@@ -20,7 +19,7 @@ import { URL_USERS } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { CollaborantsService } from "services/collaboration/collaborants.service";
 
-@controller(API_PREFIX_URL + URL_USERS + URL_COLLABORANTS, SetCurrentUser)
+@controller(URL_USERS + URL_COLLABORANTS, SetCurrentUser)
 export class UserCollaborationController
   extends BaseHttpController
   implements interfaces.Controller

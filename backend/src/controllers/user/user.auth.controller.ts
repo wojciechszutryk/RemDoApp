@@ -32,12 +32,11 @@ import passport from "passport";
 import React from "react";
 import { EmailNotificationService } from "services/notification/email.notification.service";
 import WelcomeTemplateplate from "../../emails/emails/WelcomeTemplate";
-import { API_PREFIX_URL } from "linked-models/abstraction/api.prefix.url";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
-@controller(API_PREFIX_URL + URL_USERS)
+@controller(URL_USERS)
 export class UserAuthController
   extends BaseHttpController
   implements interfaces.Controller

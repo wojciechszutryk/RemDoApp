@@ -19,12 +19,8 @@ import { URL_USER, URL_USERS, USER_PARAM } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { CollaborantsService } from "services/collaboration/collaborants.service";
 import { CollaborationInvintationService } from "services/collaboration/collaboration.invintation.service";
-import { API_PREFIX_URL } from "linked-models/abstraction/api.prefix.url";
 
-@controller(
-  API_PREFIX_URL + URL_USERS + URL_USER() + URL_INVITE_COLLABORANT,
-  SetCurrentUser
-)
+@controller(URL_USERS + URL_USER() + URL_INVITE_COLLABORANT, SetCurrentUser)
 export class UserCollaborationInvintationController
   extends BaseHttpController
   implements interfaces.Controller

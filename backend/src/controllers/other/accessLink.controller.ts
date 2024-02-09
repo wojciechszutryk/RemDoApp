@@ -11,7 +11,6 @@ import {
   requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
-import { API_PREFIX_URL } from "linked-models/abstraction/api.prefix.url";
 import { AccessHashesForTodoListDTO } from "linked-models/accessLink/accessLink.dto";
 import { IAccessLinkScopes } from "linked-models/accessLink/accessLink.model";
 import {
@@ -34,7 +33,7 @@ import {
 import { USER_PARAM } from "linked-models/user/user.urls";
 import { AccessLinkService } from "services/accessLink/accessLink.service";
 
-@controller(API_PREFIX_URL + URL_ACCESS_LINK)
+@controller(URL_ACCESS_LINK)
 export class AccessLinkController
   extends BaseHttpController
   implements interfaces.Controller

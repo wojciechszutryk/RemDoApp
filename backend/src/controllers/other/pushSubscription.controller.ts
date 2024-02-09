@@ -9,7 +9,6 @@ import {
   requestBody,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
-import { API_PREFIX_URL } from "linked-models/abstraction/api.prefix.url";
 import { IPushSubscription } from "linked-models/pushSubscription/pushSubscription.model";
 import {
   URL_PUSH,
@@ -22,7 +21,7 @@ import { PushNotificationService } from "services/notification/push.notification
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
 
-@controller(API_PREFIX_URL + URL_PUSH, SetCurrentUser)
+@controller(URL_PUSH, SetCurrentUser)
 export class PushSubscriptionController
   extends BaseHttpController
   implements interfaces.Controller
