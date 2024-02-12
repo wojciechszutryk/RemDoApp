@@ -4,9 +4,9 @@ RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 
-# Copy the frontend code
-COPY ./frontend ./frontend
-COPY ./models ./frontend/src/linked-models
+RUN mkdir -p /usr/src/app/frontend
+
+COPY ./frontend/package.json ./frontend/package-lock.json ./frontend
 
 # Change the working directory to the frontend directory
 WORKDIR /usr/src/app/frontend
@@ -16,6 +16,14 @@ RUN npm cache clean --force
 
 # Install dependencies for the frontend
 RUN npm install
+
+WORKDIR /usr/src/app
+
+# Copy the frontend code
+COPY ./frontend ./frontend
+COPY ./models ./frontend/src/linked-models
+
+WORKDIR /usr/src/app/frontend
 
 # Build the React app
 RUN npm run build
@@ -30,4 +38,10 @@ COPY --from=builder /usr/src/app/frontend/build /usr/share/nginx/html
 COPY ./frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8080
+# EXPOSE 80
+# EXPOSE 443
+
+# COPY ./entrypoint.sh /usr/src/entrypoint.sh
+# RUN chmod +x /usr/src/entrypoint.sh
+# ENTRYPOINT ["/usr/src/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
