@@ -6,7 +6,8 @@ WORKDIR /usr/src/app
 
 RUN mkdir -p /usr/src/app/frontend
 
-COPY ./frontend/package.json ./frontend/package-lock.json ./frontend
+COPY ./frontend/package.json ./frontend
+COPY ./frontend/package-lock.json ./frontend
 
 # Change the working directory to the frontend directory
 WORKDIR /usr/src/app/frontend
