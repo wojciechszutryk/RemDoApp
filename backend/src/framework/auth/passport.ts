@@ -158,7 +158,11 @@ passport.use(
     {
       clientID: process.env.GOOGLE_AUTH_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET!,
-      callbackURL: `${process.env.SERVER_URL}${URL_USERS}${URL_GOOGLE}${URL_REDIRECT}`,
+      callbackURL: `${
+        process.env.NODE_ENV === "development"
+          ? process.env.CLIENT_URL + "/api" //reverse proxy on production
+          : process.env.SERVER_URL
+      }${URL_USERS}${URL_GOOGLE}${URL_REDIRECT}`,
       scope: [
         "https://www.googleapis.com/auth/userinfo.profile",
         "https://www.googleapis.com/auth/userinfo.email",
