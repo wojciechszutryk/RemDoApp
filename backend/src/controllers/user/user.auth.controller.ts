@@ -192,6 +192,8 @@ export class UserAuthController
   async loginUserWithCookie(
     @currentUser() currentUser: IUserAttached
   ): Promise<OkResult> {
+    console.log("currentUser: ", currentUser);
+
     return this.ok(currentUser);
   }
 }

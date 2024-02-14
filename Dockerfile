@@ -24,12 +24,8 @@ ENV PORT $PORT
 # Copy the backend code
 COPY ./backend ./backend
 
-# Copy the frontend code
-COPY ./frontend ./frontend
-
-# Copy the shared models directory to both backend and frontend
+# Copy the shared models directory
 COPY ./models ./backend/src/linked-models
-COPY ./models ./frontend/src/linked-models
 
 # Change the working directory to the backend directory
 WORKDIR /usr/src/app/backend
@@ -40,24 +36,8 @@ RUN npm install
 # Build the backend
 RUN npm run build
 
-# Change the working directory to the frontend directory
-WORKDIR /usr/src/app/frontend
-
-# Clear npm cache
-RUN npm cache clean --force
-
-# Install dependencies for the frontend
-RUN npm install
-
-# Build the React app
-RUN npm run build
-
 # Change the working directory back to the app folder
 WORKDIR /usr/src/app
-
-# Copy the React app build files into the backend directory
-COPY ./frontend/build ./backend/public
-# RUN cp -r frontend/build backend/public # Alternative command
 
 # Expose the port (optional, you can specify it in your app code)
 EXPOSE $PORT

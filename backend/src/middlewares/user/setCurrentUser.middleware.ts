@@ -14,6 +14,8 @@ export class SetCurrentUser extends BaseMiddleware {
     // user from passport session
     const user = req.user;
 
+    console.log("req.user: ", req.user);
+
     if (!user) {
       // user from token
       await passport.authenticate(
@@ -22,6 +24,9 @@ export class SetCurrentUser extends BaseMiddleware {
         function (err: Error, user: Express.User | undefined) {
           if (!err && user) {
             req.params[PARAM_CURRENT_USER] = user as unknown as string;
+
+            console.log("line 28", req.params[PARAM_CURRENT_USER]);
+
             return next();
           }
         }
@@ -31,6 +36,8 @@ export class SetCurrentUser extends BaseMiddleware {
     }
 
     req.params[PARAM_CURRENT_USER] = user as unknown as string;
+
+    console.log("line 40", req.params[PARAM_CURRENT_USER]);
 
     return next();
   }
