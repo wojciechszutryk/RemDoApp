@@ -1,3 +1,3 @@
-export const SessionAge = 259200000; // 3 days
+export const SessionAge = 2592000000; // 30 days
 
 export const ExpiryParam = "expiry";

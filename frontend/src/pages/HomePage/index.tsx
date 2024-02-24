@@ -2,6 +2,7 @@ import { Separator } from "atomicComponents/atoms/Separator";
 import { LAST_PAGE_LS_KEY } from "atomicComponents/organisms/Header/helpers/LS.keys.const.helper";
 import { motion } from "framer-motion";
 import { SessionAgeLSKey } from "framework/authentication/helpers/sessionAge.helper";
+import { useLoginUserWithCookieMutation } from "framework/authentication/mutations/useLoginUserWithCookie.mutation";
 import { useDialogs } from "framework/dialogs";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { URL_COLLABORANTS } from "linked-models/collaboration/collaboration.urls";
@@ -44,6 +45,7 @@ const HomePage = (): JSX.Element => {
   const notificationsRef = useRef<HTMLDivElement>(null);
   const interfaceRef = useRef<HTMLDivElement>(null);
   const personalizationRef = useRef<HTMLDivElement>(null);
+  const loginUserWithCookieMutation = useLoginUserWithCookieMutation();
 
   const {
     dialogsActions: { updateCollaborantsDrawer },
@@ -69,13 +71,18 @@ const HomePage = (): JSX.Element => {
   };
 
   useEffect(() => {
-    //for google auth
+    //for google auth - when we are redirected from google auth (ExpiryParam in url)
     const searchParams = new URLSearchParams(window.location.search);
     const expiry = searchParams.get(ExpiryParam);
 
     if (expiry) {
+      //login user with cookie
+      loginUserWithCookieMutation.mutate();
+
+      //set expiry in local storage for auto login in the future
       localStorage.setItem(SessionAgeLSKey, expiry);
 
+      // redirect to last page
       const lastPage = localStorage.getItem(LAST_PAGE_LS_KEY);
 
       if (lastPage) {
@@ -84,6 +91,7 @@ const HomePage = (): JSX.Element => {
         navigate("/");
       }
 
+      //clean expiry param from url
       window.history.pushState({}, document.title, window.location.pathname);
     }
   }, []);

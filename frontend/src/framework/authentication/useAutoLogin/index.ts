@@ -3,6 +3,9 @@ import { SessionAgeLSKey } from "../helpers/sessionAge.helper";
 import { useLoginUserWithCookieMutation } from "../mutations/useLoginUserWithCookie.mutation";
 import { useCurrentUser } from "../useCurrentUser";
 
+/**
+ * This hook is used to automatically login the user if the session is still valid
+ */
 const useAutoLogin = () => {
   const { currentUser } = useCurrentUser();
   const loginUserWithCookieMutation = useLoginUserWithCookieMutation();
@@ -16,7 +19,7 @@ const useAutoLogin = () => {
     ) {
       loginUserWithCookieMutation.mutate();
     }
-  }, [currentUser, sessionExpiryDate]);
+  }, [currentUser, loginUserWithCookieMutation, sessionExpiryDate]);
 };
 
 export default useAutoLogin;
