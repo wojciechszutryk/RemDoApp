@@ -12,6 +12,7 @@ const GoogleButton = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = () => {
+    if (isLoading) return;
     setIsLoading(true);
     const child = window.open(FRONTIFY_URL(URL_USERS, URL_GOOGLE), "_self");
 
