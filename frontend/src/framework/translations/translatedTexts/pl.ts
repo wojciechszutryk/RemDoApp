@@ -46,7 +46,6 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.LoginPanelSeparatorText]: "lub",
   [TranslationKeys.GoToFeaturesButtonText]: "Poznaj funkcje",
   [TranslationKeys.LoginPanelHeader]: "Zaloguj się lub zarejestruj",
-  [TranslationKeys.SignInGoogle]: "Google",
   [TranslationKeys.IntegrateWithGoogleDesc]:
     "Aby zintegrować się z google, musisz użyć tego samego adresu e-mail, co w aktualnym koncie. Jeśli używasz innego, zostanie utworzone nowe konto w serwisie. Po kliknięciu przycisku zostaniesz przekierowany na stronę logowania google. Po pomyślnym zalogowaniu zostaniesz przekierowany z powrotem do naszej aplikacji.",
   [TranslationKeys.UserIntegratedWithGoogle]:
@@ -258,7 +257,6 @@ export const plTranslation: Record<TranslationKeys, string> = {
 
   [TranslationKeys.PageTitleUserSettings]: "Ustawienia użytkownika",
   [TranslationKeys.ChangePassword]: "Zmień hasło",
-  [TranslationKeys.CurrentPasswordLabel]: "aktualne hasło",
   [TranslationKeys.CurrentPasswordLabel]: "aktualne hasło",
   [TranslationKeys.NewPasswordLabel]: "nowe hasło",
   [TranslationKeys.NewPasswordRepeatLabel]: "powtórz nowe hasło",
