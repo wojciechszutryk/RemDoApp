@@ -46,7 +46,6 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.LoginPanelSeparatorText]: "or",
   [TranslationKeys.GoToFeaturesButtonText]: "Explore features",
   [TranslationKeys.LoginPanelHeader]: "Sign in or Sign up",
-  [TranslationKeys.SignInGoogle]: "Google",
   [TranslationKeys.IntegrateWithGoogleDesc]:
     "To integrate with google you need to use same email as you current application email. If you use different new account will be created. After clicking button you will be redirected to google login page. After successful login you will be redirected back to our app.",
   [TranslationKeys.UserIntegratedWithGoogle]:
@@ -254,7 +253,6 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.NewPasswordLabel]: "new password",
   [TranslationKeys.NewPasswordRepeatLabel]: "new password repeat",
   [TranslationKeys.PasswordChanged]: "New password set.",
-  [TranslationKeys.ChangePassword]: "Change password",
   [TranslationKeys.ChangeAvatar]: "Change avatar",
   [TranslationKeys.GoogleIntegration]: "Google integration",
   [TranslationKeys.AvatarChanged]: "Avatar saved",

@@ -12,8 +12,11 @@ import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
-import { StyledTodoListsWrapper } from "pages/TodoListsPage/styles";
-import { memo, useEffect, useState } from "react";
+import {
+  StyledListsCol,
+  StyledListsColWrapper,
+} from "pages/TodoListsPage/styles";
+import { memo, useEffect, useMemo, useState } from "react";
 import TodoListCard from "../../../SingleTodoListPage/components/TodoListCard";
 import { getOrderedTodoLists } from "./helpers";
 import SortableTodoListCard from "./SortableTodoListCard";
@@ -50,6 +53,19 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
     currentUser,
   });
 
+  const columsData = useMemo(() => {
+    const colums: IExtendedTodoListDto[][] = Array.from(
+      { length: columns },
+      () => []
+    );
+
+    orderedTodoLists.forEach((td, index) => {
+      colums[index % columns].push(td);
+    });
+
+    return colums;
+  }, [columns, orderedTodoLists]);
+
   return (
     <DndContext
       measuring={{
@@ -64,8 +80,8 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
       onDragCancel={handleDragCancel}
     >
       <SortableContext items={orderedTodoLists} strategy={rectSortingStrategy}>
-        <StyledTodoListsWrapper columns={columns}>
-          {orderedTodoLists.map((td) => {
+        <StyledListsColWrapper>
+          {/* {orderedTodoLists.map((td) => {
             return (
               <SortableTodoListCard
                 key={td.id}
@@ -73,8 +89,23 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
                 withShakeAnimation={!!activeId && activeId !== td.id}
               />
             );
+          })} */}
+          {columsData.map((column, index) => {
+            return (
+              <StyledListsCol key={index} columns={columns}>
+                {column.map((td) => {
+                  return (
+                    <SortableTodoListCard
+                      key={td.id}
+                      todoList={td}
+                      withShakeAnimation={!!activeId && activeId !== td.id}
+                    />
+                  );
+                })}
+              </StyledListsCol>
+            );
           })}
-        </StyledTodoListsWrapper>
+        </StyledListsColWrapper>
       </SortableContext>
       <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
         {activeId && activeTodoList ? (

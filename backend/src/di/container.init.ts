@@ -12,7 +12,6 @@ import "controllers/user/passwordRecovery.controller";
 import "controllers/user/user.auth.controller";
 import "controllers/user/user.controller";
 import "controllers/user/user.notification";
-import "controllers/other/healthCheck.controller";
 import { Container } from "inversify";
 
 export const container = new Container({
