@@ -24,10 +24,11 @@ export const useInitializeNotificationSocket = () => {
   useEffect(
     function connectNotificationSocket() {
       if (!notificationSocketReady && !!currentUser) {
+        console.log(process.env.NODE_ENV);
         const query = { [USER_PARAM]: currentUser.id };
         const socket = io(process.env.REACT_APP_SOCKET_URL || "unknown", {
           query,
-          path: "",
+          path: process.env.NODE_ENV === "production" ? "/api" : "",
           transports: ["websocket"],
         });
 
