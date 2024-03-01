@@ -24,6 +24,10 @@ export class SetCurrentUser extends BaseMiddleware {
             req.params[PARAM_CURRENT_USER] = user as unknown as string;
 
             return next();
+          } else if (err) {
+            console.log("Error in SetCurrentUser.middleware.ts: ", err);
+
+            return res.status(500).send(err);
           }
         }
       )(req, res, next);
