@@ -64,38 +64,54 @@ const httpServer = createServer(app);
 const socketService = new SocketNotificationService(httpServer);
 container.bind(SocketNotificationService).toConstantValue(socketService);
 
-//Connect to MongoDb
-if (!process.env.DB_URI) throw new Error("DB_URI undefined");
+const connectToMongo = () => {
+  mongoose.set("strictQuery", false);
 
-mongoose.set("strictQuery", false);
-mongoose.connect(process.env.DB_URI, {
-  tls: true,
-});
-mongoose.Promise = global.Promise;
-mongoose.connection.on("error", (error) => {
-  // eslint-disable-next-line no-console
-  console.error.bind(console, "MongoDB connection error:" + error);
-
-  httpServer.close();
-});
-
-mongoose.connection.on("disconnected", () => {
-  // eslint-disable-next-line no-console
-  console.log("MongoDB disconnected");
-  httpServer.close();
-});
-
-mongoose.connection.on("open", () => {
-  console.log("Connected to MongoDB");
-  const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
-
-  httpServer.listen(port, () => {
+  if (!process.env.DB_URI) throw new Error("DB_URI undefined");
+  mongoose.connect(process.env.DB_URI, {});
+  mongoose.Promise = global.Promise;
+  mongoose.connection.on("error", (error) => {
     // eslint-disable-next-line no-console
-    console.log("API listening on port " + port);
+    console.error.bind(console, "MongoDB connection error:" + error);
+    console.log("MongoDB connection error: " + error);
   });
 
-  httpServer.on("error", (error) => {
-    // eslint-disable-next-line no-console
-    console.error("Server error: " + error);
+  mongoose.connection.on("open", () => {
+    console.log("Connected to MongoDB");
   });
+
+  mongoose.connection.on("disconnected", () => {
+    console.log("MongoDB disconnected. Reconnecting...");
+    setTimeout(connectToMongo, 5000); // Retry connection after a delay (adjust as needed)
+  });
+};
+
+const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
+
+httpServer.listen(port, () => {
+  // eslint-disable-next-line no-console
+  console.log("API listening on port " + port);
+  connectToMongo();
+});
+
+httpServer.on("error", (error: NodeJS.ErrnoException) => {
+  if (error.syscall !== "listen") {
+    throw error;
+  }
+
+  const bind = typeof port === "string" ? `Pipe ${port}` : `Port ${port}`;
+
+  // Handle specific listen errors with friendly messages
+  switch (error.code) {
+    case "EACCES":
+      console.error(`${bind} requires elevated privileges`);
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(`${bind} is already in use`);
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
 });
