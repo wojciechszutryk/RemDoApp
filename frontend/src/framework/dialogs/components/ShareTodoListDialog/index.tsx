@@ -66,8 +66,6 @@ const ShareTodoListDialog = (): JSX.Element => {
       </StyledTabsWrapper>
       <div
         style={{
-          height: 420,
-          overflow: "hidden",
           position: "relative",
         }}
       >

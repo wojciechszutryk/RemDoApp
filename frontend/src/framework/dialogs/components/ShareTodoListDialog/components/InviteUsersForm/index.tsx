@@ -47,10 +47,7 @@ const InviteUsersForm = ({ onSuccess }: Props): JSX.Element => {
   };
 
   return (
-    <StyledForm
-      onSubmit={methods.handleSubmit(onSubmit)}
-      style={{ overflowY: "auto" }}
-    >
+    <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
       <FormProvider {...methods}>
         <Typography variant="h6">
           {t(TranslationKeys.ShareTodoList)}: {todoListName}
