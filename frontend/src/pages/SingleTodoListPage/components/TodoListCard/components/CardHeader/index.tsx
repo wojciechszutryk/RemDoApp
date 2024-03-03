@@ -4,7 +4,8 @@ import { CardHeader as MuiCardHeader, Tooltip } from "@mui/material";
 import ExtendableUserAvatar from "atomicComponents/organisms/UserAvatar/ExtendableUserAvatar";
 import { Pages } from "framework/routing/pages";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
-import { memo } from "react";
+import { IUserPublicDataDTO } from "linked-models/user/user.dto";
+import { memo, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import TodoListIcon from "../../../../../TodoListsPage/components/TodoListIcon";
 import { StyledCardHeaderActions, StyledDragIcon } from "../../styles";
@@ -28,9 +29,18 @@ const CardHeader = ({
   disableHeaderRedirect,
 }: Props): JSX.Element => {
   const navigate = useNavigate();
-  const allMembers = [];
-  if (assignedOwners) allMembers.push(...assignedOwners);
-  if (assignedUsers) allMembers.push(...assignedUsers);
+  const allMembers = useMemo(() => {
+    const uniqueMemberIDs = new Set(
+      [...assignedOwners, ...assignedUsers].map((user) => user.id)
+    );
+
+    return Array.from(uniqueMemberIDs).map((id) => {
+      const user = assignedOwners.find((owner) => owner.id === id);
+      if (user) return user;
+      return assignedUsers.find((user) => user.id === id);
+    }) as IUserPublicDataDTO[];
+  }, [assignedOwners, assignedUsers]);
+  
   return (
     <MuiCardHeader
       avatar={
