@@ -75,7 +75,7 @@ const HomePage = (): JSX.Element => {
     const searchParams = new URLSearchParams(window.location.search);
     const expiry = searchParams.get(ExpiryParam);
 
-    if (expiry) {
+    if (expiry && !loginUserWithCookieMutation.isLoading) {
       //login user with cookie
       loginUserWithCookieMutation.mutate();
 
@@ -94,7 +94,7 @@ const HomePage = (): JSX.Element => {
       //clean expiry param from url
       window.history.pushState({}, document.title, window.location.pathname);
     }
-  }, []);
+  }, [loginUserWithCookieMutation, navigate]);
 
   return (
     <StyledHomePageWrapper>

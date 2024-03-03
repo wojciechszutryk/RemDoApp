@@ -15,7 +15,8 @@ const useAutoLogin = () => {
     if (
       !currentUser &&
       !!sessionExpiryDate &&
-      new Date().getTime() < parseInt(sessionExpiryDate)
+      new Date().getTime() < parseInt(sessionExpiryDate) &&
+      !loginUserWithCookieMutation.isLoading
     ) {
       loginUserWithCookieMutation.mutate();
     }
