@@ -1,4 +1,4 @@
-import { Tabs, useMediaQuery } from "@mui/material";
+import { Box, Tabs, useMediaQuery } from "@mui/material";
 import Dialog from "atomicComponents/atoms/Dialog";
 import { Tab } from "atomicComponents/atoms/Tab";
 import { AnimatePresence } from "framer-motion";
@@ -64,9 +64,12 @@ const ShareTodoListDialog = (): JSX.Element => {
           />
         </Tabs>
       </StyledTabsWrapper>
-      <div
-        style={{
+      <Box
+        sx={{
           position: "relative",
+          "@media (min-width: 600px)": {
+            minHeight: 420,
+          },
         }}
       >
         <AnimatePresence>
@@ -87,7 +90,7 @@ const ShareTodoListDialog = (): JSX.Element => {
             <InviteUsersForm onSuccess={onClose} />
           </TabWrapper>
         </AnimatePresence>
-      </div>
+      </Box>
     </Dialog>
   );
 };
