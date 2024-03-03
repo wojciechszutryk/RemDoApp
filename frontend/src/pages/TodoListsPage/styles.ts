@@ -90,7 +90,8 @@ export const StyledListsCol = styled("section", {
   display: "flex",
   flexDirection: "column",
   gap: 20,
-  width: `calc(${100 / columns}% - 20px)`,
+  // width: `calc(${100 / columns}% - 20px)`,
+  width: `${100 / columns}%`,
   "& > div > div": {
     height: "100%",
     display: "flex",
