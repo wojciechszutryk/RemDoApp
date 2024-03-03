@@ -18,7 +18,7 @@ const NotificationsMenu = (): JSX.Element => {
 
   const getUserNotificationsQuery = useGetUserNotificationsQuery();
   const showNoActivePushSubIcon = useCheckPushSubActive();
- 
+
   const [
     activeNotificationsData,
     archivedNotificationsData,
@@ -36,7 +36,11 @@ const NotificationsMenu = (): JSX.Element => {
   return (
     <>
       {getUserNotificationsQuery.isLoading ? (
-        <Skeleton width={40} height={60} />
+        <Skeleton
+          width={40}
+          height={60}
+          sx={{ borderRadius: "50%", zIndex: 2 }}
+        />
       ) : (
         <StyledNotificationButton onClick={toggleDrawer(true)}>
           <NotificationIcon
