@@ -1,6 +1,7 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import ShareIcon from "@mui/icons-material/Share";
 import { CardActions as MUICardActions } from "@mui/material";
 import { useDialogs } from "framework/dialogs";
@@ -20,8 +21,10 @@ interface Props {
   todoList: IExtendedTodoListDto;
   expanded: boolean;
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsReordering: React.Dispatch<React.SetStateAction<boolean>>;
   showExpandIcon?: boolean;
   actionsVariant: "buttons" | "menu";
+  showReorderTasksButton?: boolean;
   showEditButton?: boolean;
   showShareButton?: boolean;
   showDeleteButton?: boolean;
@@ -32,8 +35,10 @@ const CardActions = ({
   todoList: { name, id, icon, assignedOwners, assignedUsers, tasks },
   expanded,
   setExpanded,
+  setIsReordering,
   showExpandIcon,
   actionsVariant,
+  showReorderTasksButton,
   showEditButton,
   showShareButton,
   showDeleteButton,
@@ -43,6 +48,14 @@ const CardActions = ({
   const { t } = useTranslation();
 
   const interactions = [];
+
+  if (showReorderTasksButton) {
+    interactions.push({
+      onClick: () => setIsReordering(true),
+      label: t(TranslationKeys.ReorderTasks),
+      icon: <FormatListNumberedIcon />,
+    });
+  }
 
   if (showEditButton) {
     interactions.push({

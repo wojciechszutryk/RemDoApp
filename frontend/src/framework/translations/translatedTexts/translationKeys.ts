@@ -98,6 +98,7 @@ export enum TranslationKeys {
   CurrentUsers = "CurrentUsers",
   TodoListDialogButton = "TodoListDialogButton",
   DelteTodoList = "DelteTodoList",
+  ReorderTasks = "ReorderTasks",
   DelteTodoListWarning = "DelteTodoListWarning",
   Other = "Other",
   BackToTodoLists = "BackToTodoLists",

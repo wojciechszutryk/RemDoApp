@@ -27,6 +27,7 @@ const TodoListCard = ({
   actionsVariant,
 }: Props): JSX.Element => {
   const [expanded, setExpanded] = React.useState(false);
+  const [isReordering, setIsReordering] = React.useState(false);
   const checkPermission = useCheckTodoPermissions();
 
   const { activeTasks, completedTasks } = React.useMemo(() => {
@@ -65,7 +66,9 @@ const TodoListCard = ({
         }
         setExpanded={setExpanded}
         expanded={expanded}
+        setIsReordering={setIsReordering}
         todoList={todoList}
+        showReorderTasksButton={activeTasks.length > 2 && !isReordering}
         showCreateTaskButton={checkPermission(
           TodoListPermissions.CanCreateTask,
           todoList.id
