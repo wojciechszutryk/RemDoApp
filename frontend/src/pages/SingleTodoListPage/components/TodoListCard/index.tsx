@@ -53,8 +53,9 @@ const TodoListCard = ({
       <CardContent
         scrollable={scrollableContent}
         activeTasks={activeTasks}
+        isReordering={isReordering}
         completedTasks={completedTasks}
-        expanded={expanded}
+        expanded={isReordering || expanded}
         todoListId={todoList.id}
       />
       <CardActions
