@@ -55,6 +55,6 @@ export class TaskDeletedEventHandler
     );
 
     //delete order
-    this.orderService.deleteOrderByTaskId(eventCreatorId, deletedTask.id);
+    this.orderService.deleteOrdersByTaskId(deletedTask.id);
   }
 }

@@ -53,13 +53,7 @@ export class ReminderDeletedEventHandler
     );
 
     //delete orders
-    this.orderService.deleteOrderByTaskId(
-      eventCreatorId,
-      deletedReminder.taskId
-    );
-    this.orderService.deleteOrderByTodoListId(
-      eventCreatorId,
-      deletedReminder.todoListId
-    );
+    this.orderService.deleteOrdersByTaskId(deletedReminder.taskId);
+    this.orderService.deleteOrdersByTodoListId(deletedReminder.todoListId);
   }
 }

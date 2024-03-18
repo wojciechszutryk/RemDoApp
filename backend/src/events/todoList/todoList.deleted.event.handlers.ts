@@ -61,6 +61,6 @@ export class TodoListDeletedEventHandler
     );
 
     //delete order
-    this.orderService.deleteOrderByTaskId(eventCreatorId, deletedTodoList.id);
+    this.orderService.deleteOrdersByTodoListId(deletedTodoList.id);
   }
 }
