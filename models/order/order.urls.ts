@@ -7,5 +7,5 @@ export const URL_ORDER = (orderId?: string) =>
   `/${orderId || ":" + ORDER_PARAM}`;
 
 /** orders/{orderId}/user/{userId} */
-export const URL_USER_ORDERS = (orderId?: string, userId?: string): string =>
+export const URL_USER_ORDER = (orderId?: string, userId?: string): string =>
   `${URL_ORDERS}${URL_ORDER(orderId)}${URL_USERS}${URL_USER(userId)}`;

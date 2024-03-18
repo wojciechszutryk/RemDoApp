@@ -9,10 +9,11 @@ export interface ITaskDTO
 }
 
 /**
- * Task with creator
+ * Task with creator and order (optional, order is defined by every user separately)
  */
 export interface IExtendedTaskDto extends Omit<ITaskAttached, "creatorId"> {
   creator?: IUserPublicDataDTO;
+  order?: number;
 }
 
 export function parseTaskDateFields<T extends Partial<ITaskDTO>>(task: T) {
