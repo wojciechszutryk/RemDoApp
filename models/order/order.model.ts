@@ -1,10 +1,10 @@
 import { IBaseModelAttached } from "../abstraction/base.interface";
 
 export interface IOrder {
-  /** Date when order was created */
-  whenCreated: Date;
+  /** Order value */
+  value: number;
   /** User id */
-  user?: string;
+  user: string;
   /** Todo list id */
   todoListId?: string;
   /** Task id */
