@@ -7,11 +7,13 @@ import {
   httpPost,
   interfaces,
   requestBody,
+  requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { IOrder } from "linked-models/order/order.model";
 import { URL_ORDERS } from "linked-models/order/order.urls";
 import { IUserAttached } from "linked-models/user/user.model";
+import { URL_USER, URL_USERS, USER_PARAM } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { OrderService } from "services/order/order.service";
 
@@ -40,19 +42,21 @@ export class OrdersController
     }
   }
 
-  @httpPost("")
+  @httpPost(`${URL_USERS}${URL_USER()}`)
   async upsertOrder(
     @currentUser() currentUser: IUserAttached,
-    @requestBody() body: Partial<IOrder>
+    @requestParam(USER_PARAM) userIdFromParam: string,
+    @requestBody() body: { data: IOrder[] }
   ): Promise<OkResult> {
     try {
-      if (!body) return this.json("Data is required", 400);
       if (!currentUser) return this.json("User is required", 400);
-      if (!body.value) return this.json("Value is required", 400);
-      if (!body.taskId || !body.todoListId)
-        return this.json("Task or TodoList are required", 400);
+      if (currentUser.id !== userIdFromParam)
+        this.json("You are not allowed to update someone else's orders");
 
-      const order = await this.orderService.upsertOrder(body, currentUser);
+      const order = await this.orderService.upsertOrdersForUser(
+        body.data,
+        currentUser
+      );
       return this.json(order);
     } catch (error) {
       if (error instanceof Error) {
