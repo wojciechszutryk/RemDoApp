@@ -23,7 +23,7 @@ import {
 } from "linked-models/todoList/todoList.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
-import { ScheduleNotificationService } from "services/notification/schedule.notification.service";
+import { OrderService } from "services/order/order.service";
 import { TaskService } from "services/task/task.service";
 import { UserService } from "services/user/user.service";
 
@@ -36,8 +36,7 @@ export class TodoListService {
     private readonly taskService: TaskService,
     @inject(UserService)
     private readonly userService: UserService,
-    @inject(ScheduleNotificationService)
-    private readonly scheduleNotificationService: ScheduleNotificationService,
+    @inject(OrderService) private readonly orderService: OrderService,
     @inject(EventService)
     private readonly eventService: EventService
   ) {}
@@ -170,7 +169,7 @@ export class TodoListService {
     todoListId: string,
     userId: string
   ): Promise<IExtendedTodoListDto> {
-    const [todoListWithMembers, tasks] = await Promise.all([
+    const [todoListWithMembers, tasks, taskOrders] = await Promise.all([
       this.getTodoListWithMembersById(todoListId),
       this.taskService.getTasksByTodoListIDs(
         [todoListId],
@@ -178,7 +177,13 @@ export class TodoListService {
         undefined,
         userId
       ),
+      this.orderService.getTasksOrderInTodoList(userId, todoListId),
     ]);
+
+    const taskIdToOrderMap = new Map<string, number>();
+    taskOrders.forEach((o) => {
+      if (o.taskId && o.value) taskIdToOrderMap.set(o.taskId, o.value);
+    });
 
     if (!todoListWithMembers) throw new Error("TodoList does not exist.");
 
@@ -205,24 +210,41 @@ export class TodoListService {
       if (creator)
         mappedTasks.push({
           ...t,
+          order: taskIdToOrderMap.get(t.id),
           creator,
         });
     });
 
     return {
       ...todoListWithMembers,
-      tasks: mappedTasks,
+      tasks: mappedTasks.sort((a, b) => {
+        if (a.order && b.order) return a.order - b.order;
+        return 0;
+      }),
     };
   }
 
   public async getExtendedTodoListsForUser(
     userId: string
   ): Promise<IExtendedTodoListDto[]> {
-    const { todoLists, users } = await this.getTodoListsWithMembersForUser(
-      userId
-    );
-    const todoListIDs = todoLists.map((td) => td.id);
+    const [{ todoLists, users }, orders] = await Promise.all([
+      this.getTodoListsWithMembersForUser(userId),
+      this.orderService.getAllOrdersForUser(userId),
+    ]);
 
+    const todoListsOrdersMap = new Map<string, number>();
+    const tasksOrderMap = new Map<string, number>();
+    orders.forEach((o) => {
+      if (!o.value) return;
+      if (o.todoListId) todoListsOrdersMap.set(o.todoListId, o.value);
+      if (o.taskId) tasksOrderMap.set(o.taskId, o.value);
+    });
+
+    const userIdToUserMap = new Map<string, IUserPublicDataDTO>(
+      users.map((u) => [u.id, u])
+    );
+
+    const todoListIDs = todoLists.map((td) => td.id);
     const tasks = await this.taskService.getTasksByTodoListIDs(
       todoListIDs,
       undefined,
@@ -230,15 +252,31 @@ export class TodoListService {
       userId
     );
 
-    return todoLists.map((td) => ({
-      ...td,
-      tasks: tasks
-        .filter((t) => t.todoListId === td.id)
-        .map((t) => ({
-          ...t,
-          creator: users.find((u) => u.id === t.creatorId)!,
-        })),
-    }));
+    const todoListIdToTasksMap = new Map<string, IExtendedTaskDto[]>();
+    tasks.forEach((t) => {
+      const list = todoListIdToTasksMap.get(t.todoListId);
+      const extendedTask = {
+        ...t,
+        creator: userIdToUserMap.get(t.creatorId),
+      };
+      if (list) list.push(extendedTask);
+      else todoListIdToTasksMap.set(t.todoListId, [extendedTask]);
+    });
+
+    return todoLists
+      .map((td) => ({
+        ...td,
+        order: todoListsOrdersMap.get(td.id),
+        tasks:
+          todoListIdToTasksMap.get(td.id)?.sort((a, b) => {
+            if (a.order && b.order) return a.order - b.order;
+            return 0;
+          }) || [],
+      }))
+      .sort((a, b) => {
+        if (a.order && b.order) return a.order - b.order;
+        return 0;
+      });
   }
 
   public async createTodoList(
