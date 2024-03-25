@@ -43,7 +43,7 @@ export class OrdersController
   }
 
   @httpPost(`${URL_USERS}${URL_USER()}`)
-  async upsertOrder(
+  async upsertOrders(
     @currentUser() currentUser: IUserAttached,
     @requestParam(USER_PARAM) userIdFromParam: string,
     @requestBody() body: { data: IOrder[] }
@@ -53,11 +53,11 @@ export class OrdersController
       if (currentUser.id !== userIdFromParam)
         this.json("You are not allowed to update someone else's orders");
 
-      const order = await this.orderService.upsertOrdersForUser(
+      const orders = await this.orderService.upsertOrdersForUser(
         body.data,
         currentUser
       );
-      return this.json(order);
+      return this.json(orders);
     } catch (error) {
       if (error instanceof Error) {
         return this.json(error.message, 400);

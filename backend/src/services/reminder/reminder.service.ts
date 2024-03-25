@@ -13,7 +13,6 @@ import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
-import { ScheduleNotificationService } from "services/notification/schedule.notification.service";
 import { TaskService } from "services/task/task.service";
 import { TodoListService } from "services/todoList/todoList.service";
 import { UserService } from "services/user/user.service";
@@ -28,9 +27,7 @@ export class ReminderService {
     @inject(UserService)
     private readonly userService: UserService,
     @inject(TodoListService)
-    private readonly todoListService: TodoListService,
-    @inject(ScheduleNotificationService)
-    private readonly scheduleNotificationService: ScheduleNotificationService
+    private readonly todoListService: TodoListService
   ) {}
 
   private mapTodoListAndTaskToReminderAttached(
