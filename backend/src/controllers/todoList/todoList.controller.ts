@@ -4,10 +4,8 @@ import {
   BaseHttpController,
   controller,
   httpDelete,
-  httpGet,
   httpPut,
   interfaces,
-  queryParam,
   requestBody,
   requestParam,
 } from "inversify-express-utils";
@@ -15,7 +13,6 @@ import { OkResult } from "inversify-express-utils/lib/results";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import {
-  PARAM_EXTENDED,
   TODO_LIST_PARAM,
   URL_TODO_LIST,
   URL_TODO_LISTS,
@@ -35,38 +32,6 @@ export class TodoListController
     @inject(TodoListService) private readonly todoListService: TodoListService
   ) {
     super();
-  }
-
-  @httpGet(
-    "",
-    SetPermissionsAndScopes,
-    CheckPermission(TodoListPermissions.CanReadTodoList)
-  )
-  async getTodoList(
-    @requestParam(TODO_LIST_PARAM) todoListId: string,
-    @queryParam(PARAM_EXTENDED) extended = false,
-    @currentUser() currentUser: IUserAttached
-  ): Promise<OkResult> {
-    try {
-      if (extended) {
-        const extendedTodoList = await this.todoListService.getExtendedTodoList(
-          todoListId,
-          currentUser.id
-        );
-
-        return this.ok(extendedTodoList);
-      }
-
-      const todoList = await this.todoListService.getTodoListById(todoListId);
-
-      return this.ok(todoList);
-    } catch (error) {
-      if (error instanceof Error) {
-        return this.json(error.message, 400);
-      }
-
-      return this.statusCode(400);
-    }
   }
 
   @httpPut(

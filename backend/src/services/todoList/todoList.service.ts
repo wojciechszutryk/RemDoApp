@@ -3,7 +3,6 @@ import {
   TodoListCollectionName,
   TodoListCollectionType,
 } from "dbSchemas/todoList.schema";
-import { getTemUser, TEMP_USER_ID } from "framework/auth/tempUser.helper";
 import { EventService } from "framework/events/event.service";
 import { inject, injectable } from "inversify";
 import {
@@ -163,65 +162,6 @@ export class TodoListService {
     }));
 
     return { todoLists: todoListsWithMembers, users: members };
-  }
-
-  public async getExtendedTodoList(
-    todoListId: string,
-    userId: string
-  ): Promise<IExtendedTodoListDto> {
-    const [todoListWithMembers, tasks, taskOrders] = await Promise.all([
-      this.getTodoListWithMembersById(todoListId),
-      this.taskService.getTasksByTodoListIDs(
-        [todoListId],
-        undefined,
-        undefined,
-        userId
-      ),
-      this.orderService.getTasksOrderInTodoList(userId, todoListId),
-    ]);
-
-    const taskIdToOrderMap = new Map<string, number>();
-    taskOrders.forEach((o) => {
-      if (o.taskId && o.value) taskIdToOrderMap.set(o.taskId, o.value);
-    });
-
-    if (!todoListWithMembers) throw new Error("TodoList does not exist.");
-
-    const membersMap = new Map<string, IUserPublicDataDTO>();
-
-    const todoListMembers = [
-      /** exlamation mark - service always return array  */
-      ...todoListWithMembers!.assignedOwners,
-      ...todoListWithMembers!.assignedUsers,
-    ];
-
-    todoListMembers.forEach((u) => membersMap.set(u.id, u));
-
-    const mappedTasks: IExtendedTaskDto[] = [];
-    tasks.forEach((t) => {
-      let creator = membersMap.get(t.creatorId);
-      if (!creator && t.creatorId.includes(TEMP_USER_ID)) {
-        const [_, annonymousId] = t.creatorId.split(TEMP_USER_ID);
-        if (annonymousId) {
-          membersMap.set(annonymousId, getTemUser(annonymousId, {}));
-        }
-        creator = membersMap.get(annonymousId);
-      }
-      if (creator)
-        mappedTasks.push({
-          ...t,
-          order: taskIdToOrderMap.get(t.id),
-          creator,
-        });
-    });
-
-    return {
-      ...todoListWithMembers,
-      tasks: mappedTasks.sort((a, b) => {
-        if (a.order && b.order) return a.order - b.order;
-        return 0;
-      }),
-    };
   }
 
   public async getExtendedTodoListsForUser(
