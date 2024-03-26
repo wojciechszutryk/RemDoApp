@@ -11,10 +11,7 @@ interface Props {
 }
 
 const QuickTaskCreateBtn = ({ todoListId, disabled }: Props): JSX.Element => {
-  const updateQueriesAfterCreatingTask = useUpdateQueriesAfterCreatingTask(
-    false,
-    todoListId
-  );
+  const updateQueriesAfterCreatingTask = useUpdateQueriesAfterCreatingTask();
 
   const handleQuickTaskCreate = (e: React.MouseEvent) => {
     if (disabled) return;
