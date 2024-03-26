@@ -1,17 +1,15 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { motion } from "framer-motion";
-import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import useCheckLoader from "hooks/useCheckLoader";
 import TodoListCard from "pages/SingleTodoListPage/components/TodoListCard";
 import EmptyTodoLists from "pages/TodoListsPage/components/EmptyTodoLists";
-import { getTodoListsOrderLSKey } from "pages/TodoListsPage/components/TodoListsContainer/helpers";
+import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
 import { memo, useCallback, useLayoutEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { TodoListCardLoader } from "./components/TodoListCardLoader";
-import { useGetExtendedTodoListQuery } from "./queries/getTodoList.query";
 import {
   StyledBackButton,
   StyledSingleTodoListPageWrapper,
@@ -40,12 +38,11 @@ interface Props {
 const SingleTodoListPage = ({ disableListsNavigate }: Props): JSX.Element => {
   const { todoListId } = useParams();
   const [direction, setDirection] = useState(0);
-  const { currentUser } = useCurrentUser();
   const navigate = useNavigate();
   const [animationKey, setAnimationKey] = useState("");
   const { t } = useTranslation();
-  const getTodoListWithTasksQuery = useGetExtendedTodoListQuery(todoListId);
-  const showLoader = useCheckLoader(getTodoListWithTasksQuery.isLoading);
+  const getUserTodoListsWithTasksQuery = useGetUserExtendedTodoListsQuery();
+  const showLoader = useCheckLoader(getUserTodoListsWithTasksQuery.isLoading);
 
   useLayoutEffect(() => {
     const title = `${t(TranslationKeys.PageTitleMain)} - ${t(
@@ -54,45 +51,48 @@ const SingleTodoListPage = ({ disableListsNavigate }: Props): JSX.Element => {
     document.title = title;
   }, []);
 
-  const todoListsOrderFromLS: string[] = JSON.parse(
-    localStorage.getItem(getTodoListsOrderLSKey(currentUser?.id || "")) || "[]"
+  const [orderedTodoListIDs, currentTodoList] = useMemo(
+    () => [
+      getUserTodoListsWithTasksQuery.data?.map((todoList) => todoList.id) || [],
+      getUserTodoListsWithTasksQuery.data?.find(
+        (todoList) => todoList.id === todoListId
+      ),
+    ],
+    [getUserTodoListsWithTasksQuery.data, todoListId]
   );
 
   const paginate = useCallback(
     (newDirection: number) => {
       setDirection(newDirection);
       if (!todoListId) return;
-      const currentIndex = todoListsOrderFromLS.indexOf(todoListId);
+      const currentIndex = orderedTodoListIDs.indexOf(todoListId);
       const nextIndex =
         newDirection < 0
-          ? currentIndex > todoListsOrderFromLS.length - 2
+          ? currentIndex > orderedTodoListIDs.length - 2
             ? 0
             : currentIndex + 1
           : currentIndex === 0
-          ? todoListsOrderFromLS.length - 1
+          ? orderedTodoListIDs.length - 1
           : currentIndex - 1;
 
-      const nextTodoListId = todoListsOrderFromLS[nextIndex];
+      const nextTodoListId = orderedTodoListIDs[nextIndex];
       setAnimationKey(nextTodoListId);
       navigate(Pages.TodoListPage.path(nextTodoListId));
     },
-    [todoListId, todoListsOrderFromLS, navigate]
+    [todoListId, orderedTodoListIDs, navigate]
   );
 
   const content = useMemo(() => {
     let pageContent = null;
 
     if (showLoader) pageContent = <TodoListCardLoader />;
-    else if (
-      getTodoListWithTasksQuery.isFetched &&
-      !getTodoListWithTasksQuery.data
-    ) {
+    else if (getUserTodoListsWithTasksQuery.isFetched && !currentTodoList) {
       pageContent = <EmptyTodoLists />;
-    } else if (!!getTodoListWithTasksQuery.data) {
+    } else if (!!currentTodoList) {
       pageContent = (
         <TodoListCard
           disableHeaderRedirect
-          todoList={getTodoListWithTasksQuery.data}
+          todoList={currentTodoList}
           scrollableContent
           actionsVariant="buttons"
         />
@@ -100,13 +100,9 @@ const SingleTodoListPage = ({ disableListsNavigate }: Props): JSX.Element => {
     }
 
     return pageContent;
-  }, [
-    getTodoListWithTasksQuery.data,
-    getTodoListWithTasksQuery.isFetched,
-    showLoader,
-  ]);
+  }, [currentTodoList, getUserTodoListsWithTasksQuery.isFetched, showLoader]);
 
-  if (!getTodoListWithTasksQuery.data && !showLoader) return <></>;
+  if (!currentTodoList && !showLoader) return <></>;
 
   return (
     <StyledSingleTodoListPageWrapper key={animationKey}>
@@ -128,7 +124,7 @@ const SingleTodoListPage = ({ disableListsNavigate }: Props): JSX.Element => {
       >
         {content}
       </motion.div>
-      {todoListsOrderFromLS.length > 2 && !disableListsNavigate && (
+      {orderedTodoListIDs.length > 2 && !disableListsNavigate && (
         <>
           <StyledSwipeIndicator onClick={() => paginate(1)} />
           <StyledSwipeIndicator right onClick={() => paginate(-1)} />
