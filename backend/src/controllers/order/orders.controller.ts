@@ -10,7 +10,7 @@ import {
   requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
-import { IOrder } from "linked-models/order/order.model";
+import { UpsertOrderDTO } from "linked-models/order/order.dto";
 import { URL_ORDERS } from "linked-models/order/order.urls";
 import { IUserAttached } from "linked-models/user/user.model";
 import { URL_USER, URL_USERS, USER_PARAM } from "linked-models/user/user.urls";
@@ -46,7 +46,7 @@ export class OrdersController
   async upsertOrders(
     @currentUser() currentUser: IUserAttached,
     @requestParam(USER_PARAM) userIdFromParam: string,
-    @requestBody() body: { data: IOrder[] }
+    @requestBody() body: { data: UpsertOrderDTO[] }
   ): Promise<OkResult> {
     try {
       if (!currentUser) return this.json("User is required", 400);
