@@ -11,9 +11,4 @@ export interface IOrder {
   taskId?: string;
 }
 
-export interface IOrderWithReadonlyProperties extends IOrder {
-  /** Date when order was created */
-  readonly whenCreated: Date;
-}
-
-export type IOrderAttached = IOrderWithReadonlyProperties & IBaseModelAttached;
+export type IOrderAttached = IOrder & IBaseModelAttached;
