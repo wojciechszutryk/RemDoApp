@@ -20,18 +20,20 @@ const sortEntitiesHelper = <
   entities: T[],
   entityIdToOrderMap: Record<string, number>
 ) => {
-  entities.sort((a, b) => {
-    const aOrder =
-      a.order ?? entityIdToOrderMap[a.id] ?? a.whenCreated.getDate();
-    const bOrder =
-      b.order ?? entityIdToOrderMap[b.id] ?? b.whenCreated.getDate();
+  return entities
+    .map((e) => ({ ...e, order: entityIdToOrderMap[e.id] }))
+    .sort((a, b) => {
+      const aOrder =
+        a.order ?? entityIdToOrderMap[a.id] ?? a.whenCreated.getDate();
+      const bOrder =
+        b.order ?? entityIdToOrderMap[b.id] ?? b.whenCreated.getDate();
 
-    return aOrder - bOrder;
-  });
+      return aOrder - bOrder;
+    });
 };
 
 /**
- * For performance increase we do not support mixed (todoList and task) state updates, when we receive order with todoListId we assume that todoLists were sorted, tasks won't be sorted
+ * For performance increase we do not support mixed (todoList and task OR tasks from todoList1 and tasks from todoList2) state updates, when we receive order with todoListId we assume that todoLists were sorted, tasks won't be sorted
  */
 export const useUpsertOrdersMutation = (currentUserId?: string) => {
   const queryClient = useQueryClient();
@@ -64,23 +66,33 @@ export const useUpsertOrdersMutation = (currentUserId?: string) => {
 
           const newExtendedState = [...prev];
 
+          //todoLists case - we assume that todoLists were sorted
           if (orders.some((o) => o.todoListId)) {
-            sortEntitiesHelper(newExtendedState, entityIdToOrderMap);
+            const sortedTodoLists = sortEntitiesHelper(
+              newExtendedState,
+              entityIdToOrderMap
+            );
 
-            return newExtendedState;
+            return sortedTodoLists;
           }
 
-          const tasksOrdersToChange = new Set<string>(
-            orders
-              .filter((o) => !!o.todoListId)
-              .map((o) => o.todoListId as string)
-          );
+          //tasks case - we find todoListId and sort its tasks
+          const todoListId = orders.find(
+            (o) => o.taskId && o.todoListId
+          )?.todoListId;
 
-          newExtendedState.forEach((todoList) => {
-            if (tasksOrdersToChange.has(todoList.id)) {
-              sortEntitiesHelper(todoList.tasks, entityIdToOrderMap);
-            }
-          });
+          if (todoListId) {
+            newExtendedState.map((todoList) => {
+              if (todoList.id === todoListId) {
+                todoList.tasks = sortEntitiesHelper(
+                  todoList.tasks,
+                  entityIdToOrderMap
+                );
+              }
+
+              return todoList;
+            });
+          }
 
           return newExtendedState;
         }
