@@ -16,9 +16,8 @@ import {
   StyledListsCol,
   StyledListsColWrapper,
 } from "pages/TodoListsPage/styles";
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import TodoListCard from "../../../SingleTodoListPage/components/TodoListCard";
-import { getOrderedTodoLists } from "./helpers";
 import SortableTodoListCard from "./SortableTodoListCard";
 import useHandleDrag from "./useHandleDrag";
 
@@ -29,14 +28,8 @@ interface Props {
 const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+  const [orderedTodoLists, setOrderedTodoLists] = useState(todoLists);
   const { currentUser } = useCurrentUser();
-  const [orderedTodoLists, setOrderedTodoLists] = useState<
-    IExtendedTodoListDto[]
-  >(getOrderedTodoLists(todoLists, currentUser?.id));
-
-  useEffect(() => {
-    setOrderedTodoLists(getOrderedTodoLists(todoLists, currentUser?.id));
-  }, [todoLists, currentUser?.id]);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.up("md"));
@@ -81,15 +74,6 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
     >
       <SortableContext items={orderedTodoLists} strategy={rectSortingStrategy}>
         <StyledListsColWrapper>
-          {/* {orderedTodoLists.map((td) => {
-            return (
-              <SortableTodoListCard
-                key={td.id}
-                todoList={td}
-                withShakeAnimation={!!activeId && activeId !== td.id}
-              />
-            );
-          })} */}
           {columsData.map((column, index) => {
             return (
               <StyledListsCol key={index} columns={columns}>
