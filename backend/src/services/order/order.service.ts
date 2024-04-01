@@ -4,7 +4,8 @@ import {
   mapOrderToAttached,
 } from "dbSchemas/order.schema";
 import { inject, injectable } from "inversify";
-import { IOrder, IOrderAttached } from "linked-models/order/order.model";
+import { UpsertOrderDTO } from "linked-models/order/order.dto";
+import { IOrderAttached } from "linked-models/order/order.model";
 import { IUserAttached } from "linked-models/user/user.model";
 
 @injectable()
@@ -16,7 +17,7 @@ export class OrderService {
 
   public async getAllOrdersForUser(userId: string): Promise<IOrderAttached[]> {
     const orders = await this.orderCollection.find({
-      userId,
+      user: userId,
     });
 
     return orders.map((o) => mapOrderToAttached(o));
@@ -38,22 +39,30 @@ export class OrderService {
    * This method does not check user priviliges to upsert
    */
   public async upsertOrdersForUser(
-    ordersData: IOrder[],
+    ordersData: UpsertOrderDTO[],
     user: IUserAttached
   ): Promise<IOrderAttached[]> {
     await this.orderCollection.bulkWrite(
-      ordersData.map(({ value, todoListId, taskId }) => ({
-        updateOne: {
-          filter: { user: user.id, todoListId, taskId },
-          update: {
-            value,
-            user: user.id,
-            todoListId,
-            taskId,
+      ordersData.map(({ value, todoListId, taskId }) => {
+        const filter = {
+          user: user.id,
+          todoListId: todoListId || null,
+          taskId: taskId || null,
+        };
+
+        return {
+          updateOne: {
+            filter,
+            update: {
+              value,
+              user: user.id,
+              todoListId: todoListId || null,
+              taskId: taskId || null,
+            },
+            upsert: true,
           },
-          upsert: true,
-        },
-      }))
+        };
+      })
     );
 
     const todoListIDs: string[] = [];
@@ -69,8 +78,8 @@ export class OrderService {
 
     const newOrders = await this.orderCollection.find({
       user: user.id,
-      todoListId: { $in: todoListIDs },
-      taskId: { $in: taskIDs },
+      todoListId: todoListIDs.length > 0 ? { $in: todoListIDs } : undefined,
+      taskId: taskIDs.length > 0 ? { $in: taskIDs } : undefined,
     });
 
     return newOrders.map((o) => mapOrderToAttached(o));
