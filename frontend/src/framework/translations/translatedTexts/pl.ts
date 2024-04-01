@@ -157,6 +157,8 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.CurrentUsers]: "Użytkownicy",
   [TranslationKeys.DelteTodoList]: "Usuń listę zadań",
   [TranslationKeys.ReorderTasks]: "Zmień kolejność zadań",
+  [TranslationKeys.ErrorWhileReordering]:
+    "Nastąpił błąd przy zapisie nowe kolejności.",
   [TranslationKeys.DelteTodoListWarning]:
     "Czy na pewno chcesz usunąć tę listę zadań? Ta operacja jest nieodwracalna. Wszystkie zadania powiązane z tą listą zostaną usunięte.",
   [TranslationKeys.Other]: "Inne",

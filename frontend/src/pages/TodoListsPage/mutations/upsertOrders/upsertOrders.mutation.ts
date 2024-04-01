@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
+import { useSnackbar } from "framework/snackBar";
+import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { UpsertOrderDTO } from "linked-models/order/order.dto";
 import { IOrderAttached } from "linked-models/order/order.model";
 import { URL_ORDERS } from "linked-models/order/order.urls";
@@ -10,6 +12,7 @@ import {
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
 import { URL_USER, URL_USERS } from "linked-models/user/user.urls";
+import { useTranslation } from "react-i18next";
 
 const sortEntitiesHelper = <
   T extends { id: string; order?: number; whenCreated: Date }
@@ -32,6 +35,8 @@ const sortEntitiesHelper = <
  */
 export const useUpsertOrdersMutation = (currentUserId?: string) => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
+  const { setSnackbar } = useSnackbar();
   const url = FRONTIFY_URL(
     URL_ORDERS,
     `${URL_USERS}${URL_USER(currentUserId)}`
@@ -80,5 +85,11 @@ export const useUpsertOrdersMutation = (currentUserId?: string) => {
           return newExtendedState;
         }
       ),
+    onError: () => {
+      setSnackbar({
+        severity: "error",
+        message: t(TranslationKeys.ForgetPasswordError),
+      });
+    },
   });
 };
