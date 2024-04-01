@@ -16,7 +16,7 @@ import {
   StyledListsCol,
   StyledListsColWrapper,
 } from "pages/TodoListsPage/styles";
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import TodoListCard from "../../../SingleTodoListPage/components/TodoListCard";
 import SortableTodoListCard from "./SortableTodoListCard";
 import useHandleDrag from "./useHandleDrag";
@@ -28,7 +28,13 @@ interface Props {
 const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+
+  //we need to keep ordered todoLists in separate state
   const [orderedTodoLists, setOrderedTodoLists] = useState(todoLists);
+  useEffect(() => {
+    setOrderedTodoLists(todoLists);
+  }, [todoLists]);
+
   const { currentUser } = useCurrentUser();
 
   const theme = useTheme();
