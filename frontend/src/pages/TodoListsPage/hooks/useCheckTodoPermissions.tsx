@@ -10,23 +10,14 @@ import {
   TodoListPermissions,
   TodoListRole,
 } from "linked-models/permissions/todoList.permissions.enum";
-import { useGetExtendedTodoListQuery } from "pages/SingleTodoListPage/queries/getTodoList.query";
 import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
 import { useCallback } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const useCheckTodoPermissions = () => {
-  const { todoListId } = useParams();
-  const getUserTodoListsWithTasksQuery = useGetUserExtendedTodoListsQuery({
-    enabled: !todoListId,
-  });
-  const getTodoListWithTasksQuery = useGetExtendedTodoListQuery(todoListId, {
-    enabled: !!todoListId,
-  });
+  const getUserTodoListsWithTasksQuery = useGetUserExtendedTodoListsQuery();
 
-  const data = todoListId
-    ? getTodoListWithTasksQuery.data
-    : getUserTodoListsWithTasksQuery.data;
+  const data = getUserTodoListsWithTasksQuery.data;
 
   const [searchParams] = useSearchParams();
   const isAccessViaLink = !!searchParams.get(SHARE_HASH_PARAM);
@@ -44,11 +35,7 @@ const useCheckTodoPermissions = () => {
           ? accessScopes.todoListRole
           : null;
 
-      const todoList = Array.isArray(data)
-        ? data?.find((todoList) => todoList.id === todoListId)
-        : data?.id === todoListId
-        ? data
-        : null;
+      const todoList = data?.find((todoList) => todoList.id === todoListId);
 
       if (!todoList) {
         return false;
