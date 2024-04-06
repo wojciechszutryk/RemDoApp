@@ -1,22 +1,20 @@
 import { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
-import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
-import { IUserAttached } from "linked-models/user/user.model";
 import { useUpsertOrdersMutation } from "pages/TodoListsPage/mutations/upsertOrders/upsertOrders.mutation";
 import { SetStateAction, useCallback } from "react";
 
-interface Args {
-  setOrderedTodoLists: (value: SetStateAction<IExtendedTodoListDto[]>) => void;
+interface Args<T extends { id: string }> {
+  setOrderedItems: (value: SetStateAction<T[]>) => void;
   setActiveId: (value: SetStateAction<string | null>) => void;
-  currentUser: IUserAttached | undefined;
+  todoListId?: string;
 }
 
-const useHandleDrag = ({
+const useHandleDrag = <T extends { id: string }>({
   setActiveId,
-  setOrderedTodoLists,
-  currentUser,
-}: Args) => {
-  const upsertOrdersMutation = useUpsertOrdersMutation(currentUser?.id);
+  setOrderedItems,
+  todoListId,
+}: Args<T>) => {
+  const upsertOrdersMutation = useUpsertOrdersMutation();
 
   const handleDragStart = useCallback(
     (event: DragStartEvent) => {
@@ -30,15 +28,17 @@ const useHandleDrag = ({
       const { active, over } = event;
 
       if (active.id !== over?.id) {
-        setOrderedTodoLists((items) => {
+        setOrderedItems((items) => {
           const oldIndex = items.findIndex((i) => i.id === active.id);
           const newIndex = items.findIndex((i) => i.id === over?.id);
 
           if (newIndex !== -1) {
             const reorderedList = arrayMove(items, oldIndex, newIndex);
             upsertOrdersMutation.mutate(
-              reorderedList.map((td, index) => ({
-                todoListId: td.id,
+              //if todoListId is passed, we assume that we are reordering tasks within a single todo list (items are tasks), if not we assume that items are todo lists
+              reorderedList.map((item, index) => ({
+                taskId: !!todoListId ? item.id : undefined,
+                todoListId: todoListId || item.id,
                 value: index + 1,
               }))
             );
@@ -52,7 +52,7 @@ const useHandleDrag = ({
 
       setActiveId(null);
     },
-    [setActiveId, setOrderedTodoLists, upsertOrdersMutation]
+    [setActiveId, setOrderedItems, upsertOrdersMutation]
   );
 
   const handleDragCancel = useCallback(() => {

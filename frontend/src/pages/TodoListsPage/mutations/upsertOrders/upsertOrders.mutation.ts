@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiPost } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
+import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { useSnackbar } from "framework/snackBar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { UpsertOrderDTO } from "linked-models/order/order.dto";
@@ -35,17 +36,18 @@ const sortEntitiesHelper = <
 /**
  * For performance increase we do not support mixed (todoList and task OR tasks from todoList1 and tasks from todoList2) state updates, when we receive order with todoListId we assume that todoLists were sorted, tasks won't be sorted
  */
-export const useUpsertOrdersMutation = (currentUserId?: string) => {
+export const useUpsertOrdersMutation = () => {
   const queryClient = useQueryClient();
+  const { currentUser } = useCurrentUser();
   const { t } = useTranslation();
   const { setSnackbar } = useSnackbar();
   const url = FRONTIFY_URL(
     URL_ORDERS,
-    `${URL_USERS}${URL_USER(currentUserId)}`
+    `${URL_USERS}${URL_USER(currentUser?.id)}`
   );
 
   const upsertTodoListOrder = async (data: UpsertOrderDTO[]) => {
-    if (!currentUserId) Promise.resolve([]);
+    if (!currentUser?.id) Promise.resolve([]);
 
     return apiPost<{ data: UpsertOrderDTO[] }, IOrderAttached[]>(url, {
       data,
@@ -57,6 +59,7 @@ export const useUpsertOrdersMutation = (currentUserId?: string) => {
       queryClient.setQueryData(
         [URL_TODO_LISTS, PARAM_EXTENDED],
         (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {
+          debugger;
           if (!prev) return [];
 
           const entityIdToOrderMap = orders.reduce((acc, order) => {
@@ -100,7 +103,7 @@ export const useUpsertOrdersMutation = (currentUserId?: string) => {
     onError: () => {
       setSnackbar({
         severity: "error",
-        message: t(TranslationKeys.ForgetPasswordError),
+        message: t(TranslationKeys.ErrorWhileReordering),
       });
     },
   });
