@@ -3,7 +3,6 @@ import { inject } from "inversify";
 import {
   BaseHttpController,
   controller,
-  httpGet,
   httpPost,
   interfaces,
   requestBody,
@@ -28,20 +27,6 @@ export class OrdersController
     super();
   }
 
-  @httpGet("")
-  async getTodoListsForUser(
-    @currentUser() currentUser: IUserAttached
-  ): Promise<OkResult> {
-    try {
-      const orders = await this.orderService.getAllOrdersForUser(
-        currentUser.id
-      );
-      return this.json(orders);
-    } catch (error) {
-      return this.statusCode(400);
-    }
-  }
-
   @httpPost(`${URL_USERS}${URL_USER()}`)
   async upsertOrders(
     @currentUser() currentUser: IUserAttached,
@@ -57,7 +42,7 @@ export class OrdersController
         body.data,
         currentUser
       );
-      return this.json(orders);
+      return this.ok(orders);
     } catch (error) {
       if (error instanceof Error) {
         return this.json(error.message, 400);
