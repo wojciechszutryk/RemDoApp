@@ -65,21 +65,22 @@ export class OrderService {
       })
     );
 
-    const todoListIDs: string[] = [];
-    const taskIDs: string[] = [];
+    const todoListIDs = new Set<string>();
+    const taskIDs = new Set<string>();
     ordersData.forEach((o) => {
       if (o.todoListId) {
-        todoListIDs.push(o.todoListId);
+        todoListIDs.add(o.todoListId);
       }
       if (o.taskId) {
-        taskIDs.push(o.taskId);
+        taskIDs.add(o.taskId);
       }
     });
 
     const newOrders = await this.orderCollection.find({
       user: user.id,
-      todoListId: todoListIDs.length > 0 ? { $in: todoListIDs } : undefined,
-      taskId: taskIDs.length > 0 ? { $in: taskIDs } : undefined,
+      todoListId:
+        todoListIDs.size > 0 ? { $in: Array.from(todoListIDs) } : undefined,
+      taskId: taskIDs.size > 0 ? { $in: Array.from(taskIDs) } : undefined,
     });
 
     return newOrders.map((o) => mapOrderToAttached(o));

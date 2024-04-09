@@ -197,6 +197,7 @@ export class TodoListService {
       const list = todoListIdToTasksMap.get(t.todoListId);
       const extendedTask = {
         ...t,
+        order: tasksOrderMap.get(t.id),
         creator: userIdToUserMap.get(t.creatorId),
       };
       if (list) list.push(extendedTask);
