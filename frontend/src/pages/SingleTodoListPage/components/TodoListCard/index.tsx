@@ -7,6 +7,7 @@ import { memo } from "react";
 import CardActions from "./components/CardActions";
 import CardContent from "./components/CardContent";
 import CardHeader, { IDraggingButtonProps } from "./components/CardHeader";
+import ReorderContentAndActions from "./components/ReorderContentAndActions";
 import { StyledTodoListCard } from "./styles";
 
 interface Props {
@@ -27,7 +28,7 @@ const TodoListCard = ({
   actionsVariant,
 }: Props): JSX.Element => {
   const [expanded, setExpanded] = React.useState(false);
-  const [isReordering, setIsReordering] = React.useState(false);
+  const [isReorderingTasks, setIsReorderingTasks] = React.useState(false);
   const checkPermission = useCheckTodoPermissions();
 
   const { activeTasks, completedTasks } = React.useMemo(() => {
@@ -50,43 +51,54 @@ const TodoListCard = ({
         draggingProps={draggingProps}
         disableHeaderRedirect={disableHeaderRedirect}
       />
-      <CardContent
-        scrollable={scrollableContent}
-        activeTasks={activeTasks}
-        isReordering={isReordering}
-        completedTasks={completedTasks}
-        expanded={isReordering || expanded}
-        todoListId={todoList.id}
-      />
-      <CardActions
-        actionsVariant={actionsVariant}
-        showExpandIcon={
-          !scrollableContent &&
-          completedTasks.length > 0 &&
-          activeTasks.length !== 0
-        }
-        setExpanded={setExpanded}
-        expanded={expanded}
-        setIsReordering={setIsReordering}
-        todoList={todoList}
-        showReorderTasksButton={activeTasks.length > 2 && !isReordering}
-        showCreateTaskButton={checkPermission(
-          TodoListPermissions.CanCreateTask,
-          todoList.id
-        )}
-        showEditButton={checkPermission(
-          TodoListPermissions.CanEditTodoList,
-          todoList.id
-        )}
-        showShareButton={checkPermission(
-          TodoListPermissions.CanShareTodoList,
-          todoList.id
-        )}
-        showDeleteButton={checkPermission(
-          TodoListPermissions.CanDeleteTodoList,
-          todoList.id
-        )}
-      />
+      {isReorderingTasks ? (
+        <ReorderContentAndActions
+          onCancelReorder={() => setIsReorderingTasks(false)}
+          todoListId={todoList.id}
+          tasks={todoList.tasks}
+        />
+      ) : (
+        <>
+          <CardContent
+            scrollable={scrollableContent}
+            activeTasks={activeTasks}
+            completedTasks={completedTasks}
+            expanded={isReorderingTasks || expanded}
+            todoListId={todoList.id}
+          />
+          <CardActions
+            actionsVariant={actionsVariant}
+            showExpandIcon={
+              !scrollableContent &&
+              completedTasks.length > 0 &&
+              activeTasks.length !== 0
+            }
+            setExpanded={setExpanded}
+            expanded={expanded}
+            setIsReorderingTasks={setIsReorderingTasks}
+            todoList={todoList}
+            showReorderTasksButton={
+              activeTasks.length > 2 && !isReorderingTasks
+            }
+            showCreateTaskButton={checkPermission(
+              TodoListPermissions.CanCreateTask,
+              todoList.id
+            )}
+            showEditButton={checkPermission(
+              TodoListPermissions.CanEditTodoList,
+              todoList.id
+            )}
+            showShareButton={checkPermission(
+              TodoListPermissions.CanShareTodoList,
+              todoList.id
+            )}
+            showDeleteButton={checkPermission(
+              TodoListPermissions.CanDeleteTodoList,
+              todoList.id
+            )}
+          />
+        </>
+      )}
     </StyledTodoListCard>
   );
 };
