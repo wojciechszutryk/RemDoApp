@@ -63,41 +63,41 @@ export const useUpsertOrdersMutation = () => {
           if (!prev) return [];
 
           const entityIdToOrderMap = orders.reduce((acc, order) => {
-            if (order.todoListId) acc[order.todoListId] = order.value;
+            if (order.taskId) acc[order.taskId] = order.value;
+            else if (order.todoListId) acc[order.todoListId] = order.value;
             return acc;
           }, {} as Record<string, number>);
 
           const newExtendedState = [...prev];
 
-          //todoLists case - we assume that todoLists were sorted
-          if (orders.some((o) => o.todoListId)) {
-            const sortedTodoLists = sortEntitiesHelper(
-              newExtendedState,
-              entityIdToOrderMap
-            );
+          //we look for an order with both taskId and todoListId - if we find it, we assume that tasks were sorted
+          const sortedTask = orders.find((o) => o.taskId && o.todoListId);
 
-            return sortedTodoLists;
-          }
+          //tasks case
+          if (!!sortedTask) {
+            const todoListId = sortedTask.todoListId;
 
-          //tasks case - we find todoListId and sort its tasks
-          const todoListId = orders.find(
-            (o) => o.taskId && o.todoListId
-          )?.todoListId;
-
-          if (todoListId) {
-            newExtendedState.map((todoList) => {
+            return newExtendedState.map((todoList) => {
               if (todoList.id === todoListId) {
-                todoList.tasks = sortEntitiesHelper(
+                const newTasksOrder = sortEntitiesHelper(
                   todoList.tasks,
                   entityIdToOrderMap
                 );
+
+                return { ...todoList, tasks: newTasksOrder };
               }
 
               return todoList;
             });
           }
 
-          return newExtendedState;
+          //todoLists case
+          const sortedTodoLists = sortEntitiesHelper(
+            newExtendedState,
+            entityIdToOrderMap
+          );
+
+          return sortedTodoLists;
         }
       ),
     onError: () => {
