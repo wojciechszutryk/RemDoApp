@@ -10,7 +10,6 @@ import {
 } from "@dnd-kit/core";
 import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
 import { useMediaQuery, useTheme } from "@mui/material";
-import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import {
   StyledListsCol,
@@ -35,8 +34,6 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
     setOrderedTodoLists(todoLists);
   }, [todoLists]);
 
-  const { currentUser } = useCurrentUser();
-
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.up("md"));
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("xl"));
@@ -48,8 +45,7 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
 
   const { handleDragStart, handleDragEnd, handleDragCancel } = useHandleDrag({
     setActiveId,
-    setOrderedTodoLists,
-    currentUser,
+    setOrderedItems: setOrderedTodoLists,
   });
 
   const columsData = useMemo(() => {
