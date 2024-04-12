@@ -21,7 +21,7 @@ interface Props {
   todoList: IExtendedTodoListDto;
   expanded: boolean;
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsReordering: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsReorderingTasks: React.Dispatch<React.SetStateAction<boolean>>;
   showExpandIcon?: boolean;
   actionsVariant: "buttons" | "menu";
   showReorderTasksButton?: boolean;
@@ -35,7 +35,7 @@ const CardActions = ({
   todoList: { name, id, icon, assignedOwners, assignedUsers, tasks },
   expanded,
   setExpanded,
-  setIsReordering,
+  setIsReorderingTasks,
   showExpandIcon,
   actionsVariant,
   showReorderTasksButton,
@@ -51,7 +51,7 @@ const CardActions = ({
 
   if (showReorderTasksButton) {
     interactions.push({
-      onClick: () => setIsReordering(true),
+      onClick: () => setIsReorderingTasks(true),
       label: t(TranslationKeys.ReorderTasks),
       icon: <FormatListNumberedIcon />,
     });
