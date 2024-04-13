@@ -15,13 +15,21 @@ export const useLoginUserWithCookieMutation = () => {
   const url = FRONTIFY_URL(URL_USERS, `${URL_LOGIN}${URL_WITH_COOKIE}`);
 
   const loginUserWithCookie = async (): Promise<IUserAttached> => {
+    console.log("loginUserWithCookie mutation called");
+
     return await apiPost<undefined, IUserAttached>(url, undefined).then(
-      (res) => res.data
+      (res) => {
+        console.log("loginUserWithCookie mutation response: ", res.data);
+
+        return res.data;
+      }
     );
   };
 
   return useMutation(loginUserWithCookie, {
     onSuccess: (user) => {
+      console.log("onSuccess called", user);
+
       if (
         user instanceof Object &&
         user.hasOwnProperty("id") &&
