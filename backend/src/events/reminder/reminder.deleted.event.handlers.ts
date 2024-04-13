@@ -6,6 +6,7 @@ import { TypedEvent } from "linked-models/event/event.interface";
 import { ReminderDeletedEvent } from "linked-models/event/implementation/reminder.events";
 import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import { NotifyService } from "services/notification/notify.service";
+import { OrderService } from "services/order/order.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { TodoListService } from "services/todoList/todoList.service";
 
@@ -16,6 +17,7 @@ export class ReminderDeletedEventHandler
   constructor(
     @inject(TodoListCacheService)
     private readonly todoListCacheService: TodoListCacheService,
+    @inject(OrderService) private readonly orderService: OrderService,
     @inject(TodoListService)
     private readonly todoListService: TodoListService,
     @inject(NotifyService)
@@ -49,5 +51,9 @@ export class ReminderDeletedEventHandler
         taskId: deletedReminder.taskId,
       }
     );
+
+    //delete orders
+    this.orderService.deleteOrdersByTaskId(deletedReminder.taskId);
+    this.orderService.deleteOrdersByTodoListId(deletedReminder.todoListId);
   }
 }

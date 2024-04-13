@@ -13,8 +13,12 @@ export interface ITodoListWithMembersDto
 }
 
 /**
- * TodoList with all tasks and members
+ * TodoList with:
+ * - all tasks
+ * - all members
+ * - order (value defined by every user separately)
  */
 export interface IExtendedTodoListDto extends ITodoListWithMembersDto {
+  order?: number;
   tasks: IExtendedTaskDto[];
 }

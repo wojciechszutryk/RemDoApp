@@ -7,18 +7,23 @@ import { QUICK_TASK_ID } from "../../CardActions/components/QuickTaskCreateBtn";
 import QuickTaskListItem from "./QuickTaskListItem";
 import TaskListItem from "./TaskListItem";
 
-interface Props {
+export interface TaskListProps {
   tasks: IExtendedTaskDto[];
   tasksState: "active" | "completed";
   todoListId: string;
 }
 
-const TasksList = ({ tasks, tasksState, todoListId }: Props): JSX.Element => {
+const TasksList = ({
+  tasks,
+  tasksState,
+  todoListId,
+}: TaskListProps): JSX.Element => {
   const checkPermission = useCheckTodoPermissions();
 
   return (
     <AnimatePresence>
       {tasks.map((task) => {
+        // Special case for quick task (input field for creating new task)
         if (task.id === QUICK_TASK_ID) {
           return (
             <QuickTaskListItem

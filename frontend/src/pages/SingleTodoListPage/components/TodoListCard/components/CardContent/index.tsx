@@ -31,6 +31,7 @@ const CardContent = ({
             tasksState="active"
             todoListId={todoListId}
           />
+
           {scrollable ? (
             <TasksList
               tasks={completedTasks}

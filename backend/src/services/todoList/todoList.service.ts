@@ -3,7 +3,6 @@ import {
   TodoListCollectionName,
   TodoListCollectionType,
 } from "dbSchemas/todoList.schema";
-import { getTemUser, TEMP_USER_ID } from "framework/auth/tempUser.helper";
 import { EventService } from "framework/events/event.service";
 import { inject, injectable } from "inversify";
 import {
@@ -23,7 +22,7 @@ import {
 } from "linked-models/todoList/todoList.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
-import { ScheduleNotificationService } from "services/notification/schedule.notification.service";
+import { OrderService } from "services/order/order.service";
 import { TaskService } from "services/task/task.service";
 import { UserService } from "services/user/user.service";
 
@@ -36,8 +35,7 @@ export class TodoListService {
     private readonly taskService: TaskService,
     @inject(UserService)
     private readonly userService: UserService,
-    @inject(ScheduleNotificationService)
-    private readonly scheduleNotificationService: ScheduleNotificationService,
+    @inject(OrderService) private readonly orderService: OrderService,
     @inject(EventService)
     private readonly eventService: EventService
   ) {}
@@ -166,63 +164,27 @@ export class TodoListService {
     return { todoLists: todoListsWithMembers, users: members };
   }
 
-  public async getExtendedTodoList(
-    todoListId: string,
-    userId: string
-  ): Promise<IExtendedTodoListDto> {
-    const [todoListWithMembers, tasks] = await Promise.all([
-      this.getTodoListWithMembersById(todoListId),
-      this.taskService.getTasksByTodoListIDs(
-        [todoListId],
-        undefined,
-        undefined,
-        userId
-      ),
-    ]);
-
-    if (!todoListWithMembers) throw new Error("TodoList does not exist.");
-
-    const membersMap = new Map<string, IUserPublicDataDTO>();
-
-    const todoListMembers = [
-      /** exlamation mark - service always return array  */
-      ...todoListWithMembers!.assignedOwners,
-      ...todoListWithMembers!.assignedUsers,
-    ];
-
-    todoListMembers.forEach((u) => membersMap.set(u.id, u));
-
-    const mappedTasks: IExtendedTaskDto[] = [];
-    tasks.forEach((t) => {
-      let creator = membersMap.get(t.creatorId);
-      if (!creator && t.creatorId.includes(TEMP_USER_ID)) {
-        const [_, annonymousId] = t.creatorId.split(TEMP_USER_ID);
-        if (annonymousId) {
-          membersMap.set(annonymousId, getTemUser(annonymousId, {}));
-        }
-        creator = membersMap.get(annonymousId);
-      }
-      if (creator)
-        mappedTasks.push({
-          ...t,
-          creator,
-        });
-    });
-
-    return {
-      ...todoListWithMembers,
-      tasks: mappedTasks,
-    };
-  }
-
   public async getExtendedTodoListsForUser(
     userId: string
   ): Promise<IExtendedTodoListDto[]> {
-    const { todoLists, users } = await this.getTodoListsWithMembersForUser(
-      userId
-    );
-    const todoListIDs = todoLists.map((td) => td.id);
+    const [{ todoLists, users }, orders] = await Promise.all([
+      this.getTodoListsWithMembersForUser(userId),
+      this.orderService.getAllOrdersForUser(userId),
+    ]);
 
+    const todoListsOrdersMap = new Map<string, number>();
+    const tasksOrderMap = new Map<string, number>();
+    orders.forEach((o) => {
+      if (!o.value) return;
+      if (o.todoListId) todoListsOrdersMap.set(o.todoListId, o.value);
+      if (o.taskId) tasksOrderMap.set(o.taskId, o.value);
+    });
+
+    const userIdToUserMap = new Map<string, IUserPublicDataDTO>(
+      users.map((u) => [u.id, u])
+    );
+
+    const todoListIDs = todoLists.map((td) => td.id);
     const tasks = await this.taskService.getTasksByTodoListIDs(
       todoListIDs,
       undefined,
@@ -230,15 +192,32 @@ export class TodoListService {
       userId
     );
 
-    return todoLists.map((td) => ({
-      ...td,
-      tasks: tasks
-        .filter((t) => t.todoListId === td.id)
-        .map((t) => ({
-          ...t,
-          creator: users.find((u) => u.id === t.creatorId)!,
-        })),
-    }));
+    const todoListIdToTasksMap = new Map<string, IExtendedTaskDto[]>();
+    tasks.forEach((t) => {
+      const list = todoListIdToTasksMap.get(t.todoListId);
+      const extendedTask = {
+        ...t,
+        order: tasksOrderMap.get(t.id),
+        creator: userIdToUserMap.get(t.creatorId),
+      };
+      if (list) list.push(extendedTask);
+      else todoListIdToTasksMap.set(t.todoListId, [extendedTask]);
+    });
+
+    return todoLists
+      .map((td) => ({
+        ...td,
+        order: todoListsOrdersMap.get(td.id),
+        tasks:
+          todoListIdToTasksMap.get(td.id)?.sort((a, b) => {
+            if (a.order && b.order) return a.order - b.order;
+            return 0;
+          }) || [],
+      }))
+      .sort((a, b) => {
+        if (a.order && b.order) return a.order - b.order;
+        return 0;
+      });
   }
 
   public async createTodoList(

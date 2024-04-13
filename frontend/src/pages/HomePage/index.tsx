@@ -76,6 +76,8 @@ const HomePage = (): JSX.Element => {
     const expiry = searchParams.get(ExpiryParam);
 
     if (expiry && !loginUserWithCookieMutation.isLoading) {
+      console.log(expiry);
+
       //login user with cookie
       loginUserWithCookieMutation.mutate();
 

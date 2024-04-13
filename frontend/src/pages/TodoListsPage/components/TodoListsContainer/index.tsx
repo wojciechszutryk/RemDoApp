@@ -10,7 +10,6 @@ import {
 } from "@dnd-kit/core";
 import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
 import { useMediaQuery, useTheme } from "@mui/material";
-import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import {
   StyledListsCol,
@@ -18,7 +17,6 @@ import {
 } from "pages/TodoListsPage/styles";
 import { memo, useEffect, useMemo, useState } from "react";
 import TodoListCard from "../../../SingleTodoListPage/components/TodoListCard";
-import { getOrderedTodoLists } from "./helpers";
 import SortableTodoListCard from "./SortableTodoListCard";
 import useHandleDrag from "./useHandleDrag";
 
@@ -29,14 +27,12 @@ interface Props {
 const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
-  const { currentUser } = useCurrentUser();
-  const [orderedTodoLists, setOrderedTodoLists] = useState<
-    IExtendedTodoListDto[]
-  >(getOrderedTodoLists(todoLists, currentUser?.id));
 
+  //we need to keep ordered todoLists in separate state
+  const [orderedTodoLists, setOrderedTodoLists] = useState(todoLists);
   useEffect(() => {
-    setOrderedTodoLists(getOrderedTodoLists(todoLists, currentUser?.id));
-  }, [todoLists, currentUser?.id]);
+    setOrderedTodoLists(todoLists);
+  }, [todoLists]);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.up("md"));
@@ -49,8 +45,7 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
 
   const { handleDragStart, handleDragEnd, handleDragCancel } = useHandleDrag({
     setActiveId,
-    setOrderedTodoLists,
-    currentUser,
+    setOrderedItems: setOrderedTodoLists,
   });
 
   const columsData = useMemo(() => {
@@ -81,15 +76,6 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
     >
       <SortableContext items={orderedTodoLists} strategy={rectSortingStrategy}>
         <StyledListsColWrapper>
-          {/* {orderedTodoLists.map((td) => {
-            return (
-              <SortableTodoListCard
-                key={td.id}
-                todoList={td}
-                withShakeAnimation={!!activeId && activeId !== td.id}
-              />
-            );
-          })} */}
           {columsData.map((column, index) => {
             return (
               <StyledListsCol key={index} columns={columns}>

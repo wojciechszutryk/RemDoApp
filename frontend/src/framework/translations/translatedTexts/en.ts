@@ -151,6 +151,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.CurrentUsers]: "Users",
   [TranslationKeys.DelteTodoList]: "Delete todo list",
   [TranslationKeys.ReorderTasks]: "Reorder tasks",
+  [TranslationKeys.ErrorWhileReordering]: "There was an error while saving new order",
   [TranslationKeys.DelteTodoListWarning]:
     "Are you sure you want to delete this todo list? This action cannot be undone. All tasks in this list will be deleted.",
   [TranslationKeys.Other]: "Other",

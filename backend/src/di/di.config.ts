@@ -1,6 +1,7 @@
 import { Container } from "inversify";
 import { registerCollaborationBindings } from "./register.collaboartion.bindings";
 import { registerNotificationBindings } from "./register.notification.bindings";
+import { registerOrderBindings } from "./register.order.bindings";
 import { registerOtherBindings } from "./register.other.bindings";
 import { registerReminderBindings } from "./register.reminder.bindings";
 import { registerTaskBindings } from "./register.task.bindings";
@@ -15,4 +16,5 @@ export const registerBindings = (container: Container) => {
   registerTaskBindings(container);
   registerReminderBindings(container);
   registerOtherBindings(container);
+  registerOrderBindings(container);
 };

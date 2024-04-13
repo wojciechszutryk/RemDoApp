@@ -99,6 +99,7 @@ export enum TranslationKeys {
   TodoListDialogButton = "TodoListDialogButton",
   DelteTodoList = "DelteTodoList",
   ReorderTasks = "ReorderTasks",
+  ErrorWhileReordering = "ErrorWhileReordering",
   DelteTodoListWarning = "DelteTodoListWarning",
   Other = "Other",
   BackToTodoLists = "BackToTodoLists",

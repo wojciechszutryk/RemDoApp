@@ -7,6 +7,7 @@ import { TodoListDeletedEvent } from "linked-models/event/implementation/todoLis
 import { ITaskAttached } from "linked-models/task/task.model";
 import { ITodoListAttached } from "linked-models/todoList/todoList.model";
 import { NotifyService } from "services/notification/notify.service";
+import { OrderService } from "services/order/order.service";
 import { TodoListCacheService } from "services/todoList/todoList.cache.service";
 import { UserService } from "services/user/user.service";
 
@@ -19,6 +20,7 @@ export class TodoListDeletedEventHandler
     private readonly todoListCacheService: TodoListCacheService,
     @inject(NotifyService)
     private readonly notifyService: NotifyService,
+    @inject(OrderService) private readonly orderService: OrderService,
     @inject(UserService) private readonly userService: UserService
   ) {}
 
@@ -57,5 +59,8 @@ export class TodoListDeletedEventHandler
     this.todoListCacheService.invalidateExtendedTodoListCacheByUserIDs(
       todoListMembers.map((u) => u.id)
     );
+
+    //delete order
+    this.orderService.deleteOrdersByTodoListId(deletedTodoList.id);
   }
 }
