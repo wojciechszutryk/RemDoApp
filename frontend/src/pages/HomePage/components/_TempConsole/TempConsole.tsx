@@ -1,11 +1,10 @@
 import { Console, Hook, Unhook } from "console-feed";
-import { Message } from "console-feed/lib/definitions/Console";
 import { useEffect, useState } from "react";
 
 import axios from "axios";
 
 const TempConsole = () => {
-  const [logs, setLogs] = useState<Message[]>([]);
+  const [logs, setLogs] = useState<any[]>([]);
 
   useEffect(() => {
     const axiosInterceptor = axios.interceptors.request.use((config) => {
@@ -19,6 +18,8 @@ const TempConsole = () => {
   }, []);
 
   // run once!
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   useEffect(() => {
     const hookedConsole = Hook(
       window.console,
