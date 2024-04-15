@@ -7,9 +7,11 @@ import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
+import GlobalSearch from "./components/GlobalSearch";
 import LogoButton from "./components/LogoButton";
 import NotificationsMenu from "./components/NotificationsMenu";
 import SettingsMenu from "./components/SettingsMenu";
+import UserMenu from "./components/UserMenu";
 import { LAST_PAGE_LS_KEY } from "./helpers/LS.keys.const.helper";
 import {
   StyledHeaderBottomAnimation,
@@ -28,7 +30,7 @@ export const Header = ({ disableBgcAnimation }: Props): JSX.Element => {
   const { currentUser } = useCurrentUser();
   const location = useLocation();
   const currentPagePath = location.pathname.split("/")[1];
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const isMobile = useMediaQuery("(max-width:800px)");
 
   const handleNavigate = (path: string) => () => {
     localStorage.setItem(LAST_PAGE_LS_KEY, path);
@@ -40,6 +42,8 @@ export const Header = ({ disableBgcAnimation }: Props): JSX.Element => {
       <StyledHeaderContentWrapper>
         {currentUser ? (
           <>
+            <SettingsMenu />
+            <UserMenu />
             <StyledHeaderButton
               onClick={handleNavigate(Pages.RemindersPage.path)}
               disabled={
@@ -48,9 +52,7 @@ export const Header = ({ disableBgcAnimation }: Props): JSX.Element => {
             >
               {isMobile ? <EventIcon /> : t(TranslationKeys.PageTitleReminders)}
             </StyledHeaderButton>
-            <SettingsMenu />
-            <LogoButton />
-            <NotificationsMenu />
+            <LogoButton small={isMobile} />
             <StyledHeaderButton
               onClick={handleNavigate(Pages.TodoListsPage.path)}
               disabled={
@@ -63,6 +65,8 @@ export const Header = ({ disableBgcAnimation }: Props): JSX.Element => {
                 t(TranslationKeys.PageTitleTodoLists)
               )}
             </StyledHeaderButton>
+            <GlobalSearch />
+            <NotificationsMenu />
           </>
         ) : (
           <>
