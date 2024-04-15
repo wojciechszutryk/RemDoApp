@@ -26,7 +26,7 @@ export const StyledHeaderWrapper = styled("div")({
 });
 
 export const StyledHeaderButton = styled(Button)(({ theme }) => ({
-  minWidth: "60px",
+  minWidth: "46px",
   gap: 0,
 
   [theme.breakpoints.down("sm")]: {
@@ -42,9 +42,19 @@ export const StyledHeaderContentWrapper = styled("div")({
   alignContent: "center",
   alignItems: "center",
   pointerEvents: "all",
-  maxWidth: 720,
+  maxWidth: 800,
   margin: "0 auto",
   "& > button, & > div > button": {
     zIndex: 1,
+  },
+});
+
+export const StyledHeaderIconButton = styled(Button)({
+  width: "40px",
+  minWidth: "unset",
+  height: "40px",
+  padding: 0,
+  "&:before": {
+    border: "none",
   },
 });
