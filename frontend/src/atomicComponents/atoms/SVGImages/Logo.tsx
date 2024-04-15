@@ -1,10 +1,12 @@
-export const Logo = () => {
+import { LogoProps } from "atomicComponents/organisms/Header/components/LogoButton";
+
+export const Logo = ({ small }: LogoProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       version="1.0"
-      width="85pt"
-      height="35pt"
+      width={small ? "48.5pt" : "85pt"}
+      height={small ? "20pt" : "35pt"}
       viewBox="0 0 300.000000 126.000000"
       preserveAspectRatio="xMidYMid meet"
       data-testid="logo"
