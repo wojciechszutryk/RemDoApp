@@ -1,15 +1,11 @@
 import { Separator } from "atomicComponents/atoms/Separator";
-import { LAST_PAGE_LS_KEY } from "atomicComponents/organisms/Header/helpers/LS.keys.const.helper";
 import { motion } from "framer-motion";
-import { SessionAgeLSKey } from "framework/authentication/helpers/sessionAge.helper";
-import { useLoginUserWithCookieMutation } from "framework/authentication/mutations/useLoginUserWithCookie.mutation";
 import { useDialogs } from "framework/dialogs";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { URL_COLLABORANTS } from "linked-models/collaboration/collaboration.urls";
-import { ExpiryParam } from "linked-models/user/auth.consts";
 import { memo, useEffect, useLayoutEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   FadeINLeftProps,
   FadeINRightProps,
@@ -36,7 +32,6 @@ import ThemeImgAlt from "./utils/ThemeImgAlt";
 
 const HomePage = (): JSX.Element => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const location = useLocation();
   //sections refs
   const featuresRef = useRef<HTMLDivElement>(null);
@@ -45,7 +40,6 @@ const HomePage = (): JSX.Element => {
   const notificationsRef = useRef<HTMLDivElement>(null);
   const interfaceRef = useRef<HTMLDivElement>(null);
   const personalizationRef = useRef<HTMLDivElement>(null);
-  const loginUserWithCookieMutation = useLoginUserWithCookieMutation();
 
   const {
     dialogsActions: { updateCollaborantsDrawer },
@@ -69,34 +63,6 @@ const HomePage = (): JSX.Element => {
       behavior: "smooth",
     });
   };
-
-  useEffect(() => {
-    //for google auth - when we are redirected from google auth (ExpiryParam in url)
-    const searchParams = new URLSearchParams(window.location.search);
-    const expiry = searchParams.get(ExpiryParam);
-
-    if (expiry && !loginUserWithCookieMutation.isLoading) {
-      console.log(expiry);
-
-      //login user with cookie
-      loginUserWithCookieMutation.mutate();
-
-      //set expiry in local storage for auto login in the future
-      localStorage.setItem(SessionAgeLSKey, expiry);
-
-      // redirect to last page
-      const lastPage = localStorage.getItem(LAST_PAGE_LS_KEY);
-
-      if (lastPage) {
-        navigate(lastPage);
-      } else {
-        navigate("/");
-      }
-
-      //clean expiry param from url
-      window.history.pushState({}, document.title, window.location.pathname);
-    }
-  }, [loginUserWithCookieMutation, navigate]);
 
   return (
     <StyledHomePageWrapper>

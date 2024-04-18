@@ -1,5 +1,6 @@
 import { IUserAttached } from "linked-models/user/user.model";
 import { ReactNode, useContext, useState } from "react";
+import useAutoLogin from "../useAutoLogin";
 import { Context } from "./context";
 import { ContextProps } from "./useCurrentUser.models";
 
@@ -12,9 +13,12 @@ function CurrentUserProvider({ children }: Props): JSX.Element {
     undefined
   );
 
+  const { isLoading } = useAutoLogin(currentUser, setCurrentUser);
+
   const value = {
     currentUser,
     setCurrentUser,
+    isAutoLoginLoading: isLoading,
     initialized: true,
   };
 

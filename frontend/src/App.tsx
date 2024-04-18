@@ -1,7 +1,6 @@
 import PageTemplate from "atomicComponents/molecules/PageTemplate";
 import { RequireAuthPageWrapper } from "atomicComponents/organisms/RequireAuthPageWrapper";
 import { RequireShareTokenWrapper } from "atomicComponents/organisms/RequireShareTokenWrapper";
-import useAutoLogin from "framework/authentication/useAutoLogin";
 import useNotificationSocket from "framework/notifications/useNotificationSocket";
 
 import { Pages } from "framework/routing/pages";
@@ -31,8 +30,6 @@ const App = (): JSX.Element => {
   }, []);
 
   useNotificationSocket();
-
-  useAutoLogin();
 
   return (
     <>

@@ -5,5 +5,6 @@ import { ContextProps } from "./useCurrentUser.models";
 export const Context = createContext<BaseContextProps & ContextProps>({
   currentUser: undefined,
   setCurrentUser: () => undefined,
+  isAutoLoginLoading: false,
   initialized: false,
 });
