@@ -1,10 +1,11 @@
 import dayjs from "dayjs";
 import { Dispatch, SetStateAction, useCallback } from "react";
-import { DateRange } from "react-big-calendar";
+import { DateRange, View } from "react-big-calendar";
 
 const useOnRangeChange = (
   dateRange: DateRange,
-  setDateRange: Dispatch<SetStateAction<DateRange>>
+  setDateRange: Dispatch<SetStateAction<DateRange>>,
+  setDate: Dispatch<SetStateAction<Date>>
 ) => {
   return useCallback(
     (
@@ -13,7 +14,8 @@ const useOnRangeChange = (
         | {
             start: Date;
             end: Date;
-          }
+          },
+      view: View | undefined
     ) => {
       let newRangeStart = undefined;
       let newRangeEnd = undefined;
@@ -26,17 +28,35 @@ const useOnRangeChange = (
         newRangeEnd = range.end;
       }
 
+      switch (view) {
+        case "month":
+          setDate(dayjs(newRangeStart).add(15, "day").toDate());
+          break;
+        case "week":
+          setDate(dayjs(newRangeStart).toDate());
+          break;
+        case "day":
+          setDate(dayjs(newRangeStart).toDate());
+          break;
+        default:
+          setDate(dayjs(newRangeStart).toDate());
+          break;
+      }
+
       if (
         newRangeStart.getTime() < dateRange.start.getTime() ||
         newRangeEnd.getTime() > dateRange.end.getTime()
       ) {
         setDateRange({
-          start: dayjs(newRangeStart).startOf("month").toDate(),
-          end: dayjs(newRangeEnd).endOf("month").toDate(),
+          start: dayjs(newRangeStart)
+            .subtract(3, "month")
+            .startOf("month")
+            .toDate(),
+          end: dayjs(newRangeEnd).add(3, "month").endOf("month").toDate(),
         });
       }
     },
-    [dateRange.end, dateRange.start, setDateRange]
+    [dateRange.end, dateRange.start, setDate, setDateRange]
   );
 };
 

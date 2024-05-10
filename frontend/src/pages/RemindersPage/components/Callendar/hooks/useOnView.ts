@@ -4,10 +4,12 @@ import { Dispatch, SetStateAction, useCallback } from "react";
 import { View } from "react-big-calendar";
 
 const useOnView = (
-  setContentAnimation: Dispatch<SetStateAction<CalendarAnimation>>
+  setContentAnimation: Dispatch<SetStateAction<CalendarAnimation>>,
+  setView: Dispatch<SetStateAction<View>>
 ) => {
   return useCallback(
     (view: View) => {
+      setView(view);
       setContentAnimation((prev) => {
         localStorage.setItem(LAST_CALLENDAR_VIEW_LS_KEY, view);
 
