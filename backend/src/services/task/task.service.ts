@@ -205,7 +205,10 @@ export class TaskService {
 
       let eventName = EventName.TaskUpdated;
 
-      if (updateFieldsSize === 1 && validUpdateProperties.hasOwnProperty("completionDate")) {
+      if (
+        updateFieldsSize === 1 &&
+        validUpdateProperties.hasOwnProperty("completionDate")
+      ) {
         eventName = EventName.TaskStateChanged;
       } else if (
         (updateFieldsSize === 1 || updateFieldsSize === 2) &&

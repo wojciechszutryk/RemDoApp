@@ -11,12 +11,12 @@ import {
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { IReminder, IReminderDTO } from "linked-models/reminder/reminder.dto";
+import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import {
   PARAM_END_DATE,
   PARAM_START_DATE,
   URL_REMINDERS,
 } from "linked-models/reminder/reminder.urls";
-import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { IUserAttached } from "linked-models/user/user.model";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
 import { SetOAuth2Client } from "middlewares/user/setOAuth2Client";
@@ -73,45 +73,43 @@ export class RemindersController
       ]);
 
       if (googleEvents && googleEvents.length > 0) {
-        googleEvents.forEach((event, index) => {
-          if (
-            !reminders.find((reminder) => reminder.taskId === event.id) &&
-            event.start &&
-            event.end &&
-            event.summary
-          ) {
-            reminders.push({
-              startDate: event.start?.dateTime
-                ? new Date(event.start.dateTime)
-                : event.start?.date
-                ? new Date(event.start.date)
-                : new Date(),
-              finishDate: event.end?.dateTime
-                ? new Date(event.end.dateTime)
-                : event.end?.date
-                ? new Date(event.end.date)
-                : new Date(),
-              text: event.summary,
-              name: event.description || "",
-              creator: event.creator?.self
-                ? currentUser
-                : (event.creator as any),
-              whenCreated: event.created ? new Date(event.created) : new Date(),
-              whenUpdated: event.updated ? new Date(event.updated) : new Date(),
-              todoListId: `google-${index}`,
-              taskId: event.id || `google-${index}`,
-              assignedOwners:
-                event.attendees?.map((attendee) => ({
-                  id: attendee.id!,
-                  email: attendee.email!,
-                  displayName: attendee.displayName!,
-                  whenCreated: new Date(),
-                })) || [],
-              assignedUsers: [],
-              icon: TodoListIconEnum.Google,
-            });
+        const remindersMap = reminders.reduce((map, reminder) => {
+          map.set(reminder.taskId, reminder);
+          return map;
+        }, new Map<string, IReminderAttached>());
+
+        googleEvents.forEach((event) => {
+          if (event.id && !remindersMap.has(event.id)) {
+            const reminder =
+              this.googleEventService.convertGoogleEventToReminder(
+                event,
+                currentUser
+              );
+
+            if (reminder) {
+              reminders.push(reminder);
+            }
           }
         });
+      }
+
+      //resolve recurring reminders - if both startDate and endDate are provided
+      if (startDate && endDate) {
+        const resolvedReminders = reminders.reduce((acc, reminder) => {
+          if (reminder.recurrance) {
+            const recurringReminders =
+              this.reminderService.resolveRecurringReminders(
+                reminder,
+                startDate,
+                endDate
+              );
+            return [...acc, ...recurringReminders];
+          }
+
+          return [...acc, reminder];
+        }, [] as IReminderAttached[]);
+
+        return this.ok(resolvedReminders);
       }
 
       return this.ok(reminders);

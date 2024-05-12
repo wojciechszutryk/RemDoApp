@@ -4,10 +4,10 @@ export interface ITask {
   /** Text of task */
   text: string;
 
-  /** Date when task should be started */
+  /** Initial Date when task should be started */
   startDate?: Date | null;
 
-  /** Date when task should be finished */
+  /** Initial Date when task should be finished */
   finishDate?: Date | null;
 
   /** Date when to notify user about task or reminder - Not saved in DB, used only to create/edit*/
@@ -18,6 +18,9 @@ export interface ITask {
 
   /** Boolean to determine if task is important */
   important?: boolean;
+
+  /** Recurrence of task - applied only for reminders - RRULE format */
+  recurrance?: string[];
 }
 
 export interface ITaskWithReadonlyProperties extends ITask {

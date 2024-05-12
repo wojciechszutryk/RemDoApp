@@ -24,6 +24,10 @@ const TaskSchema = new mongoose.Schema({
     type: Boolean,
     required: false,
   },
+  recurrance: {
+    type: Boolean,
+    required: false,
+  },
   todoListId: {
     type: String,
     required: false,
@@ -61,5 +65,6 @@ export const mapTaskToAttachedTask = (task: ITaskDocument): ITaskAttached => {
     todoListId: task.todoListId,
     whenCreated: task.whenCreated,
     whenUpdated: task.whenUpdated,
+    recurrance: task.recurrance,
   };
 };

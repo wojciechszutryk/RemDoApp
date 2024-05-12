@@ -13,6 +13,7 @@ import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
+import { RRule } from "rrule";
 import { TaskService } from "services/task/task.service";
 import { TodoListService } from "services/todoList/todoList.service";
 import { UserService } from "services/user/user.service";
@@ -124,6 +125,24 @@ export class ReminderService {
     }
 
     return reminders;
+  }
+
+  public resolveRecurringReminders(
+    reminder: IReminderAttached,
+    startDate: Date,
+    endDate: Date
+  ): IReminderAttached[] {
+    if (!reminder.recurrance) return [];
+
+    const rule = RRule.fromString(reminder.recurrance[0]);
+
+    const dates = rule.between(startDate, endDate);
+
+    return dates.map((date) => ({
+      ...reminder,
+      startDate: date,
+      finishDate: new Date(date.getTime() + reminder.finishDate.getTime()),
+    }));
   }
 
   /**
