@@ -9,7 +9,7 @@ import {
 import { StyledAccordion } from "atomicComponents/atoms/Accordion/styles";
 import { Separator } from "atomicComponents/atoms/Separator";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
-import DatesPickers from "framework/dialogs/components/TaskDialog/components/DatesPickers";
+import DatesPickers from "framework/dialogs/components/TaskDialog/components/DateForm/DatesPickers";
 import { StyledForm } from "framework/dialogs/components/TodoListDialog/styles";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { memo, useEffect } from "react";

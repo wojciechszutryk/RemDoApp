@@ -5,7 +5,7 @@ import { TranslationKeys } from "framework/translations/translatedTexts/translat
 import { memo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { ITaskDialog } from "../models/taskDialog.model";
+import { ITaskDialog } from "../../models/taskDialog.model";
 import DateTimePickerWithIcon from "./DatePickerWithIcon";
 
 type DatePickerValues = Pick<ITaskDialog, "finishDate" | "startDate">;

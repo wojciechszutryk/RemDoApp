@@ -1,4 +1,4 @@
-import { NotifyDateCreatorFields } from "../models";
+import { NotifyDateCreatorFields } from "../model";
 
 export const createDateFromSelectValues = (
   params: NotifyDateCreatorFields,

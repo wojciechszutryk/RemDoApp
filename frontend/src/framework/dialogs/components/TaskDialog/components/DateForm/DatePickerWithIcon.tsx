@@ -4,7 +4,7 @@ import {
   ControlledDateTimePickerProps,
 } from "atomicComponents/molecules/ControlledDateTimePicker";
 import { FieldPath } from "react-hook-form";
-import { StyledDatePickerWrapper as StyledDateTimePickerWrapper } from "./styles";
+import { StyledDatePickerWrapper as StyledDateTimePickerWrapper } from "../styles";
 
 interface Props<T extends object>
   extends ControlledDateTimePickerProps<T, FieldPath<T>> {
