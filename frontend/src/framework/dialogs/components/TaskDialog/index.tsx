@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import { rrulestr } from "rrule";
 import { StyledForm } from "../TodoListDialog/styles";
 import CollapsableNotifyForm from "./components/CollapsableNotifyForm";
-import DatesPickers from "./components/DateForm/DatesPickers";
+import DateForm from "./components/DateForm";
 import { createNotifySelectParams } from "./components/NotifyForm/helpers";
 import { ITaskDialog } from "./models/taskDialog.model";
 import { StyledCheckboxesWrapper } from "./styles";
@@ -55,8 +55,12 @@ const TaskDialog = (): JSX.Element => {
     notify: !!editTaskData?.notifyDate,
     recurranceFormVisible:
       !!editTaskData?.recurrance && editTaskData?.recurrance.length > 0,
-    recurranseFormValues:
-      editTaskData?.recurrance && rrulestr(editTaskData.recurrance[0]),
+    recurranseFormValues: editTaskData?.recurrance
+      ? rrulestr(editTaskData.recurrance[0])
+      : {
+          FREQ: "MONTHLY",
+          endType: "date",
+        },
   };
 
   const methods = useForm<ITaskDialog>({
@@ -103,7 +107,7 @@ const TaskDialog = (): JSX.Element => {
             control={control}
             placeholder={t(TranslationKeys.TaskName)}
           />
-          <DatesPickers />
+          <DateForm />
 
           <StyledCheckboxesWrapper>
             <ControlledCheckbox
