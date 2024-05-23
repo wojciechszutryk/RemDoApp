@@ -12,10 +12,17 @@ import { useEditTaskInTodoListMutation } from "pages/SingleTodoListPage/mutation
 import { memo, useEffect, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { rrulestr } from "rrule";
+import { RRule, rrulestr } from "rrule";
 import { StyledForm } from "../TodoListDialog/styles";
 import CollapsableNotifyForm from "./components/CollapsableNotifyForm";
-import DateForm from "./components/DateForm";
+import CollapsableReccuranceForm from "./components/DateForm/RecurranceForm/CollapsableReccuranceForm";
+import {
+  IBYMONTH,
+  IBYMONTHDAY,
+  IBYSETPOS,
+  IEnderType,
+  RecurranceFormCreatorFields,
+} from "./components/DateForm/RecurranceForm/model";
 import { createNotifySelectParams } from "./components/NotifyForm/helpers";
 import { ITaskDialog } from "./models/taskDialog.model";
 import { StyledCheckboxesWrapper } from "./styles";
@@ -42,6 +49,27 @@ const TaskDialog = (): JSX.Element => {
       editTaskData?.finishDate && new Date(editTaskData?.finishDate)
     );
 
+  const getDefaultReccuranceFormValues = (
+    reccurance: string
+  ): RecurranceFormCreatorFields => {
+    const reccuranceObj = rrulestr(reccurance, { forceset: false }) as RRule;
+    return {
+      DTSTART:
+        reccuranceObj.options.dtstart?.toISOString() ||
+        new Date().toISOString(),
+      INTERVAL: reccuranceObj.options.interval || 1,
+      BYMONTH: reccuranceObj.options.bymonth[0] as IBYMONTH,
+      BYMONTHDAY: reccuranceObj.options.bymonthday[0] as IBYMONTHDAY,
+      BYSETPOS: reccuranceObj.options.bysetpos[0] as IBYSETPOS,
+      endType: (reccuranceObj.options.count
+        ? "count"
+        : reccuranceObj.options.until
+        ? "date"
+        : "never") as IEnderType,
+      FREQ: reccuranceObj.options.freq.toString() as "1" | "0" | "2" | "3",
+    };
+  };
+
   const defaultFormValues = {
     text: editTaskData?.text || "",
     startDate: editTaskData?.startDate,
@@ -55,11 +83,12 @@ const TaskDialog = (): JSX.Element => {
     notify: !!editTaskData?.notifyDate,
     recurranceFormVisible:
       !!editTaskData?.recurrance && editTaskData?.recurrance.length > 0,
-    recurranseFormValues: editTaskData?.recurrance
-      ? rrulestr(editTaskData.recurrance[0])
+    reccuranceFormValues: editTaskData?.recurrance
+      ? getDefaultReccuranceFormValues(editTaskData.recurrance[0])
       : {
-          FREQ: "MONTHLY",
-          endType: "date",
+          DTSTART: new Date().toISOString(),
+          FREQ: "1" as const,
+          endType: "date" as const,
         },
   };
 
@@ -107,7 +136,8 @@ const TaskDialog = (): JSX.Element => {
             control={control}
             placeholder={t(TranslationKeys.TaskName)}
           />
-          <DateForm />
+
+          <CollapsableReccuranceForm />
 
           <StyledCheckboxesWrapper>
             <ControlledCheckbox
