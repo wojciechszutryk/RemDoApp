@@ -17,31 +17,22 @@ const DatesPickers = ({
   const { control } = useFormContext<ITaskDialog>();
   const { t } = useTranslation();
   const isReccuranceEnabled = watch["reccuranceEnabled"];
-  const isReccuranceEndDateType =
-    watch["reccuranceFormValues"]?.["endType"] === "date";
 
   return (
     <>
       <DateTimePickerWithIcon
         Icon={<PlayCircleOutlineIcon />}
         tooltipTitle={t(TranslationKeys.StartDate)}
-        name={
-          (isReccuranceEnabled ? "DTSTART" : "startDate") as keyof ITaskDialog
-        }
+        name={"startDate" as keyof ITaskDialog}
         control={control}
         maxDateTime={dayjs(watch["finishDate"])}
       />
       {children}
-      {(!isReccuranceEnabled ||
-        (isReccuranceEnabled && isReccuranceEndDateType)) && (
+      {!isReccuranceEnabled && (
         <DateTimePickerWithIcon
           Icon={<FlagCircleIcon />}
           tooltipTitle={t(TranslationKeys.FinishDate)}
-          name={
-            (isReccuranceEnabled && isReccuranceEndDateType
-              ? "UNTIL"
-              : "finishDate") as keyof ITaskDialog
-          }
+          name={"finishDate" as keyof ITaskDialog}
           control={control}
           minDateTime={dayjs(watch["startDate"])}
           slotProps={{
