@@ -1,5 +1,6 @@
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { ControlledSelect } from "atomicComponents/molecules/ControlledSelect";
+import dayjs from "dayjs";
 import { memo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -16,6 +17,44 @@ const RecurranceForm = (): JSX.Element => {
   const monthlyType = watchFields?.monthlyType;
   const yearlyType = watchFields?.yearlyType;
   const endType = watchFields?.endType;
+  const DTSTART = watchFields?.DTSTART;
+
+  const bySetPosOptions = [
+    { label: "First", value: "1" },
+    { label: "Second", value: "2" },
+    { label: "Third", value: "3" },
+    { label: "Fourth", value: "4" },
+    { label: "Last", value: "-1" },
+  ];
+
+  const byDayOptions = [
+    { label: "Monday", value: "MO" },
+    { label: "Tuesday", value: "TU" },
+    { label: "Wednesday", value: "WE" },
+    { label: "Thursday", value: "TH" },
+    { label: "Friday", value: "FR" },
+    { label: "Saturday", value: "SA" },
+    { label: "Sunday", value: "SU" },
+    {
+      label: "Weekend days",
+      value: "SA,SU",
+    },
+    {
+      label: "Weekdays",
+      value: "MO,TU,WE,TH,FR",
+    },
+  ];
+
+  const byMonthOptions = Array.from({ length: 12 }, (_, i) => ({
+    label: dayjs().month(i).format("MMMM"),
+    value: (i + 1).toString(),
+  }));
+
+  const byMonthDayOptions = DTSTART
+    ? Array.from({ length: dayjs(DTSTART).daysInMonth() }, (_, i) =>
+        (i + 1).toString()
+      )
+    : Array.from({ length: 28 }, (_, i) => (i + 1).toString());
 
   return (
     <div>
@@ -31,13 +70,41 @@ const RecurranceForm = (): JSX.Element => {
         control={control}
         name={"reccuranceFormValues.FREQ"}
       />
+      {/* //monthly type selection */}
+      {FREQ === "1" ? (
+        <ControlledSelect
+          label="Monthly type"
+          id="monthlyType"
+          options={[
+            { label: "day of the month", value: "day" },
+            { label: "Week day", value: "weekDay" },
+          ]}
+          control={control}
+          name={"reccuranceFormValues.monthlyType"}
+        />
+      ) : null}
+
+      {/* //yearly type selection */}
+      {FREQ === "0" ? (
+        <ControlledSelect
+          label="Yearly type"
+          id="yearlyType"
+          options={[
+            { label: "Date", value: "date" },
+            { label: "Week day of months", value: "weekDayOfMonths" },
+          ]}
+          control={control}
+          name={"reccuranceFormValues.yearlyType"}
+        />
+      ) : null}
       {/* //INTERVAL */}
       {FREQ === "3" || FREQ === "2" || FREQ === "1" ? (
         <>
           every{" "}
           {
             <ControlledTextField
-              placeholder="Interval"
+              id={"interval"}
+              label="Interval"
               control={control}
               name={"reccuranceFormValues.INTERVAL"}
             />
@@ -52,29 +119,25 @@ const RecurranceForm = (): JSX.Element => {
         <div>
           on{" "}
           <ControlledSelect
-            placeholder="Weekdays"
+            label="Weekdays"
+            id="weekdays"
             multiple
             control={control}
-            options={[
-              { label: "Monday", value: "MO" },
-              { label: "Tuesday", value: "TU" },
-              { label: "Wednesday", value: "WE" },
-              { label: "Thursday", value: "TH" },
-              { label: "Friday", value: "FR" },
-              { label: "Saturday", value: "SA" },
-              { label: "Sunday", value: "SU" },
-            ]}
+            options={byDayOptions}
             name={"reccuranceFormValues.BYDAY"}
           />
         </div>
       ) : null}
+
       {/* // monthly day */}
       {FREQ === "1" && monthlyType === "day" ? (
         <>
           on the{" "}
           {
             <ControlledSelect
-              placeholder="Day of the month"
+              id="monthlyDay"
+              options={byMonthDayOptions}
+              label="Day of the month"
               control={control}
               name={"reccuranceFormValues.BYMONTHDAY"}
             />
@@ -87,42 +150,45 @@ const RecurranceForm = (): JSX.Element => {
         <>
           on the{" "}
           <ControlledSelect
-            placeholder="Weekday of the month"
+            label="Weekday of the month"
+            id="monthlyWeekDayByPos"
+            options={bySetPosOptions}
             control={control}
             name={"reccuranceFormValues.BYSETPOS"}
           />
           <ControlledSelect
-            placeholder="Weekday"
+            label="Weekday"
+            id="monthlyWeekDayByDay"
+            options={byDayOptions}
             control={control}
             name={"reccuranceFormValues.BYDAY"}
           />
         </>
       ) : null}
-      {/* //yearly type selection */}
-      {FREQ === "0" ? (
-        <ControlledSelect
-          placeholder="Yearly type"
-          control={control}
-          name={"reccuranceFormValues.yearlyType"}
-        />
-      ) : null}
+
       {/* // yearly weekDayOfMonths */}
       {FREQ === "0" && yearlyType === "weekDayOfMonths" ? (
         <div>
           on the{" "}
           <ControlledSelect
-            placeholder="Weekday of the month"
+            label="Weekday of the month"
+            id="yearlyWeekDayByPos"
+            options={bySetPosOptions}
             control={control}
             name={"reccuranceFormValues.BYSETPOS"}
           />
           <ControlledSelect
-            placeholder="Weekday"
+            label="Weekday"
+            id="yearlyWeekDayByDay"
+            options={byDayOptions}
             control={control}
             name={"reccuranceFormValues.BYDAY"}
           />
           of{" "}
           <ControlledSelect
-            placeholder="Month"
+            label="Month"
+            id="yearlyMonth"
+            options={byMonthOptions}
             control={control}
             name={"reccuranceFormValues.BYMONTH"}
           />
@@ -135,12 +201,14 @@ const RecurranceForm = (): JSX.Element => {
           <ControlledSelect
             label="Month"
             id="yearlyMonth"
+            options={byMonthOptions}
             control={control}
             name={"reccuranceFormValues.BYMONTH"}
           />
           <ControlledSelect
             label="Day of the month"
             id={"yearlyDayOfMonth"}
+            options={byMonthDayOptions}
             control={control}
             name={"reccuranceFormValues.BYMONTHDAY"}
           />
@@ -164,6 +232,7 @@ const RecurranceForm = (): JSX.Element => {
           after{" "}
           <ControlledTextField
             control={control}
+            type="number"
             name={"reccuranceFormValues.COUNT"}
           />{" "}
           occurrences
