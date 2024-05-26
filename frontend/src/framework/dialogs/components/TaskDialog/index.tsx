@@ -21,7 +21,6 @@ import {
   IBYMONTHDAY,
   IBYSETPOS,
   IEnderType,
-  RecurranceFormCreatorFields,
 } from "./components/DateForm/RecurranceForm/model";
 import { createNotifySelectParams } from "./components/NotifyForm/helpers";
 import { ITaskDialog } from "./models/taskDialog.model";
@@ -49,51 +48,67 @@ const TaskDialog = (): JSX.Element => {
       editTaskData?.finishDate && new Date(editTaskData?.finishDate)
     );
 
-  const getDefaultReccuranceFormValues = (
-    reccurance: string
-  ): RecurranceFormCreatorFields => {
-    const reccuranceObj = rrulestr(reccurance, { forceset: false }) as RRule;
-    return {
-      DTSTART:
-        reccuranceObj.options.dtstart?.toISOString() ||
-        new Date().toISOString(),
-      INTERVAL: reccuranceObj.options.interval || 1,
-      BYMONTH: reccuranceObj.options.bymonth[0] as IBYMONTH,
-      BYMONTHDAY: reccuranceObj.options.bymonthday[0] as IBYMONTHDAY,
-      BYSETPOS: reccuranceObj.options.bysetpos[0] as IBYSETPOS,
-      endType: (reccuranceObj.options.count
-        ? "count"
-        : reccuranceObj.options.until
-        ? "date"
-        : "never") as IEnderType,
-      FREQ: reccuranceObj.options.freq.toString() as "1" | "0" | "2" | "3",
+  const getDefaultFormValues = () => {
+    const reccuranceEnabled =
+      !!editTaskData?.recurrance && editTaskData?.recurrance.length > 0;
+    const defaultFormValues: ITaskDialog = {
+      text: editTaskData?.text || "",
+      startDate: editTaskData?.startDate,
+      finishDate: editTaskData?.finishDate || null,
+      minsAccordingToTimePoint:
+        defaultSelectsValues?.minsAccordingToTimePoint || 15,
+      beforeOrAfter: defaultSelectsValues?.beforeOrAfter || "Before",
+      timePoint: defaultSelectsValues?.timePoint || "Start",
+      notifyDate: editTaskData?.notifyDate || new Date(Date.now() + 85500000),
+      important: editTaskData?.important,
+      notify: !!editTaskData?.notifyDate,
+      reccuranceEnabled,
     };
-  };
 
-  const defaultFormValues = {
-    text: editTaskData?.text || "",
-    startDate: editTaskData?.startDate,
-    finishDate: editTaskData?.finishDate || null,
-    minsAccordingToTimePoint:
-      defaultSelectsValues?.minsAccordingToTimePoint || 15,
-    beforeOrAfter: defaultSelectsValues?.beforeOrAfter || "Before",
-    timePoint: defaultSelectsValues?.timePoint || "Start",
-    notifyDate: editTaskData?.notifyDate || new Date(Date.now() + 85500000),
-    important: editTaskData?.important,
-    notify: !!editTaskData?.notifyDate,
-    recurranceFormVisible:
-      !!editTaskData?.recurrance && editTaskData?.recurrance.length > 0,
-    reccuranceFormValues: editTaskData?.recurrance
-      ? getDefaultReccuranceFormValues(editTaskData.recurrance[0])
-      : {
-          DTSTART: new Date().toISOString(),
-          FREQ: "1" as const,
-          endType: "date" as const,
-        },
+    if (!reccuranceEnabled) {
+      defaultFormValues.reccuranceFormValues = {
+        FREQ: "1" as const,
+        monthlyType: "day" as const,
+        yearlyType: "date" as const,
+        endType: "date" as const,
+      };
+    } else {
+      const reccuranceObj = rrulestr(editTaskData?.recurrance!, {
+        forceset: false,
+      }) as RRule;
+      defaultFormValues.reccuranceFormValues = {
+        DTSTART:
+          reccuranceObj.options.dtstart?.toISOString() ||
+          new Date().toISOString(),
+        INTERVAL: reccuranceObj.options.interval || 1,
+        BYMONTH: reccuranceObj.options.bymonth[0] as IBYMONTH,
+        BYMONTHDAY: reccuranceObj.options.bymonthday[0] as IBYMONTHDAY,
+        BYSETPOS: reccuranceObj.options.bysetpos[0] as IBYSETPOS,
+        BYDAY: reccuranceObj.origOptions?.byweekday
+          ? Array.isArray(reccuranceObj.origOptions.byweekday)
+            ? reccuranceObj.origOptions.byweekday
+            : [reccuranceObj.origOptions.byweekday]
+          : [],
+        endType: (reccuranceObj.options.count
+          ? "count"
+          : reccuranceObj.options.until
+          ? "date"
+          : "never") as IEnderType,
+        FREQ: reccuranceObj.options.freq.toString() as "1" | "0" | "2" | "3",
+        monthlyType: reccuranceObj.options.bymonthday ? "day" : "weekDay",
+        yearlyType: reccuranceObj.options.bymonthday
+          ? "date"
+          : "weekDayOfMonths",
+      };
+      defaultFormValues.startDate = reccuranceObj.options.dtstart;
+      defaultFormValues.finishDate = reccuranceObj.options.until;
+    }
+
+    return defaultFormValues;
   };
 
   const methods = useForm<ITaskDialog>({
-    defaultValues: defaultFormValues,
+    defaultValues: getDefaultFormValues(),
   });
 
   const createTaskMutation = useCreateTaskMutation();
