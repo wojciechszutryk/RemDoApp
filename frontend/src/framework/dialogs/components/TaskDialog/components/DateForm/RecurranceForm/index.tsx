@@ -1,15 +1,22 @@
+import { ControlledDateTimePicker } from "atomicComponents/molecules/ControlledDateTimePicker";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { ControlledSelect } from "atomicComponents/molecules/ControlledSelect";
-import dayjs from "dayjs";
-import { memo } from "react";
+import { dayjs } from "framework/dayjs";
+import { memo, useEffect, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { ReccuranceFormValues } from "../../../models/taskDialog.model";
+import { ITaskDialog } from "../../../models/taskDialog.model";
+import { IBYMONTH, IBYMONTHDAY, IBYSETPOS } from "./model";
+import {
+  StyledIntervalWrapper,
+  StyledReccuranceRow,
+  StyledReccuranceWrapper,
+} from "./styles";
 
 const RecurranceForm = (): JSX.Element => {
   const { t } = useTranslation();
-  const watch = useWatch<ReccuranceFormValues>();
-  const { control } = useFormContext<ReccuranceFormValues>();
+  const watch = useWatch<ITaskDialog>();
+  const { control, setValue } = useFormContext<ITaskDialog>();
 
   const watchFields = watch.reccuranceFormValues;
 
@@ -17,7 +24,7 @@ const RecurranceForm = (): JSX.Element => {
   const monthlyType = watchFields?.monthlyType;
   const yearlyType = watchFields?.yearlyType;
   const endType = watchFields?.endType;
-  const DTSTART = watchFields?.DTSTART;
+  const DTSTART = watch.startDate;
 
   const bySetPosOptions = [
     { label: "First", value: "1" },
@@ -27,23 +34,26 @@ const RecurranceForm = (): JSX.Element => {
     { label: "Last", value: "-1" },
   ];
 
-  const byDayOptions = [
-    { label: "Monday", value: "MO" },
-    { label: "Tuesday", value: "TU" },
-    { label: "Wednesday", value: "WE" },
-    { label: "Thursday", value: "TH" },
-    { label: "Friday", value: "FR" },
-    { label: "Saturday", value: "SA" },
-    { label: "Sunday", value: "SU" },
-    {
-      label: "Weekend days",
-      value: "SA,SU",
-    },
-    {
-      label: "Weekdays",
-      value: "MO,TU,WE,TH,FR",
-    },
-  ];
+  const byDayOptions = useMemo(
+    () => [
+      { label: "Sunday", value: "SU" },
+      { label: "Monday", value: "MO" },
+      { label: "Tuesday", value: "TU" },
+      { label: "Wednesday", value: "WE" },
+      { label: "Thursday", value: "TH" },
+      { label: "Friday", value: "FR" },
+      { label: "Saturday", value: "SA" },
+      {
+        label: "Weekend days",
+        value: "SA,SU",
+      },
+      {
+        label: "Weekdays",
+        value: "MO,TU,WE,TH,FR",
+      },
+    ],
+    []
+  );
 
   const byMonthOptions = Array.from({ length: 12 }, (_, i) => ({
     label: dayjs().month(i).format("MMMM"),
@@ -56,8 +66,55 @@ const RecurranceForm = (): JSX.Element => {
       )
     : Array.from({ length: 28 }, (_, i) => (i + 1).toString());
 
+  useEffect(() => {
+    const dtStart = dayjs(DTSTART);
+    if (!dtStart.isValid()) return;
+
+    if (FREQ === "2") {
+      const weekDay = dtStart.day();
+      setValue(
+        "reccuranceFormValues.BYDAY",
+        byDayOptions[weekDay].value.split(",")
+      );
+    } else if (FREQ === "1" && monthlyType === "weekDay") {
+      const weekDay = dtStart.day();
+      const weekDayPos = Math.ceil(dtStart.date() / 7);
+      setValue("reccuranceFormValues.BYSETPOS", weekDayPos as IBYSETPOS);
+      setValue(
+        "reccuranceFormValues.BYDAY",
+        byDayOptions[weekDay].value.split(",")
+      );
+    } else if (FREQ === "1" && monthlyType === "day") {
+      setValue(
+        "reccuranceFormValues.BYMONTHDAY",
+        dtStart.date() as IBYMONTHDAY
+      );
+    } else if (FREQ === "0" && yearlyType === "weekDayOfMonths") {
+      const weekDay = dtStart.day();
+      const weekDayPos = Math.ceil(dtStart.date() / 7);
+      setValue("reccuranceFormValues.BYSETPOS", weekDayPos as IBYSETPOS);
+      setValue(
+        "reccuranceFormValues.BYDAY",
+        byDayOptions[weekDay].value.split(",")
+      );
+      setValue(
+        "reccuranceFormValues.BYMONTH",
+        (dtStart.month() + 1) as IBYMONTH
+      );
+    } else if (FREQ === "0" && yearlyType === "date") {
+      setValue(
+        "reccuranceFormValues.BYMONTH",
+        (dtStart.month() + 1) as IBYMONTH
+      );
+      setValue(
+        "reccuranceFormValues.BYMONTHDAY",
+        dtStart.date() as IBYMONTHDAY
+      );
+    }
+  }, [FREQ, monthlyType, yearlyType, endType, DTSTART, setValue, byDayOptions]);
+
   return (
-    <div>
+    <StyledReccuranceWrapper>
       <ControlledSelect
         label="Frequency"
         id="frequency"
@@ -83,7 +140,6 @@ const RecurranceForm = (): JSX.Element => {
           name={"reccuranceFormValues.monthlyType"}
         />
       ) : null}
-
       {/* //yearly type selection */}
       {FREQ === "0" ? (
         <ControlledSelect
@@ -98,122 +154,107 @@ const RecurranceForm = (): JSX.Element => {
         />
       ) : null}
       {/* //INTERVAL */}
-      {FREQ === "3" || FREQ === "2" || FREQ === "1" ? (
-        <>
-          every{" "}
-          {
-            <ControlledTextField
-              id={"interval"}
-              label="Interval"
-              control={control}
-              name={"reccuranceFormValues.INTERVAL"}
-            />
-          }
-          {FREQ === "3" ? "day(s)" : null}
-          {FREQ === "2" ? "week(s)" : null}
-          {FREQ === "1" ? "month(s)" : null}
-        </>
-      ) : null}
+      <StyledIntervalWrapper>
+        every
+        {
+          <ControlledTextField
+            defaultValue={1}
+            type="number"
+            control={control}
+            name={"reccuranceFormValues.INTERVAL"}
+          />
+        }
+        {FREQ === "3" ? "day(s)" : null}
+        {FREQ === "2" ? "week(s)" : null}
+        {FREQ === "1" ? "month(s)" : null}
+        {FREQ === "0" ? "year(s)" : null}
+      </StyledIntervalWrapper>
       {/* //FREQ weekly */}
       {FREQ === "2" ? (
-        <div>
-          on{" "}
-          <ControlledSelect
-            label="Weekdays"
-            id="weekdays"
-            multiple
-            control={control}
-            options={byDayOptions}
-            name={"reccuranceFormValues.BYDAY"}
-          />
-        </div>
+        <ControlledSelect
+          label="On "
+          id="weekdays"
+          multiple
+          control={control}
+          options={byDayOptions}
+          name={"reccuranceFormValues.BYDAY"}
+        />
       ) : null}
-
       {/* // monthly day */}
       {FREQ === "1" && monthlyType === "day" ? (
-        <>
-          on the{" "}
-          {
-            <ControlledSelect
-              id="monthlyDay"
-              options={byMonthDayOptions}
-              label="Day of the month"
-              control={control}
-              name={"reccuranceFormValues.BYMONTHDAY"}
-            />
-          }
-          day of the month
-        </>
+        <ControlledSelect
+          id="monthlyDay"
+          options={byMonthDayOptions}
+          label="On the (day of the month)"
+          control={control}
+          name={"reccuranceFormValues.BYMONTHDAY"}
+        />
       ) : null}
       {/* // monthly weekDay */}
       {FREQ === "1" && monthlyType === "weekDay" ? (
-        <>
-          on the{" "}
+        <StyledReccuranceRow>
           <ControlledSelect
-            label="Weekday of the month"
+            label="On the"
             id="monthlyWeekDayByPos"
             options={bySetPosOptions}
             control={control}
             name={"reccuranceFormValues.BYSETPOS"}
           />
           <ControlledSelect
-            label="Weekday"
-            id="monthlyWeekDayByDay"
+            label=" "
+            id=" "
             options={byDayOptions}
             control={control}
             name={"reccuranceFormValues.BYDAY"}
           />
-        </>
+        </StyledReccuranceRow>
       ) : null}
-
       {/* // yearly weekDayOfMonths */}
       {FREQ === "0" && yearlyType === "weekDayOfMonths" ? (
-        <div>
-          on the{" "}
+        <StyledReccuranceRow>
           <ControlledSelect
-            label="Weekday of the month"
+            label="On the"
             id="yearlyWeekDayByPos"
             options={bySetPosOptions}
             control={control}
             name={"reccuranceFormValues.BYSETPOS"}
           />
           <ControlledSelect
-            label="Weekday"
-            id="yearlyWeekDayByDay"
+            label=" "
+            id=" "
             options={byDayOptions}
             control={control}
             name={"reccuranceFormValues.BYDAY"}
           />
-          of{" "}
           <ControlledSelect
-            label="Month"
+            label="of"
             id="yearlyMonth"
             options={byMonthOptions}
             control={control}
             name={"reccuranceFormValues.BYMONTH"}
           />
-        </div>
+        </StyledReccuranceRow>
       ) : null}
-
       {/* // yearly date */}
       {FREQ === "0" && yearlyType === "date" ? (
-        <div>
+        <StyledReccuranceRow>
           <ControlledSelect
-            label="Month"
+            label="on the"
             id="yearlyMonth"
             options={byMonthOptions}
             control={control}
             name={"reccuranceFormValues.BYMONTH"}
           />
           <ControlledSelect
-            label="Day of the month"
-            id={"yearlyDayOfMonth"}
+            label=" "
+            id=" "
             options={byMonthDayOptions}
             control={control}
             name={"reccuranceFormValues.BYMONTHDAY"}
           />
-        </div>
+        </StyledReccuranceRow>
       ) : null}
+      {/* // endType */}
       <ControlledSelect
         options={[
           { label: "End by date", value: "date" },
@@ -225,7 +266,6 @@ const RecurranceForm = (): JSX.Element => {
         id="endType"
         name={"reccuranceFormValues.endType"}
       />
-
       {/* // endType = date */}
       {endType === "count" ? (
         <>
@@ -233,12 +273,26 @@ const RecurranceForm = (): JSX.Element => {
           <ControlledTextField
             control={control}
             type="number"
+            defaultValue={1}
             name={"reccuranceFormValues.COUNT"}
           />{" "}
           occurrences
         </>
       ) : null}
-    </div>
+
+      {endType === "date" ? (
+        <ControlledDateTimePicker
+          control={control}
+          name={"finishDate"}
+          minDateTime={dayjs(watch["startDate"])}
+          slotProps={{
+            textField: {
+              error: false,
+            },
+          }}
+        />
+      ) : null}
+    </StyledReccuranceWrapper>
   );
 };
 
