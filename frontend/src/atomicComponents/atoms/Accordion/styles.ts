@@ -5,7 +5,7 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
   color: theme.palette.primary.contrastText,
   backgroundColor: "transparent",
   backgroundImage: "none",
-  boxShadow: "none",
+  boxShadow: "none"
 }));
 
 export const StyledExpandMoreIcon = styled(ExpandMoreIcon)(({ theme }) => ({

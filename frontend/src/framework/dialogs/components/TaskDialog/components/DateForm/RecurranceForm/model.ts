@@ -38,7 +38,6 @@ export type IBYMONTH = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 export type IEnderType = "never" | "count" | "date";
 
 export interface RecurranceFormCreatorFields {
-  DTSTART: string;
   FREQ: /** Yearly */
   | "0"
     /** Monthly */
@@ -68,16 +67,11 @@ export interface RecurranceFormCreatorFields {
    *  - which days of the week or month the event should occur
    * e.g. BYDAY=WE,TH or BYDAY=MO,WE,FR or BYDAY=MO
    */
-  BYDAY?: string;
+  BYDAY?: string[];
   /**
    * only for FREQ=YEARLY (both yearlyType = 'date' and yearlyType = 'weekDayOfMonths') - which months the event should occur
    */
   BYMONTH?: IBYMONTH;
-
-  /**
-   * only for endType=date - when the event should end
-   */
-  UNTIL?: string;
   /**
    * only for endType=count - how many times the event should occur
    */

@@ -20,6 +20,13 @@ const CollapsableReccuranceForm = (): JSX.Element => {
           setValue("reccuranceEnabled", !isExpanded);
         }}
         disableGutters
+        sx={{
+          "& .MuiAccordionSummary-content": {
+            height: 15,
+            margin: 0,
+            alignItems: "center",
+          },
+        }}
       >
         <AccordionSummary>
           <Checkbox checked={!!isExpanded} defaultValue={""} />
