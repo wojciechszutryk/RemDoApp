@@ -8,6 +8,8 @@ export const TaskCollectionName = "tasks";
 
 const TaskSchema = new mongoose.Schema({
   text: { type: String, required: true },
+  description: { type: String, required: false },
+  links: { type: Array, required: false },
   startDate: {
     type: Date,
     required: false,
@@ -56,6 +58,8 @@ export const mapTaskToAttachedTask = (task: ITaskDocument): ITaskAttached => {
   return {
     id: task.id,
     text: task.text,
+    description: task.text,
+    links: task.links ? [...task.links] : undefined,
     startDate: task.startDate,
     finishDate: task.finishDate,
     notifyDate: task.notifyDate,

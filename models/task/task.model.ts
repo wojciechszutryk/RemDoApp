@@ -1,8 +1,11 @@
 import { IBaseModelAttached } from "../abstraction/base.interface";
 
 export interface ITask {
-  /** Text of task */
   text: string;
+
+  description?: string;
+
+  links?: string[];
 
   /** Initial Date when task should be started */
   startDate?: Date | null;

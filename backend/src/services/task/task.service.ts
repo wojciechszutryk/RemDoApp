@@ -135,11 +135,14 @@ export class TaskService {
   ): Promise<ITaskAttached> {
     const newTask: ITaskWithReadonlyProperties = {
       text: task.text,
+      links: task.links,
+      description: task.description,
       startDate: task.startDate,
       finishDate: task.finishDate,
       completionDate: task.completionDate,
       important: task.important ?? false,
       todoListId,
+      recurrance: task.recurrance,
       creatorId: creator.id,
       whenCreated: new Date(),
       whenUpdated: new Date(),
@@ -174,6 +177,9 @@ export class TaskService {
       "completionDate",
       "important",
       "notifyDate",
+      "recurrance",
+      "links",
+      "description",
     ];
 
     const validUpdateProperties = extractPropertiesToUpdate(
