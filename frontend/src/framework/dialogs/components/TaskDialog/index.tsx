@@ -14,8 +14,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { RRule, rrulestr } from "rrule";
 import { StyledForm } from "../TodoListDialog/styles";
-import CollapsableNotifyForm from "./components/CollapsableNotifyForm";
-import CollapsableReccuranceForm from "./components/DateForm/RecurranceForm/CollapsableReccuranceForm";
 import {
   IBYMONTH,
   IBYMONTHDAY,
@@ -23,6 +21,7 @@ import {
   IEnderType,
 } from "./components/DateForm/RecurranceForm/model";
 import { createNotifySelectParams } from "./components/NotifyForm/helpers";
+import TaskTabMenu from "./components/TaskTabMenu";
 import { ITaskDialog } from "./models/taskDialog.model";
 import { StyledCheckboxesWrapper } from "./styles";
 
@@ -53,6 +52,8 @@ const TaskDialog = (): JSX.Element => {
       !!editTaskData?.recurrance && editTaskData?.recurrance.length > 0;
     const defaultFormValues: ITaskDialog = {
       text: editTaskData?.text || "",
+      description: editTaskData?.description || "",
+      links: editTaskData?.links,
       startDate: editTaskData?.startDate,
       finishDate: editTaskData?.finishDate || null,
       minsAccordingToTimePoint:
@@ -124,11 +125,11 @@ const TaskDialog = (): JSX.Element => {
     onClose();
   };
 
-  const { handleSubmit, control, setFocus } = methods;
+  const { handleSubmit, control } = methods;
 
   useEffect(() => {
-    setFocus("text");
-  }, [setFocus]);
+    taskRef.current?.focus();
+  }, [taskRef.current]);
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -141,7 +142,7 @@ const TaskDialog = (): JSX.Element => {
           </Typography>
           <ControlledTextField
             autoFocus
-            ref={taskRef}
+            inputRef={taskRef}
             name={"text"}
             error={!!methods.formState.errors?.text}
             helperText={
@@ -152,21 +153,15 @@ const TaskDialog = (): JSX.Element => {
             placeholder={t(TranslationKeys.TaskName)}
           />
 
-          <CollapsableReccuranceForm />
+          <TaskTabMenu control={methods.control} />
 
           <StyledCheckboxesWrapper>
-            <ControlledCheckbox
-              name={"notify"}
-              control={control}
-              label={t(TranslationKeys.NotifyMe)}
-            />
             <ControlledCheckbox
               name={"important"}
               control={control}
               label={t(TranslationKeys.TaskImportant)}
             />
           </StyledCheckboxesWrapper>
-          <CollapsableNotifyForm control={methods.control} />
           <Button type="submit">
             {editTaskData
               ? t(TranslationKeys.Save)

@@ -31,8 +31,13 @@ export const ControlledTextField = <
       name={name}
       control={control}
       rules={{ required: true }}
-      render={({ field: { onChange, value } }) => (
-        <TextField onChange={onChange} value={value} {...otherProps} />
+      render={({ field: { onChange, value, ref } }) => (
+        <TextField
+          inputRef={ref}
+          onChange={onChange}
+          value={value}
+          {...otherProps}
+        />
       )}
     />
   );
