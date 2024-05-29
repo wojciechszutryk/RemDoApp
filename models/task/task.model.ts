@@ -5,7 +5,7 @@ export interface ITask {
 
   description?: string;
 
-  links?: string[];
+  link?: string;
 
   /** Initial Date when task should be started */
   startDate?: Date | null;

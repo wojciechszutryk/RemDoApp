@@ -135,7 +135,7 @@ export class TaskService {
   ): Promise<ITaskAttached> {
     const newTask: ITaskWithReadonlyProperties = {
       text: task.text,
-      links: task.links,
+      link: task.link,
       description: task.description,
       startDate: task.startDate,
       finishDate: task.finishDate,
@@ -178,7 +178,7 @@ export class TaskService {
       "important",
       "notifyDate",
       "recurrance",
-      "links",
+      "link",
       "description",
     ];
 
