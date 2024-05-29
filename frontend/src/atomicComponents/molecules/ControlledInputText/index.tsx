@@ -6,6 +6,7 @@ import {
   FieldErrors,
   FieldPath,
   FieldValues,
+  RegisterOptions,
 } from "react-hook-form";
 
 interface Props<
@@ -14,6 +15,12 @@ interface Props<
 > extends Omit<StandardTextFieldProps, "name"> {
   control?: Control<TFieldValues, any> | undefined;
   errors?: FieldErrors<TFieldValues>;
+  rules?:
+    | Omit<
+        RegisterOptions<TFieldValues, TName>,
+        "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
+      >
+    | undefined;
   name: TName;
 }
 
@@ -23,6 +30,7 @@ export const ControlledTextField = <
 >({
   control,
   name,
+  rules,
   errors,
   ...otherProps
 }: Props<TFieldValues, TName>): JSX.Element => {
@@ -30,7 +38,7 @@ export const ControlledTextField = <
     <Controller
       name={name}
       control={control}
-      rules={{ required: true }}
+      rules={rules}
       render={({ field: { onChange, value, ref } }) => (
         <TextField
           inputRef={ref}

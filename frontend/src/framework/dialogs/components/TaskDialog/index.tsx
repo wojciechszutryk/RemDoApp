@@ -1,7 +1,6 @@
 import { Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
-import { ControlledCheckbox } from "atomicComponents/molecules/ControlledCheckbox";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { useDialogs } from "framework/dialogs";
 import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
@@ -23,7 +22,6 @@ import {
 import { createNotifySelectParams } from "./components/NotifyForm/helpers";
 import TaskTabMenu from "./components/TaskTabMenu";
 import { ITaskDialog } from "./models/taskDialog.model";
-import { StyledCheckboxesWrapper } from "./styles";
 
 const TaskDialog = (): JSX.Element => {
   const {
@@ -53,7 +51,7 @@ const TaskDialog = (): JSX.Element => {
     const defaultFormValues: ITaskDialog = {
       text: editTaskData?.text || "",
       description: editTaskData?.description || "",
-      links: editTaskData?.links,
+      link: editTaskData?.link,
       startDate: editTaskData?.startDate,
       finishDate: editTaskData?.finishDate || null,
       minsAccordingToTimePoint:
@@ -144,24 +142,20 @@ const TaskDialog = (): JSX.Element => {
             autoFocus
             inputRef={taskRef}
             name={"text"}
+            rules={{
+              required: {
+                value: true,
+                message: t(TranslationKeys.FieldRequired),
+              },
+            }}
             error={!!methods.formState.errors?.text}
-            helperText={
-              methods.formState.errors.text?.type === "required" &&
-              t(TranslationKeys.FieldRequired)
-            }
+            helperText={methods.formState.errors.text?.message}
             control={control}
             placeholder={t(TranslationKeys.TaskName)}
           />
 
           <TaskTabMenu control={methods.control} />
 
-          <StyledCheckboxesWrapper>
-            <ControlledCheckbox
-              name={"important"}
-              control={control}
-              label={t(TranslationKeys.TaskImportant)}
-            />
-          </StyledCheckboxesWrapper>
           <Button type="submit">
             {editTaskData
               ? t(TranslationKeys.Save)
