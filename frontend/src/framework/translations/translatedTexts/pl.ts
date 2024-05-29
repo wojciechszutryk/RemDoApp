@@ -201,6 +201,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.AddTask]: "Dodaj zadanie",
   [TranslationKeys.EditTask]: "Edytuj zadanie",
   [TranslationKeys.TaskName]: "Nazwa zadania",
+  [TranslationKeys.Link]: "Link",
   [TranslationKeys.TaskImportant]: "Ważne",
   [TranslationKeys.NotifyMe]: "Powiadom mnie",
   [TranslationKeys.DelteTaskWarning]:
@@ -325,4 +326,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Save]: "Zapisz",
   [TranslationKeys.Cancel]: "Anuluj",
   [TranslationKeys.Details]: "Szczegóły",
+  [TranslationKeys.Description]: "Opis",
+  [TranslationKeys.LinkValidation]:
+    "Link musi zaczynać się od http:// lub https://",
 };

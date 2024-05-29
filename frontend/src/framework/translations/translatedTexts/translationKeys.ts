@@ -133,6 +133,7 @@ export enum TranslationKeys {
   DelteTaskWarning = "DelteTaskWarning",
   EditTask = "EditTask",
   TaskName = "TaskName",
+  Link = "Link",
   TaskImportant = "TaskImportant",
   NotifyMe = "NotifyMe",
   TaskMarkedAsFinishedWithDate = "TaskMarkedAsFinishedWithDate",
@@ -251,4 +252,6 @@ export enum TranslationKeys {
   Save = "Save",
   Cancel = "Cancel",
   Details = "Details",
+  Description = "Description",
+  LinkValidation = "LinkValidation",
 }

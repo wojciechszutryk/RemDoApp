@@ -151,7 +151,8 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.CurrentUsers]: "Users",
   [TranslationKeys.DelteTodoList]: "Delete todo list",
   [TranslationKeys.ReorderTasks]: "Reorder tasks",
-  [TranslationKeys.ErrorWhileReordering]: "There was an error while saving new order",
+  [TranslationKeys.ErrorWhileReordering]:
+    "There was an error while saving new order",
   [TranslationKeys.DelteTodoListWarning]:
     "Are you sure you want to delete this todo list? This action cannot be undone. All tasks in this list will be deleted.",
   [TranslationKeys.Other]: "Other",
@@ -192,6 +193,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.AddTask]: "Add task",
   [TranslationKeys.EditTask]: "Edit task",
   [TranslationKeys.TaskName]: "Task name",
+  [TranslationKeys.Link]: "Link",
   [TranslationKeys.TaskImportant]: "Important",
   [TranslationKeys.NotifyMe]: "Notify me",
   [TranslationKeys.DelteTaskWarning]:
@@ -308,4 +310,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Save]: "Save",
   [TranslationKeys.Cancel]: "Cancel",
   [TranslationKeys.Details]: "Details",
+  [TranslationKeys.Description]: "Description",
+  [TranslationKeys.LinkValidation]:
+    "Link should start with http:// or https://",
 };
