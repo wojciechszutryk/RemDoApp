@@ -26,15 +26,9 @@ export const StyledTodoListCard = styled(Card, {
 })<{
   withShakeAnimation?: boolean;
 }>(({ withShakeAnimation }) => ({
-  "@keyframes shake": {
-    "0%": { transform: "rotate(0deg)" },
-    "25%": { transform: "rotate(-1deg)" },
-    "75%": { transform: "rotate(1deg)" },
-    "100%": { transform: "rotate(0deg)" },
-  },
   display: "flex",
   flexDirection: "column",
-  animation: withShakeAnimation ? "shake 1s" : "unset",
+  animation: withShakeAnimation ? "shakeDeg 1s" : "unset",
   animationIterationCount: "infinite",
   boxShadow: "none",
   borderRadius: "20px",

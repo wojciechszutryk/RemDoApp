@@ -14,12 +14,6 @@ export const StyledWave = styled('div', {
   backgroundColor: theme.palette.secondary.light,
   overflow: "hidden",
 
-  "@keyframes wave": {
-    "0%": { transform: "translate(-50%, 0) rotateZ(0deg)" },
-    "50%": { transform: "translate(-50%, -2%) rotateZ(180deg)" },
-    "100%": { transform: "translate(-50%, 0%) rotateZ(360deg)" },
-  },
-
   "&:before, &:after": {
     content: '""',
     position: "absolute",

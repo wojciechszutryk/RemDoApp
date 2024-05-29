@@ -5,63 +5,6 @@ export const StyledCallendarWrapper = styled("div", {
     prop !== "contentAnimation" && prop !== "isLoading",
 })<{ contentAnimation?: string; isLoading?: boolean }>(
   ({ theme, contentAnimation, isLoading }) => ({
-    "@keyframes fadeIn": {
-      "0%": {
-        opacity: 0,
-      },
-      "100%": {
-        opacity: 1,
-      },
-    },
-    "@keyframes fadeInAlt": {
-      "0%": {
-        opacity: 0,
-      },
-      "100%": {
-        opacity: 1,
-      },
-    },
-    "@keyframes slideLeft": {
-      "0%": {
-        opacity: 0,
-        transform: "translateX(10%)",
-      },
-      "100%": {
-        opacity: 1,
-        transform: "translateX(0)",
-      },
-    },
-    "@keyframes slideLeftAlt": {
-      "0%": {
-        opacity: 0,
-        transform: "translateX(10%)",
-      },
-      "100%": {
-        opacity: 1,
-        transform: "translateX(0)",
-      },
-    },
-    "@keyframes slideRight": {
-      "0%": {
-        opacity: 0,
-        transform: "translateX(-10%)",
-      },
-      "100%": {
-        opacity: 1,
-        transform: "translateX(0)",
-      },
-    },
-
-    "@keyframes slideRightAlt": {
-      "0%": {
-        opacity: 0,
-        transform: "translateX(-10%)",
-      },
-      "100%": {
-        opacity: 1,
-        transform: "translateX(0)",
-      },
-    },
     width: "100vw",
     height: isLoading ? "calc(100vh - 100px)" : "calc(100vh - 80px)",
     overflow: isLoading ? "hidden" : "visible",
