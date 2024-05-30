@@ -1,3 +1,5 @@
+import { WeekdayStr } from "rrule";
+
 export type IBYMONTHDAY =
   | 1
   | 2
@@ -38,16 +40,12 @@ export type IBYMONTH = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 export type IEnderType = "never" | "count" | "date";
 
 export interface RecurranceFormCreatorFields {
-  FREQ: /** Yearly */
-  | "0"
-    /** Monthly */
-    | "1"
-    /** Weekly */
-    | "2"
-    /** Daily */
-    | "3";
   /**
-   * only for FREQ=DAILY or FREQ=WEEKLY or FREQ=MONTHLY - how often the event should occur
+   * YEARLY - 0 | MONTHLY - 1 | WEEKLY - 2 | DAILY - 3
+   */
+  FREQ: "0" | "1" | "2" | "3";
+  /**
+   * how often the event should occur
    * (every 3 days, every 2 weeks, etc.)
    */
   INTERVAL?: number;
@@ -65,9 +63,9 @@ export interface RecurranceFormCreatorFields {
    * only for FREQ=WEEKLY (optional) or FREQ=MONTHLY (monthlyType = 'weekDay')
    * or FREQ=YEARLY (yearlyType = 'weekDayOfMonths')
    *  - which days of the week or month the event should occur
-   * e.g. BYDAY=WE,TH or BYDAY=MO,WE,FR or BYDAY=MO
+   * e.g. BYDAY=[WE,TH] or BYDAY=[MO,WE,FR] or BYDAY=[MO]
    */
-  BYDAY?: string[];
+  BYDAY?: WeekdayStr[];
   /**
    * only for FREQ=YEARLY (both yearlyType = 'date' and yearlyType = 'weekDayOfMonths') - which months the event should occur
    */
