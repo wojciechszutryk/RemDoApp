@@ -11,6 +11,46 @@ interface Props<T extends object>
   Icon: JSX.Element;
   tooltipTitle: string;
 }
+/**
+ * modifiers of popper
+ * small screen: display over icon
+ * large screen: display under or above icon
+ */
+const modifiers =
+  window.innerHeight > 804
+    ? [
+        {
+          name: "flip",
+          enabled: true,
+          options: {
+            altBoundary: false,
+            rootBoundary: "viewport",
+            padding: 1,
+          },
+        },
+      ]
+    : [
+        {
+          name: "flip",
+          enabled: true,
+          options: {
+            altBoundary: false,
+            rootBoundary: "viewport",
+            padding: 1,
+          },
+        },
+        {
+          name: "preventOverflow",
+          enabled: true,
+          options: {
+            altAxis: true,
+            altBoundary: true,
+            tether: true,
+            rootBoundary: "viewport",
+            padding: 18,
+          },
+        },
+      ];
 
 function DateTimePickerWithIcon<T extends object>({
   Icon,
@@ -20,47 +60,6 @@ function DateTimePickerWithIcon<T extends object>({
   slotProps,
   ...props
 }: Props<T>) {
-  /**
-   * modifiers of popper
-   * small screen: display over icon
-   * large screen: display under or above icon
-   */
-  const modifiers =
-    window.innerHeight > 804
-      ? [
-          {
-            name: "flip",
-            enabled: true,
-            options: {
-              altBoundary: false,
-              rootBoundary: "viewport",
-              padding: 1,
-            },
-          },
-        ]
-      : [
-          {
-            name: "flip",
-            enabled: true,
-            options: {
-              altBoundary: false,
-              rootBoundary: "viewport",
-              padding: 1,
-            },
-          },
-          {
-            name: "preventOverflow",
-            enabled: true,
-            options: {
-              altAxis: true,
-              altBoundary: true,
-              tether: true,
-              rootBoundary: "viewport",
-              padding: 18,
-            },
-          },
-        ];
-
   return (
     <StyledDateTimePickerWrapper>
       <Tooltip title={tooltipTitle}>

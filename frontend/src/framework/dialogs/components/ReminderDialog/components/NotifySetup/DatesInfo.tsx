@@ -5,20 +5,20 @@ import { useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { IReminderDialog } from "../../models/reminderDialog.model";
 
+const options: Intl.DateTimeFormatOptions = {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+};
+
 const DatesInfo = (): JSX.Element => {
   const watch = useWatch<IReminderDialog>();
   const { t } = useTranslation();
 
   const startDate = watch["startDate"];
   const finishDate = watch["finishDate"];
-
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  };
 
   return (
     <>

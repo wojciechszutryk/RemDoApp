@@ -25,6 +25,7 @@ const CollaborantsDrawer = (): JSX.Element => {
 
   const location = useLocation();
   const navigate = useNavigate();
+
   const [open, onClose] = useAppDialogState(visible, () => {
     updateCollaborantsDrawer({ visible: false });
     if (location.pathname.includes(URL_COLLABORANTS))
