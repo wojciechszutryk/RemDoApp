@@ -4,20 +4,22 @@ import { Checkbox } from "atomicComponents/atoms/Checkbox";
 import { memo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import RecurranceForm from ".";
-import { ReccuranceFormValues } from "../../../models/taskDialog.model";
+import {
+  ITaskDialog,
+  ReccuranceFormValues,
+} from "../../../models/taskDialog.model";
 import DatesPickers from "../DatesPickers";
 
 const CollapsableReccuranceForm = (): JSX.Element => {
-  const watch = useWatch<ReccuranceFormValues>();
-  const isExpanded = watch["reccuranceEnabled"];
+  const { reccuranceEnabled, startDate } = useWatch<ITaskDialog>();
   const { setValue } = useFormContext<ReccuranceFormValues>();
 
   return (
     <DatesPickers>
       <StyledAccordion
-        expanded={isExpanded}
+        expanded={reccuranceEnabled}
         onChange={() => {
-          setValue("reccuranceEnabled", !isExpanded);
+          setValue("reccuranceEnabled", !reccuranceEnabled);
         }}
         disableGutters
         sx={{
@@ -28,8 +30,12 @@ const CollapsableReccuranceForm = (): JSX.Element => {
           },
         }}
       >
-        <AccordionSummary>
-          <Checkbox checked={!!isExpanded} defaultValue={""} />
+        <AccordionSummary disabled={!startDate}>
+          <Checkbox
+            checked={!!reccuranceEnabled}
+            defaultValue={""}
+            disabled={!startDate}
+          />
           {"Reccurance [add translation]"}
         </AccordionSummary>
         <AccordionDetails>
