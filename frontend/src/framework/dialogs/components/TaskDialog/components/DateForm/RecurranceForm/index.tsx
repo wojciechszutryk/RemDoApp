@@ -15,6 +15,18 @@ import {
   StyledReccuranceWrapper,
 } from "./styles";
 
+export const byDayOptionsValues = [
+  "SU",
+  "MO",
+  "TU",
+  "WE",
+  "TH",
+  "FR",
+  "SA",
+  "SA,SU",
+  "MO,TU,WE,TH,FR",
+] as WeekdayStr[];
+
 const RecurranceForm = (): JSX.Element => {
   const { t } = useTranslation();
   const watch = useWatch<ITaskDialog>();
@@ -38,20 +50,20 @@ const RecurranceForm = (): JSX.Element => {
 
   const byDayOptions = useMemo(
     () => [
-      { label: "Sunday", value: "SU" },
-      { label: "Monday", value: "MO" },
-      { label: "Tuesday", value: "TU" },
-      { label: "Wednesday", value: "WE" },
-      { label: "Thursday", value: "TH" },
-      { label: "Friday", value: "FR" },
-      { label: "Saturday", value: "SA" },
+      { label: 't("Sunday")', value: byDayOptionsValues[0] },
+      { label: 't("Monday")', value: byDayOptionsValues[1] },
+      { label: 't("Tuesday")', value: byDayOptionsValues[2] },
+      { label: 't("Wednesday")', value: byDayOptionsValues[3] },
+      { label: 't("Thursday")', value: byDayOptionsValues[4] },
+      { label: 't("Friday")', value: byDayOptionsValues[5] },
+      { label: 't("Saturday")', value: byDayOptionsValues[6] },
       {
-        label: "Weekend days",
-        value: "SA,SU",
+        label: 't("Weekend days")',
+        value: byDayOptionsValues[7],
       },
       {
-        label: "Weekdays",
-        value: "MO,TU,WE,TH,FR",
+        label: 't("Weekdays")',
+        value: byDayOptionsValues[8],
       },
     ],
     []

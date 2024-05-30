@@ -1,12 +1,15 @@
 import FlagCircleIcon from "@mui/icons-material/FlagCircle";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { WeekdayStr } from "rrule";
 import { ITaskDialog } from "../../models/taskDialog.model";
 import DateTimePickerWithIcon from "./DatePickerWithIcon";
+import { IBYMONTH, IBYMONTHDAY, IBYSETPOS } from "./RecurranceForm/model";
+import { byDayOptionsValues } from "./RecurranceForm";
 
 const DatesPickers = ({
   children,
@@ -14,9 +17,30 @@ const DatesPickers = ({
   children?: React.ReactNode;
 }): JSX.Element => {
   const watch = useWatch<ITaskDialog>();
-  const { control } = useFormContext<ITaskDialog>();
+  const { control, setValue } = useFormContext<ITaskDialog>();
   const { t } = useTranslation();
   const isReccuranceEnabled = watch["reccuranceEnabled"];
+
+  const onStartDateChange = useCallback(
+    (newDate: Dayjs | null) => {
+      if (!newDate) return;
+      const dayJsDate = dayjs(newDate);
+      const weekDay = dayJsDate.day();
+      const date = dayJsDate.date();
+      setValue(
+        "reccuranceFormValues.BYDAY",
+        byDayOptionsValues[weekDay].split(",") as WeekdayStr[]
+      );
+      const weekDayPos = Math.ceil(date / 7);
+      setValue("reccuranceFormValues.BYSETPOS", weekDayPos as IBYSETPOS);
+      setValue("reccuranceFormValues.BYMONTHDAY", date as IBYMONTHDAY);
+      setValue(
+        "reccuranceFormValues.BYMONTH",
+        (dayJsDate.month() + 1) as IBYMONTH
+      );
+    },
+    [setValue]
+  );
 
   return (
     <>
@@ -25,6 +49,12 @@ const DatesPickers = ({
         tooltipTitle={t(TranslationKeys.StartDate)}
         name={"startDate" as keyof ITaskDialog}
         control={control}
+        onChange={onStartDateChange}
+        slotProps={{
+          textField: {
+            error: false,
+          },
+        }}
         maxDateTime={dayjs(watch["finishDate"])}
       />
       {children}

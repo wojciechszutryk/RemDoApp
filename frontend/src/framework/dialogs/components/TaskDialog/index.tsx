@@ -52,7 +52,7 @@ const TaskDialog = (): JSX.Element => {
       text: editTaskData?.text || "",
       description: editTaskData?.description || "",
       link: editTaskData?.link,
-      startDate: editTaskData?.startDate,
+      startDate: editTaskData?.startDate || null,
       finishDate: editTaskData?.finishDate || null,
       minsAccordingToTimePoint:
         defaultSelectsValues?.minsAccordingToTimePoint || 15,
@@ -117,9 +117,57 @@ const TaskDialog = (): JSX.Element => {
   const onSubmit = (data: ITaskDialog) => {
     if (!data.notify) data.notifyDate = null;
 
-    if (editTaskData)
-      editTaskMutation.mutate({ todoListId, taskId: editTaskData.id, data });
-    else createTaskMutation.mutate({ todoListId, data });
+    const {
+      FREQ,
+      INTERVAL,
+      BYMONTHDAY,
+      BYSETPOS,
+      BYDAY,
+      BYMONTH,
+      COUNT,
+      endType,
+      monthlyType,
+      yearlyType,
+    } = data.reccuranceFormValues || {};
+
+    const recurrance =
+      data.reccuranceEnabled &&
+      data.reccuranceFormValues &&
+      data.startDate &&
+      FREQ
+        ? new RRule({
+            freq: parseInt(FREQ),
+            interval: INTERVAL,
+            bymonthday:
+              (FREQ === "1" && monthlyType === "day") ||
+              (FREQ === "0" && yearlyType === "date")
+                ? BYMONTHDAY
+                : undefined,
+            bysetpos:
+              (FREQ === "1" && monthlyType === "weekDay") ||
+              (FREQ === "0" && yearlyType === "weekDayOfMonths")
+                ? BYSETPOS
+                : undefined,
+            byweekday:
+              FREQ === "2" ||
+              (FREQ === "1" && monthlyType === "weekDay") ||
+              (FREQ === "0" && yearlyType === "weekDayOfMonths")
+                ? BYDAY
+                : undefined,
+            bymonth: FREQ === "0" ? BYMONTH : undefined,
+            count: endType === "count" ? COUNT : undefined,
+            until:
+              endType === "count" && data.finishDate
+                ? new Date(data.finishDate)
+                : undefined,
+            dtstart: new Date(data.startDate),
+          }).toString()
+        : null;
+    console.log("data", recurrance);
+
+    // if (editTaskData)
+    //   editTaskMutation.mutate({ todoListId, taskId: editTaskData.id, data });
+    // else createTaskMutation.mutate({ todoListId, data });
     onClose();
   };
 
