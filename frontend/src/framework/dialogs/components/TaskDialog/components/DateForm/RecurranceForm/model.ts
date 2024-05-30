@@ -39,11 +39,17 @@ export type IBYMONTH = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
 export type IEnderType = "never" | "count" | "date";
 
+export type IFreq = "0" | "1" | "2" | "3";
+
+export type IMonthlyType = "day" | "weekDay";
+
+export type IYearlyType = "date" | "weekDayOfMonths";
+
 export interface RecurranceFormCreatorFields {
   /**
    * YEARLY - 0 | MONTHLY - 1 | WEEKLY - 2 | DAILY - 3
    */
-  FREQ: "0" | "1" | "2" | "3";
+  FREQ: IFreq;
   /**
    * how often the event should occur
    * (every 3 days, every 2 weeks, etc.)
@@ -85,7 +91,7 @@ export interface RecurranceFormCreatorFields {
    * day: on the 12th of every month
    * weekDay: on the second Tuesday of every month
    */
-  monthlyType?: "day" | "weekDay";
+  monthlyType?: IMonthlyType;
 
   /**
    * Do not include in rrule
@@ -93,5 +99,5 @@ export interface RecurranceFormCreatorFields {
    * date: on the 12th of March every year
    * weekDayOfMonths: on the second Tuesday of March every year
    */
-  yearlyType?: "date" | "weekDayOfMonths";
+  yearlyType?: IYearlyType;
 }

@@ -1,12 +1,14 @@
+import { SelectChangeEvent } from "@mui/material";
 import { ControlledDateTimePicker } from "atomicComponents/molecules/ControlledDateTimePicker";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { ControlledSelect } from "atomicComponents/molecules/ControlledSelect";
 import { dayjs } from "framework/dayjs";
-import { memo, useEffect, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { WeekdayStr } from "rrule";
 import { ITaskDialog } from "../../../models/taskDialog.model";
-import { IBYMONTH, IBYMONTHDAY, IBYSETPOS } from "./model";
+import { IBYMONTH, IBYMONTHDAY, IBYSETPOS, IFreq } from "./model";
 import {
   StyledIntervalWrapper,
   StyledReccuranceRow,
@@ -66,52 +68,41 @@ const RecurranceForm = (): JSX.Element => {
       )
     : Array.from({ length: 28 }, (_, i) => (i + 1).toString());
 
-  useEffect(() => {
-    const dtStart = dayjs(DTSTART);
-    if (!dtStart.isValid()) return;
+  const onFreqChange = useCallback(
+    (e: SelectChangeEvent<unknown>) => {
+      const newFreq = e.target.value as IFreq;
 
-    if (FREQ === "2") {
-      const weekDay = dtStart.day();
-      setValue(
-        "reccuranceFormValues.BYDAY",
-        byDayOptions[weekDay].value.split(",")
-      );
-    } else if (FREQ === "1" && monthlyType === "weekDay") {
-      const weekDay = dtStart.day();
-      const weekDayPos = Math.ceil(dtStart.date() / 7);
-      setValue("reccuranceFormValues.BYSETPOS", weekDayPos as IBYSETPOS);
-      setValue(
-        "reccuranceFormValues.BYDAY",
-        byDayOptions[weekDay].value.split(",")
-      );
-    } else if (FREQ === "1" && monthlyType === "day") {
-      setValue(
-        "reccuranceFormValues.BYMONTHDAY",
-        dtStart.date() as IBYMONTHDAY
-      );
-    } else if (FREQ === "0" && yearlyType === "weekDayOfMonths") {
-      const weekDay = dtStart.day();
-      const weekDayPos = Math.ceil(dtStart.date() / 7);
-      setValue("reccuranceFormValues.BYSETPOS", weekDayPos as IBYSETPOS);
-      setValue(
-        "reccuranceFormValues.BYDAY",
-        byDayOptions[weekDay].value.split(",")
-      );
-      setValue(
-        "reccuranceFormValues.BYMONTH",
-        (dtStart.month() + 1) as IBYMONTH
-      );
-    } else if (FREQ === "0" && yearlyType === "date") {
-      setValue(
-        "reccuranceFormValues.BYMONTH",
-        (dtStart.month() + 1) as IBYMONTH
-      );
-      setValue(
-        "reccuranceFormValues.BYMONTHDAY",
-        dtStart.date() as IBYMONTHDAY
-      );
-    }
-  }, [FREQ, monthlyType, yearlyType, endType, DTSTART, setValue, byDayOptions]);
+      if (newFreq === "3") {
+        return;
+      } else if (newFreq === "2") {
+        const weekDay = dayjs(DTSTART).day();
+        setValue(
+          "reccuranceFormValues.BYDAY",
+          byDayOptions[weekDay].value.split(",") as WeekdayStr[]
+        );
+      } else {
+        const weekDay = dayjs(DTSTART).day();
+        const weekDayPos = Math.ceil(dayjs(DTSTART).date() / 7);
+        setValue("reccuranceFormValues.BYSETPOS", weekDayPos as IBYSETPOS);
+        setValue(
+          "reccuranceFormValues.BYDAY",
+          byDayOptions[weekDay].value.split(",") as WeekdayStr[]
+        );
+        setValue(
+          "reccuranceFormValues.BYMONTHDAY",
+          dayjs(DTSTART).date() as IBYMONTHDAY
+        );
+
+        if (newFreq === "0") {
+          setValue(
+            "reccuranceFormValues.BYMONTH",
+            (dayjs(DTSTART).month() + 1) as IBYMONTH
+          );
+        }
+      }
+    },
+    [DTSTART, byDayOptions, setValue]
+  );
 
   return (
     <StyledReccuranceWrapper>
@@ -124,6 +115,7 @@ const RecurranceForm = (): JSX.Element => {
           { label: "Monthly", value: "1" },
           { label: "Yearly", value: "0" },
         ]}
+        onChange={onFreqChange}
         control={control}
         name={"reccuranceFormValues.FREQ"}
       />
