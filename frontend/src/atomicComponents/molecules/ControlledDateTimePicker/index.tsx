@@ -25,7 +25,6 @@ export const ControlledDateTimePicker = <
   name,
   ...props
 }: ControlledDateTimePickerProps<TFieldValues, TName>): JSX.Element => {
-
   return (
     <Controller
       control={control}
@@ -33,9 +32,14 @@ export const ControlledDateTimePicker = <
       render={({ field: { ref, onChange, value } }) => (
         <DateTimePicker
           {...props}
-          onChange={(date) =>
-            onChange(date?.toDate() as PathValue<TFieldValues, TName>)
-          }
+          onChange={(date, ctx) => {
+            onChange(date?.toDate() as PathValue<TFieldValues, TName>);
+            if (props.onChange)
+              props.onChange(
+                date?.toDate() as PathValue<TFieldValues, TName>,
+                ctx
+              );
+          }}
           value={dayjs(value)}
           inputRef={ref}
         />
