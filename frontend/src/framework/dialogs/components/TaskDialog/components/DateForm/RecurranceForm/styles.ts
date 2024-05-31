@@ -28,8 +28,13 @@ export const StyledReccuranceRow = styled("div")({
   justifyContent: "space-between",
   alignItems: "center",
   gap: 5,
+  flexWrap: "wrap",
   "& > div": {
+    width: "48%",
     minWidth: "unset",
+  },
+  "& > div:nth-of-type(3)": {
+    width: "100%",
   },
 });
 

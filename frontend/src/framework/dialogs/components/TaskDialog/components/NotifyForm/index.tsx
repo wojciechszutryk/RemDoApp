@@ -26,6 +26,8 @@ import { StyledNotifyInputsWrapper } from "./styles";
 
 interface Props<TFormValues extends FieldValues> {
   control: Control<TFormValues, any>;
+
+  noDateWarning?: boolean;
 }
 
 const NotifyForm = <
@@ -33,6 +35,7 @@ const NotifyForm = <
   TFieldValues extends TFormValues
 >({
   control,
+  noDateWarning,
 }: Props<TFieldValues>): JSX.Element => {
   const { t } = useTranslation();
   const {
@@ -65,7 +68,7 @@ const NotifyForm = <
 
   return (
     <StyledNotifyInputsWrapper>
-      <DatesInfo />
+      <DatesInfo noDateWarning={noDateWarning} />
       <Controller
         control={control}
         name={"minsAccordingToTimePoint" as Path<TFieldValues>}

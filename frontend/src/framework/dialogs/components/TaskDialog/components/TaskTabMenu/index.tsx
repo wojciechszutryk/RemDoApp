@@ -27,8 +27,8 @@ const TaskTabMenu = ({ control }: Props): JSX.Element => {
     <>
       <StyledTabsWrapper>
         <Tabs value={tabIndex} onChange={handleChangeTabIndex}>
-          <Tab label={"DETAILS"} value={0} id={"DETAILS"} />
-          <Tab label={"DATES"} value={1} id={"Dates"} />
+          <Tab label={t(TranslationKeys.Details)} value={0} id={"DETAILS"} />
+          <Tab label={t(TranslationKeys.Date)} value={1} id={"Dates"} />
           <Tab label={t(TranslationKeys.NotifyMe)} value={2} id={"Notify"} />
         </Tabs>
       </StyledTabsWrapper>
@@ -45,7 +45,7 @@ const TaskTabMenu = ({ control }: Props): JSX.Element => {
         )}
         {tabIndex === 2 && (
           <TabWrapper activeIndex={tabIndex} tabIndex={2}>
-            <NotifyForm control={control} />
+            <NotifyForm control={control} noDateWarning />
           </TabWrapper>
         )}
       </ResizableWrapper>

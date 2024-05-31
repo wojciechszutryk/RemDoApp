@@ -163,7 +163,11 @@ const TaskDialog = (): JSX.Element => {
             dtstart: new Date(data.startDate),
           }).toString()
         : null;
-    console.log("data", recurrance);
+
+    //validate reccurance fields:
+    // each min 1
+    // date specified when end = 'date'
+    // count specified when end = 'count' and count > 0
 
     // if (editTaskData)
     //   editTaskMutation.mutate({ todoListId, taskId: editTaskData.id, data });

@@ -8,8 +8,8 @@ import { useTranslation } from "react-i18next";
 import { WeekdayStr } from "rrule";
 import { ITaskDialog } from "../../models/taskDialog.model";
 import DateTimePickerWithIcon from "./DatePickerWithIcon";
-import { IBYMONTH, IBYMONTHDAY, IBYSETPOS } from "./RecurranceForm/model";
 import { byDayOptionsValues } from "./RecurranceForm";
+import { IBYMONTH, IBYMONTHDAY, IBYSETPOS } from "./RecurranceForm/model";
 
 const DatesPickers = ({
   children,
@@ -32,7 +32,10 @@ const DatesPickers = ({
         byDayOptionsValues[weekDay].split(",") as WeekdayStr[]
       );
       const weekDayPos = Math.ceil(date / 7);
-      setValue("reccuranceFormValues.BYSETPOS", weekDayPos as IBYSETPOS);
+      setValue(
+        "reccuranceFormValues.BYSETPOS",
+        weekDayPos > 4 ? -1 : (weekDayPos as IBYSETPOS)
+      );
       setValue("reccuranceFormValues.BYMONTHDAY", date as IBYMONTHDAY);
       setValue(
         "reccuranceFormValues.BYMONTH",

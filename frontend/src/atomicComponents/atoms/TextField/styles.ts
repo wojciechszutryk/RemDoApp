@@ -10,6 +10,11 @@ export const StyledTextField = styled(TextField, {
   borderRadius: theme.spacing(3),
   color: theme.palette.primary.contrastText,
 
+  "& > label": {
+    left: -10,
+    top: -8,
+  },
+
   "& .MuiInputBase-root": { paddingRight: 0 },
 
   "& > .Mui-error:before": {
