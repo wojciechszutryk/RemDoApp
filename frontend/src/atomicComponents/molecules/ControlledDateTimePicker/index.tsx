@@ -7,6 +7,7 @@ import {
   FieldPath,
   FieldValues,
   PathValue,
+  RegisterOptions,
 } from "react-hook-form";
 
 export interface ControlledDateTimePickerProps<
@@ -15,6 +16,12 @@ export interface ControlledDateTimePickerProps<
 > extends Omit<DateTimePickerProps<Dayjs>, "name"> {
   control?: Control<TFieldValues, any> | undefined;
   name: TName;
+  rules?:
+    | Omit<
+        RegisterOptions<TFieldValues, TName>,
+        "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
+      >
+    | undefined;
 }
 
 export const ControlledDateTimePicker = <
@@ -23,12 +30,14 @@ export const ControlledDateTimePicker = <
 >({
   control,
   name,
+  rules,
   ...props
 }: ControlledDateTimePickerProps<TFieldValues, TName>): JSX.Element => {
   return (
     <Controller
       control={control}
       name={name}
+      rules={rules}
       render={({ field: { ref, onChange, value } }) => (
         <DateTimePicker
           {...props}
