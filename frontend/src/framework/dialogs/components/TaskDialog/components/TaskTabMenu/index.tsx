@@ -1,9 +1,10 @@
-import { Tab, Tabs } from "@mui/material";
+import { Tabs } from "@mui/material";
 import ResizableWrapper from "atomicComponents/atoms/ResizableWrapper";
+import Tab from "atomicComponents/atoms/Tab";
 import { StyledTabsWrapper } from "framework/dialogs/components/CollaborantsDrawer/styles";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { memo, useState } from "react";
-import { Control } from "react-hook-form";
+import { Control, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ITaskDialog } from "../../models/taskDialog.model";
 import CollapsableReccuranceForm from "../DateForm/RecurranceForm/CollapsableReccuranceForm";
@@ -18,6 +19,9 @@ interface Props {
 const TaskTabMenu = ({ control }: Props): JSX.Element => {
   const [tabIndex, setTabIndex] = useState<number | null>(null);
   const { t } = useTranslation();
+  const {
+    formState: { errors },
+  } = useFormContext<ITaskDialog>();
 
   const handleChangeTabIndex = (_: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
@@ -27,8 +31,21 @@ const TaskTabMenu = ({ control }: Props): JSX.Element => {
     <>
       <StyledTabsWrapper>
         <Tabs value={tabIndex} onChange={handleChangeTabIndex}>
-          <Tab label={t(TranslationKeys.Details)} value={0} id={"DETAILS"} />
-          <Tab label={t(TranslationKeys.Date)} value={1} id={"Dates"} />
+          <Tab
+            label={t(TranslationKeys.Details)}
+            value={0}
+            id={"DETAILS"}
+            error={!!errors.link?.message}
+          />
+          <Tab
+            label={t(TranslationKeys.Date)}
+            value={1}
+            id={"Dates"}
+            error={
+              !!errors.finishDate?.message ||
+              !!errors.reccuranceFormValues?.COUNT?.message
+            }
+          />
           <Tab label={t(TranslationKeys.NotifyMe)} value={2} id={"Notify"} />
         </Tabs>
       </StyledTabsWrapper>

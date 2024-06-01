@@ -22,7 +22,7 @@ const DisplayNameChangeForm = (): JSX.Element => {
 
   const onSubmit = () => {
     if (displayName?.length === 0 || !displayName) {
-      setError(t(TranslationKeys.DisplayNameRequired));
+      setError(t(TranslationKeys.FieldRequired) as string);
       return;
     }
 
@@ -30,7 +30,10 @@ const DisplayNameChangeForm = (): JSX.Element => {
       { displayName },
       {
         onSuccess: () => {
-          setSnackbar({ message: t(TranslationKeys.DispalyNameChanged), userData: currentUser });
+          setSnackbar({
+            message: t(TranslationKeys.DispalyNameChanged),
+            userData: currentUser,
+          });
         },
         onError: (error) => {
           setSnackbar({

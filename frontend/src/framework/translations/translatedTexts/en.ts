@@ -3,6 +3,7 @@ import { TranslationKeys } from "./translationKeys";
 export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.PageTitleMain]: "RemDo",
   [TranslationKeys.FieldRequired]: "* Required",
+  [TranslationKeys.NumberMustBePositive]: "* Value must be positive",
 
   [TranslationKeys.NoAccess]: "You are not allowed to access this resources.",
   [TranslationKeys.NoValidTokenInfo]:
@@ -60,7 +61,6 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.GoogleSignIn]: "google",
   [TranslationKeys.EmailRequired]: "email required",
   [TranslationKeys.DisplayNameRequired]: "name required",
-  [TranslationKeys.PasswordRequired]: "password required",
   [TranslationKeys.WrongPassword]: "wrong password",
   [TranslationKeys.PasswordsNoMatch]: "passwords don't match",
   [TranslationKeys.LoginSuccess]: "Logged in successfully.",

@@ -1,6 +1,7 @@
 export enum TranslationKeys {
   PageTitleMain = "PageTitle",
   FieldRequired = "FieldRequired",
+  NumberMustBePositive = "NumberMustBePositive",
 
   PageTitleHome = "PageTitleHome",
   PageTitleSignIn = "PageTitleSignIn",
@@ -43,7 +44,6 @@ export enum TranslationKeys {
   UserIntegratedWithGoogle = "UserIntegratedWithGoogle",
   EmailRequired = "EmailRequired",
   DisplayNameRequired = "DisplayNameRequired",
-  PasswordRequired = "PasswordRequired",
   WrongPassword = "WrongPassword",
   PasswordsNoMatch = "PasswordsNoMatch",
   LoginSuccess = "LoginSuccess",

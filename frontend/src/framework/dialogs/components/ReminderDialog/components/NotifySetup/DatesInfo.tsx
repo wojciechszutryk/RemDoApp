@@ -28,11 +28,14 @@ const DatesInfo = ({
     <>
       {noDateWarning && !startDate && !finishDate ? (
         <Typography mb={1} textAlign={"center"}>
-          {t(TranslationKeys.NoStartDate)}
+          {t(TranslationKeys.NoDate)}
         </Typography>
       ) : null}
       {startDate ? (
-        <Typography sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Typography
+          mb={1}
+          sx={{ display: "flex", justifyContent: "space-between" }}
+        >
           <span>{t(TranslationKeys.StartDate)}:</span>
           <strong style={{ fontWeight: 800 }}>
             {new Date(startDate).toLocaleString("pl-PL", options)}
@@ -40,7 +43,10 @@ const DatesInfo = ({
         </Typography>
       ) : null}
       {finishDate && (
-        <Typography sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Typography
+          mb={1}
+          sx={{ display: "flex", justifyContent: "space-between" }}
+        >
           <span>{t(TranslationKeys.FinishDate)}:</span>
           <strong style={{ fontWeight: 800 }}>
             {new Date(finishDate).toLocaleString("pl-PL", options)}

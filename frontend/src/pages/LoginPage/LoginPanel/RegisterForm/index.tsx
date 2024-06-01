@@ -36,27 +36,16 @@ const RegisterContent = ({
   } = useForm<IRegisterFormValues>({ defaultValues: { email: defaultEmail } });
 
   const onSubmit = (data: IRegisterFormValues) => {
-    if (!data.email) {
-      setError("email", { message: t(TranslationKeys.EmailRequired) });
-      return;
-    }
+    const missingFieldName = Object.keys(data).find(
+      (key) => !data[key as keyof IRegisterFormValues]
+    );
 
-    if (!data.displayName) {
-      setError("displayName", {
-        message: t(TranslationKeys.DisplayNameRequired),
+    if (missingFieldName) {
+      setError(missingFieldName as keyof IRegisterFormValues, {
+        message: t(TranslationKeys.FieldRequired),
       });
       return;
     }
-
-    if (!data.password) {
-      setError("password", { message: t(TranslationKeys.PasswordRequired) });
-      return;
-    }
-
-    if (!data.passwordRepeat)
-      setError("passwordRepeat", {
-        message: t(TranslationKeys.PasswordRequired),
-      });
 
     if (data.password !== data.passwordRepeat) {
       setError("passwordRepeat", {
@@ -87,6 +76,8 @@ const RegisterContent = ({
       <ControlledTextField
         name={"displayName"}
         control={control}
+        error={!!errors.displayName?.message}
+        helperText={errors.displayName?.message}
         placeholder={t(TranslationKeys.DisplayName)}
       />
       <ControlledTextField

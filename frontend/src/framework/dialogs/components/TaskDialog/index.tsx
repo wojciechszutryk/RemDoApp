@@ -108,6 +108,7 @@ const TaskDialog = (): JSX.Element => {
 
   const methods = useForm<ITaskDialog>({
     defaultValues: getDefaultFormValues(),
+    mode: "onSubmit",
   });
 
   const createTaskMutation = useCreateTaskMutation();

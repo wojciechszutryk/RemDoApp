@@ -30,16 +30,15 @@ export const byDayOptionsValues = [
 
 const RecurranceForm = (): JSX.Element => {
   const { t } = useTranslation();
-  const watch = useWatch<ITaskDialog>();
-  const { control, setValue } = useFormContext<ITaskDialog>();
-
-  const watchFields = watch.reccuranceFormValues;
-
-  const FREQ = watchFields?.FREQ;
-  const monthlyType = watchFields?.monthlyType;
-  const yearlyType = watchFields?.yearlyType;
-  const endType = watchFields?.endType;
-  const DTSTART = watch.startDate;
+  const { reccuranceFormValues, startDate, finishDate } =
+    useWatch<ITaskDialog>();
+  const { FREQ, monthlyType, yearlyType, endType, COUNT } =
+    reccuranceFormValues || {};
+  const {
+    control,
+    setValue,
+    formState: { errors },
+  } = useFormContext<ITaskDialog>();
 
   const bySetPosOptions = [
     { label: t(TranslationKeys.First), value: "1" },
@@ -88,8 +87,8 @@ const RecurranceForm = (): JSX.Element => {
     [t]
   );
 
-  const byMonthDayOptions = DTSTART
-    ? Array.from({ length: dayjs(DTSTART).daysInMonth() }, (_, i) =>
+  const byMonthDayOptions = startDate
+    ? Array.from({ length: dayjs(startDate).daysInMonth() }, (_, i) =>
         (i + 1).toString()
       )
     : Array.from({ length: 28 }, (_, i) => (i + 1).toString());
@@ -101,14 +100,14 @@ const RecurranceForm = (): JSX.Element => {
       if (newFreq === "3") {
         return;
       } else if (newFreq === "2") {
-        const weekDay = dayjs(DTSTART).day();
+        const weekDay = dayjs(startDate).day();
         setValue(
           "reccuranceFormValues.BYDAY",
           byDayOptions[weekDay].value.split(",") as WeekdayStr[]
         );
       } else {
-        const weekDay = dayjs(DTSTART).day();
-        const weekDayPos = Math.ceil(dayjs(DTSTART).date() / 7);
+        const weekDay = dayjs(startDate).day();
+        const weekDayPos = Math.ceil(dayjs(startDate).date() / 7);
         setValue(
           "reccuranceFormValues.BYSETPOS",
           weekDayPos > 4 ? -1 : (weekDayPos as IBYSETPOS)
@@ -119,19 +118,21 @@ const RecurranceForm = (): JSX.Element => {
         );
         setValue(
           "reccuranceFormValues.BYMONTHDAY",
-          dayjs(DTSTART).date() as IBYMONTHDAY
+          dayjs(startDate).date() as IBYMONTHDAY
         );
 
         if (newFreq === "0") {
           setValue(
             "reccuranceFormValues.BYMONTH",
-            (dayjs(DTSTART).month() + 1) as IBYMONTH
+            (dayjs(startDate).month() + 1) as IBYMONTH
           );
         }
       }
     },
-    [DTSTART, byDayOptions, setValue]
+    [startDate, byDayOptions, setValue]
   );
+
+  console.log(!!(COUNT && COUNT < 0));
 
   return (
     <StyledReccuranceWrapper>
@@ -293,6 +294,14 @@ const RecurranceForm = (): JSX.Element => {
             type="number"
             defaultValue={1}
             name={"reccuranceFormValues.COUNT"}
+            rules={{
+              min: {
+                value: 0,
+                message: t(TranslationKeys.NumberMustBePositive),
+              },
+            }}
+            error={!!errors.reccuranceFormValues?.COUNT?.message}
+            helperText={errors.reccuranceFormValues?.COUNT?.message}
           />
         </>
       ) : null}
@@ -301,10 +310,17 @@ const RecurranceForm = (): JSX.Element => {
         <ControlledDateTimePicker
           control={control}
           name={"finishDate"}
-          minDateTime={dayjs(watch["startDate"])}
+          minDateTime={dayjs(startDate)}
+          rules={{
+            required: {
+              value: endType === "date" && !finishDate,
+              message: t(TranslationKeys.FieldRequired),
+            },
+          }}
           slotProps={{
             textField: {
-              error: false,
+              error: !!errors.finishDate?.message,
+              helperText: errors.finishDate?.message,
             },
           }}
         />
