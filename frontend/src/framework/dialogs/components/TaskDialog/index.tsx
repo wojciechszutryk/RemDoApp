@@ -11,7 +11,7 @@ import { useEditTaskInTodoListMutation } from "pages/SingleTodoListPage/mutation
 import { memo, useEffect, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { RRule, rrulestr } from "rrule";
+import { RRule, Weekday, WeekdayStr, rrulestr } from "rrule";
 import { StyledForm } from "../TodoListDialog/styles";
 import {
   IBYMONTH,
@@ -47,7 +47,8 @@ const TaskDialog = (): JSX.Element => {
 
   const getDefaultFormValues = () => {
     const reccuranceEnabled =
-      !!editTaskData?.recurrance && editTaskData?.recurrance.length > 0;
+      !!editTaskData?.recurrance && !!editTaskData?.recurrance;
+
     const defaultFormValues: ITaskDialog = {
       text: editTaskData?.text || "",
       description: editTaskData?.description || "",
@@ -64,43 +65,58 @@ const TaskDialog = (): JSX.Element => {
       reccuranceEnabled,
     };
 
-    if (!reccuranceEnabled) {
-      defaultFormValues.reccuranceFormValues = {
-        FREQ: "1" as const,
-        monthlyType: "day" as const,
-        yearlyType: "date" as const,
-        endType: "date" as const,
-      };
-    } else {
-      const reccuranceObj = rrulestr(editTaskData?.recurrance!, {
+    if (reccuranceEnabled) {
+      // we know that reccurance is not null as we checked it in the if statement
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const reccuranceObj = rrulestr(editTaskData.recurrance!, {
         forceset: false,
       }) as RRule;
+
+      console.log(
+        "byweekday",
+        reccuranceObj.origOptions?.byweekday,
+        (reccuranceObj.origOptions?.byweekday as Weekday)
+          ? Array.isArray(reccuranceObj.origOptions.byweekday)
+            ? reccuranceObj.origOptions.byweekday
+            : [reccuranceObj.origOptions.byweekday]
+          : ""
+      );
+
       defaultFormValues.reccuranceFormValues = {
         DTSTART:
           reccuranceObj.options.dtstart?.toISOString() ||
           new Date().toISOString(),
         INTERVAL: reccuranceObj.options.interval || 1,
-        BYMONTH: reccuranceObj.options.bymonth[0] as IBYMONTH,
-        BYMONTHDAY: reccuranceObj.options.bymonthday[0] as IBYMONTHDAY,
-        BYSETPOS: reccuranceObj.options.bysetpos[0] as IBYSETPOS,
-        BYDAY: reccuranceObj.origOptions?.byweekday
+        BYMONTH: reccuranceObj.options.bymonth?.[0] as IBYMONTH,
+        BYMONTHDAY: reccuranceObj.options.bymonthday?.[0] as IBYMONTHDAY,
+        BYSETPOS: reccuranceObj.options.bysetpos?.[0] as IBYSETPOS,
+        COUNT: reccuranceObj.options.count || 1,
+        BYDAY: (reccuranceObj.origOptions?.byweekday as Weekday)
           ? Array.isArray(reccuranceObj.origOptions.byweekday)
             ? reccuranceObj.origOptions.byweekday
             : [reccuranceObj.origOptions.byweekday]
-          : [],
+          : "",
         endType: (reccuranceObj.options.count
           ? "count"
           : reccuranceObj.options.until
           ? "date"
           : "never") as IEnderType,
         FREQ: reccuranceObj.options.freq.toString() as "1" | "0" | "2" | "3",
-        monthlyType: reccuranceObj.options.bymonthday ? "day" : "weekDay",
-        yearlyType: reccuranceObj.options.bymonthday
-          ? "date"
-          : "weekDayOfMonths",
+        monthlyType: reccuranceObj.options?.byweekday ? "weekDay" : "day",
+        yearlyType: reccuranceObj.options?.bysetpos
+          ? "weekDayOfMonths"
+          : "date",
       };
+
       defaultFormValues.startDate = reccuranceObj.options.dtstart;
       defaultFormValues.finishDate = reccuranceObj.options.until;
+    } else {
+      defaultFormValues.reccuranceFormValues = {
+        FREQ: "1" as const,
+        monthlyType: "day" as const,
+        yearlyType: "date" as const,
+        endType: "date" as const,
+      };
     }
 
     return defaultFormValues;
@@ -115,9 +131,8 @@ const TaskDialog = (): JSX.Element => {
   const editTaskMutation = useEditTaskInTodoListMutation();
   const { t } = useTranslation();
 
-  const onSubmit = (data: ITaskDialog) => {
-    if (!data.notify) data.notifyDate = null;
-
+  const onSubmit = (formValues: ITaskDialog) => {
+    debugger;
     const {
       FREQ,
       INTERVAL,
@@ -129,50 +144,59 @@ const TaskDialog = (): JSX.Element => {
       endType,
       monthlyType,
       yearlyType,
-    } = data.reccuranceFormValues || {};
+    } = formValues.reccuranceFormValues || {};
 
-    const recurrance =
-      data.reccuranceEnabled &&
-      data.reccuranceFormValues &&
-      data.startDate &&
-      FREQ
-        ? new RRule({
-            freq: parseInt(FREQ),
-            interval: INTERVAL,
-            bymonthday:
-              (FREQ === "1" && monthlyType === "day") ||
-              (FREQ === "0" && yearlyType === "date")
-                ? BYMONTHDAY
-                : undefined,
-            bysetpos:
-              (FREQ === "1" && monthlyType === "weekDay") ||
-              (FREQ === "0" && yearlyType === "weekDayOfMonths")
-                ? BYSETPOS
-                : undefined,
-            byweekday:
-              FREQ === "2" ||
-              (FREQ === "1" && monthlyType === "weekDay") ||
-              (FREQ === "0" && yearlyType === "weekDayOfMonths")
-                ? BYDAY
-                : undefined,
-            bymonth: FREQ === "0" ? BYMONTH : undefined,
-            count: endType === "count" ? COUNT : undefined,
-            until:
-              endType === "count" && data.finishDate
-                ? new Date(data.finishDate)
-                : undefined,
-            dtstart: new Date(data.startDate),
-          }).toString()
-        : null;
+    const data = {
+      ...formValues,
+      recurrance:
+        formValues.reccuranceEnabled &&
+        formValues.reccuranceFormValues &&
+        formValues.startDate &&
+        FREQ
+          ? new RRule({
+              freq: parseInt(FREQ),
+              interval: INTERVAL,
+              bymonthday:
+                (FREQ === "1" && monthlyType === "day") ||
+                (FREQ === "0" && yearlyType === "date")
+                  ? BYMONTHDAY
+                  : undefined,
+              bysetpos:
+                (FREQ === "1" && monthlyType === "weekDay") ||
+                (FREQ === "0" && yearlyType === "weekDayOfMonths")
+                  ? BYSETPOS
+                  : undefined,
+              byweekday:
+                FREQ === "2" ||
+                (FREQ === "1" && monthlyType === "weekDay") ||
+                (FREQ === "0" && yearlyType === "weekDayOfMonths")
+                  ? BYDAY?.split(",").map((day) =>
+                      Weekday.fromStr(day as WeekdayStr)
+                    )
+                  : undefined,
+              bymonth: FREQ === "0" ? BYMONTH : undefined,
+              count: endType === "count" ? COUNT : undefined,
+              until:
+                endType === "date" && formValues.finishDate
+                  ? new Date(formValues.finishDate)
+                  : undefined,
+              dtstart: new Date(formValues.startDate),
+            }).toString()
+          : null,
+      notifyDate: formValues.notify ? formValues.notifyDate : null,
+    };
 
-    //validate reccurance fields:
-    // each min 1
-    // date specified when end = 'date'
-    // count specified when end = 'count' and count > 0
-
-    // if (editTaskData)
-    //   editTaskMutation.mutate({ todoListId, taskId: editTaskData.id, data });
-    // else createTaskMutation.mutate({ todoListId, data });
+    if (editTaskData)
+      editTaskMutation.mutate({
+        todoListId,
+        taskId: editTaskData.id,
+        data,
+      });
+    else
+      createTaskMutation.mutate({
+        todoListId,
+        data,
+      });
     onClose();
   };
 
