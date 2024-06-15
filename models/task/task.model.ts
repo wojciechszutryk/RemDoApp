@@ -23,7 +23,7 @@ export interface ITask {
   important?: boolean;
 
   /** Recurrence of task - applied only for reminders - RRULE format */
-  recurrance?: string[];
+  recurrance?: string | null;
 }
 
 export interface ITaskWithReadonlyProperties extends ITask {

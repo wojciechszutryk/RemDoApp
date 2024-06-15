@@ -27,7 +27,7 @@ const TaskSchema = new mongoose.Schema({
     required: false,
   },
   recurrance: {
-    type: Boolean,
+    type: String,
     required: false,
   },
   todoListId: {

@@ -113,7 +113,7 @@ export class GoogleEventService {
       name: event.summary || "",
       startDate,
       finishDate,
-      recurrance: event.recurrence || undefined,
+      recurrance: event.recurrence?.[0] || undefined,
       todoListId: `google-${event.id}`,
       taskId: `google-${event.id}`,
       creator: event.creator?.self ? currentUser : (event.creator as any),
@@ -150,7 +150,7 @@ export class GoogleEventService {
         displayName: owner.displayName,
         responseStatus: "accepted",
       })),
-      recurrence: reminder.recurrance,
+      recurrence: reminder.recurrance ? [reminder.recurrance] : undefined,
     };
   }
 }
