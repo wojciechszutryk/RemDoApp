@@ -100,7 +100,7 @@ const RecurranceForm = (): JSX.Element => {
         return;
       } else if (newFreq === "2") {
         const weekDay = dayjs(startDate).day();
-        setValue("reccuranceFormValues.BYDAY", byDayOptions[weekDay].value);
+        setValue("reccuranceFormValues.BYDAY", [byDayOptions[weekDay].value]);
       } else {
         const weekDay = dayjs(startDate).day();
         const weekDayPos = Math.ceil(dayjs(startDate).date() / 7);
@@ -108,7 +108,7 @@ const RecurranceForm = (): JSX.Element => {
           "reccuranceFormValues.BYSETPOS",
           weekDayPos > 4 ? -1 : (weekDayPos as IBYSETPOS)
         );
-        setValue("reccuranceFormValues.BYDAY", byDayOptions[weekDay].value);
+        setValue("reccuranceFormValues.BYDAY", [byDayOptions[weekDay].value]);
         setValue(
           "reccuranceFormValues.BYMONTHDAY",
           dayjs(startDate).date() as IBYMONTHDAY

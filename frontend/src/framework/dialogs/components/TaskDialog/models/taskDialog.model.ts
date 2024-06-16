@@ -9,9 +9,7 @@ export type ITaskWithNotificationDialog = ITask & {
 
 export type ReccuranceFormValues = {
   reccuranceEnabled: boolean;
-  reccuranceFormValues?: Omit<RecurranceFormCreatorFields, "BYDAY"> & {
-    BYDAY?: string;
-  };
+  reccuranceFormValues?: RecurranceFormCreatorFields;
 };
 
 export type ITaskDialog = ITaskWithNotificationDialog &

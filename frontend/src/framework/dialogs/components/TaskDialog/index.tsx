@@ -11,7 +11,7 @@ import { useEditTaskInTodoListMutation } from "pages/SingleTodoListPage/mutation
 import { memo, useEffect, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { RRule, Weekday, WeekdayStr, rrulestr } from "rrule";
+import { RRule, Weekday, rrulestr } from "rrule";
 import { StyledForm } from "../TodoListDialog/styles";
 import {
   IBYMONTH,
@@ -95,7 +95,7 @@ const TaskDialog = (): JSX.Element => {
           ? Array.isArray(reccuranceObj.origOptions.byweekday)
             ? reccuranceObj.origOptions.byweekday
             : [reccuranceObj.origOptions.byweekday]
-          : "",
+          : undefined,
         endType: (reccuranceObj.options.count
           ? "count"
           : reccuranceObj.options.until
@@ -132,7 +132,6 @@ const TaskDialog = (): JSX.Element => {
   const { t } = useTranslation();
 
   const onSubmit = (formValues: ITaskDialog) => {
-    debugger;
     const {
       FREQ,
       INTERVAL,
@@ -145,6 +144,8 @@ const TaskDialog = (): JSX.Element => {
       monthlyType,
       yearlyType,
     } = formValues.reccuranceFormValues || {};
+
+    console.log(BYDAY);
 
     const data = {
       ...formValues,
@@ -170,9 +171,7 @@ const TaskDialog = (): JSX.Element => {
                 FREQ === "2" ||
                 (FREQ === "1" && monthlyType === "weekDay") ||
                 (FREQ === "0" && yearlyType === "weekDayOfMonths")
-                  ? BYDAY?.split(",").map((day) =>
-                      Weekday.fromStr(day as WeekdayStr)
-                    )
+                  ? BYDAY?.map((day) => Weekday.fromStr(day))
                   : undefined,
               bymonth: FREQ === "0" ? BYMONTH : undefined,
               count: endType === "count" ? COUNT : undefined,
