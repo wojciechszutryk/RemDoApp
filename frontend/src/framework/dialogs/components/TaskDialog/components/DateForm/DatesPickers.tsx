@@ -11,15 +11,10 @@ import DateTimePickerWithIcon from "./DatePickerWithIcon";
 import { byDayOptionsValues } from "./RecurranceForm";
 import { IBYMONTH, IBYMONTHDAY, IBYSETPOS } from "./RecurranceForm/model";
 
-const DatesPickers = ({
-  children,
-}: {
-  children?: React.ReactNode;
-}): JSX.Element => {
+const DatesPickers = (): JSX.Element => {
   const watch = useWatch<ITaskDialog>();
   const { control, setValue } = useFormContext<ITaskDialog>();
   const { t } = useTranslation();
-  const isReccuranceEnabled = watch["reccuranceEnabled"];
 
   const onStartDateChange = useCallback(
     (newDate: Dayjs | null) => {
@@ -60,21 +55,19 @@ const DatesPickers = ({
         }}
         maxDateTime={dayjs(watch["finishDate"])}
       />
-      {children}
-      {!isReccuranceEnabled && (
-        <DateTimePickerWithIcon
-          Icon={<FlagCircleIcon />}
-          tooltipTitle={t(TranslationKeys.FinishDate)}
-          name={"finishDate" as keyof ITaskDialog}
-          control={control}
-          minDateTime={dayjs(watch["startDate"])}
-          slotProps={{
-            textField: {
-              error: false,
-            },
-          }}
-        />
-      )}
+      <DateTimePickerWithIcon
+        sx={{ mt: 1 }}
+        Icon={<FlagCircleIcon />}
+        tooltipTitle={t(TranslationKeys.FinishDate)}
+        name={"finishDate" as keyof ITaskDialog}
+        control={control}
+        minDateTime={dayjs(watch["startDate"])}
+        slotProps={{
+          textField: {
+            error: false,
+          },
+        }}
+      />
     </>
   );
 };
