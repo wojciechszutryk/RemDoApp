@@ -10,15 +10,14 @@ import {
   ITaskDialog,
   ReccuranceFormValues,
 } from "../../../models/taskDialog.model";
-import DatesPickers from "../DatesPickers";
 
 const CollapsableReccuranceForm = (): JSX.Element => {
   const { t } = useTranslation();
-  const { reccuranceEnabled, startDate } = useWatch<ITaskDialog>();
+  const { reccuranceEnabled, startDate, finishDate } = useWatch<ITaskDialog>();
   const { setValue } = useFormContext<ReccuranceFormValues>();
 
   return (
-    <DatesPickers>
+    <>
       <StyledAccordion
         expanded={reccuranceEnabled}
         onChange={() => {
@@ -36,11 +35,11 @@ const CollapsableReccuranceForm = (): JSX.Element => {
           },
         }}
       >
-        <AccordionSummary disabled={!startDate}>
+        <AccordionSummary disabled={!(startDate && finishDate)}>
           <Checkbox
             checked={!!reccuranceEnabled}
             defaultValue={""}
-            disabled={!startDate}
+            disabled={!(startDate && finishDate)}
           />
           {t(TranslationKeys.Reccurance)}
         </AccordionSummary>
@@ -48,7 +47,7 @@ const CollapsableReccuranceForm = (): JSX.Element => {
           <RecurranceForm />
         </AccordionDetails>
       </StyledAccordion>
-    </DatesPickers>
+    </>
   );
 };
 

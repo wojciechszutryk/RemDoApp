@@ -300,11 +300,11 @@ const RecurranceForm = (): JSX.Element => {
       {endType === "date" ? (
         <ControlledDateTimePicker
           control={control}
-          name={"finishDate"}
-          minDateTime={dayjs(startDate)}
+          name={"reccuranceFormValues.UNTILL"}
+          minDateTime={dayjs(finishDate)}
           rules={{
             required: {
-              value: endType === "date" && !finishDate,
+              value: endType === "date" && !reccuranceFormValues?.UNTILL,
               message: t(TranslationKeys.FieldRequired),
             },
           }}

@@ -80,6 +80,11 @@ export interface RecurranceFormCreatorFields {
    * only for endType=count - how many times the event should occur
    */
   COUNT?: number;
+
+  /**
+   * only for endType=date - when the event should stop occurring
+   */
+  UNTILL?: Date | null;
   /**
    * Do not include in rrule
    */

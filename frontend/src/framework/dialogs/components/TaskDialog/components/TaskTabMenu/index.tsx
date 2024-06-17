@@ -7,6 +7,7 @@ import { memo, useState } from "react";
 import { Control, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ITaskDialog } from "../../models/taskDialog.model";
+import DatesPickers from "../DateForm/DatesPickers";
 import CollapsableReccuranceForm from "../DateForm/RecurranceForm/CollapsableReccuranceForm";
 import DetailsForm from "../DetailsForm";
 import NotifyForm from "../NotifyForm";
@@ -57,6 +58,7 @@ const TaskTabMenu = ({ control }: Props): JSX.Element => {
         )}
         {tabIndex === 1 && (
           <TabWrapper activeIndex={tabIndex} tabIndex={1}>
+            <DatesPickers />
             <CollapsableReccuranceForm />
           </TabWrapper>
         )}
