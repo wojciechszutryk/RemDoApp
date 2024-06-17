@@ -46,6 +46,7 @@ export class RemindersController
   ): Promise<OkResult> {
     const startDate = startDateParam ? new Date(startDateParam) : undefined;
     const endDate = endDateParam ? new Date(endDateParam) : undefined;
+    let remindersToReturn: IReminderAttached[] = [];
 
     if (
       currentUser.integratedWithGoogle &&
@@ -93,35 +94,36 @@ export class RemindersController
         });
       }
 
-      //resolve recurring reminders - if both startDate and endDate are provided
-      if (startDate && endDate) {
-        const resolvedReminders = reminders.reduce((acc, reminder) => {
-          if (reminder.recurrance) {
-            const recurringReminders =
-              this.reminderService.resolveRecurringReminders(
-                reminder,
-                startDate,
-                endDate
-              );
-            return [...acc, ...recurringReminders];
-          }
-
-          return [...acc, reminder];
-        }, [] as IReminderAttached[]);
-
-        return this.ok(resolvedReminders);
-      }
-
-      return this.ok(reminders);
+      remindersToReturn = reminders;
+    } else {
+      remindersToReturn =
+        await this.reminderService.getUserRemindersForDateRange(
+          currentUser.id,
+          startDate,
+          endDate
+        );
     }
 
-    const reminders = await this.reminderService.getUserRemindersForDateRange(
-      currentUser.id,
-      startDate,
-      endDate
-    );
+    //resolve recurring reminders - if both startDate and endDate are provided
+    if (startDate && endDate ) {
+      const resolvedReminders = remindersToReturn.reduce((acc, reminder) => {
+        if (reminder.recurrance) {
+          const recurringReminders =
+            this.reminderService.resolveRecurringReminders(
+              reminder,
+              startDate,
+              endDate
+            );
+          return [...acc, ...recurringReminders];
+        }
 
-    return this.ok(reminders);
+        return [...acc, reminder];
+      }, [] as IReminderAttached[]);
+
+      remindersToReturn = resolvedReminders;
+    }
+
+    return this.ok(remindersToReturn);
   }
 
   @httpPost("")
