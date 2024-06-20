@@ -9,7 +9,7 @@ import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/ge
 import { memo, useCallback, useLayoutEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
-import { TodoListCardLoader } from "./components/TodoListCardLoader";
+import { TodoListCardLoader } from "../../atomicComponents/atoms/Loaders/TodoListCardLoader";
 import {
   StyledBackButton,
   StyledSingleTodoListPageWrapper,

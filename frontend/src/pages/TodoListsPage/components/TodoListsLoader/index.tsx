@@ -1,16 +1,20 @@
-import { Grid, Skeleton } from "@mui/material";
+import { Box } from "@mui/material";
+import { TodoListCardLoader } from "atomicComponents/atoms/Loaders/TodoListCardLoader";
+
+const loaderContentHeights = [200, 200, 200, 200, 200, 200];
 
 export const TodoListsLoader = (): JSX.Element => {
   return (
-    <Grid container spacing={5}>
-      {Array.from(
-        { length: 6 },
-        () => Math.floor(Math.random() * (220 - 180 + 1)) + 180
-      ).map((height, index) => (
-        <Grid key={index} item xs={12} md={6} lg={4}>
-          <Skeleton height={`${height}px`} />
-        </Grid>
+    <Box
+      sx={{
+        columnCount: { xs: 1, md: 2, xl: 3 },
+        maxWidth: 1000,
+        margin: "50px auto",
+      }}
+    >
+      {loaderContentHeights.map((height, index) => (
+        <TodoListCardLoader contentHeight={height} key={index} />
       ))}
-    </Grid>
+    </Box>
   );
 };
