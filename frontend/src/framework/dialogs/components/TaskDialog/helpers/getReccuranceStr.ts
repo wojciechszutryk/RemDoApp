@@ -41,7 +41,11 @@ export const getReccuranceStr = (formValues: ITaskDialog) => {
       FREQ === "2" ||
       (FREQ === "1" && monthlyType === "weekDay") ||
       (FREQ === "0" && yearlyType === "weekDayOfMonths")
-        ? BYDAY?.map((day) => Weekday.fromStr(day))
+        ? BYDAY?.map((day) => {
+            if (typeof day === "number") return new Weekday(day);
+            if (typeof day === "string") return Weekday.fromStr(day);
+            return day;
+          })
         : undefined,
     bymonth: FREQ === "0" ? BYMONTH : undefined,
     count: endType === "count" ? COUNT : undefined,
