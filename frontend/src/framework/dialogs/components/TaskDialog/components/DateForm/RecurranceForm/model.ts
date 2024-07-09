@@ -1,4 +1,4 @@
-import { WeekdayStr } from "rrule";
+import { ByWeekday } from "rrule";
 
 export type IBYMONTHDAY =
   | 1
@@ -71,7 +71,7 @@ export interface RecurranceFormCreatorFields {
    *  - which days of the week or month the event should occur
    * e.g. BYDAY=[WE,TH] or BYDAY=[MO,WE,FR] or BYDAY=[MO]
    */
-  BYDAY?: WeekdayStr[];
+  BYDAY?: ByWeekday[];
   /**
    * only for FREQ=YEARLY (both yearlyType = 'date' and yearlyType = 'weekDayOfMonths') - which months the event should occur
    */
