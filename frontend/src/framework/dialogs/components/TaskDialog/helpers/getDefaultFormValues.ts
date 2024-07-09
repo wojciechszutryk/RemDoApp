@@ -1,5 +1,5 @@
 import { ITask } from "linked-models/task/task.model";
-import { RRule, Weekday, rrulestr } from "rrule";
+import { RRule, rrulestr } from "rrule";
 import {
   IBYMONTH,
   IBYMONTHDAY,
@@ -50,16 +50,13 @@ export const getDefaultFormValues = (
     }) as RRule;
 
     defaultFormValues.reccuranceFormValues = {
-      DTSTART:
-        reccuranceObj.options.dtstart?.toISOString() ||
-        new Date().toISOString(),
       INTERVAL: reccuranceObj.options.interval || 1,
       BYMONTH: reccuranceObj.options.bymonth?.[0] as IBYMONTH,
       BYMONTHDAY: reccuranceObj.options.bymonthday?.[0] as IBYMONTHDAY,
       BYSETPOS: reccuranceObj.options.bysetpos?.[0] as IBYSETPOS,
       COUNT: reccuranceObj.options.count || 1,
       UNTILL: reccuranceObj.options.until || undefined,
-      BYDAY: (reccuranceObj.origOptions?.byweekday as Weekday)
+      BYDAY: reccuranceObj.origOptions?.byweekday
         ? Array.isArray(reccuranceObj.origOptions.byweekday)
           ? reccuranceObj.origOptions.byweekday
           : [reccuranceObj.origOptions.byweekday]

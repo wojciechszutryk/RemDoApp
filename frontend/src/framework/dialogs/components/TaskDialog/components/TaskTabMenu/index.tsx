@@ -64,7 +64,7 @@ const TaskTabMenu = ({ control }: Props): JSX.Element => {
         )}
         {tabIndex === 2 && (
           <TabWrapper activeIndex={tabIndex} tabIndex={2}>
-            <NotifyForm control={control} noDateWarning />
+            <NotifyForm control={control as any} noDateWarning />
           </TabWrapper>
         )}
       </ResizableWrapper>

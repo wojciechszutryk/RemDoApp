@@ -1,5 +1,5 @@
 import { CircularProgress, Tabs, useMediaQuery } from "@mui/material";
-import { Tab } from "atomicComponents/atoms/Tab";
+import Tab from "atomicComponents/atoms/Tab";
 import { AnimatePresence } from "framer-motion";
 import { useDialogs } from "framework/dialogs";
 import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
