@@ -13,7 +13,7 @@ const CallendarEvent = ({ calendarEvent }: Props): JSX.Element => {
       {calendarEvent.event.icon && (
         <StyledTodoListIcon type={calendarEvent.event.icon} />
       )}
-      {calendarEvent.title}
+      {calendarEvent.event.name}
     </StyledEventWrapper>
   );
 };
