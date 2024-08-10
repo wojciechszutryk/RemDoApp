@@ -1,15 +1,37 @@
-import { IconButton, Dialog as MuiDialog, styled } from "@mui/material";
+import {
+  IconButton,
+  Dialog as MuiDialog,
+  Typography,
+  styled,
+} from "@mui/material";
 
-export const StyledInnerWrapper = styled("div")(({ theme }) => ({
-  backgroundColor: theme.palette.primary.light,
-  padding: 10,
+export const StyledDialogTitle = styled(Typography)(({ theme }) => ({
+  width: "80%",
+  textAlign: "center",
+  color: theme.palette.secondary.contrastText,
+  margin: "0 auto",
+
+  [theme.breakpoints.up("sm")]: {
+    position: "absolute",
+    top: 24,
+    zIndex: 1,
+    left: "10%",
+    color: theme.palette.primary.contrastText,
+  },
+}));
+
+export const StyledInnerWrapper = styled("div", {
+  shouldForwardProp: (prop) => prop !== "withTitle",
+})<{ withTitle?: boolean }>(({ theme, withTitle }) => ({
   height: "100vh",
+  padding: "10px",
   borderRadius: "20px",
   overflowY: "auto",
+  backgroundColor: theme.palette.primary.light,
 
   [theme.breakpoints.up("sm")]: {
     height: "auto",
-    padding: "55px",
+    padding: withTitle ? "64px 55px 10px" : "55px",
     borderRadius: "200px",
   },
 }));

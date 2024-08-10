@@ -13,6 +13,7 @@ const DetailsForm = (): JSX.Element => {
     <>
       <ControlledTextField
         name={"description"}
+        multiline
         control={control}
         sx={{
           marginBottom: "10px",

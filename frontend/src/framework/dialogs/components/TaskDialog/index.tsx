@@ -1,4 +1,3 @@
-import { Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
@@ -68,18 +67,20 @@ const TaskDialog = (): JSX.Element => {
   }, [taskRef.current]);
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      title={
+        editTaskData ? t(TranslationKeys.EditTask) : t(TranslationKeys.AddTask)
+      }
+    >
       <FormProvider {...methods}>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          <Typography variant="h4">
-            {editTaskData
-              ? `${t(TranslationKeys.EditTask)}: ${editTaskData.text}`
-              : t(TranslationKeys.AddTask)}
-          </Typography>
           <ControlledTextField
             autoFocus
             inputRef={taskRef}
             name={"text"}
+            multiline
             rules={{
               required: {
                 value: true,
@@ -94,7 +95,7 @@ const TaskDialog = (): JSX.Element => {
 
           <TaskTabMenu control={methods.control} />
 
-          <Button type="submit">
+          <Button type="submit" sx={{ mx: { sm: "auto" } }}>
             {editTaskData
               ? t(TranslationKeys.Save)
               : t(TranslationKeys.AddTask)}

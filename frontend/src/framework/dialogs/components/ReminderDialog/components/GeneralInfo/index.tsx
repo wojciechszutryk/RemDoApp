@@ -67,7 +67,7 @@ const GeneralInfo = ({
           <Separator
             text={
               editReminderData
-                ? `${t(TranslationKeys.EditReminder)}: ${editReminderData.text}`
+                ? t(TranslationKeys.EditReminder)
                 : t(TranslationKeys.CreateReminder)
             }
             spacingBottom={15}
@@ -76,6 +76,9 @@ const GeneralInfo = ({
           <ControlledTextField
             autoFocus
             name={"name"}
+            multiline
+            maxRows={3}
+            rows={2}
             required
             error={!!errors.name}
             helperText={

@@ -67,20 +67,24 @@ const TodoListDialog = (): JSX.Element => {
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      title={
+        editTodoListData
+          ? `${t(TranslationKeys.EditTodoListDialogHeader)}: ${
+              editTodoListData.name
+            }`
+          : t(TranslationKeys.CreateTodoListDialogHeader)
+      }
+    >
       <StyledForm onSubmit={methods.handleSubmit(onSubmit)}>
         <FormProvider {...methods}>
-          <Typography variant="h4">
-            {editTodoListData
-              ? `${t(TranslationKeys.EditTodoListDialogHeader)}: ${
-                  editTodoListData.name
-                }`
-              : t(TranslationKeys.CreateTodoListDialogHeader)}
-          </Typography>
           <StyledInlineInputs>
             <IconPicker />
             <ControlledTextField
               name={"name"}
+              multiline
               error={!!methods.formState.errors?.name}
               helperText={
                 methods.formState.errors.name?.type === "required" &&
@@ -107,10 +111,8 @@ const TodoListDialog = (): JSX.Element => {
               defaultValues={defaultFormValues?.assignedUsers}
             />
           </Accordion>
-          <Button type="submit">
-            {editTodoListData
-              ? t(TranslationKeys.Save)
-              : t(TranslationKeys.CreateTodoListDialogHeader)}
+          <Button type="submit" sx={{ mx: { sm: "auto" } }}>
+            {t(TranslationKeys.Save)}
           </Button>
         </FormProvider>
       </StyledForm>
