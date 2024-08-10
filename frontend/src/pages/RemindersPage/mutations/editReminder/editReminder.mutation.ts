@@ -10,6 +10,7 @@ import {
   URL_TODO_LIST,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
+import { stripRecurranceId } from "pages/RemindersPage/helpers/recurranceIdConverters";
 import useUpdateQueriesAfterEditingReminder from "./useUpdateQueriesAfterEditingReminder";
 
 export const useEditReminderMutation = () => {
@@ -30,7 +31,7 @@ export const useEditReminderMutation = () => {
         URL_TODO_LISTS +
           URL_TODO_LIST(todoListId) +
           URL_REMINDERS +
-          URL_TASK(taskId)
+          URL_TASK(stripRecurranceId(taskId))
       ),
       stringifyTaskDateFields(data)
     ).then((res) => res.data);
