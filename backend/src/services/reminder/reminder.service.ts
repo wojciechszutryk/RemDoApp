@@ -134,15 +134,23 @@ export class ReminderService {
   ): IReminderAttached[] {
     if (!reminder.recurrance) return [];
 
-    const rule = RRule.fromString(reminder.recurrance[0]);
+    try {
+      const rule = RRule.fromString(reminder.recurrance);
 
-    const dates = rule.between(startDate, endDate);
+      const dates = rule.between(startDate, endDate);
 
-    return dates.map((date) => ({
-      ...reminder,
-      startDate: date,
-      finishDate: new Date(date.getTime() + reminder.finishDate.getTime()),
-    }));
+      const reminderLength =
+        reminder.finishDate.getTime() - reminder.startDate.getTime();
+
+      return dates.map((date) => ({
+        ...reminder,
+        startDate: date,
+        finishDate: new Date(date.getTime() + reminderLength),
+      }));
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
   }
 
   /**
