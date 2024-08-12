@@ -3,6 +3,7 @@ import { TodoListPermissions } from "linked-models/permissions/todoList.permissi
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import useCheckTodoPermissions from "pages/TodoListsPage/hooks/useCheckTodoPermissions";
 import { memo } from "react";
+import { useParams } from "react-router-dom";
 import { QUICK_TASK_ID } from "../../CardActions/components/QuickTaskCreateBtn";
 import QuickTaskListItem from "./QuickTaskListItem";
 import TaskListItem from "./TaskListItem";
@@ -19,6 +20,7 @@ const TasksList = ({
   todoListId,
 }: TaskListProps): JSX.Element => {
   const checkPermission = useCheckTodoPermissions();
+  const { taskId } = useParams();
 
   return (
     <AnimatePresence>
@@ -38,6 +40,7 @@ const TasksList = ({
           <TaskListItem
             key={task.id}
             task={task}
+            showHighlight={taskId === task.id}
             canArchive={checkPermission(
               TodoListPermissions.CanArchiveTask,
               todoListId,

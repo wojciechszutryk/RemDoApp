@@ -165,7 +165,7 @@ body[data-theme="todoListDark"] {
   --colors-primary-light: #395561;
   --colors-primary-main: #263941;
   --colors-primary-strong: #203843;
-  --colors-primary-text: #ffffff;
+  --colors-primary-text: #dbc1ad;
 
   --colors-secondary-light: #b3804e;
   --colors-secondary-main: #ce8338;
@@ -288,5 +288,14 @@ body[data-theme="todoListDark"] {
   }
   100% {
     transform: rotate(0deg);
+  }
+}
+
+@keyframes highlight {
+  0% {
+    border-color: var(--colors-primary-text);
+  }
+  100% {
+    border-color: transparent;
   }
 }

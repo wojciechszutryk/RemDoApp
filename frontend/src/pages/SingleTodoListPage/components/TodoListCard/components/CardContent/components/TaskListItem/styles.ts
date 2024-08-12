@@ -4,14 +4,14 @@ import {
   ListItemIcon,
   ListItemText,
   styled,
-  Typography
+  Typography,
 } from "@mui/material";
 
 export const StyledTaskListItem = styled(ListItem, {
-  shouldForwardProp: (prop) => prop !== "highlighted",
+  shouldForwardProp: (prop) => prop !== "showHighlight",
 })<{
-  highlighted?: boolean;
-}>(({ highlighted, theme }) => ({
+  showHighlight?: boolean;
+}>(({ showHighlight, theme }) => ({
   boxSizing: "border-box",
   flexWrap: "wrap",
   backgroundColor: "transparent",
@@ -20,9 +20,11 @@ export const StyledTaskListItem = styled(ListItem, {
   zIndex: 2,
   transition: "border 0.3s ease",
   padding: "7px 14px",
-  border: highlighted
-    ? `1px solid ${theme.palette.primary.contrastText}`
-    : `1px solid transparent`,
+
+  ...(showHighlight && {
+    border: "1px solid transparent",
+    animation: "highlight 5s alternate",
+  }),
 }));
 
 export const StyledListItemIcon = styled(ListItemIcon)(({ theme }) => ({
