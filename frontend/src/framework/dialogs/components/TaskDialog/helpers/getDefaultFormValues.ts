@@ -37,7 +37,6 @@ export const getDefaultFormValues = (
     beforeOrAfter: defaultSelectsValues?.beforeOrAfter || "Before",
     timePoint: defaultSelectsValues?.timePoint || "Start",
     notifyDate: editTaskData?.notifyDate || new Date(Date.now() + 85500000),
-    important: editTaskData?.important,
     notify: !!editTaskData?.notifyDate,
     reccuranceEnabled,
   };

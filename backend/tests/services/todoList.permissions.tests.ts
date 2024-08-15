@@ -63,7 +63,6 @@ describe(`TodoList permissions service`, () => {
       getTaskCollection().create({
         _id: MOCKED_TASK_ID,
         text: "task1",
-        important: true,
         todoListId: MOCKED_TODO_ID,
         creatorId: assignedUserId,
         whenCreated: new Date(),

@@ -19,9 +19,6 @@ export interface ITask {
   /** Optional Date when task was finished */
   completionDate?: Date | null;
 
-  /** Boolean to determine if task is important */
-  important?: boolean;
-
   /** Recurrence of task - applied only for reminders - RRULE format */
   recurrance?: string | null;
 }

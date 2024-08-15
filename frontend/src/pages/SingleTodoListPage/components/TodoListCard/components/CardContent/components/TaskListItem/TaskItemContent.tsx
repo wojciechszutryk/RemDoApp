@@ -1,7 +1,4 @@
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import NotificationImportantIcon from "@mui/icons-material/NotificationImportant";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { memo, useState } from "react";
 import TaskDetailsList from "./TaskDetailsList";
@@ -17,6 +14,8 @@ interface Props {
   isDragging?: boolean;
   showHighlight?: boolean;
 }
+
+const openLinkInNewTab = (link: string) => () => window.open(link, "_blank");
 
 const TaskItemContent = ({
   task,
@@ -34,20 +33,16 @@ const TaskItemContent = ({
         if (!isDragging) setExpanded((prev) => !prev);
       }}
     >
-      <StyledListItemIcon>
-        {task.important ? (
-          task.notifyDate ? (
-            <NotificationImportantIcon />
-          ) : (
-            <PriorityHighIcon />
-          )
-        ) : task.notifyDate ? (
+      {task.notifyDate && (
+        <StyledListItemIcon>
           <NotificationsIcon />
-        ) : (
-          <ArrowForwardIcon />
-        )}
-      </StyledListItemIcon>
+        </StyledListItemIcon>
+      )}
       <StyledListItemText
+        isLink={!!task.link}
+        onClick={
+          !!task.link && !isDragging ? openLinkInNewTab(task.link) : undefined
+        }
         primary={task.text}
         isTaskFinished={isTaskCompleted}
       />

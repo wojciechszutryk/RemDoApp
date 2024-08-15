@@ -202,7 +202,6 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.EditTask]: "Edytuj zadanie",
   [TranslationKeys.TaskName]: "Nazwa zadania",
   [TranslationKeys.Link]: "Link",
-  [TranslationKeys.TaskImportant]: "Ważne",
   [TranslationKeys.NotifyMe]: "Powiadom mnie",
   [TranslationKeys.DelteTaskWarning]:
     "Czy na pewno chcesz usunąć to zadanie? Ta operacja jest nieodwracalna.",

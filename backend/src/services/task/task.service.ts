@@ -140,7 +140,6 @@ export class TaskService {
       startDate: task.startDate,
       finishDate: task.finishDate,
       completionDate: task.completionDate,
-      important: task.important ?? false,
       todoListId,
       recurrance: task.recurrance,
       creatorId: creator.id,
@@ -175,7 +174,6 @@ export class TaskService {
       "startDate",
       "finishDate",
       "completionDate",
-      "important",
       "notifyDate",
       "recurrance",
       "link",
@@ -192,7 +190,6 @@ export class TaskService {
       {
         ...validUpdateProperties,
         whenUpdated: new Date(),
-        important: updateData.important ?? false,
       },
       { new: true }
     );

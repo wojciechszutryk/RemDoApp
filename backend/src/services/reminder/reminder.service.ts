@@ -235,7 +235,6 @@ export class ReminderService {
       "text",
       "finishDate",
       "startDate",
-      "important",
       "startDate",
       "finishDate",
     ];

@@ -22,10 +22,6 @@ const TaskSchema = new mongoose.Schema({
     type: Date,
     required: false,
   },
-  important: {
-    type: Boolean,
-    required: false,
-  },
   recurrance: {
     type: String,
     required: false,
@@ -64,7 +60,6 @@ export const mapTaskToAttachedTask = (task: ITaskDocument): ITaskAttached => {
     finishDate: task.finishDate,
     notifyDate: task.notifyDate,
     completionDate: task.completionDate,
-    important: task.important,
     creatorId: task.creatorId,
     todoListId: task.todoListId,
     whenCreated: task.whenCreated,
