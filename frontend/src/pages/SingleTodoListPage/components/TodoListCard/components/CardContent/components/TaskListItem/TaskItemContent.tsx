@@ -1,7 +1,7 @@
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { memo, useState } from "react";
 import TaskDetailsList from "./TaskDetailsList";
+import TaskIcon from "./TaskIcon";
 import {
   StyledDetailsColapse,
   StyledListItemIcon,
@@ -15,7 +15,10 @@ interface Props {
   showHighlight?: boolean;
 }
 
-const openLinkInNewTab = (link: string) => () => window.open(link, "_blank");
+const openLinkInNewTab = (e: React.MouseEvent, link: string) => {
+  e.stopPropagation();
+  window.open(link, "_blank");
+};
 
 const TaskItemContent = ({
   task,
@@ -33,15 +36,15 @@ const TaskItemContent = ({
         if (!isDragging) setExpanded((prev) => !prev);
       }}
     >
-      {task.notifyDate && (
-        <StyledListItemIcon>
-          <NotificationsIcon />
-        </StyledListItemIcon>
-      )}
+      <StyledListItemIcon>
+        <TaskIcon task={task} />
+      </StyledListItemIcon>
       <StyledListItemText
         isLink={!!task.link}
         onClick={
-          !!task.link && !isDragging ? openLinkInNewTab(task.link) : undefined
+          !!task.link && !isDragging
+            ? (e) => openLinkInNewTab(e, task.link!)
+            : undefined
         }
         primary={task.text}
         isTaskFinished={isTaskCompleted}

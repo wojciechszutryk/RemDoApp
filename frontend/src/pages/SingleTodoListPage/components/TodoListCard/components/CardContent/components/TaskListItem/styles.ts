@@ -53,7 +53,7 @@ export const StyledListItemText = styled(ListItemText, {
       width: "max-content",
       cursor: "pointer",
       textDecoration: "underline",
-      transition: 'opacity 0.1s',
+      transition: "opacity 0.1s",
       "&:hover": {
         opacity: 0.7,
       },
@@ -69,4 +69,9 @@ export const StyledCancelExitTaskText = styled(Typography)(({ theme }) => ({
 
 export const StyledDetailsColapse = styled(Collapse)({
   flexBasis: "100%",
+});
+
+export const StyledDetailsListItem = styled(ListItem)({
+  padding: "0 15px 0 40px",
+  wordBreak: "break-all",
 });
