@@ -5,7 +5,6 @@ import { Button } from "atomicComponents/atoms/Button";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import GlobalSearch from "./components/GlobalSearch";
@@ -38,19 +37,20 @@ export const Header = ({ disableBgcAnimation }: Props): JSX.Element => {
     navigate(path);
   };
 
-  useEffect(() => {
-    if (currentUser) {
-      // redirect to last page after login
-      //TODO - move to a separate hook and other location
-      const lastPage = localStorage.getItem(LAST_PAGE_LS_KEY);
+  //fix this to not to redirect in case like: http://localhost:3000/#/todoList/666e9d18892c4b4cdf019a0b/tasks/66ba384a467716f5eb7dab00
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     // redirect to last page after login
+  //     //TODO - move to a separate hook and other location
+  //     const lastPage = localStorage.getItem(LAST_PAGE_LS_KEY);
 
-      if (lastPage) {
-        navigate(lastPage);
-      } else {
-        navigate("/");
-      }
-    }
-  }, [currentUser]);
+  //     if (lastPage) {
+  //       navigate(lastPage);
+  //     } else {
+  //       navigate("/");
+  //     }
+  //   }
+  // }, [currentUser]);
 
   let content: JSX.Element | null = null;
   if (isAutoLoginLoading)
