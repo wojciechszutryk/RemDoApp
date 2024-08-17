@@ -9,6 +9,9 @@ import {
 import { createNotifySelectParams } from "../components/NotifyForm/helpers";
 import { ITaskDialog } from "../models/taskDialog.model";
 
+import dayjs from "dayjs";
+import { getReccuranceValues } from "../components/DateForm/RecurranceForm/helpers";
+
 export const getDefaultFormValues = (
   editTaskData?: ITask & {
     id: string;
@@ -76,9 +79,23 @@ export const getDefaultFormValues = (
       FREQ: "1" as const,
       monthlyType: "day" as const,
       yearlyType: "date" as const,
-      endType: "date" as const,
+      endType: "count" as const,
       UNTILL: null,
     };
+
+    if (editTaskData?.startDate) {
+      const reccuranceValues = getReccuranceValues(
+        dayjs(editTaskData.startDate)
+      );
+
+      defaultFormValues.reccuranceFormValues = {
+        ...defaultFormValues.reccuranceFormValues,
+        BYDAY: reccuranceValues?.BYDAY,
+        BYSETPOS: reccuranceValues?.BYSETPOS,
+        BYMONTHDAY: reccuranceValues?.BYMONTHDAY,
+        BYMONTH: reccuranceValues?.BYMONTH,
+      };
+    }
   }
 
   return defaultFormValues;

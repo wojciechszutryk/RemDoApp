@@ -5,11 +5,9 @@ import { TranslationKeys } from "framework/translations/translatedTexts/translat
 import { memo, useCallback } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { WeekdayStr } from "rrule";
 import { ITaskDialog } from "../../models/taskDialog.model";
 import DateTimePickerWithIcon from "./DatePickerWithIcon";
-import { byDayOptionsValues } from "./RecurranceForm";
-import { IBYMONTH, IBYMONTHDAY, IBYSETPOS } from "./RecurranceForm/model";
+import { getReccuranceValues } from "./RecurranceForm/helpers";
 
 const DatesPickers = (): JSX.Element => {
   const watch = useWatch<ITaskDialog>();
@@ -18,24 +16,12 @@ const DatesPickers = (): JSX.Element => {
 
   const onStartDateChange = useCallback(
     (newDate: Dayjs | null) => {
-      if (!newDate) return;
-      const dayJsDate = dayjs(newDate);
-      const weekDay = dayJsDate.day();
-      const date = dayJsDate.date();
-      setValue(
-        "reccuranceFormValues.BYDAY",
-        byDayOptionsValues[weekDay].split(",") as WeekdayStr[]
-      );
-      const weekDayPos = Math.ceil(date / 7);
-      setValue(
-        "reccuranceFormValues.BYSETPOS",
-        weekDayPos > 4 ? -1 : (weekDayPos as IBYSETPOS)
-      );
-      setValue("reccuranceFormValues.BYMONTHDAY", date as IBYMONTHDAY);
-      setValue(
-        "reccuranceFormValues.BYMONTH",
-        (dayJsDate.month() + 1) as IBYMONTH
-      );
+      const reccuranceValues = getReccuranceValues(newDate);
+      if (!reccuranceValues) return;
+      setValue("reccuranceFormValues.BYDAY", reccuranceValues.BYDAY);
+      setValue("reccuranceFormValues.BYSETPOS", reccuranceValues.BYSETPOS);
+      setValue("reccuranceFormValues.BYMONTHDAY", reccuranceValues.BYMONTHDAY);
+      setValue("reccuranceFormValues.BYMONTH", reccuranceValues.BYMONTH);
     },
     [setValue]
   );
