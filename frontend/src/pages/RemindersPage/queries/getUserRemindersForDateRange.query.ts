@@ -35,7 +35,6 @@ export const useGetUserRemindersForDateRange = (
           reminder
         );
       });
-      console.log("id", idToReminderMap);
 
       return idToReminderMap;
     });

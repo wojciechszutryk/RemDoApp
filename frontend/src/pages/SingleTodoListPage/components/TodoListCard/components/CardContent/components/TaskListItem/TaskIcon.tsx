@@ -35,8 +35,6 @@ const TaskIcon = ({ task }: Props): JSX.Element => {
     !task.completionDate && (task.startDate || task.finishDate);
   const taskIconDisplayDateNear = isTargetDateNear(taskIconDisplayDate);
 
-  console.log("TaskIcon taskIconDisplayDateNear:", taskIconDisplayDateNear);
-
   switch (taskIconDisplayDateNear) {
     case 0:
       return <PlayCircleOutlineIcon />;
