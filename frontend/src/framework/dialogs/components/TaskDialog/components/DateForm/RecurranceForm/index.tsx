@@ -168,6 +168,9 @@ const RecurranceForm = (): JSX.Element => {
         {t(TranslationKeys.Every)}
         {
           <ControlledTextField
+            inputProps={{
+              style: { padding: "5px 10px" },
+            }}
             defaultValue={1}
             type="number"
             control={control}
