@@ -1,13 +1,13 @@
+import { TextFieldProps } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import {
   DatePicker as MuiDatePicker,
   DatePickerProps as MuiDatePickerProps,
 } from "@mui/x-date-pickers";
 import { Dayjs } from "dayjs";
-import { memo, useState } from "react";
+import { ElementType, memo, useState } from "react";
 import { TextField } from "../TextField";
 import { StyledCallendarIcon } from "./styles";
-
 
 const DatePicker = ({
   label,
@@ -21,7 +21,7 @@ const DatePicker = ({
         {...props}
         open={open}
         slots={{
-          textField: TextField,
+          textField: TextField as ElementType<TextFieldProps>,
         }}
         onClose={() => setOpen(false)}
         slotProps={{

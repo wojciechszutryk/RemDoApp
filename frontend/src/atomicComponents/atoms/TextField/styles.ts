@@ -10,6 +10,15 @@ export const StyledTextField = styled(TextField, {
   borderRadius: theme.spacing(3),
   color: theme.palette.primary.contrastText,
 
+  "&:has(textarea)": {
+    height: "unset",
+  },
+
+  "& > label": {
+    left: -10,
+    top: -8,
+  },
+
   "& .MuiInputBase-root": { paddingRight: 0 },
 
   "& > .Mui-error:before": {
@@ -65,7 +74,6 @@ export const StyledTextField = styled(TextField, {
 
   "& > div": {
     width: "100%",
-    height: "100%",
     ...(AnimatedWaveAltStyles(theme, undefined, disabled) as {}),
   },
 

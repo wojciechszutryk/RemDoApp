@@ -8,6 +8,8 @@ export const TaskCollectionName = "tasks";
 
 const TaskSchema = new mongoose.Schema({
   text: { type: String, required: true },
+  description: { type: String, required: false },
+  link: { type: String, required: false },
   startDate: {
     type: Date,
     required: false,
@@ -20,8 +22,8 @@ const TaskSchema = new mongoose.Schema({
     type: Date,
     required: false,
   },
-  important: {
-    type: Boolean,
+  recurrance: {
+    type: String,
     required: false,
   },
   todoListId: {
@@ -52,14 +54,16 @@ export const mapTaskToAttachedTask = (task: ITaskDocument): ITaskAttached => {
   return {
     id: task.id,
     text: task.text,
+    description: task.description,
+    link: task.link,
     startDate: task.startDate,
     finishDate: task.finishDate,
     notifyDate: task.notifyDate,
     completionDate: task.completionDate,
-    important: task.important,
     creatorId: task.creatorId,
     todoListId: task.todoListId,
     whenCreated: task.whenCreated,
     whenUpdated: task.whenUpdated,
+    recurrance: task.recurrance,
   };
 };

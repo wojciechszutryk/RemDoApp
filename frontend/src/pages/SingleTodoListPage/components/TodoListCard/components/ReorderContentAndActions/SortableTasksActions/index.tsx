@@ -40,14 +40,6 @@ const SortableTasksActions = ({
     <CardActions
       disableSpacing
       sx={{
-        "@keyframes fadeIn": {
-          "0%": {
-            opacity: 0,
-          },
-          "100%": {
-            opacity: 1,
-          },
-        },
         display: "flex",
         justifyContent: "center",
         gap: "10px",

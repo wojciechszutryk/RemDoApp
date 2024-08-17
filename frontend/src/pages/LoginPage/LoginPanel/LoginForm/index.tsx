@@ -52,7 +52,7 @@ const LoginForm = ({
     }
 
     if (!data.password) {
-      setError("password", { message: t(TranslationKeys.PasswordRequired) });
+      setError("password", { message: t(TranslationKeys.FieldRequired) });
       return;
     }
 

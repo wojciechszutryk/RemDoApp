@@ -9,7 +9,7 @@ import {
 import { StyledAccordion } from "atomicComponents/atoms/Accordion/styles";
 import { Separator } from "atomicComponents/atoms/Separator";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
-import DatesPickers from "framework/dialogs/components/TaskDialog/components/DatesPickers";
+import DatesPickers from "framework/dialogs/components/TaskDialog/components/DateForm/DatesPickers";
 import { StyledForm } from "framework/dialogs/components/TodoListDialog/styles";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { memo, useEffect } from "react";
@@ -67,7 +67,7 @@ const GeneralInfo = ({
           <Separator
             text={
               editReminderData
-                ? `${t(TranslationKeys.EditReminder)}: ${editReminderData.text}`
+                ? t(TranslationKeys.EditReminder)
                 : t(TranslationKeys.CreateReminder)
             }
             spacingBottom={15}
@@ -76,6 +76,9 @@ const GeneralInfo = ({
           <ControlledTextField
             autoFocus
             name={"name"}
+            multiline
+            maxRows={3}
+            rows={2}
             required
             error={!!errors.name}
             helperText={

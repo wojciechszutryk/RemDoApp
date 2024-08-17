@@ -36,6 +36,7 @@ describe("Header", () => {
     jest.spyOn(useCurrentUserModule, "useCurrentUser").mockReturnValue({
       currentUser: {} as IUserAttached,
       setCurrentUser: jest.fn(),
+      isAutoLoginLoading: false,
     });
 
     render(<Header />);
@@ -48,7 +49,11 @@ describe("Header", () => {
   it("renders the header for an unauthenticated user", () => {
     jest
       .spyOn(useCurrentUserModule, "useCurrentUser")
-      .mockReturnValue({ currentUser: undefined, setCurrentUser: jest.fn() });
+      .mockReturnValue({
+        currentUser: undefined,
+        setCurrentUser: jest.fn(),
+        isAutoLoginLoading: false,
+      });
 
     render(<Header />);
 

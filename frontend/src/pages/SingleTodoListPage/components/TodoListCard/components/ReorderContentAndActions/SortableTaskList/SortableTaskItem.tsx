@@ -7,9 +7,10 @@ import { StyledSortableTaskWrapper } from "./styles";
 interface Props {
   task: IExtendedTaskDto;
   withShakeAnimation?: boolean;
+  showHighlight?: boolean;
 }
 
-export function SortableTaskItem({ task, withShakeAnimation }: Props) {
+export function SortableTaskItem({ task, withShakeAnimation, showHighlight }: Props) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: task.id });
 
@@ -26,7 +27,7 @@ export function SortableTaskItem({ task, withShakeAnimation }: Props) {
       {...attributes}
       {...listeners}
     >
-      <TaskItemContent task={task} />
+      <TaskItemContent task={task} showHighlight={showHighlight}/>
     </StyledSortableTaskWrapper>
   );
 }

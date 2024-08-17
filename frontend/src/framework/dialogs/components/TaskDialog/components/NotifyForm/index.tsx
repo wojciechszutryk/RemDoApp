@@ -3,6 +3,7 @@ import DateTimePicker from "atomicComponents/atoms/DateTimePicker";
 import { Select } from "atomicComponents/atoms/Select";
 import { TextField } from "atomicComponents/atoms/TextField";
 import dayjs from "dayjs";
+import DatesInfo from "framework/dialogs/components/ReminderDialog/components/NotifySetup/DatesInfo";
 import { IReminderDialog } from "framework/dialogs/components/ReminderDialog/models/reminderDialog.model";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { ChangeEvent, memo } from "react";
@@ -25,6 +26,8 @@ import { StyledNotifyInputsWrapper } from "./styles";
 
 interface Props<TFormValues extends FieldValues> {
   control: Control<TFormValues, any>;
+
+  noDateWarning?: boolean;
 }
 
 const NotifyForm = <
@@ -32,19 +35,27 @@ const NotifyForm = <
   TFieldValues extends TFormValues
 >({
   control,
+  noDateWarning,
 }: Props<TFieldValues>): JSX.Element => {
   const { t } = useTranslation();
-  const watch = useWatch<TFormValues>();
+  const {
+    notify,
+    startDate,
+    finishDate,
+    beforeOrAfter,
+    timePoint,
+    minsAccordingToTimePoint,
+  } = useWatch<TFormValues>();
   const { setValue } = useFormContext<TFormValues>();
 
-  const timePointOptions = watch["startDate"]
-    ? watch["finishDate"]
+  const timePointOptions = startDate
+    ? finishDate
       ? [
           { value: "Start", label: t(TranslationKeys.Start) },
           { value: "Finish", label: t(TranslationKeys.Finish) },
         ]
       : [{ value: "Start", label: t(TranslationKeys.Start) }]
-    : watch["finishDate"]
+    : finishDate
     ? [{ value: "Finish", label: t(TranslationKeys.Finish) }]
     : [{ value: "Start", label: t(TranslationKeys.Start) }];
 
@@ -53,11 +64,11 @@ const NotifyForm = <
     { value: "After", label: t(TranslationKeys.After) },
   ];
 
-  const disableSelects =
-    !watch["notify"] || (!watch["startDate"] && !watch["finishDate"]);
+  const disableSelects = !notify || (!startDate && !finishDate);
 
   return (
     <StyledNotifyInputsWrapper>
+      <DatesInfo noDateWarning={noDateWarning} />
       <Controller
         control={control}
         name={"minsAccordingToTimePoint" as Path<TFieldValues>}
@@ -73,11 +84,11 @@ const NotifyForm = <
               const newDate = createDateFromSelectValues(
                 {
                   minsAccordingToTimePoint: mins,
-                  beforeOrAfter: watch["beforeOrAfter"],
-                  timePoint: watch["timePoint"],
+                  beforeOrAfter: beforeOrAfter,
+                  timePoint: timePoint,
                 },
-                watch["startDate"] && new Date(watch["startDate"]),
-                watch["finishDate"] && new Date(watch["finishDate"])
+                startDate && new Date(startDate),
+                finishDate && new Date(finishDate)
               );
 
               setValue(
@@ -124,12 +135,12 @@ const NotifyForm = <
                 | undefined;
               const newDate = createDateFromSelectValues(
                 {
-                  minsAccordingToTimePoint: watch["minsAccordingToTimePoint"],
+                  minsAccordingToTimePoint: minsAccordingToTimePoint,
                   beforeOrAfter: newBeforeOrAfterValue,
-                  timePoint: watch["timePoint"],
+                  timePoint: timePoint,
                 },
-                watch["startDate"] && new Date(watch["startDate"]),
-                watch["finishDate"] && new Date(watch["finishDate"])
+                startDate && new Date(startDate),
+                finishDate && new Date(finishDate)
               );
 
               setValue(
@@ -167,12 +178,12 @@ const NotifyForm = <
                 | undefined;
               const newDate = createDateFromSelectValues(
                 {
-                  minsAccordingToTimePoint: watch["minsAccordingToTimePoint"],
-                  beforeOrAfter: watch["beforeOrAfter"],
+                  minsAccordingToTimePoint: minsAccordingToTimePoint,
+                  beforeOrAfter: beforeOrAfter,
                   timePoint: newTimePoint,
                 },
-                watch["startDate"] && new Date(watch["startDate"]),
-                watch["finishDate"] && new Date(watch["finishDate"])
+                startDate && new Date(startDate),
+                finishDate && new Date(finishDate)
               );
 
               setValue(
@@ -198,12 +209,12 @@ const NotifyForm = <
         name={"notifyDate" as Path<TFieldValues>}
         render={({ field: { ref, onChange, value } }) => (
           <DateTimePicker
-            disabled={!watch["notify"]}
+            disabled={!notify}
             onChange={(date) => {
               const selectParams = createNotifySelectParams(
                 date?.toDate(),
-                watch["startDate"] && new Date(watch["startDate"]),
-                watch["finishDate"] && new Date(watch["finishDate"])
+                startDate && new Date(startDate),
+                finishDate && new Date(finishDate)
               );
 
               if (selectParams) {

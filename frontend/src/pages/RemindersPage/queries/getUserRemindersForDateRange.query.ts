@@ -10,6 +10,7 @@ import {
 } from "linked-models/reminder/reminder.urls";
 import { DateRange } from "react-big-calendar";
 import { IRemindersQueryData } from "../helpers/models";
+import { reccuranceIdPostfix } from "../helpers/recurranceIdConverters";
 
 /**
  * It fetches IReminderDTO[] but then maps it to IRemindersQueryData for easier reminder access
@@ -26,9 +27,15 @@ export const useGetUserRemindersForDateRange = (
   const getReminders = async () => {
     return await apiGet<IReminderAttached[]>(url).then((res) => {
       const idToReminderMap = new Map<string, IReminderAttached>();
-      res.data.forEach((reminder) => {
-        idToReminderMap.set(reminder.taskId, reminder);
+      res.data.forEach((reminder, index) => {
+        idToReminderMap.set(
+          reminder.recurrance
+            ? `${reminder.taskId}${reccuranceIdPostfix}${index}`
+            : reminder.taskId,
+          reminder
+        );
       });
+
       return idToReminderMap;
     });
   };

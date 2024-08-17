@@ -10,7 +10,6 @@ describe(`extractPropertiesToUpdate helper`, () => {
     finishDate: Date;
     startDate: Date;
     todoListId: string;
-    important: boolean;
   }
 
   const randomData: IRandomData = {
@@ -22,7 +21,6 @@ describe(`extractPropertiesToUpdate helper`, () => {
     finishDate: new Date(),
     startDate: new Date(),
     todoListId: "todoListId",
-    important: true,
     icon: TodoListIconEnum.Child,
   };
   const todoListKeys: (keyof ITodoList)[] = [

@@ -6,38 +6,36 @@ import axios from "axios";
 const TempConsole = () => {
   const [logs, setLogs] = useState<any[]>([]);
 
-  useEffect(() => {
-    const axiosInterceptor = axios.interceptors.request.use((config) => {
-      console.log("Request intercepted:", config);
-      return config;
-    });
+  // useEffect(() => {
+  //   const axiosInterceptor = axios.interceptors.request.use((config) => {
+  //     console.log("Request intercepted:", config);
+  //     return config;
+  //   });
 
-    return () => {
-      axios.interceptors.request.eject(axiosInterceptor);
-    };
-  }, []);
+  //   return () => {
+  //     axios.interceptors.request.eject(axiosInterceptor);
+  //   };
+  // }, []);
 
-  // run once!
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  useEffect(() => {
-    const hookedConsole = Hook(
-      window.console,
-      (log) => setLogs((currLogs) => [...currLogs, log]),
-      false
-    );
-    return () => Unhook(hookedConsole);
-  }, []);
+  // // run once!
+  // useEffect(() => {
+  //   const hookedConsole = Hook(
+  //     window.console,
+  //     (log) => setLogs((currLogs) => [...currLogs, log]),
+  //     false
+  //   );
+  //   return () => Unhook(hookedConsole);
+  // }, []);
 
   return (
     <div
       style={{
-        marginTop: "100px",
-        height: "100vh",
-        overflow: "scroll",
+        // marginTop: "100px",
+        // height: "100vh",
+        // overflow: "scroll",
       }}
     >
-      <Console logs={logs} variant="light" />
+      {/* <Console logs={logs} variant="light" /> */}
     </div>
   );
 };

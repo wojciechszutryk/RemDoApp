@@ -1,7 +1,5 @@
-import { Typography } from "@mui/material";
 import { Button } from "atomicComponents/atoms/Button";
 import Dialog from "atomicComponents/atoms/Dialog";
-import { ControlledCheckbox } from "atomicComponents/molecules/ControlledCheckbox";
 import { ControlledTextField } from "atomicComponents/molecules/ControlledInputText";
 import { useDialogs } from "framework/dialogs";
 import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
@@ -13,11 +11,10 @@ import { memo, useEffect, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { StyledForm } from "../TodoListDialog/styles";
-import CollapsableNotifyForm from "./components/CollapsableNotifyForm";
-import DatesPickers from "./components/DatesPickers";
-import { createNotifySelectParams } from "./components/NotifyForm/helpers";
+import TaskTabMenu from "./components/TaskTabMenu";
+import { getDefaultFormValues } from "./helpers/getDefaultFormValues";
+import { getReccuranceStr } from "./helpers/getReccuranceStr";
 import { ITaskDialog } from "./models/taskDialog.model";
-import { StyledCheckboxesWrapper } from "./styles";
 
 const TaskDialog = (): JSX.Element => {
   const {
@@ -33,87 +30,72 @@ const TaskDialog = (): JSX.Element => {
     updateTaskDialog(initialTaskDialog)
   );
 
-  const defaultSelectsValues =
-    editTaskData?.notifyDate &&
-    createNotifySelectParams(
-      new Date(editTaskData?.notifyDate),
-      editTaskData?.startDate && new Date(editTaskData?.startDate),
-      editTaskData?.finishDate && new Date(editTaskData?.finishDate)
-    );
-
-  const defaultFormValues = {
-    text: editTaskData?.text || "",
-    startDate: editTaskData?.startDate,
-    finishDate: editTaskData?.finishDate || null,
-    minsAccordingToTimePoint:
-      defaultSelectsValues?.minsAccordingToTimePoint || 15,
-    beforeOrAfter: defaultSelectsValues?.beforeOrAfter || "Before",
-    timePoint: defaultSelectsValues?.timePoint || "Start",
-    notifyDate: editTaskData?.notifyDate || new Date(Date.now() + 85500000),
-    important: editTaskData?.important,
-    notify: !!editTaskData?.notifyDate,
-  };
-
   const methods = useForm<ITaskDialog>({
-    defaultValues: defaultFormValues,
+    defaultValues: getDefaultFormValues(editTaskData),
+    mode: "onSubmit",
   });
 
   const createTaskMutation = useCreateTaskMutation();
   const editTaskMutation = useEditTaskInTodoListMutation();
   const { t } = useTranslation();
 
-  const onSubmit = (data: ITaskDialog) => {
-    if (!data.notify) data.notifyDate = null;
+  const onSubmit = (formValues: ITaskDialog) => {
+    const data = {
+      ...formValues,
+      recurrance: getReccuranceStr(formValues),
+      notifyDate: formValues.notify ? formValues.notifyDate : null,
+    };
 
     if (editTaskData)
-      editTaskMutation.mutate({ todoListId, taskId: editTaskData.id, data });
-    else createTaskMutation.mutate({ todoListId, data });
+      editTaskMutation.mutate({
+        todoListId,
+        taskId: editTaskData.id,
+        data,
+      });
+    else
+      createTaskMutation.mutate({
+        todoListId,
+        data,
+      });
     onClose();
   };
 
-  const { handleSubmit, control, setFocus } = methods;
+  const { handleSubmit, control } = methods;
 
   useEffect(() => {
-    setFocus("text");
-  }, [setFocus]);
+    taskRef.current?.focus();
+  }, [taskRef.current]);
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      title={
+        editTaskData ? t(TranslationKeys.EditTask) : t(TranslationKeys.AddTask)
+      }
+    >
       <FormProvider {...methods}>
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          <Typography variant="h4">
-            {editTaskData
-              ? `${t(TranslationKeys.EditTask)}: ${editTaskData.text}`
-              : t(TranslationKeys.AddTask)}
-          </Typography>
           <ControlledTextField
             autoFocus
-            ref={taskRef}
+            inputRef={taskRef}
             name={"text"}
+            multiline
+            rules={{
+              required: {
+                value: true,
+                message: t(TranslationKeys.FieldRequired),
+              },
+            }}
             error={!!methods.formState.errors?.text}
-            helperText={
-              methods.formState.errors.text?.type === "required" &&
-              t(TranslationKeys.FieldRequired)
-            }
+            helperText={methods.formState.errors.text?.message}
             control={control}
             placeholder={t(TranslationKeys.TaskName)}
           />
-          <DatesPickers />
 
-          <StyledCheckboxesWrapper>
-            <ControlledCheckbox
-              name={"notify"}
-              control={control}
-              label={t(TranslationKeys.NotifyMe)}
-            />
-            <ControlledCheckbox
-              name={"important"}
-              control={control}
-              label={t(TranslationKeys.TaskImportant)}
-            />
-          </StyledCheckboxesWrapper>
-          <CollapsableNotifyForm control={methods.control} />
-          <Button type="submit">
+          <TaskTabMenu control={methods.control} />
+
+          <Button type="submit" sx={{ mx: { sm: "auto" } }}>
             {editTaskData
               ? t(TranslationKeys.Save)
               : t(TranslationKeys.AddTask)}

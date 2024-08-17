@@ -135,11 +135,13 @@ export class TaskService {
   ): Promise<ITaskAttached> {
     const newTask: ITaskWithReadonlyProperties = {
       text: task.text,
+      link: task.link,
+      description: task.description,
       startDate: task.startDate,
       finishDate: task.finishDate,
       completionDate: task.completionDate,
-      important: task.important ?? false,
       todoListId,
+      recurrance: task.recurrance,
       creatorId: creator.id,
       whenCreated: new Date(),
       whenUpdated: new Date(),
@@ -172,8 +174,10 @@ export class TaskService {
       "startDate",
       "finishDate",
       "completionDate",
-      "important",
       "notifyDate",
+      "recurrance",
+      "link",
+      "description",
     ];
 
     const validUpdateProperties = extractPropertiesToUpdate(
@@ -186,7 +190,6 @@ export class TaskService {
       {
         ...validUpdateProperties,
         whenUpdated: new Date(),
-        important: updateData.important ?? false,
       },
       { new: true }
     );
@@ -205,7 +208,10 @@ export class TaskService {
 
       let eventName = EventName.TaskUpdated;
 
-      if (updateFieldsSize === 1 && validUpdateProperties.hasOwnProperty("completionDate")) {
+      if (
+        updateFieldsSize === 1 &&
+        validUpdateProperties.hasOwnProperty("completionDate")
+      ) {
         eventName = EventName.TaskStateChanged;
       } else if (
         (updateFieldsSize === 1 || updateFieldsSize === 2) &&

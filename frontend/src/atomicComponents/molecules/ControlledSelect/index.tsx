@@ -5,7 +5,6 @@ import {
   FieldErrors,
   FieldPath,
   FieldValues,
-  PathValue,
 } from "react-hook-form";
 
 interface Props<
@@ -34,7 +33,10 @@ export const ControlledSelect = <
       render={({ field: { onChange, value } }) => (
         <Select
           {...otherProps}
-          onChange={onChange as PathValue<TFieldValues, TName>}
+          onChange={(e, child) => {
+            onChange(e);
+            if (otherProps?.onChange) otherProps?.onChange(e, child);
+          }}
           value={value}
         />
       )}

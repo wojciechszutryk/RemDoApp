@@ -1,5 +1,6 @@
 import {
   FormControl,
+  InputLabel,
   MenuItem,
   MenuProps as MuiMenuProps,
   SelectProps as MuiSelectProps,
@@ -37,13 +38,17 @@ export const Select = ({
   options,
   value,
   children,
+  label,
+  id,
   ...otherProps
 }: SelectProps): JSX.Element => {
   return (
     <StyledWrapper>
       <FormControl fullWidth variant={"standard"}>
+        {id && label && <InputLabel id={id}>{label}</InputLabel>}
         <StyledSelect
           {...otherProps}
+          labelId={id}
           disableUnderline
           autoWidth={false}
           value={value ? value : []}

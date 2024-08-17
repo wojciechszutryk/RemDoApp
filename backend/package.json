@@ -47,6 +47,7 @@
     "react": "^18.2.0",
     "react-email": "1.9.5",
     "reflect-metadata": "^0.1.13",
+    "rrule": "^2.8.1",
     "socket.io": "^4.6.2",
     "tsc-alias": "^1.8.8",
     "uuid": "^9.0.1",

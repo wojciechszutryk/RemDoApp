@@ -5,7 +5,12 @@ import { memo } from "react";
 const CardActionsSkeleton = (): JSX.Element => {
   return (
     <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
-      <Skeleton animation="wave" height={60} width="150px" />
+      <Skeleton
+        animation="wave"
+        height={60}
+        width="150px"
+        sx={{ borderRadius: "15px" }}
+      />
       <Box sx={{ display: "flex", gap: 1 }}>
         {[1, 2, 3].map((_, index) => (
           <IconSkeleton key={index} />

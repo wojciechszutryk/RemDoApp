@@ -15,6 +15,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import useHandleDrag from "pages/TodoListsPage/components/TodoListsContainer/useHandleDrag";
+import { useParams } from "react-router-dom";
 import { SortableTaskItem } from "./SortableTaskItem";
 
 interface SortableTaskListProps {
@@ -29,6 +30,8 @@ const SortableTaskList = ({
   setSortedTasks,
 }: SortableTaskListProps) => {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const { taskId } = useParams();
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -59,6 +62,7 @@ const SortableTaskList = ({
             key={task.id}
             task={task}
             withShakeAnimation={!activeId}
+            showHighlight={task.id === taskId}
           />
         ))}
       </SortableContext>

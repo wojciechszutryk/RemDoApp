@@ -1,18 +1,26 @@
-import { styled, Tab as MuiTab, TabProps } from "@mui/material";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import { TabProps } from "@mui/material";
+import { memo } from "react";
+import { StyledTab } from "./styles";
 
-export const Tab = styled((props: TabProps) => (
-  <MuiTab disableRipple {...props} />
-))(({ theme }) => ({
-  textTransform: "none",
-  color: theme.palette.secondary.main,
-  fontWeight: 800,
-  "&:hover": {
-    color: theme.palette.secondary.light
-  },
-  "&.Mui-selected": {
-    color: theme.palette.primary.contrastText,
-  },
-  "&.Mui-focusVisible": {
-    backgroundColor: theme.palette.primary.contrastText,
-  },
-}));
+interface Props extends TabProps {
+  error?: boolean;
+}
+
+const Tab = ({ error, ...props }: Props): JSX.Element => {
+  return (
+    <StyledTab
+      disableRipple
+      {...props}
+      error={error}
+      label={
+        <div style={{ display: "flex" }}>
+          {error && <PriorityHighIcon sx={{ height: 15 }} />}
+          {props.label}
+        </div>
+      }
+    ></StyledTab>
+  );
+};
+
+export default memo(Tab);

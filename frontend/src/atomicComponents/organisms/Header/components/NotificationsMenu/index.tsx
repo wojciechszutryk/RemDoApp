@@ -11,7 +11,8 @@ import useCheckPushSubActive from "./hooks/useCheckPushSubActive";
 import useGetNotificationsData from "./hooks/useGetNotificationsData";
 import useMarkFreshNotificationsAsRead from "./hooks/useMarkFreshNotificationsAsRead";
 import useToggleDrawer from "./hooks/useToggleDrawer";
-import { StyledDrawerListWrapper, StyledNotificationButton } from "./styles";
+import { StyledDrawerListWrapper } from "./styles";
+import { StyledHeaderIconButton } from "../../styles";
 
 const NotificationsMenu = (): JSX.Element => {
   const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
@@ -42,12 +43,12 @@ const NotificationsMenu = (): JSX.Element => {
           sx={{ borderRadius: "50%", zIndex: 2 }}
         />
       ) : (
-        <StyledNotificationButton onClick={toggleDrawer(true)}>
+        <StyledHeaderIconButton onClick={toggleDrawer(true)}>
           <NotificationIcon
             showNoActivePushSubIcon={showNoActivePushSubIcon}
             freshNotificationsNumber={freshNotificationIDs.length}
           />
-        </StyledNotificationButton>
+        </StyledHeaderIconButton>
       )}
       <Drawer open={showNotificationDrawer} onClose={toggleDrawer(false)}>
         <StyledDrawerListWrapper

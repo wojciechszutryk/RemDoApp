@@ -8,8 +8,11 @@ import { memo, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useGetUserCollaborantsQuery } from "../../CollaborantsDrawer/queries/getUserCollaborants.query.";
+import {
+  StyledAutocomplete,
+  StyledAutocompleteChip,
+} from "../../TodoListDialog/styles";
 import { IReminderDialogState } from "../models/reminderDialogState.model";
-import { StyledAutocomplete, StyledAutocompleteChip } from "./styles";
 
 interface Props
   extends Omit<

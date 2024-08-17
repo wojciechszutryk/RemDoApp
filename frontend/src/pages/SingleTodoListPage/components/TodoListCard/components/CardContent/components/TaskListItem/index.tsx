@@ -20,6 +20,7 @@ interface Props {
   canArchive?: boolean;
   canDelete?: boolean;
   canEdit?: boolean;
+  showHighlight?: boolean;
 }
 
 const TaskListItem = ({
@@ -27,6 +28,7 @@ const TaskListItem = ({
   canArchive,
   canEdit,
   canDelete,
+  showHighlight,
 }: Props): JSX.Element => {
   const isTaskCompleted = !!task.completionDate;
   const editTaskInTodoListMutation = useEditTaskInTodoListMutation();
@@ -39,7 +41,7 @@ const TaskListItem = ({
   const theme = useTheme();
 
   if (!isSwippable) {
-    return <TaskItemContent task={task} />;
+    return <TaskItemContent task={task} showHighlight={showHighlight} />;
   }
 
   return (
@@ -118,7 +120,7 @@ const TaskListItem = ({
         },
       }}
     >
-      <SwippableTaskItemContent task={task} />
+      <SwippableTaskItemContent task={task} showHighlight={showHighlight} />
     </SwippableItem>
   );
 };

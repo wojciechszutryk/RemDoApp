@@ -13,6 +13,7 @@ import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
 import { ITodoList } from "linked-models/todoList/todoList.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
+import { RRule } from "rrule";
 import { TaskService } from "services/task/task.service";
 import { TodoListService } from "services/todoList/todoList.service";
 import { UserService } from "services/user/user.service";
@@ -126,6 +127,32 @@ export class ReminderService {
     return reminders;
   }
 
+  public resolveRecurringReminders(
+    reminder: IReminderAttached,
+    startDate: Date,
+    endDate: Date
+  ): IReminderAttached[] {
+    if (!reminder.recurrance) return [];
+
+    try {
+      const rule = RRule.fromString(reminder.recurrance);
+
+      const dates = rule.between(startDate, endDate);
+
+      const reminderLength =
+        reminder.finishDate.getTime() - reminder.startDate.getTime();
+
+      return dates.map((date) => ({
+        ...reminder,
+        startDate: date,
+        finishDate: new Date(date.getTime() + reminderLength),
+      }));
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
+  }
+
   /**
    * Creates a reminder for a user. New todoList and task will be created.
    */
@@ -208,7 +235,6 @@ export class ReminderService {
       "text",
       "finishDate",
       "startDate",
-      "important",
       "startDate",
       "finishDate",
     ];

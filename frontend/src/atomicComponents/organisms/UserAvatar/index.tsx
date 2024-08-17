@@ -20,8 +20,12 @@ const UserAvatar = ({
       alt={displayName}
       src={avatarUrl}
       sx={{
+        ...avatarProps?.sx,
         backgroundColor: altBackground
           ? (theme) => theme.palette.primary.contrastText + " !important"
+          : undefined,
+        color: altBackground
+          ? (theme) => theme.palette.primary.main
           : undefined,
       }}
     >

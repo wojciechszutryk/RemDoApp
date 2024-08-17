@@ -80,7 +80,7 @@ const ForgetPasswordPage = (): JSX.Element => {
           collapseProps={{ in: !!errors.newPassword }}
           alertProps={{ severity: "warning" }}
         >
-          {t(TranslationKeys.PasswordRequired)}
+          {t(TranslationKeys.FieldRequired)}
         </CollapsableAlert>
         <ControlledTextField
           name={"newPasswordRepeat"}

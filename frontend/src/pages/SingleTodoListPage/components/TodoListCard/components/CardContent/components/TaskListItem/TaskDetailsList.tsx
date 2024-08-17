@@ -1,13 +1,11 @@
-import FlagCircleIcon from "@mui/icons-material/FlagCircle";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import { List, ListItem, ListItemText } from "@mui/material";
+import { List, ListItemText } from "@mui/material";
 import UserAvatar from "atomicComponents/organisms/UserAvatar";
 import ExtendableUserAvatar from "atomicComponents/organisms/UserAvatar/ExtendableUserAvatar";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { StyledListItemIcon } from "./styles";
+import { StyledDetailsListItem, StyledListItemIcon } from "./styles";
 import { dateDiffText } from "./utils";
 
 interface Props {
@@ -16,45 +14,49 @@ interface Props {
 
 const TaskDetailsList = ({ task }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const { startDate, finishDate, completionDate } = task;
+  const { startDate, finishDate, completionDate, description, link } = task;
 
   return (
     <List disablePadding>
+      {description && (
+        <StyledDetailsListItem>
+          <ListItemText
+            primary={description}
+            secondary={t(TranslationKeys.Description)}
+          />
+        </StyledDetailsListItem>
+      )}
+      {link && (
+        <StyledDetailsListItem>
+          <ListItemText primary={link} secondary={t(TranslationKeys.Link)} />
+        </StyledDetailsListItem>
+      )}
       {startDate && (
-        <ListItem>
-          <StyledListItemIcon>
-            <PlayCircleOutlineIcon />
-          </StyledListItemIcon>
+        <StyledDetailsListItem>
           <ListItemText
             primary={dateDiffText(t, startDate)}
             secondary={t(TranslationKeys.StartDate)}
           />
-        </ListItem>
+        </StyledDetailsListItem>
       )}
       {finishDate && (
-        <ListItem>
-          <StyledListItemIcon>
-            <FlagCircleIcon />
-          </StyledListItemIcon>
+        <StyledDetailsListItem>
           <ListItemText
             primary={dateDiffText(t, finishDate)}
             secondary={t(TranslationKeys.FinishDate)}
           />
-        </ListItem>
+        </StyledDetailsListItem>
       )}
       {completionDate && (
-        <ListItem>
-          <StyledListItemIcon>
-            <FlagCircleIcon />
-          </StyledListItemIcon>
+        <StyledDetailsListItem>
           <ListItemText
             primary={dateDiffText(t, completionDate)}
             secondary={t(TranslationKeys.CompletionDate)}
           />
-        </ListItem>
+        </StyledDetailsListItem>
       )}
       {task.creator && (
-        <ListItem>
+        <StyledDetailsListItem>
           <StyledListItemIcon>
             {task.creator.displayName ? (
               <ExtendableUserAvatar userData={task.creator} />
@@ -70,7 +72,7 @@ const TaskDetailsList = ({ task }: Props): JSX.Element => {
             }
             secondary={t(TranslationKeys.Creator)}
           />
-        </ListItem>
+        </StyledDetailsListItem>
       )}
     </List>
   );

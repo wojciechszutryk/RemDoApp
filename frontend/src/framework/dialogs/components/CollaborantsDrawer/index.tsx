@@ -1,5 +1,5 @@
 import { CircularProgress, Tabs, useMediaQuery } from "@mui/material";
-import { Tab } from "atomicComponents/atoms/Tab";
+import Tab from "atomicComponents/atoms/Tab";
 import { AnimatePresence } from "framer-motion";
 import { useDialogs } from "framework/dialogs";
 import useAppDialogState from "framework/dialogs/hooks/useAppDialogState";
@@ -25,6 +25,7 @@ const CollaborantsDrawer = (): JSX.Element => {
 
   const location = useLocation();
   const navigate = useNavigate();
+
   const [open, onClose] = useAppDialogState(visible, () => {
     updateCollaborantsDrawer({ visible: false });
     if (location.pathname.includes(URL_COLLABORANTS))

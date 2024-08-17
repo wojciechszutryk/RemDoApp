@@ -1,11 +1,12 @@
 import dayjs, { Ls } from "dayjs";
 import useCheckLoader from "hooks/useCheckLoader";
 import useEventRangeChange from "pages/RemindersPage/components/Callendar/hooks/useEventRangeChange";
+import { LAST_CALLENDAR_VIEW_LS_KEY } from "pages/RemindersPage/helpers/LS.keys.const.helper";
 import { CalendarAnimation } from "pages/RemindersPage/helpers/enums";
 import { ICallendarEvent } from "pages/RemindersPage/helpers/models";
 import { useGetUserRemindersForDateRange } from "pages/RemindersPage/queries/getUserRemindersForDateRange.query";
 import { memo, useMemo, useState } from "react";
-import { Calendar, DateRange } from "react-big-calendar";
+import { Calendar, DateRange, View } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -18,6 +19,7 @@ import useOnRangeChange from "./hooks/useOnRangeChange";
 import useOnSelectEvent from "./hooks/useOnSelectEvent";
 import useOnSelectSlot from "./hooks/useOnSelectSlot";
 import useOnView from "./hooks/useOnView";
+import useSwipeHandlers from "./hooks/useSwipeHandlers";
 import { StyledCallendarWrapper } from "./styles";
 
 Ls.en.weekStart = 1;
@@ -26,9 +28,13 @@ const DnDCalendar = withDragAndDrop<ICallendarEvent>(Calendar);
 
 const BigCallendar = (): JSX.Element => {
   const [dateRange, setDateRange] = useState<DateRange>({
-    start: dayjs().startOf("month").toDate(),
-    end: dayjs().endOf("month").toDate(),
+    start: dayjs().subtract(3, "month").startOf("month").toDate(),
+    end: dayjs().add(3, "month").endOf("month").toDate(),
   });
+  const [date, setDate] = useState<Date>(new Date());
+  const [view, setView] = useState<View>(
+    (localStorage.getItem(LAST_CALLENDAR_VIEW_LS_KEY) as View) || "month"
+  );
   const [contentAnimation, setContentAnimation] = useState<CalendarAnimation>(
     CalendarAnimation.FADE_IN
   );
@@ -41,8 +47,15 @@ const BigCallendar = (): JSX.Element => {
   const onSelectEvent = useOnSelectEvent();
   const onSelectSlot = useOnSelectSlot();
   const onNavigate = useOnNavigate(setContentAnimation);
-  const onView = useOnView(setContentAnimation);
-  const onRangeChange = useOnRangeChange(dateRange, setDateRange);
+  const onView = useOnView(setContentAnimation, setView);
+  const onRangeChange = useOnRangeChange(dateRange, setDateRange, setDate);
+  const [onTouchStart, onTouchMove, onTouchEnd] = useSwipeHandlers({
+    date,
+    view,
+    setDate,
+    dateRange,
+    onRangeChange,
+  });
 
   const events = useMemo(() => {
     const eventsArr: ICallendarEvent[] = [];
@@ -62,6 +75,9 @@ const BigCallendar = (): JSX.Element => {
 
   return (
     <StyledCallendarWrapper
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
       contentAnimation={contentAnimation}
       isLoading={isLoading}
     >
@@ -91,10 +107,14 @@ const BigCallendar = (): JSX.Element => {
             ),
           },
         }}
+        view={view}
+        date={date}
         events={events}
         onNavigate={onNavigate}
         onView={onView}
-        onRangeChange={onRangeChange}
+        onRangeChange={(dateRange: DateRange | Date[]) =>
+          onRangeChange(dateRange, view)
+        }
         onSelectEvent={onSelectEvent}
         onSelectSlot={onSelectSlot}
         onEventDrop={onEventRangeChange}

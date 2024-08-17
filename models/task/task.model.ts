@@ -1,13 +1,16 @@
 import { IBaseModelAttached } from "../abstraction/base.interface";
 
 export interface ITask {
-  /** Text of task */
   text: string;
 
-  /** Date when task should be started */
+  description?: string;
+
+  link?: string;
+
+  /** Initial Date when task should be started */
   startDate?: Date | null;
 
-  /** Date when task should be finished */
+  /** Initial Date when task should be finished */
   finishDate?: Date | null;
 
   /** Date when to notify user about task or reminder - Not saved in DB, used only to create/edit*/
@@ -16,8 +19,8 @@ export interface ITask {
   /** Optional Date when task was finished */
   completionDate?: Date | null;
 
-  /** Boolean to determine if task is important */
-  important?: boolean;
+  /** Recurrence of task - applied only for reminders - RRULE format */
+  recurrance?: string | null;
 }
 
 export interface ITaskWithReadonlyProperties extends ITask {

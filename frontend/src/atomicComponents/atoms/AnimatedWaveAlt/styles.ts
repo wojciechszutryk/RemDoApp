@@ -39,10 +39,14 @@ export const AnimatedWaveAltStyles = (
   ...(!disabled && {
     "&:hover": {
       color: theme.palette.primary.light,
-      "& > div:last-of-type > div > span": {
-        transform: "translateZ(0) scale(1.7)",
-        "@supports (filter: url('#goo'))": {
-          transform: "translateZ(0) scale(1.4)",
+      "& > div:last-of-type > div": {
+        transitionDelay: "0.45s",
+        backgroundColor: theme.palette.primary.contrastText,
+        "& > span": {
+          transform: "translateZ(0) scale(1.7)",
+          "@supports (filter: url('#goo'))": {
+            transform: "translateZ(0) scale(1.4)",
+          },
         },
       },
       "&:after": {
@@ -67,6 +71,7 @@ export const AnimatedWaveAltStyles = (
       display: "block",
       height: "100%",
       filter: "url('#goo')",
+      transition: "background-color 0.03s ease-in",
       "& > span": {
         position: "absolute",
         top: "2px",

@@ -4,14 +4,18 @@ import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { StyledLogoWrapper } from "./styles";
 
-const LogoButton = (): JSX.Element => {
+export interface LogoProps {
+  small?: boolean;
+}
+
+const LogoButton = ({ small }: LogoProps): JSX.Element => {
   const navigate = useNavigate();
   return (
     <StyledLogoWrapper
       data-testid="logo-wrapper"
       onClick={() => navigate(Pages.HomePage.path)}
     >
-      <Logo/>
+      <Logo small={small} />
     </StyledLogoWrapper>
   );
 };

@@ -5,12 +5,22 @@ import TaskItemContent from "./TaskItemContent";
 
 interface Props {
   task: IExtendedTaskDto;
+  showHighlight?: boolean;
 }
 
-const SwippableTaskItemContent = ({ task }: Props): JSX.Element => {
+const SwippableTaskItemContent = ({
+  task,
+  showHighlight,
+}: Props): JSX.Element => {
   const { dragStartPosition } = useSwippableItemContext();
 
-  return <TaskItemContent task={task} isDragging={!!dragStartPosition} />;
+  return (
+    <TaskItemContent
+      task={task}
+      isDragging={!!dragStartPosition}
+      showHighlight={showHighlight}
+    />
+  );
 };
 
 export default memo(SwippableTaskItemContent);

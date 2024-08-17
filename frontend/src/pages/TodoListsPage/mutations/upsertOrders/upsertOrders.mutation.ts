@@ -59,7 +59,6 @@ export const useUpsertOrdersMutation = () => {
       queryClient.setQueryData(
         [URL_TODO_LISTS, PARAM_EXTENDED],
         (prev?: IExtendedTodoListDto[]): IExtendedTodoListDto[] => {
-          debugger;
           if (!prev) return [];
 
           const entityIdToOrderMap = orders.reduce((acc, order) => {

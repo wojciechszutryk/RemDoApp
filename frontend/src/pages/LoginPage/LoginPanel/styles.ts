@@ -11,24 +11,6 @@ export const StyledContentWrapper = styled("div")(({ theme }) => ({
   padding: "50px 60px",
   backgroundImage: `url(${process.env.PUBLIC_URL}/images/wave-doodles.png)`,
   borderRadius: "200px 210px 200px 155px",
-
-  "@keyframes borderWave": {
-    "0%": {
-      borderRadius: "200px 210px 200px 155px",
-    },
-    "25%": {
-      borderRadius: "210px 200px 190px 175px",
-    },
-    "50%": {
-      borderRadius: "220px 190px 200px 195px",
-    },
-    "75%": {
-      borderRadius: "210px 200px 190px 175px",
-    },
-    "100%": {
-      borderRadius: "200px 210px 200px 155px",
-    },
-  },
   width: "90%",
 
   [theme.breakpoints.up("sm")]: {
