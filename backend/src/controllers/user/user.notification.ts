@@ -3,17 +3,15 @@ import { inject } from "inversify";
 import {
   BaseHttpController,
   controller,
-  httpDelete,
   httpGet,
   httpPut,
   interfaces,
-  queryParam,
   requestBody,
   requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
 import { IUpdateUserNotificationDto } from "linked-models/notification/notification.dto";
-import { URL_USER_NOTIFICATIONS } from "linked-models/notification/notification.urls";
+import { URL_DELETE, URL_USER_NOTIFICATIONS } from "linked-models/notification/notification.urls";
 import { IUserAttached } from "linked-models/user/user.model";
 import { URL_USERS } from "linked-models/user/user.urls";
 import { SetCurrentUser } from "middlewares/user/setCurrentUser.middleware";
@@ -68,19 +66,15 @@ export class NotificationController
     }
   }
 
-  @httpDelete("")
+  @httpPut(URL_DELETE)
   async deleteUserNotifications(
     @requestParam(PARAM_CURRENT_USER) currentUser: IUserAttached,
-    @queryParam("ids") userNotificationIDsQueryParam: string
+    @requestBody() body: { ids: string[] }
   ): Promise<OkResult> {
     try {
-      const userNotificationIDs: string[] = JSON.parse(
-        userNotificationIDsQueryParam
-      );
-
       const userNotifications =
         await this.notificationService.returnValidatedUserNotifications(
-          userNotificationIDs,
+          body.ids,
           currentUser.id
         );
 

@@ -1,11 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiDelete } from "framework/asyncInteractions";
+import { apiPut } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
-import { URL_USER_NOTIFICATIONS } from "linked-models/notification/notification.urls";
+import {
+  URL_DELETE,
+  URL_USER_NOTIFICATIONS,
+} from "linked-models/notification/notification.urls";
 import { URL_USERS } from "linked-models/user/user.urls";
 import {
-  emptyUserNotificationsQueryData,
   IUserNotificationsQueryData,
+  emptyUserNotificationsQueryData,
 } from "../queries/getUserNotifications.query";
 
 export const useDeleteUserNotificationsMutation = () => {
@@ -14,10 +17,10 @@ export const useDeleteUserNotificationsMutation = () => {
   const deleteUserNotifications = async (userNotificationIDs: string[]) => {
     const url = FRONTIFY_URL(
       URL_USERS,
-      `${URL_USER_NOTIFICATIONS}?ids=${JSON.stringify(userNotificationIDs)}`
+      `${URL_USER_NOTIFICATIONS}${URL_DELETE}`
     );
 
-    return apiDelete(url).then((res) => res.data);
+    return apiPut(url, { ids: userNotificationIDs }).then((res) => res.data);
   };
 
   return useMutation(deleteUserNotifications, {
