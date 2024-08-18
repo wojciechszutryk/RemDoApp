@@ -44,6 +44,9 @@ const useCallendarConfig = () => {
         localizer.format(start, "DD.MM.YY", culture) +
         " - " +
         localizer.format(end, "DD.MM.YY", culture),
+      eventTimeRangeFormat: () => {
+        return "";
+      },
     }),
     [isSmallScreen]
   );
@@ -52,7 +55,7 @@ const useCallendarConfig = () => {
     scrollToTime: new Date(),
     formats: formats,
     dayLayoutAlgorithm: "no-overlap" as DayLayoutAlgorithm,
-    backgroundEvents: [],
+    // backgroundEvents: [],
     events: events,
     localizer: localizer,
     culture: language,
@@ -74,7 +77,7 @@ const useCallendarConfig = () => {
       time: t(TranslationKeys.Time),
       event: t(TranslationKeys.Event),
     },
-    showMultiDayTimes: true,
+    // showMultiDayTimes: true,
     step: 15,
     timeslots: 2,
     resizable: true,

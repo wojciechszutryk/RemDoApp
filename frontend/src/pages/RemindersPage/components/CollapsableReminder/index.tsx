@@ -48,13 +48,20 @@ const CollapsableReminder = ({ reminder }: Props): JSX.Element => {
           <TodoListIcon type={reminder.icon} disableHover />
         </StyledListItemIcon>
       )}
-      <ListItemText primary={reminder.text} onClick={handleExpandDetails} />
+      <ListItemText primary={reminder.name} onClick={handleExpandDetails} />
 
       <EditIcon onClick={handleEditReminder} />
       <StyledDetailsColapse in={expanded}>
         <TaskDetailsList
           task={{
             ...reminder,
+            description: reminder.text
+              ? reminder.description
+                ? `${reminder.text} ||
+              ${reminder.description}`
+                : reminder.text
+              : reminder.description || "",
+            text: reminder.name,
             id: reminder.taskId,
           }}
         />
