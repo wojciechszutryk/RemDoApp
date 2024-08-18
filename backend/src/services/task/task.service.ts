@@ -147,7 +147,7 @@ export class TaskService {
       whenUpdated: new Date(),
     };
 
-    const createdTask = await this.taskCollection.create(newTask);
+    const createdTask = await this.taskCollection.create(newTask, );
 
     const mappedCreatedTask = mapTaskToAttachedTask(createdTask);
 

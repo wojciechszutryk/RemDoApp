@@ -6,10 +6,12 @@ import { ITask } from "../task/task.model";
  * sum of ITask (with required startDate and finishDate) and ITodoList
  */
 export interface IReminder
-  extends Omit<ITask, "startDate" | "finishDate">,
+  extends Omit<ITask, "startDate" | "finishDate" | "text">,
     ITodoList {
+  text?: string;
   startDate: Date;
   finishDate: Date;
+  todoListId: string;
 }
 
 /**

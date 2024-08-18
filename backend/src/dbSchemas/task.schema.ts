@@ -7,7 +7,7 @@ import mongoose, { Document } from "mongoose";
 export const TaskCollectionName = "tasks";
 
 const TaskSchema = new mongoose.Schema({
-  text: { type: String, required: true },
+  text: { type: String, required: false },
   description: { type: String, required: false },
   link: { type: String, required: false },
   startDate: {

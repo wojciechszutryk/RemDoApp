@@ -78,7 +78,6 @@ const GeneralInfo = ({
             name={"name"}
             multiline
             maxRows={3}
-            rows={2}
             required
             error={!!errors.name}
             helperText={
@@ -90,12 +89,7 @@ const GeneralInfo = ({
           />
           <ControlledTextField
             name={"text"}
-            required
-            error={!!errors.text}
-            helperText={
-              errors.text?.type === "required" &&
-              t(TranslationKeys.FieldRequired)
-            }
+            multiline
             control={control}
             placeholder={t(TranslationKeys.ReminderDescription)}
           />

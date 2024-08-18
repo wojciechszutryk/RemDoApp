@@ -10,6 +10,7 @@ import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import IconPicker from "../../TodoListDialog/IconPicker";
 import { StyledInlineInputs } from "../../TodoListDialog/styles";
+import { ReminderTodoListId } from "linked-models/reminder/reminder.const";
 
 const TodoListSelect = (): JSX.Element => {
   const getUserTodoListsWithMembersQuery = useGetUserTodoListsQuery(true);
@@ -38,7 +39,7 @@ const TodoListSelect = (): JSX.Element => {
         name={"todoListId"}
         render={({ field: { onChange, value } }) => (
           <StyledInlineInputs style={{ height: "54px" }}>
-            {!value || (value === "reminder" && <IconPicker />)}
+            {!value || (value === ReminderTodoListId && <IconPicker />)}
             <Select
               label={t(TranslationKeys.Reminder)}
               value={value}
@@ -50,7 +51,7 @@ const TodoListSelect = (): JSX.Element => {
                 onChange(e.target?.value);
               }}
             >
-              <MenuItem value={"reminder"} key={"reminder"}>
+              <MenuItem value={ReminderTodoListId} key={ReminderTodoListId}>
                 <ListItemIcon>
                   {<EditCalendarIcon color="secondary" />}
                 </ListItemIcon>

@@ -40,24 +40,30 @@ export class TodoListsController
     @queryParam(PARAM_EXTENDED) extended = false,
     @queryParam(PARAM_WITH_MEMBERS) withMembers = false
   ): Promise<OkResult> {
+    const options = {
+      isReminder: false,
+    };
     if (extended) {
       const todoLists =
         await this.todoListCacheService.getCachedExtendedTodoListsForUser(
-          currentUser.id
+          currentUser.id,
+          options
         );
 
       return this.ok(todoLists);
     } else if (withMembers) {
       const { todoLists } =
         await this.todoListService.getTodoListsWithMembersForUser(
-          currentUser.id
+          currentUser.id,
+          options
         );
 
       return this.ok(todoLists);
     }
 
     const todoLists = await this.todoListService.getTodoListsForUser(
-      currentUser.id
+      currentUser.id,
+      options
     );
 
     return this.ok(todoLists);

@@ -46,7 +46,11 @@ const ReminderDialog = (): JSX.Element => {
     editReminderData
   );
 
-  const methods = useForm<IReminderDialog>({
+  const methods = useForm<
+    Omit<IReminderDialog, "text"> & {
+      text?: string;
+    }
+  >({
     defaultValues: defaultFormValues,
   });
 
@@ -65,14 +69,14 @@ const ReminderDialog = (): JSX.Element => {
         },
       });
     } else {
-      if (!data.startDate || !data.finishDate || !data.text || !data.icon)
+      if (!data.startDate || !data.finishDate || !data.name || !data.icon)
         return;
       const createReminderData: IReminder = {
         ...data,
         assignedOwners: ownerEmails,
         assignedUsers: userEmails,
         text: data.text,
-        name: data.text,
+        name: data.name,
         icon: data.icon,
         startDate: data.startDate,
         finishDate: data.finishDate,

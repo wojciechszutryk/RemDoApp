@@ -64,7 +64,7 @@ const BigCallendar = (): JSX.Element => {
       eventsArr.push({
         ...reminder,
         id: reminder.taskId,
-        title: reminder.text,
+        title: reminder.name,
         start: new Date(reminder.startDate),
         end: new Date(reminder.finishDate),
       });

@@ -1,4 +1,5 @@
 import {
+  ITodoListDocument,
   mapTodoListToAttachedTodoList,
   TodoListCollectionName,
   TodoListCollectionType,
@@ -22,6 +23,7 @@ import {
 } from "linked-models/todoList/todoList.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
+import { FilterQuery } from "mongoose";
 import { OrderService } from "services/order/order.service";
 import { TaskService } from "services/task/task.service";
 import { UserService } from "services/user/user.service";
@@ -60,15 +62,20 @@ export class TodoListService {
   }
 
   public async getTodoListsForUser(
-    userId: string
+    userId: string,
+    options?: Partial<FilterQuery<ITodoListDocument>>
   ): Promise<ITodoListAttached[]> {
-    const todoLists = await this.todoListCollection.find({
+    const filter: FilterQuery<ITodoListDocument> = {
       $or: [
         { assignedUsers: { $in: [userId] } },
         { assignedOwners: { $in: [userId] } },
         { creatorId: userId },
       ],
-    });
+    };
+
+    if (options) Object.assign(filter, options);
+
+    const todoLists = await this.todoListCollection.find(filter);
 
     const uniqueTodoLists = [...new Set(todoLists)];
 
@@ -134,11 +141,14 @@ export class TodoListService {
     return { todoList, todoListMembers };
   }
 
-  public async getTodoListsWithMembersForUser(userId: string): Promise<{
+  public async getTodoListsWithMembersForUser(
+    userId: string,
+    options?: Partial<FilterQuery<ITodoListDocument>>
+  ): Promise<{
     todoLists: ITodoListWithMembersDto[];
     users: IUserPublicDataDTO[];
   }> {
-    const todoLists = await this.getTodoListsForUser(userId);
+    const todoLists = await this.getTodoListsForUser(userId, options);
 
     const memberIDs = new Set<string>(todoLists.map((t) => t.creatorId));
     todoLists.forEach((t) => {
@@ -165,10 +175,11 @@ export class TodoListService {
   }
 
   public async getExtendedTodoListsForUser(
-    userId: string
+    userId: string,
+    options?: Partial<FilterQuery<ITodoListDocument>>
   ): Promise<IExtendedTodoListDto[]> {
     const [{ todoLists, users }, orders] = await Promise.all([
-      this.getTodoListsWithMembersForUser(userId),
+      this.getTodoListsWithMembersForUser(userId, options),
       this.orderService.getAllOrdersForUser(userId),
     ]);
 

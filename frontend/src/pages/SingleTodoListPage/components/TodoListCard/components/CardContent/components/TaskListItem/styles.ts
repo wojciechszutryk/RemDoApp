@@ -45,6 +45,7 @@ export const StyledListItemText = styled(ListItemText, {
   isLink?: boolean;
 }>(({ isTaskFinished, isLink }) => ({
   wordBreak: "break-word",
+  flexBasis: "calc(100% - 40px)",
   "& span": {
     fontFamily: "Lato",
     fontSize: "16px",
