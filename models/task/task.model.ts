@@ -1,7 +1,8 @@
 import { IBaseModelAttached } from "../abstraction/base.interface";
 
 export interface ITask {
-  text: string;
+  /** Optional for reminders */
+  text?: string;
 
   description?: string;
 

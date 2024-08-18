@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { createNotifySelectParams } from "../../TaskDialog/components/NotifyForm/helpers";
 import { IReminderDialogState } from "../models/reminderDialogState.model";
+import { ReminderTodoListId } from "linked-models/reminder/reminder.const";
 
 const useCreateDefaultReminderDialogData = (
   defaultData?: Partial<IReminderDialogState>,
@@ -45,7 +46,7 @@ const useCreateDefaultReminderDialogData = (
     assignedUsers:
       defaultData?.assignedUsers || editReminderData?.assignedUsers || [],
     todoListId:
-      defaultData?.todoListId || editReminderData?.todoListId || "reminder",
+      defaultData?.todoListId || editReminderData?.todoListId || ReminderTodoListId,
     notify: !!notifyDateFromArgs,
     minsAccordingToTimePoint:
       defaultNotifySelectsValues?.minsAccordingToTimePoint || 15,
