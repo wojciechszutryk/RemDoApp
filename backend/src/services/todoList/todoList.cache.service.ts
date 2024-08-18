@@ -1,6 +1,8 @@
+import { ITodoListDocument } from "dbSchemas/todoList.schema";
 import { CacheService } from "framework/cache/cache.service";
 import { inject, injectable } from "inversify";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
+import { FilterQuery } from "mongoose";
 import { TodoListService } from "./todoList.service";
 
 @injectable()
@@ -17,11 +19,12 @@ export class TodoListCacheService {
    * - invalidation: after every task/todoList modification
    */
   public async getCachedExtendedTodoListsForUser(
-    userId: string
+    userId: string,
+    options?: Partial<FilterQuery<ITodoListDocument>>
   ): Promise<IExtendedTodoListDto[]> {
     return this.cacheService.wrap(
       this.getExtendedTodoListsForUserCacheKey(userId),
-      () => this.todoListService.getExtendedTodoListsForUser(userId),
+      () => this.todoListService.getExtendedTodoListsForUser(userId, options),
       86400
     );
   }

@@ -6,6 +6,7 @@ import {
   ReminderDeletedEvent,
   ReminderUpdatedEvent,
 } from "linked-models/event/implementation/reminder.events";
+import { ReminderTodoListId } from "linked-models/reminder/reminder.const";
 import { IReminder } from "linked-models/reminder/reminder.dto";
 import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import { ITask, ITaskAttached } from "linked-models/task/task.model";
@@ -135,6 +136,11 @@ export class ReminderService {
     if (!reminder.recurrance) return [];
 
     try {
+      if (!reminder.recurrance.includes("DTSTART"))
+        reminder.recurrance = `DTSTART:${reminder.startDate
+          .toISOString()
+          .replace(/[-:]|\.\d{3}/g, "")}\n${reminder.recurrance}`;
+
       const rule = RRule.fromString(reminder.recurrance);
 
       const dates = rule.between(startDate, endDate);
@@ -160,16 +166,27 @@ export class ReminderService {
     reminderData: IReminder,
     creator: IUserAttached
   ): Promise<IReminderAttached> {
-    const newTodoListToCreate: ITodoList = {
-      name: reminderData.name,
-      icon: reminderData.icon,
-    };
-    const newTodoList = await this.todoListService.createTodoList(
-      newTodoListToCreate,
-      creator.id,
-      true,
-      false
-    );
+    const isReminder = reminderData.todoListId === ReminderTodoListId;
+    let todoList: ITodoListWithMembersDto | undefined;
+    if (isReminder) {
+      const newTodoListToCreate: ITodoList = {
+        name: reminderData.name,
+        icon: reminderData.icon,
+        isReminder,
+      };
+      todoList = await this.todoListService.createTodoList(
+        newTodoListToCreate,
+        creator.id,
+        true,
+        false
+      );
+    } else {
+      todoList = await this.todoListService.getTodoListWithMembersById(
+        reminderData.todoListId
+      );
+    }
+
+    if (!todoList) throw new Error("TodoList not found");
 
     const newTaskToCreate: ITask = {
       text: reminderData.text,
@@ -178,14 +195,14 @@ export class ReminderService {
     };
 
     const newTask = await this.taskService.createTaskInTodoList(
-      newTodoList.id,
+      todoList.id,
       newTaskToCreate,
       creator,
       false
     );
 
     const createdReminder = this.mapTodoListAndTaskToReminderAttached(
-      newTodoList,
+      todoList,
       newTask
     );
 
