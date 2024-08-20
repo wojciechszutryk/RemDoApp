@@ -171,6 +171,17 @@ export const StyledCallendarWrapper = styled("div", {
       "& .rbc-event-label": {
         color: theme.palette.primary.contrastText,
       },
+      "& .rbc-show-more": {
+        backgroundColor: theme.palette.primary.contrastText,
+        color: theme.palette.primary.main,
+        fontSize: "0.6rem",
+        borderRadius: "5px",
+        padding: "1px 5px",
+        transition: "0.1s",
+        "&:hover": {
+          opacity: 0.8,
+        },
+      },
       "& .rbc-off-range-bg": {
         backgroundColor: theme.palette.background.paper,
       },
