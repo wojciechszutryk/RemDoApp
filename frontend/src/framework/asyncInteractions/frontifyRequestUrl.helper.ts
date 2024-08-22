@@ -1,11 +1,17 @@
 export const FRONTIFY_URL = (
   controlerUrl: string,
   routeUrl?: string,
-  queryParams?: Record<string, string>,
-): string => {
-  const baseUrl = process.env.REACT_APP_API_URL || 'no_API_URL_env_defined!';
-
-  return `${baseUrl}${controlerUrl}${routeUrl || ''}${
-    queryParams ? `?${new URLSearchParams(queryParams).toString()}` : ''
+  queryParams?: Record<string, string | undefined>
+): string =>
+  `${
+    process.env.REACT_APP_API_URL || "no_API_URL_env_defined!"
+  }${controlerUrl}${routeUrl || ""}${
+    queryParams
+      ? `?${new URLSearchParams(
+          Object.entries(queryParams || {}).reduce(
+            (acc, [key, value]) => (value ? { ...acc, [key]: value } : acc),
+            {}
+          )
+        ).toString()}`
+      : ""
   }`;
-};
