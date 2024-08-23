@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { apiGet } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
-import { ISearchResults } from "linked-models/search/search.model";
+import { ISearchResults, SearchCategory } from "linked-models/search/search.model";
 import {
   SEARCH_LIMIT_PARAM,
   SEARCH_PHRASE_PARAM,
@@ -15,7 +15,7 @@ import {
 
 export const useGetSearchResultQuery = (
   searchQuery: string,
-  searchScope?: string,
+  searchScope?: SearchCategory,
   searchLimit?: number,
   options?: Omit<UseQueryOptions<ISearchResults>, "queryFn">
 ): UseQueryResult<ISearchResults, unknown> => {
