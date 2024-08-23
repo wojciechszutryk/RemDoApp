@@ -8,15 +8,16 @@ import {
 } from "@mui/material";
 import MarkedText from "atomicComponents/atoms/MarkedText";
 import { TextField } from "atomicComponents/atoms/TextField";
+import { useGetSearchResultQuery } from "atomicComponents/organisms/Header/components/GlobalSearch/GlobalSearch/queries/getSearchResult.query";
 import ExtendableUserAvatar from "atomicComponents/organisms/UserAvatar/ExtendableUserAvatar";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { ICollaborantDTO } from "linked-models/collaboration/collaboration.dto";
+import { SearchCategory } from "linked-models/search/search.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useInviteUserToCollaborationMutation } from "../../mutations/inviteUserToCollaboration/inviteUserToCollaboration.mutation";
-import { useSearchForUsersQuery } from "../../queries/searchForUsers.query";
 import CollaborantListItem from "../CollaborantListItem";
 import EmptySearchResults from "./EmptySearchResults";
 import { StyledListItemText, StyledUsersList } from "./styles";
@@ -32,9 +33,14 @@ const UserSearch = ({ userCollaborants }: Props): JSX.Element => {
   const inviteUserToCollaborationMutation =
     useInviteUserToCollaborationMutation();
 
-  const searchForUsersQuery = useSearchForUsersQuery(searchPhrase, {
-    enabled: false,
-  });
+  const searchForUsersQuery = useGetSearchResultQuery(
+    searchPhrase,
+    SearchCategory.User,
+    20,
+    {
+      enabled: false,
+    }
+  );
 
   const debouncedEnableRefetch = useCallback(
     debounce(function enableRefetch() {
@@ -63,6 +69,8 @@ const UserSearch = ({ userCollaborants }: Props): JSX.Element => {
     return map;
   }, [currentUser?.id, userCollaborants]);
 
+  const usersData = searchForUsersQuery.data?.[SearchCategory.User] || [];
+
   return (
     <>
       <TextField
@@ -76,9 +84,9 @@ const UserSearch = ({ userCollaborants }: Props): JSX.Element => {
       ) : (
         <div style={{ marginTop: 9 }}></div>
       )}
-      {searchForUsersQuery.data && searchForUsersQuery.data?.length > 0 ? (
+      {usersData.length > 0 ? (
         <StyledUsersList>
-          {searchForUsersQuery.data?.map((u: IUserPublicDataDTO) => {
+          {usersData.map((u: IUserPublicDataDTO) => {
             const userCollaborantWithSameId = userIdToCollaborantMap.get(u.id);
             if (userCollaborantWithSameId)
               return (
