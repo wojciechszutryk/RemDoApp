@@ -1,12 +1,30 @@
-import {
-  ISearchHistory,
-  ISearchHistoryAttached,
-} from "linked-models/search/search.history.model";
+import { ISearchHistory } from "linked-models/search/search.history.model";
 import mongoose, { Document } from "mongoose";
 
 export const SearchHistoryCollectionName = "SearchHistorys";
 
-const SearchHistorySchema = new mongoose.Schema({});
+const SearchHistorySchema = new mongoose.Schema({
+  searchedUserId: {
+    type: String,
+    required: false,
+  },
+  searchedTodoListId: {
+    type: String,
+    required: false,
+  },
+  searchedTaskId: {
+    type: String,
+    required: false,
+  },
+  isReminder: {
+    type: Boolean,
+    required: false,
+  },
+  userId: {
+    type: String,
+    required: true,
+  },
+});
 
 export interface ISearchHistoryDocument extends ISearchHistory, Document {}
 
@@ -18,15 +36,3 @@ export const getSearchHistoryCollection = () =>
     SearchHistoryCollectionName,
     SearchHistorySchema
   );
-
-export const mapSearchHistoryToAttachedSearchHistory = (
-  searchHistory: ISearchHistoryDocument
-): ISearchHistoryAttached => {
-  return {
-    id: searchHistory.id,
-    searchedUserId: searchHistory.searchedUserId,
-    searchedTodoListId: searchHistory.searchedTodoListId,
-    searchedTaskId: searchHistory.searchedTaskId,
-    userId: searchHistory.userId,
-  };
-};
