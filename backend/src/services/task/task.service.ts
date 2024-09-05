@@ -22,6 +22,7 @@ import { IUserAttached } from "linked-models/user/user.model";
 import { FilterQuery } from "mongoose";
 import { scheduledJobs } from "node-schedule";
 import { ScheduleNotificationService } from "services/notification/schedule.notification.service";
+import { SearchHistoryService } from "services/search/search.history.service";
 
 @injectable()
 export class TaskService {
@@ -30,6 +31,8 @@ export class TaskService {
     private readonly taskCollection: TaskCollectionType,
     @inject(EventService)
     private readonly eventService: EventService,
+    @inject(SearchHistoryService)
+    private readonly searchHistoryService: SearchHistoryService,
     @inject(ScheduleNotificationService)
     private readonly scheduleNotificationService: ScheduleNotificationService
   ) {}
@@ -147,7 +150,7 @@ export class TaskService {
       whenUpdated: new Date(),
     };
 
-    const createdTask = await this.taskCollection.create(newTask, );
+    const createdTask = await this.taskCollection.create(newTask);
 
     const mappedCreatedTask = mapTaskToAttachedTask(createdTask);
 
@@ -242,7 +245,12 @@ export class TaskService {
     deleterId: string,
     generateEvent = true
   ): Promise<ITaskAttached> {
-    const deletedTask = await this.taskCollection.findByIdAndDelete(taskId);
+    const [deletedTask] = await Promise.all([
+      this.taskCollection.findByIdAndDelete(taskId),
+      this.searchHistoryService.deleteSearchHistoryRecords({
+        searchedTaskId: taskId,
+      }),
+    ]);
 
     if (!deletedTask)
       throw new Error(
@@ -258,8 +266,13 @@ export class TaskService {
   }
 
   public async deleteTasksByTodoListId(todoListId: string): Promise<void> {
-    await this.taskCollection.deleteMany({
-      todoListId,
-    });
+    await Promise.all([
+      this.taskCollection.deleteMany({
+        todoListId,
+      }),
+      this.searchHistoryService.deleteSearchHistoryRecords({
+        searchedTodoListId: todoListId,
+      }),
+    ]);
   }
 }
