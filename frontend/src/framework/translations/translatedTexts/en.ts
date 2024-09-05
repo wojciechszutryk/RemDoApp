@@ -107,6 +107,10 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Time]: "Time",
   [TranslationKeys.Event]: "Event",
 
+  [TranslationKeys.Search]: "Search",
+  [TranslationKeys.LastSearches]: "Search history",
+  [TranslationKeys.ClearHistory]: "Clean history",
+
   [TranslationKeys.Collaborants]: "Your collaborants",
   [TranslationKeys.CollaborantsSearch]: "Search for user",
   [TranslationKeys.ShowMyCollaborations]: "Show my collaborations",
@@ -188,6 +192,7 @@ export const enTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.ADMINDESCRIPTION]:
     "Admins have full access to this list. They can create, edit and delete all tasks and invite other users. Be careful who you invite as admin.",
 
+  [TranslationKeys.Tasks]: "Tasks",
   [TranslationKeys.EmptyTasksList]: "No tasks in this list.",
   [TranslationKeys.DelteTask]: "Delete task",
   [TranslationKeys.AddTask]: "Add task",

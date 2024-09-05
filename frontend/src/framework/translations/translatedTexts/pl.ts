@@ -108,6 +108,10 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.Time]: "Czas",
   [TranslationKeys.Event]: "Wydarzenie",
 
+  [TranslationKeys.Search]: "Szukaj",
+  [TranslationKeys.LastSearches]: "Historia wyszukiwania",
+  [TranslationKeys.ClearHistory]: "Wyczyść historię",
+
   [TranslationKeys.Collaborants]: "Twoi współpracownicy",
   [TranslationKeys.CollaborantsSearch]: "Szukaj użytkownika",
   [TranslationKeys.ShowMyCollaborations]: "Pokaż moje współprace",
@@ -196,6 +200,7 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.ADMINDESCRIPTION]:
     "Administratorzy mają pełny dostęp do tej listy. Mogą tworzyć, edytować i usuwać wszystkie zadania oraz zapraszać innych użytkowników. Uważaj, kogo zapraszasz jako administratora.",
 
+  [TranslationKeys.Tasks]: "Zadania",
   [TranslationKeys.EmptyTasksList]: "Brak zadań na liście. Dodaj nowe zadanie!",
   [TranslationKeys.DelteTask]: "Usuń zadanie",
   [TranslationKeys.AddTask]: "Dodaj zadanie",
