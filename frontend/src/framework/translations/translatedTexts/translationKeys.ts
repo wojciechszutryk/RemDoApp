@@ -127,6 +127,7 @@ export enum TranslationKeys {
   ADMIN = "ADMIN",
   ADMINDESCRIPTION = "ADMINDESCRIPTION",
 
+  Tasks = "Tasks",
   EmptyTasksList = "EmptyTasksList",
   DelteTask = "DelteTask",
   AddTask = "AddTask",
@@ -197,6 +198,11 @@ export enum TranslationKeys {
   EndAfter = "EndAfter",
   EndNever = "EndNever",
   AfterOccurances = "AfterOccurances",
+
+  //search
+  Search = "Search",
+  LastSearches = "SearchHistory",
+  ClearHistory = "ClearHistory",
 
   //collaboration
   Collaborants = "Collaborants",
