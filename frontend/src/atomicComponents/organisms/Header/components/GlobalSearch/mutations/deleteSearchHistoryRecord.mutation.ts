@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiDelete } from "framework/asyncInteractions";
 import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.helper";
-import { ISearchHistoryAttached } from "linked-models/search/search.history.model";
+import { ISearchHistoryRespDto } from "linked-models/search/search.history.dto";
 import {
   URL_HISTORY,
   URL_SEARCH,
@@ -23,7 +23,7 @@ export const useDeleteSearchHistoryRecordMutation = () => {
     onSuccess: (_, recordId) => {
       queryClient.setQueryData(
         [URL_SEARCH, URL_HISTORY],
-        (prev?: ISearchHistoryAttached[]) => {
+        (prev?: ISearchHistoryRespDto[]) => {
           if (!prev) return [];
           return prev.filter((record) => record.id !== recordId);
         }
