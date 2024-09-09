@@ -32,7 +32,7 @@ export class ReminderService {
     private readonly todoListService: TodoListService
   ) {}
 
-  private mapTodoListAndTaskToReminderAttached(
+  public mapTodoListAndTaskToReminderAttached(
     todoList: ITodoListWithMembersDto,
     task: ITaskAttached
   ): IReminderAttached {

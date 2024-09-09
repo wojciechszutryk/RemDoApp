@@ -1,18 +1,18 @@
 import {
-  ISearchHistoryDocument,
   SearchHistoryCollectionName,
   SearchHistoryCollectionType,
 } from "dbSchemas/searchHistory.schema";
 import { inject, injectable } from "inversify";
-import { ISearchHistoryDto, ISearchHistoryRespDto } from "linked-models/search/search.history.dto";
-import { ISearchHistory, ISearchHistoryAttached } from "linked-models/search/search.history.model";
+import {
+  ISearchHistoryDto,
+  ISearchHistoryRespDto,
+} from "linked-models/search/search.history.dto";
+import { ISearchHistoryAttached } from "linked-models/search/search.history.model";
 import { SearchCategory } from "linked-models/search/search.model";
 import { ITaskAttached } from "linked-models/task/task.model";
 import { ITodoListAttached } from "linked-models/todoList/todoList.model";
-import { FilterQuery } from "mongoose";
 import { TaskService } from "services/task/task.service";
 import { TodoListService } from "services/todoList/todoList.service";
-
 @injectable()
 export class SearchHistoryService {
   constructor(
@@ -23,6 +23,39 @@ export class SearchHistoryService {
     @inject(TaskService)
     private readonly taskService: TaskService
   ) {}
+
+  private mapTodoAndTaskToSearchHistory(
+    searchHistoryRecordId: string,
+    todoList: ITodoListAttached,
+    task?: ITaskAttached,
+    isReminder?: boolean
+  ): ISearchHistoryRespDto {
+    if (isReminder && task) {
+      return {
+        id: searchHistoryRecordId,
+        searchedTodoListId: todoList.id,
+        searchedTaskId: task.id,
+        isReminder,
+        displayName: todoList.name,
+        category: SearchCategory.Reminder,
+      };
+    } else if (task) {
+      return {
+        id: searchHistoryRecordId,
+        searchedTodoListId: todoList.id,
+        searchedTaskId: task.id,
+        displayName: task.text || "",
+        category: SearchCategory.Task,
+      };
+    }
+
+    return {
+      id: searchHistoryRecordId,
+      searchedTodoListId: todoList.id,
+      displayName: todoList.name,
+      category: SearchCategory.TodoList,
+    };
+  }
 
   public async getSearchHistoryForUser(
     userId: string
@@ -80,33 +113,14 @@ export class SearchHistoryService {
       searchedTodoListId,
     } of searchHistoryRecords) {
       if (!searchedTodoListId) continue;
-      const task = searchedTaskId && taksMap[searchedTaskId];
+      const task = searchedTaskId ? taksMap[searchedTaskId] : undefined;
       const todoList = todoListsMap[searchedTodoListId];
-      if (isReminder && searchedTaskId && task) {
-        resp.push({
-          id,
-          searchedTodoListId: searchedTodoListId,
-          searchedTaskId: task.id,
-          isReminder,
-          displayName: todoList.name,
-          category: SearchCategory.Reminder,
-        });
-      } else if (searchedTaskId && task) {
-        resp.push({
-          id,
-          searchedTodoListId: todoList.id,
-          searchedTaskId,
-          displayName: task.text || "",
-          category: SearchCategory.Task,
-        });
-      } else {
-        resp.push({
-          id,
-          searchedTodoListId: todoList.id,
-          displayName: todoList.name,
-          category: SearchCategory.TodoList,
-        });
-      }
+
+      if (!todoList) continue;
+
+      resp.push(
+        this.mapTodoAndTaskToSearchHistory(id, todoList, task, isReminder)
+      );
     }
 
     return resp;
@@ -115,38 +129,28 @@ export class SearchHistoryService {
   public async createSearchHistoryRecord(
     userId: string,
     searchHistoryRecord: ISearchHistoryDto
-  ): Promise<ISearchHistoryRespDto> {
+  ): Promise<ISearchHistoryRespDto | null> {
     const record = await this.searchHistoryCollection.create({
       ...searchHistoryRecord,
       userId,
     });
 
-    if(record.isReminder || !record.searchedTaskId){
-      await this.todoListService.getTodoListById(record.searchedTodoListId)
-    }
+    if (!record.searchedTodoListId) return null;
 
-    return map;
-  }
+    const [todoList, task] = await Promise.all([
+      this.todoListService.getTodoListById(record.searchedTodoListId),
+      record.searchedTaskId
+        ? this.taskService.getTaskById(record.searchedTaskId)
+        : Promise.resolve(undefined),
+    ]);
 
-  public async deleteSearchHistoryForUser(userId: string): Promise<void> {
-    await this.searchHistoryCollection.deleteMany({
-      userId,
-    });
-  }
+    if (!todoList) return null;
 
-  public async deleteSearchHistoryRecordById(
-    userId: string,
-    recordId: string
-  ): Promise<void> {
-    await this.searchHistoryCollection.deleteOne({
-      userId,
-      _id: recordId,
-    });
-  }
-
-  public async deleteSearchHistoryRecords(
-    filter: FilterQuery<ISearchHistoryDocument>
-  ): Promise<void> {
-    await this.searchHistoryCollection.deleteMany(filter);
+    return this.mapTodoAndTaskToSearchHistory(
+      record.id,
+      todoList,
+      task,
+      record.isReminder
+    );
   }
 }
