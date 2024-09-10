@@ -3,13 +3,24 @@ import { forwardRef } from "react";
 import AnimatedWaveAlt from "../AnimatedWaveAlt";
 import { StyledTextField } from "./styles";
 
-const TextField = forwardRef((props: TextFieldProps, ref): JSX.Element => {
+interface Props extends Omit<TextFieldProps<"outlined">, "variant"> {
+  noBorder?: boolean;
+}
+
+const TextField = forwardRef((props: Props, ref): JSX.Element => {
   return (
     <StyledTextField
       {...props}
       InputProps={{
         ...props.InputProps,
-        endAdornment: <AnimatedWaveAlt />,
+        endAdornment: props?.InputProps?.endAdornment ? (
+          <>
+            {props.InputProps.endAdornment}
+            <AnimatedWaveAlt />
+          </>
+        ) : (
+          <AnimatedWaveAlt />
+        ),
         ref: ref,
       }}
     />

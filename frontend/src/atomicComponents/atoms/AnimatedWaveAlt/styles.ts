@@ -64,7 +64,7 @@ export const AnimatedWaveAltStyles = (
     top: 0,
     width: "100%",
     height: "100%",
-    borderRadius: "30px",
+    borderRadius: noBorder ? "0" : "30px",
     background: theme.palette.primary.light,
     "& > div": {
       position: "relative",
