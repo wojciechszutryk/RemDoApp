@@ -1,7 +1,6 @@
 import EventIcon from "@mui/icons-material/Event";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import { Tabs } from "@mui/material";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import {
   ISearchResults,
@@ -9,8 +8,8 @@ import {
 } from "linked-models/search/search.model";
 import { useMemo } from "react";
 
-import Tab from "atomicComponents/atoms/Tab";
 import { useTranslation } from "react-i18next";
+import { StyledTab, StyledTabs } from "./styles";
 
 interface Props {
   value: number;
@@ -28,20 +27,24 @@ export const SearchTabList = ({
   const tabsList = useMemo(
     () => [
       {
-        value: "Reminders",
-        text: t(TranslationKeys.PageTitleReminders),
+        value: 0,
+        text: `${t(TranslationKeys.PageTitleReminders)} ${
+          currentResults?.[SearchCategory.Reminder].length || 0
+        }`,
         icon: <EventIcon />,
-        resultsCount: currentResults?.[SearchCategory.Reminder].length || 0,
       },
       {
-        value: "TodoLists",
-        text: t(TranslationKeys.PageTitleTodoLists),
+        value: 1,
+        text: `${t(TranslationKeys.PageTitleTodoLists)} ${
+          currentResults?.[SearchCategory.TodoList].length || 0
+        }`,
         icon: <FactCheckIcon />,
-        resultsCount: currentResults?.[SearchCategory.TodoList].length || 0,
       },
       {
-        value: "Tasks",
-        text: t(TranslationKeys.Tasks),
+        value: 2,
+        text: `${t(TranslationKeys.Tasks)} ${
+          currentResults?.[SearchCategory.Task].length || 0
+        }`,
         icon: <PlayCircleOutlineIcon />,
         resultsCount: currentResults?.[SearchCategory.Task].length || 0,
       },
@@ -54,10 +57,10 @@ export const SearchTabList = ({
   };
 
   return (
-    <Tabs value={value} onChange={handleChange}>
+    <StyledTabs value={value} onChange={handleChange}>
       {tabsList.map((t) => (
-        <Tab key={t.value} label={t.text} value={t.value} icon={t.icon} />
+        <StyledTab key={t.value} label={t.text} value={t.value} icon={t.icon} />
       ))}
-    </Tabs>
+    </StyledTabs>
   );
 };
