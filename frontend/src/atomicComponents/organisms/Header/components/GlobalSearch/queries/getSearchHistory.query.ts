@@ -19,7 +19,7 @@ export const useGetSearchHistoryQuery = (): UseQueryResult<
   return useQuery([URL_SEARCH, URL_HISTORY], getCurrentSearchResult, {
     cacheTime: 600000,
     staleTime: 600000,
-    initialData: JSON.parse(localStorage.getItem(SearchHistoryLSKey) || "{}"),
+    initialData: JSON.parse(localStorage.getItem(SearchHistoryLSKey) || "[]"),
     onSuccess: (data) => {
       localStorage.setItem(SearchHistoryLSKey, JSON.stringify(data));
     },
