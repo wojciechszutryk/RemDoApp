@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import MarkedText from "atomicComponents/atoms/MarkedText";
 import { TextField } from "atomicComponents/atoms/TextField";
-import { useGetSearchResultQuery } from "atomicComponents/organisms/Header/components/GlobalSearch/GlobalSearch/queries/getSearchResult.query";
+import { useGetSearchResultQuery } from "atomicComponents/organisms/Header/components/GlobalSearch/queries/getSearchResult.query";
 import ExtendableUserAvatar from "atomicComponents/organisms/UserAvatar/ExtendableUserAvatar";
 import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
@@ -36,6 +36,7 @@ const UserSearch = ({ userCollaborants }: Props): JSX.Element => {
   const searchForUsersQuery = useGetSearchResultQuery(
     searchPhrase,
     SearchCategory.User,
+    undefined,
     20,
     {
       enabled: false,
