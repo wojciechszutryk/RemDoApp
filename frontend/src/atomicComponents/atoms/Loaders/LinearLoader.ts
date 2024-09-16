@@ -14,5 +14,5 @@ export const LinearLoaderSticky = styled(LinearLoader)(({ theme }) => ({
   position: "sticky",
   top: 0,
   zIndex: 3,
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: theme.palette.primary.light,
 }));
