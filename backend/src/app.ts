@@ -22,6 +22,8 @@ registerBindings(container);
 
 const server = new InversifyExpressServer(container);
 
+const isProduction = process.env.NODE_ENV === "production";
+
 server.setConfig((app) => {
   app.use(
     session({
@@ -30,9 +32,9 @@ server.setConfig((app) => {
       saveUninitialized: false,
       proxy: true,
       cookie: {
-        sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
-        httpOnly: process.env.NODE_ENV === "production",
-        secure: process.env.NODE_ENV === "production",
+        sameSite: isProduction ? "strict" : "lax",
+        httpOnly: isProduction,
+        secure: isProduction,
         maxAge: SessionAge,
       },
       store: MongoStore.create({
@@ -46,7 +48,7 @@ server.setConfig((app) => {
   app.use(json({ limit: "100mb" }));
   app.use(urlencoded({ extended: true }));
 
-  if (process.env.NODE_ENV === "development") {
+  if (!isProduction) {
     app.use(
       cors({
         origin: process.env.CLIENT_URL,
@@ -82,7 +84,7 @@ const connectToMongo = () => {
 
   mongoose.connection.on("disconnected", () => {
     console.log("MongoDB disconnected. Reconnecting...");
-    setTimeout(connectToMongo, 5000); // Retry connection after a delay (adjust as needed)
+    setTimeout(connectToMongo, 5000);
   });
 };
 
@@ -101,16 +103,13 @@ httpServer.on("error", (error: NodeJS.ErrnoException) => {
 
   const bind = typeof port === "string" ? `Pipe ${port}` : `Port ${port}`;
 
-  // Handle specific listen errors with friendly messages
   switch (error.code) {
     case "EACCES":
       console.error(`${bind} requires elevated privileges`);
       process.exit(1);
-      break;
     case "EADDRINUSE":
       console.error(`${bind} is already in use`);
       process.exit(1);
-      break;
     default:
       throw error;
   }
