@@ -5,6 +5,8 @@ import "controllers/other/accessLink.controller";
 import "controllers/other/pushSubscription.controller";
 import "controllers/reminder/reminder.controller";
 import "controllers/reminder/reminders.controller";
+import "controllers/search/search.controller";
+import "controllers/search/search.history.controller";
 import "controllers/task/todoList.task.controller";
 import "controllers/task/todoList.tasks.controller";
 import "controllers/todoList/todoList.controller";
