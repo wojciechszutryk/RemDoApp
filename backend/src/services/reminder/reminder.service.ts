@@ -8,10 +8,16 @@ import {
 } from "linked-models/event/implementation/reminder.events";
 import { ReminderTodoListId } from "linked-models/reminder/reminder.const";
 import { IReminder } from "linked-models/reminder/reminder.dto";
-import { IReminderAttached } from "linked-models/reminder/reminder.model";
+import {
+  IReminderAttached,
+  ISimplifiedReminder,
+} from "linked-models/reminder/reminder.model";
 import { ITask, ITaskAttached } from "linked-models/task/task.model";
 import { ITodoListWithMembersDto } from "linked-models/todoList/todoList.dto";
-import { ITodoList } from "linked-models/todoList/todoList.model";
+import {
+  ITodoList,
+  ITodoListAttached,
+} from "linked-models/todoList/todoList.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
 import { RRule } from "rrule";
@@ -32,7 +38,8 @@ export class ReminderService {
     private readonly todoListService: TodoListService
   ) {}
 
-  public mapTodoListAndTaskToReminderAttached(
+  //TODO: make this generic and get rid of mapTodoListAndTaskToSimplifiedReminder
+  private mapTodoListAndTaskToReminderAttached(
     todoList: ITodoListWithMembersDto,
     task: ITaskAttached
   ): IReminderAttached {
@@ -53,6 +60,22 @@ export class ReminderService {
       todoListId: todoList.id,
       taskId: task.id,
       icon: todoList.icon,
+    };
+  }
+
+  private mapTodoListAndTaskToSimplifiedReminder(
+    todoList: ITodoListAttached,
+    task: ITaskAttached
+  ): ISimplifiedReminder {
+    if (!task.startDate || !task.finishDate)
+      throw new Error(
+        "Task should have startDate and finishDate defined to be a reminder"
+      );
+    return {
+      ...todoList,
+      ...task,
+      taskId: task.id,
+      todoListId: todoList.id,
     };
   }
 
@@ -79,6 +102,29 @@ export class ReminderService {
       assignedOwners: todoList.assignedOwners,
       icon: todoList.icon,
     };
+  }
+
+  public async getRemindersByTodoLists(
+    todoLists: ITodoListAttached[]
+  ): Promise<ISimplifiedReminder[]> {
+    const todoListIDToTodoListMap = new Map(todoLists.map((td) => [td.id, td]));
+
+    const tasks = await this.taskService.getTasksByTodoListIDs(
+      Object.keys(todoListIDToTodoListMap)
+    );
+
+    const reminders: ISimplifiedReminder[] = [];
+
+    for (const task of tasks) {
+      const todoList = todoListIDToTodoListMap.get(task.todoListId);
+      if (!todoList) continue;
+
+      reminders.push(
+        this.mapTodoListAndTaskToSimplifiedReminder(todoList, task)
+      );
+    }
+
+    return reminders;
   }
 
   public async getUserRemindersForDateRange(
