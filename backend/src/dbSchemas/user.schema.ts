@@ -7,7 +7,7 @@ import {
 } from "linked-models/user/user.model";
 import mongoose, { Document } from "mongoose";
 
-export const UserCollectionName = "Users";
+export const UserCollectionName = "users";
 
 const UserSchema = new mongoose.Schema({
   authId: String,

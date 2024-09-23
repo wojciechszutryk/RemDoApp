@@ -7,6 +7,7 @@ import { container } from "di/container.init";
 import { registerBindings } from "di/di.config";
 import { json, urlencoded } from "express";
 import session from "express-session";
+import { ensureIndexExists } from "helpers/indexes/create.db.search.indexes";
 import { createServer } from "http";
 import { buildProviderModule } from "inversify-binding-decorators";
 import { InversifyExpressServer } from "inversify-express-utils";
@@ -72,17 +73,19 @@ const connectToMongo = () => {
   if (!process.env.DB_URI) throw new Error("DB_URI undefined");
   mongoose.connect(process.env.DB_URI, {});
   mongoose.Promise = global.Promise;
-  mongoose.connection.on("error", (error) => {
+  const connection = mongoose.connection;
+  connection.on("error", (error) => {
     // eslint-disable-next-line no-console
     console.error.bind(console, "MongoDB connection error:" + error);
     console.log("MongoDB connection error: " + error);
   });
 
-  mongoose.connection.on("open", () => {
+  connection.on("open", () => {
+    ensureIndexExists(connection);
     console.log("Connected to MongoDB");
   });
 
-  mongoose.connection.on("disconnected", () => {
+  connection.on("disconnected", () => {
     console.log("MongoDB disconnected. Reconnecting...");
     setTimeout(connectToMongo, 5000);
   });
