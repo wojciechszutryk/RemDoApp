@@ -3,17 +3,18 @@ import { ListItemIcon, ListItemText, MenuItem } from "@mui/material";
 import { Select } from "atomicComponents/atoms/Select";
 import { Separator } from "atomicComponents/atoms/Separator";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
+import { ReminderTodoListId } from "linked-models/reminder/reminder.const";
 import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
-import { useGetUserTodoListsQuery } from "pages/TodoListsPage/queries/getUserTodoLists.query";
+import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
 import { memo, useMemo } from "react";
 import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import IconPicker from "../../TodoListDialog/IconPicker";
 import { StyledInlineInputs } from "../../TodoListDialog/styles";
-import { ReminderTodoListId } from "linked-models/reminder/reminder.const";
 
 const TodoListSelect = (): JSX.Element => {
-  const getUserTodoListsWithMembersQuery = useGetUserTodoListsQuery(true);
+  const getUserTodoListsWithMembersQuery =
+    useGetUserExtendedTodoListsQuery();
   const { t } = useTranslation();
 
   const todoListIdToNameAndMembersMap = useMemo(() => {
