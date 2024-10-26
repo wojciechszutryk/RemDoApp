@@ -35,8 +35,8 @@ const UserSearch = ({ userCollaborants }: Props): JSX.Element => {
 
   const searchForUsersQuery = useGetSearchResultQuery(
     searchPhrase,
-    SearchCategory.User,
     undefined,
+    SearchCategory.User,
     20,
     {
       enabled: false,
