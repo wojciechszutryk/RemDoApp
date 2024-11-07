@@ -47,6 +47,9 @@ export const StyledTextField = styled(TextField, {
     zIndex: 2,
     color: theme.palette.primary.contrastText,
     paddingRight: "14px",
+    "&::placeholder": {
+      color: theme.palette.primary.contrastText,
+    },
   },
 
   "& input:autofill, & input:-webkit-autofill": {
@@ -60,12 +63,12 @@ export const StyledTextField = styled(TextField, {
   }),
   ...(!disabled && {
     "&:hover input, &:hover textarea": {
-      color: theme.palette.primary.light,
+      color: theme.palette.primary.contrastText,
     },
   }),
 
   "& .Mui-focused input, & .Mui-focused textarea": {
-    color: theme.palette.primary.light,
+    color: theme.palette.primary.contrastText,
   },
 
   "&:hover svg": {
@@ -77,11 +80,15 @@ export const StyledTextField = styled(TextField, {
     ...(AnimatedWaveAltStyles(theme, undefined, disabled) as {}),
   },
 
-  "& .Mui-focused div:last-of-type > div > span": {
-    color: theme.palette.primary.light,
-    transform: "translateZ(0) scale(1.7)",
-    "@supports (filter: url('#goo'))": {
-      transform: "translateZ(0) scale(1.4)",
+  "& .Mui-focused div:last-of-type > div": {
+    transitionDelay: "0.45s",
+    backgroundColor: theme.palette.secondary.contrastText,
+    "& > span": {
+      color: theme.palette.primary.light,
+      transform: "translateZ(0) scale(1.7)",
+      "@supports (filter: url('#goo'))": {
+        transform: "translateZ(0) scale(1.4)",
+      },
     },
   },
 }));
