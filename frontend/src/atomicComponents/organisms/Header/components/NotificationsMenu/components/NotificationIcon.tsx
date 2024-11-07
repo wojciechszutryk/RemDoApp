@@ -14,7 +14,7 @@ const NotificationIcon = ({
   return (
     <Badge
       badgeContent={showNoActivePushSubIcon ? "!" : freshNotificationsNumber}
-      color="primary"
+      color="error"
     >
       <NotificationsIcon />
     </Badge>
