@@ -5,7 +5,7 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledWrapper } from "./styles";
 
-const TopPanel = (): JSX.Element => {
+const TopPanel = ({ isEmpty }: { isEmpty: boolean }): JSX.Element => {
   const { dialogsActions } = useDialogs();
   const { t } = useTranslation();
 
@@ -15,7 +15,7 @@ const TopPanel = (): JSX.Element => {
 
   return (
     <StyledWrapper>
-      <Button onClick={handleOpenCreateTodoListDialog}>
+      <Button onClick={handleOpenCreateTodoListDialog} animated={isEmpty}>
         {t(TranslationKeys.CreateNewTodoList)}
       </Button>
     </StyledWrapper>
