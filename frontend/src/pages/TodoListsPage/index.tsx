@@ -1,5 +1,5 @@
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
-import { memo, useLayoutEffect, useMemo } from "react";
+import { memo, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 import EmptyTodoLists from "./components/EmptyTodoLists";
 import TodoListsContainer from "./components/TodoListsContainer";
@@ -10,7 +10,7 @@ import { StyledTodoListsPageWrapper } from "./styles";
 
 const TodoListsPage = (): JSX.Element => {
   const { t } = useTranslation();
-  const getUserTodoListsWithTasksQuery = useGetUserExtendedTodoListsQuery();
+  const { isLoading, isFetched, data } = useGetUserExtendedTodoListsQuery();
 
   useLayoutEffect(() => {
     const title = `${t(TranslationKeys.PageTitleMain)} - ${t(
@@ -19,35 +19,17 @@ const TodoListsPage = (): JSX.Element => {
     document.title = title;
   }, []);
 
-  const pageContent = useMemo(() => {
-    let pageContent = null;
-
-    if (getUserTodoListsWithTasksQuery.isLoading)
-      pageContent = <TodoListsLoader />;
-    else if (
-      getUserTodoListsWithTasksQuery.isFetched &&
-      !!getUserTodoListsWithTasksQuery.data?.length
-    ) {
-      pageContent = (
-        <TodoListsContainer
-          todoLists={getUserTodoListsWithTasksQuery.data || []}
-        />
-      );
-    } else {
-      pageContent = <EmptyTodoLists />;
-    }
-
-    return pageContent;
-  }, [
-    getUserTodoListsWithTasksQuery.data,
-    getUserTodoListsWithTasksQuery.isFetched,
-    getUserTodoListsWithTasksQuery.isLoading,
-  ]);
-
   return (
     <StyledTodoListsPageWrapper>
-      <TopPanel />
-      {pageContent}
+      <TopPanel isEmpty={!isLoading && isFetched && !data?.length} />
+
+      {isLoading ? (
+        <TodoListsLoader />
+      ) : isFetched && data?.length ? (
+        <TodoListsContainer todoLists={data || []} />
+      ) : (
+        <EmptyTodoLists />
+      )}
     </StyledTodoListsPageWrapper>
   );
 };
