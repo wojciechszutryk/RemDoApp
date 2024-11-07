@@ -3,7 +3,7 @@ import { useCurrentUser } from "framework/authentication/useCurrentUser";
 import { AppTheme } from "linked-models/user/user.model";
 import { useChangePreferencesMutation } from "pages/UserPage/mutations/useChangePreferences.mutation";
 
-import { ReactNode, useContext, useMemo, useState } from "react";
+import { ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { TodoListThemeLSKey } from "../models/theme.const";
 import { darkTheme } from "../palletas/dark";
 import { lightTheme } from "../palletas/light";
@@ -22,6 +22,11 @@ function ThemeProvider({ children }: Props): JSX.Element {
       ? (localStorage.getItem(TodoListThemeLSKey) as AppTheme)
       : "light"
   );
+
+  useEffect(() => {
+    document.body.setAttribute("data-theme", mode);
+  }, [mode]);
+
   const muiTheme = useMemo(
     () =>
       createTheme({
