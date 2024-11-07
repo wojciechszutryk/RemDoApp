@@ -20,9 +20,10 @@ export const StyledOutlinedButton = styled(Button, {
 }));
 
 export const StyledButton = styled(Button, {
-  shouldForwardProp: (prop) => prop !== "disabled" && prop !== "noBorder",
-})<{ disabled?: boolean; noBorder?: boolean }>(
-  ({ theme, disabled, noBorder }) => ({
+  shouldForwardProp: (prop) =>
+    prop !== "disabled" && prop !== "noBorder" && prop !== "animated",
+})<{ disabled?: boolean; noBorder?: boolean; animated?: boolean }>(
+  ({ theme, disabled, noBorder, animated }) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -50,7 +51,7 @@ export const StyledButton = styled(Button, {
           },
         }
       : {
-          ...(AnimatedWaveAltStyles(theme, noBorder, disabled) as {}),
+          ...(AnimatedWaveAltStyles(theme, noBorder, disabled, animated) as {}),
           ":hover": {
             backgroundColor: theme.palette.primary.light,
           },
