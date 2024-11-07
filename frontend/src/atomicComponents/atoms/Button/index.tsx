@@ -5,6 +5,7 @@ import { StyledButton, StyledOutlinedButton } from "./styles";
 interface Props extends ButtonProps {
   noBorder?: boolean;
   mAutoFromMobile?: boolean;
+  animated?: boolean;
 }
 
 const Button = (props: Props): JSX.Element => {
