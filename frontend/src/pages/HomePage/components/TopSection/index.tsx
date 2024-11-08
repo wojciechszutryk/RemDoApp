@@ -33,7 +33,7 @@ const TopSection = forwardRef<HTMLDivElement, Props>(
             <StyledDescription>
               {t(TranslationKeys.WelcomeTextDescription)}
             </StyledDescription>
-            <StyledButton onClick={handleScrollToFeatures}>
+            <StyledButton onClick={handleScrollToFeatures} animated>
               {t(TranslationKeys.GoToFeaturesButtonText)}
             </StyledButton>
           </StyledIntroWrapper>

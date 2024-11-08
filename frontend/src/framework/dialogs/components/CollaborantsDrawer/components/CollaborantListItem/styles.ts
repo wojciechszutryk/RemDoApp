@@ -8,6 +8,6 @@ export const StyledCollListItem = styled(ListItem, {
   cursor: "pointer",
   ...(highlighted && {
     borderRadius: 10,
-    boxShadow: `inset 0px 0px 0px 1px ${theme.palette.secondary.contrastText}`,
+    boxShadow: `inset 0px 0px 0px 1px ${theme.palette.primary.contrastText}`,
   }),
 }));

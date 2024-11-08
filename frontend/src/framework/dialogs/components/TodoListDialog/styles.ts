@@ -20,8 +20,8 @@ export const StyledInlineInputs = styled("div")({
 
 export const StyledAutocompleteChip = styled(Chip)(({ theme }) => ({
   zIndex: 1,
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.secondary.contrastText,
+  backgroundColor: theme.palette.secondary.contrastText,
+  color: theme.palette.primary.contrastText,
   margin: "0 2px",
 }));
 

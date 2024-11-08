@@ -3,7 +3,7 @@ import { Button } from "atomicComponents/atoms/Button";
 
 export const StyledCreateTaskButton = styled(Button)(({ theme }) => ({
   marginRight: "auto",
-  "& > span": {
+  "& > span:first-of-type": {
     borderRight: `2px solid ${theme.palette.divider}`,
     "& > svg": {
       transition: "0.2s",

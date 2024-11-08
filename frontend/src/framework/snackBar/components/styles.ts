@@ -6,7 +6,7 @@ export const StyledSnackbar = styled(Snackbar, {
   zIndex: 2500,
   borderRadius: "75px",
   backgroundColor: theme.palette.secondary.light,
-  color: theme.palette.secondary.contrastText,
+  color: theme.palette.primary.contrastText,
   "&.MuiSnackbar-root": {
     [theme.breakpoints.up("sm")]: {
       top: 100,
@@ -14,11 +14,11 @@ export const StyledSnackbar = styled(Snackbar, {
       transition: "0.3s transform",
     },
     "& .MuiPaper-root .MuiAlert-icon": {
-      color: theme.palette.secondary.contrastText,
+      color: theme.palette.primary.contrastText,
     },
   },
   "& div": {
     backgroundColor: theme.palette.secondary.light,
-    color: theme.palette.secondary.contrastText,
+    color: theme.palette.primary.contrastText,
   },
 }));

@@ -45,10 +45,7 @@ export const UserPanel = (): JSX.Element => {
         >
           {t(TranslationKeys.LoginButtonText)}
         </Button>
-        <Separator
-          text={t(TranslationKeys.LoginPanelSeparatorText)}
-          variant="secondary"
-        />
+        <Separator text={t(TranslationKeys.LoginPanelSeparatorText)} />
         <Button
           onClick={() =>
             navigate(

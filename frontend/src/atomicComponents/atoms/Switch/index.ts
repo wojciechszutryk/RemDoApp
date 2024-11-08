@@ -1,4 +1,4 @@
-import { styled, Switch as MuiSwitch } from "@mui/material";
+import { Switch as MuiSwitch, styled } from "@mui/material";
 
 export const Switch = styled(MuiSwitch, {
   shouldForwardProp: (prop) =>
@@ -18,14 +18,14 @@ export const Switch = styled(MuiSwitch, {
         "& .MuiSwitch-thumb:before": {
           backgroundImage: checkedBackgroundImage,
         },
-        "& + .MuiSwitch-track": {
-          opacity: 1,
-          backgroundColor: theme.palette.primary.main,
-        },
+      },
+      "& + .MuiSwitch-track": {
+        opacity: 1,
+        backgroundColor: theme.palette.primary.dark,
       },
     },
     "& .MuiSwitch-thumb": {
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: theme.palette.primary.contrastText,
       width: 32,
       height: 32,
       "&:before": {
