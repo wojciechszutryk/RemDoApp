@@ -7,6 +7,7 @@ import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
+import GlobalLoader from "./components/GlobalLoader";
 import GlobalSearch from "./components/GlobalSearch";
 import LogoButton from "./components/LogoButton";
 import NotificationsMenu from "./components/NotificationsMenu";
@@ -97,6 +98,7 @@ export const Header = ({ disableBgcAnimation }: Props): JSX.Element => {
 
   return (
     <StyledHeaderWrapper>
+      <GlobalLoader />
       <StyledHeaderContentWrapper>{content}</StyledHeaderContentWrapper>
       <StyledHeaderBottomAnimation disableBgcAnimation={disableBgcAnimation} />
     </StyledHeaderWrapper>
