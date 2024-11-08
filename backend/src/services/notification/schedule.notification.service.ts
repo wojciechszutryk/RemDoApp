@@ -8,11 +8,13 @@ export class ScheduleNotificationService {
     return `${userId}-${resourceId}`;
   }
 
+  //loader dac u gory TODO
   public async scheduleNotification(
     user: IUserAttached,
     date: Date,
     notificationResourceId: string,
-    action: () => void
+    action: () => void,
+    reccurance?: string
   ) {
     const jobName = this.createScheduleJobName(user.id, notificationResourceId);
 
@@ -21,6 +23,7 @@ export class ScheduleNotificationService {
       scheduledJobs[jobName].cancel();
     }
 
+    //TODO: pass reccurance and schedule more jobs
     const job = scheduleJob(jobName, date, action);
 
     return job;
