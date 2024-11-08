@@ -1,21 +1,21 @@
 export const darkTheme = {
   primary: {
-    light: "#433E49",
-    main: "#827480",
-    dark: "#DBC1AD",
-    contrastText: "#DBC1AD",
+    light: "#000",
+    main: "#000",
+    dark: "#7f7f7f",
+    contrastText: "#fff",
   },
   secondary: {
-    light: "#928490",
-    main: "#928490",
+    light: "#7f7f7f",
+    main: "#7f7f7f",
     dark: "#c2b6b9",
-    contrastText: "#DBC1AD",
+    contrastText: "#1B9C85",
   },
   background: {
-    paper: "#322f35",
+    paper: "#404040",
   },
   info: {
-    main: "#3A383E",
+    main: "#404040",
   },
   warning: {
     main: "#ad4a63",

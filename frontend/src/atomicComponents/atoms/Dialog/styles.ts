@@ -8,7 +8,7 @@ import {
 export const StyledDialogTitle = styled(Typography)(({ theme }) => ({
   width: "80%",
   textAlign: "center",
-  color: theme.palette.secondary.contrastText,
+  color: theme.palette.primary.contrastText,
   margin: "0 auto",
 
   [theme.breakpoints.up("sm")]: {
@@ -16,7 +16,6 @@ export const StyledDialogTitle = styled(Typography)(({ theme }) => ({
     top: 24,
     zIndex: 1,
     left: "10%",
-    color: theme.palette.primary.contrastText,
   },
 }));
 

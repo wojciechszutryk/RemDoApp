@@ -7,7 +7,7 @@ export const StyledContentWrapper = styled("div")(({ theme }) => ({
   gap: "20px",
   overflow: "visible",
   backgroundColor: theme.palette.secondary.light,
-  color: theme.palette.secondary.contrastText,
+  color: theme.palette.primary.contrastText,
   padding: "50px 60px",
   backgroundImage: `url(${process.env.PUBLIC_URL}/images/wave-doodles.png)`,
   borderRadius: "200px 210px 200px 155px",
@@ -61,7 +61,7 @@ export const StyledGruppedButtons = styled("div")({
 export const StyledForgetPassBtn = styled("button")(({ theme }) => ({
   background: "transparent",
   border: "none",
-  color: theme.palette.secondary.contrastText,
+  color: theme.palette.primary.contrastText,
   cursor: "pointer",
   fontSize: "14px",
   transition: "all 0.2s ease-in-out",

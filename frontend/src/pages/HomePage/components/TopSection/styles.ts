@@ -39,10 +39,7 @@ export const StyledTopSection = styled("div", {
 }));
 
 export const StyledLoginHeader = styled(Typography)(({ theme }) => ({
-  color:
-    theme.palette.mode === "light"
-      ? theme.palette.secondary.contrastText
-      : theme.palette.primary.contrastText,
+  color: theme.palette.primary.contrastText,
 }));
 
 export const StyledIntroWrapper = styled("div")(({ theme }) => ({

@@ -149,28 +149,25 @@ a {
   text-decoration: none;
 }
 
-body[data-theme="todoListLight"] {
-  --colors-primary-light: #ebeff0;
-  --colors-primary-main: #95a7b0;
-  --colors-primary-strong: #88959b;
-  --colors-primary-text: #3f606e;
-
-  --colors-secondary-light: #517a8c;
-  --colors-secondary-main: #3f606f;
-  --colors-secondary-strong: #2c4c5b;
-  --colors-secondary-text: #ffffff;
+body {
+  --main: #e8e8e8;
+  --main-contrast: #4a4947;
+  --secondary: #495464;
+  --secondary-contrast: #d8d2c2;
 }
 
-body[data-theme="todoListDark"] {
-  --colors-primary-light: #395561;
-  --colors-primary-main: #263941;
-  --colors-primary-strong: #203843;
-  --colors-primary-text: #dbc1ad;
+body[data-theme="light"] {
+  --main: #fff;
+  --main-contrast: #495464;
+  --secondary: #495464;
+  --secondary-contrast: #d8d2c2;
+}
 
-  --colors-secondary-light: #b3804e;
-  --colors-secondary-main: #ce8338;
-  --colors-secondary-strong: #a25f1d;
-  --colors-secondary-text: #203843;
+body[data-theme="dark"] {
+  --main: #000;
+  --main-contrast: #fff;
+  --secondary: #7f7f7f;
+  --secondary-contrast: #1b9c85;
 }
 
 @keyframes wave {
@@ -293,9 +290,61 @@ body[data-theme="todoListDark"] {
 
 @keyframes highlight {
   0% {
-    border-color: var(--colors-primary-text);
+    border-color: var(--secondary-contrast);
   }
   100% {
     border-color: transparent;
+  }
+}
+
+@keyframes constantWave {
+  0% {
+    top: -60px;
+  }
+
+  20% {
+    top: -50px;
+  }
+
+  30% {
+    top: -60px;
+  }
+
+  60% {
+    top: -30px;
+  }
+
+  70% {
+    top: -20px;
+  }
+
+  80% {
+    top: -30px;
+  }
+
+  100% {
+    top: -20px;
+  }
+}
+
+@keyframes constantWaveColor {
+  0% {
+    color: var(--main);
+  }
+
+  10% {
+    color: var(--main);
+  }
+
+  50% {
+    color: var(--main-contrast);
+  }
+
+  70% {
+    color: var(--main-contrast);
+  }
+
+  100% {
+    color: var(--main);
   }
 }
