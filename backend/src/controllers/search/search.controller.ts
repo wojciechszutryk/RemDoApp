@@ -39,14 +39,14 @@ export class SearchController
     @queryParam(SEARCH_PHRASE_PARAM) searchPhrase?: string,
     @queryParam(TODO_LIST_PARAM) todoListId?: string,
     @queryParam(SEARCH_SCOPE_PARAM) searchScope?: SearchCategory,
-    @queryParam(SEARCH_LIMIT_PARAM) searchLimit?: number
+    @queryParam(SEARCH_LIMIT_PARAM) searchLimit?: string
   ) {
     try {
       if (!searchPhrase) {
         return this.ok([]);
       }
 
-      const limit = searchLimit || 20;
+      const limit = searchLimit ? parseInt(searchLimit) : 20;
 
       const results: ISearchResults = {
         [SearchCategory.User]: [],
@@ -80,18 +80,17 @@ export class SearchController
 
           return results;
         default:
-          const [reminders, todoLists, tasks, users] = await Promise.all([
+          const [reminders, todoLists, tasks] = await Promise.all([
             this.searchService.searchForTodoLists(searchPhrase, limit, true),
             this.searchService.searchForTodoLists(searchPhrase, limit, false),
             this.searchService.searchForTasks(searchPhrase, limit),
-            this.searchService.searchForUsers(searchPhrase, limit),
           ]);
 
           return {
             [SearchCategory.Reminder]: reminders,
             [SearchCategory.TodoList]: todoLists,
             [SearchCategory.Task]: tasks,
-            [SearchCategory.User]: users,
+            [SearchCategory.User]: [],
           };
       }
     } catch (error) {
