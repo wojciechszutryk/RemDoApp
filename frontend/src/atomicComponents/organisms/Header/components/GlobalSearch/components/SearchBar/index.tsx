@@ -25,10 +25,11 @@ const SearchBar = ({
 
   useEffect(() => {
     inputRef.current?.focus();
-  });
+  }, [inputRef.current]);
 
   return (
     <TextField
+      autoFocus
       sx={(theme) => ({
         width: "100%",
         "& fieldset": {
@@ -43,8 +44,8 @@ const SearchBar = ({
       })}
       placeholder={t(TranslationKeys.Search)}
       onChange={(e) => setSearchPhrase(e.target.value)}
-      ref={inputRef}
       value={searchPhrase}
+      inputRef={inputRef}
       InputProps={{
         startAdornment: (
           <SearchIcon
