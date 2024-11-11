@@ -34,12 +34,12 @@ export const StyledSwipeIndicator = styled(ArrowBackIosNewIcon, {
   right: right ? "0%" : "unset",
   width: "30px",
   height: "30px",
-  color: theme.palette.primary.main,
+  color: theme.palette.secondary.main,
   transform: right ? "rotate(180deg)" : "unset",
   cursor: "pointer",
   transition: "all 0.15s ease-in-out",
   "&:hover": {
-    color: theme.palette.primary.dark,
+    color: theme.palette.secondary.contrastText,
     transform: right ? "rotate(180deg) scale(1.1)" : "scale(1.1)",
   },
   [theme.breakpoints.up("sm")]: {
