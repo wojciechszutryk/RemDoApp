@@ -11,7 +11,7 @@ import {
 import { UserCollectionName, UserCollectionType } from "dbSchemas/user.schema";
 import { mapUserDocumentToUserPublicData } from "helpers/user/mapUserToUserPublicData.helper";
 import { inject, injectable } from "inversify";
-import { IReminderAttached, ISimplifiedReminder } from "linked-models/reminder/reminder.model";
+import { ISimplifiedReminder } from "linked-models/reminder/reminder.model";
 import { ITaskAttached } from "linked-models/task/task.model";
 import { ITodoListAttached } from "linked-models/todoList/todoList.model";
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
@@ -51,8 +51,32 @@ export class SearchService {
           email: 1,
           similarityScore: {
             $sum: [
-              { $cond: [{ $eq: ["$displayName", searchPhrase] }, 10, 0] },
-              { $cond: [{ $eq: ["$email", searchPhrase] }, 5, 0] },
+              {
+                $cond: [
+                  {
+                    $regexMatch: {
+                      input: "$displayName",
+                      regex: searchPhrase,
+                      options: "i",
+                    },
+                  },
+                  10,
+                  0,
+                ],
+              },
+              {
+                $cond: [
+                  {
+                    $regexMatch: {
+                      input: "$email",
+                      regex: searchPhrase,
+                      options: "i",
+                    },
+                  },
+                  5,
+                  0,
+                ],
+              },
             ],
           },
         },
@@ -94,7 +118,17 @@ export class SearchService {
           whenCreated: 1,
           whenUpdated: 1,
           similarityScore: {
-            $cond: [{ $eq: ["$name", searchPhrase] }, 10, 0],
+            $cond: [
+              {
+                $regexMatch: {
+                  input: "$name",
+                  regex: searchPhrase,
+                  options: "i",
+                },
+              },
+              10,
+              0,
+            ],
           },
         },
       },
@@ -106,18 +140,22 @@ export class SearchService {
       },
     ]);
 
+    const similarityScores = foundTodos.map((td) => td.similarityScore);
+    console.log(
+      isReminder ? "reminderstodosimilarityScores" : "todossimilarityScores",
+      similarityScores
+    );
+
     return foundTodos.map((td) => mapTodoListToAttachedTodoList(td));
   }
 
   public async searchForReminders(
     searchPhrase: string,
-    limit: number,
+    limit: number
   ): Promise<ISimplifiedReminder[]> {
     const foundTodos = await this.searchForTodoLists(searchPhrase, limit, true);
 
-    return await this.reminderService.getRemindersByTodoLists(
-      foundTodos
-    );
+    return await this.reminderService.getRemindersByTodoLists(foundTodos);
   }
 
   public async searchForTasks(
@@ -146,11 +184,48 @@ export class SearchService {
           completionDate: 1,
           whenCreated: 1,
           whenUpdated: 1,
+          todoListId: 1,
           similarityScore: {
             $sum: [
-              { $cond: [{ $eq: ["$text", searchPhrase] }, 10, 0] },
-              { $cond: [{ $eq: ["$description", searchPhrase] }, 5, 0] },
-              { $cond: [{ $eq: ["$link", searchPhrase] }, 5, 0] },
+              {
+                $cond: [
+                  {
+                    $regexMatch: {
+                      input: "$text",
+                      regex: searchPhrase,
+                      options: "i",
+                    },
+                  },
+                  10,
+                  0,
+                ],
+              },
+              {
+                $cond: [
+                  {
+                    $regexMatch: {
+                      input: "$description",
+                      regex: searchPhrase,
+                      options: "i",
+                    },
+                  },
+                  5,
+                  0,
+                ],
+              },
+              {
+                $cond: [
+                  {
+                    $regexMatch: {
+                      input: "$link",
+                      regex: searchPhrase,
+                      options: "i",
+                    },
+                  },
+                  5,
+                  0,
+                ],
+              },
             ],
           },
         },
