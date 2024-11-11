@@ -1,25 +1,43 @@
+import { motion } from "framer-motion";
+import { SearchCategory } from "linked-models/search/search.model";
 
 interface TabPanelProps {
   children?: React.ReactNode;
-  index: number;
-  value: number;
+  index: SearchCategory;
+  value: SearchCategory;
 }
 
-const SearchTabPanel = (props: TabPanelProps) => {
-  const { children, value, index, ...other } = props;
+const parent = {
+  show: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const SearchTabPanel = ({
+  children,
+  value,
+  index,
+  ...other
+}: TabPanelProps) => {
+  if (value !== index) {
+    return null; // for framer-motion
+  }
 
   return (
-    <div
+    <motion.div
+      variants={parent}
+      initial="hidden"
+      animate="show"
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <>{children}</>
-      )}
-    </div>
+      {value === index && <>{children}</>}
+    </motion.div>
   );
 };
 
