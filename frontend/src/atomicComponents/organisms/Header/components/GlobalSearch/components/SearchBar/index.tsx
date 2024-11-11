@@ -1,23 +1,18 @@
-import ClearIcon from "@mui/icons-material/Clear";
+import { ClearOutlined } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import { TextField } from "@mui/material";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import TodoListPicker from "../TodoListPicker";
 
 interface SearchBarProps {
   searchPhrase: string;
   setSearchPhrase: React.Dispatch<React.SetStateAction<string>>;
-  todoListIds: string[];
-  setTodoListIDs: (setTodoListIDs: string[]) => void;
 }
 
 const SearchBar = ({
   searchPhrase,
   setSearchPhrase,
-  todoListIds,
-  setTodoListIDs,
 }: SearchBarProps): JSX.Element | null => {
   const { t } = useTranslation();
 
@@ -55,18 +50,14 @@ const SearchBar = ({
             }}
           />
         ),
-        endAdornment: (
+        endAdornment: searchPhrase.length > 0 && (
           <>
-            <ClearIcon
+            <ClearOutlined
               onClick={() => setSearchPhrase("")}
               sx={{
                 cursor: "pointer",
                 width: "18px",
               }}
-            />
-            <TodoListPicker
-              todoListIds={todoListIds}
-              setTodoListIds={setTodoListIDs}
             />
           </>
         ),
