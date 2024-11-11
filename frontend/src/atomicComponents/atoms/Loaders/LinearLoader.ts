@@ -6,13 +6,13 @@ export const LinearLoader = styled(LinearProgress, {
   backgroundColor: "transparent",
   "& .MuiLinearProgress-bar": {
     visibility: showLoader ? "visible" : "hidden",
-    backgroundColor: theme.palette.primary.dark,
+    backgroundColor: theme.palette.secondary.contrastText,
   },
 }));
 
-export const LinearLoaderSticky = styled(LinearLoader)(({ theme }) => ({
+export const LinearLoaderSticky = styled(LinearLoader)({
   position: "sticky",
   top: 0,
   zIndex: 3,
-  backgroundColor: theme.palette.primary.light,
-}));
+  backgroundColor: "transparent",
+});
