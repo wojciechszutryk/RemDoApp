@@ -5,7 +5,7 @@ import {
   ISearchResults,
   SearchCategory,
 } from "linked-models/search/search.model";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSaveSearchHistoryMutation } from "../../mutations/saveSearchHistory.mutation";
 import { useGetSearchHistoryQuery } from "../../queries/getSearchHistory.query";
@@ -25,7 +25,9 @@ const SearchResults = ({
   getSearchResultQuery: { data, isFetched },
   isSearchPhraseEmpty,
 }: SearchContainerProps): JSX.Element | null => {
-  const [activeTab, setActiveTab] = useState<number>(0);
+  const [activeTab, setActiveTab] = useState<SearchCategory>(
+    SearchCategory.Reminder
+  );
 
   const getSearchHistoryQuery = useGetSearchHistoryQuery();
   const saveSearchHistoryMutation = useSaveSearchHistoryMutation();
@@ -38,6 +40,7 @@ const SearchResults = ({
     isReminder?: boolean,
     saveToHistory?: boolean
   ) => {
+    debugger;
     if (!todoListId) return;
     let link = "";
 
@@ -56,13 +59,23 @@ const SearchResults = ({
 
   const showNoResultFound =
     isFetched &&
-    data?.[SearchCategory.Reminder].length === 0 &&
-    data?.[SearchCategory.TodoList].length === 0 &&
-    data?.[SearchCategory.Task].length === 0;
+    data?.[SearchCategory.Reminder]?.length === 0 &&
+    data?.[SearchCategory.TodoList]?.length === 0 &&
+    data?.[SearchCategory.Task]?.length === 0;
+
+  useEffect(() => {
+    if (!data || data?.[activeTab]?.length > 0) return;
+
+    const nextCategory = Object.values(SearchCategory).find(
+      (category) => data?.[category]?.length > 0 && category !== activeTab
+    );
+
+    if (nextCategory) setActiveTab(nextCategory);
+  }, [data, activeTab]);
 
   return (
     <StyledSearchContainerWrapper>
-      <LinearLoaderSticky showLoader={getSearchHistoryQuery.isFetching} />
+      <LinearLoaderSticky showLoader={getSearchHistoryQuery.isLoading} />
       {isSearchPhraseEmpty && getSearchHistoryQuery.data?.length ? (
         <HistoryInfoHeader />
       ) : (
