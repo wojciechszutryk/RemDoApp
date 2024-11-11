@@ -9,6 +9,17 @@ interface SearchLineProps {
   onDelete?: () => void;
 }
 
+const stat = {
+  hidden: {
+    opacity: 0,
+    y: -10,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+  },
+};
+
 const SearchLine = ({
   icon,
   text,
@@ -16,7 +27,7 @@ const SearchLine = ({
   onDelete,
 }: SearchLineProps): JSX.Element | null => {
   return (
-    <StyledWrapper onClick={onClick}>
+    <StyledWrapper onClick={onClick} variants={stat}>
       {icon}
       <Typography>{text}</Typography>
       {onDelete && <DeleteIcon onClick={onDelete} />}
