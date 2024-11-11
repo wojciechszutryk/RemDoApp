@@ -7,13 +7,12 @@ import { GlobalSearchWrapper } from "./styles";
 
 const Search = (): JSX.Element | null => {
   const [searchPhrase, setSearchPhrase] = useState<string>("");
-  const [todoListIDs, setTodoListIDs] = useState<string[]>([]);
   const isSearchPhraseEmpty =
     searchPhrase && searchPhrase.length > 0 ? false : true;
 
   const getSearchResultQuery = useGetSearchResultQuery(
     searchPhrase,
-    JSON.stringify(todoListIDs),
+    undefined,
     undefined,
     10,
     {
@@ -29,23 +28,20 @@ const Search = (): JSX.Element | null => {
   );
 
   useEffect(() => {
-    if (searchPhrase && !isSearchPhraseEmpty && !getSearchResultQuery.isLoading)
+    if (
+      searchPhrase &&
+      !isSearchPhraseEmpty &&
+      !getSearchResultQuery.isFetching
+    ) {
       debouncedEnableRefetch();
-  }, [
-    debouncedEnableRefetch,
-    searchPhrase,
-    isSearchPhraseEmpty,
-    todoListIDs,
-    getSearchResultQuery.isLoading,
-  ]);
+    }
+  }, [debouncedEnableRefetch, searchPhrase, isSearchPhraseEmpty]);
 
   return (
     <GlobalSearchWrapper>
       <SearchBar
         searchPhrase={searchPhrase}
         setSearchPhrase={setSearchPhrase}
-        todoListIds={todoListIDs}
-        setTodoListIDs={setTodoListIDs}
       />
       <SearchResults
         getSearchResultQuery={getSearchResultQuery}
