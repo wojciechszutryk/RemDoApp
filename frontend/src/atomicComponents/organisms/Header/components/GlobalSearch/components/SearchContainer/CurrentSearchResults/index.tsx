@@ -7,7 +7,7 @@ import SearchResultIcon from "../SearchResultIcon";
 import SearchTabPanel from "../SearchTabPanel";
 
 interface CurrentSearchResultsProps {
-  activeTab: number;
+  activeTab: SearchCategory;
   currentResults: ISearchResults;
   handleRedirect: (
     todoListId?: string,
@@ -24,7 +24,7 @@ const CurrentSearchResults = ({
 }: CurrentSearchResultsProps): JSX.Element | null => {
   return (
     <>
-      <SearchTabPanel value={activeTab} index={1}>
+      <SearchTabPanel value={activeTab} index={SearchCategory.Reminder} key={0}>
         {currentResults[SearchCategory.Reminder].map((result, index) => (
           <SearchLine
             key={index}
@@ -36,7 +36,7 @@ const CurrentSearchResults = ({
           />
         ))}
       </SearchTabPanel>
-      <SearchTabPanel value={activeTab} index={2}>
+      <SearchTabPanel value={activeTab} index={SearchCategory.TodoList} key={1}>
         {currentResults[SearchCategory.TodoList].map((result, index) => (
           <SearchLine
             key={index}
@@ -46,7 +46,7 @@ const CurrentSearchResults = ({
           />
         ))}
       </SearchTabPanel>
-      <SearchTabPanel value={activeTab} index={3}>
+      <SearchTabPanel value={activeTab} index={SearchCategory.Task} key={2}>
         {currentResults[SearchCategory.Task].map((result, index) => (
           <SearchLine
             key={index}
