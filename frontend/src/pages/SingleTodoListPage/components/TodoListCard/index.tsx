@@ -10,6 +10,7 @@ import CardHeader, { IDraggingButtonProps } from "./components/CardHeader";
 import ReorderContentAndActions from "./components/ReorderContentAndActions";
 import { StyledTodoListCard } from "./styles";
 
+export type CardView = "expanded" | "collapsed" | "normal";
 interface Props {
   todoList: IExtendedTodoListDto;
   actionsVariant: "buttons" | "menu";
@@ -27,7 +28,7 @@ const TodoListCard = ({
   disableHeaderRedirect,
   actionsVariant,
 }: Props): JSX.Element => {
-  const [expanded, setExpanded] = React.useState(false);
+  const [view, setView] = React.useState<CardView>("normal");
   const [isReorderingTasks, setIsReorderingTasks] = React.useState(false);
   const checkPermission = useCheckTodoPermissions();
 
@@ -47,6 +48,8 @@ const TodoListCard = ({
   return (
     <StyledTodoListCard withShakeAnimation={withShakeAnimation}>
       <CardHeader
+        setView={setView}
+        view={view}
         todoList={todoList}
         draggingProps={draggingProps}
         disableHeaderRedirect={disableHeaderRedirect}
@@ -63,7 +66,7 @@ const TodoListCard = ({
             scrollable={scrollableContent}
             activeTasks={activeTasks}
             completedTasks={completedTasks}
-            expanded={isReorderingTasks || expanded}
+            expanded={isReorderingTasks || view === "expanded"}
             todoListId={todoList.id}
           />
           <CardActions
@@ -73,8 +76,8 @@ const TodoListCard = ({
               completedTasks.length > 0 &&
               activeTasks.length !== 0
             }
-            setExpanded={setExpanded}
-            expanded={expanded}
+            setView={setView}
+            view={view}
             setIsReorderingTasks={setIsReorderingTasks}
             todoList={todoList}
             showReorderTasksButton={
