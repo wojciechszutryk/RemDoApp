@@ -10,15 +10,18 @@ export const StyledTodoListCardWrapper = styled("div", {
   transition: string | undefined;
 }>(({ isDragging, transform, transition }) => ({
   position: "relative",
-  opacity: isDragging ? "0.5" : "1",
   transformOrigin: "50% 50%",
-  boxShadow: isDragging
-    ? "rgb(63 63 68 / 5%) 0px 2px 0px 2px, rgb(34 33 81 / 15%) 0px 2px 3px 2px"
-    : "rgb(63 63 68 / 5%) 0px 0px 0px 1px, rgb(34 33 81 / 15%) 0px 1px 3px 0px",
   transform,
-  transition: transition || undefined,
+  transition: transition,
   borderRadius: "20px",
   overflow: "hidden",
+  ...(isDragging && {
+    opacity: "0.5",
+    maskImage:
+      "linear-gradient(to bottom, rgba(0, 0, 0, 1) 50px, rgba(0, 0, 0, 0) 50%)",
+    maskRepeat: "no-repeat",
+    maskSize: "100% 100%",
+  }),
 }));
 
 export const StyledTodoListCard = styled(Card, {
@@ -29,6 +32,11 @@ export const StyledTodoListCard = styled(Card, {
   display: "flex",
   flexDirection: "column",
   animation: withShakeAnimation ? "shakeDeg 1s" : "unset",
+  ...{
+    withShakeAnimation: {
+      transform: "none",
+    },
+  },
   animationIterationCount: "infinite",
   boxShadow: "none",
   borderRadius: "20px",

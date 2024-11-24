@@ -65,7 +65,7 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
     <DndContext
       measuring={{
         droppable: {
-          strategy: MeasuringStrategy.Always,
+          strategy: MeasuringStrategy.BeforeDragging,
         },
       }}
       sensors={sensors}
@@ -93,7 +93,7 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
           })}
         </StyledListsColWrapper>
       </SortableContext>
-      <DragOverlay adjustScale style={{ transformOrigin: "0 0 " }}>
+      <DragOverlay adjustScale={false} style={{ transformOrigin: "0 0 " }}>
         {activeId && activeTodoList ? (
           <TodoListCard todoList={activeTodoList} actionsVariant="menu" />
         ) : null}

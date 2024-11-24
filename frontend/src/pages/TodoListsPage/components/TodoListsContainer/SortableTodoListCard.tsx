@@ -35,14 +35,21 @@ const SortableTodoListCard = ({
     setNodeRef,
     transform,
     transition,
-  } = useSortable({ id: todoList.id, animateLayoutChanges });
+  } = useSortable({
+    id: todoList.id,
+    animateLayoutChanges,
+  });
 
   return (
     <StyledTodoListCardWrapper
       isDragging={isDragging}
       ref={setNodeRef}
       transition={transition}
-      transform={CSS.Transform.toString(transform)}
+      transform={
+        transform
+          ? CSS.Transform.toString({ ...transform, scaleY: 1 })
+          : undefined
+      }
     >
       <TodoListCard
         todoList={todoList}
