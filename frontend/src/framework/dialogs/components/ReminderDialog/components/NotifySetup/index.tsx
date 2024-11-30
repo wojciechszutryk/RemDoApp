@@ -1,6 +1,11 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import { AccordionDetails, AccordionSummary, Tooltip } from "@mui/material";
+import {
+  AccordionDetails,
+  AccordionSummary,
+  Badge,
+  Tooltip,
+} from "@mui/material";
 import { StyledAccordion } from "atomicComponents/atoms/Accordion/styles";
 import { Separator } from "atomicComponents/atoms/Separator";
 import { ControlledCheckbox } from "atomicComponents/molecules/ControlledCheckbox";
@@ -11,7 +16,6 @@ import { memo } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { IReminderDialog } from "../../models/reminderDialog.model";
-import DatesInfo from "./DatesInfo";
 
 interface Props {
   expandedAccordion: string;
@@ -23,7 +27,7 @@ const NotifySetup = ({
   handleAccordionChange,
 }: Props): JSX.Element => {
   const { t } = useTranslation();
-  const { control } = useFormContext<IReminderDialog>();
+  const { control, getValues } = useFormContext<IReminderDialog>();
   return (
     <StyledAccordion
       expanded={expandedAccordion === "notify"}
@@ -32,11 +36,21 @@ const NotifySetup = ({
     >
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Tooltip title={t(TranslationKeys.SetNotificationDescription)}>
-          <div>
+          <Badge
+            variant="dot"
+            badgeContent={getValues("notify") ? "" : 0}
+            color="error"
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          >
             <NotificationsNoneIcon
-              sx={{ transform: "translate(-3px, -4px)" }}
+              sx={{
+                transform: "translate(-3px, -4px)",
+              }}
             />
-          </div>
+          </Badge>
         </Tooltip>
         {t(TranslationKeys.SetNotification)}
       </AccordionSummary>
@@ -47,7 +61,6 @@ const NotifySetup = ({
             spacingBottom={5}
             spacingTop={-5}
           />
-          <DatesInfo />
           <ControlledCheckbox
             name={"notify"}
             control={control}

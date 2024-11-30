@@ -12,11 +12,13 @@ import { ITaskDialog } from "../models/taskDialog.model";
 import dayjs from "dayjs";
 import { getReccuranceValues } from "../components/DateForm/RecurranceForm/helpers";
 
-export const getDefaultFormValues = (
-  editTaskData?: ITask & {
+export const getDefaultTaskFormValues = <
+  T extends ITask & {
     id: string;
     notifyDate?: Date | null | undefined;
   }
+>(
+  editTaskData?: T
 ) => {
   const reccuranceEnabled =
     !!editTaskData?.recurrance && !!editTaskData?.recurrance;

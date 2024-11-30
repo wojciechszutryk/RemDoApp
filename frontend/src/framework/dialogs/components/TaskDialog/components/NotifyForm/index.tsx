@@ -67,192 +67,194 @@ const NotifyForm = <
   const disableSelects = !notify || (!startDate && !finishDate);
 
   return (
-    <StyledNotifyInputsWrapper>
+    <>
       <DatesInfo noDateWarning={noDateWarning} />
-      <Controller
-        control={control}
-        name={"minsAccordingToTimePoint" as Path<TFieldValues>}
-        render={({ field: { ref, onChange, value } }) => (
-          <Autocomplete
-            ref={ref}
-            disabled={disableSelects}
-            autoSelect
-            onChange={(event, value) => {
-              if (value == null) return;
+      <StyledNotifyInputsWrapper>
+        <Controller
+          control={control}
+          name={"minsAccordingToTimePoint" as Path<TFieldValues>}
+          render={({ field: { ref, onChange, value } }) => (
+            <Autocomplete
+              ref={ref}
+              disabled={disableSelects}
+              autoSelect
+              onChange={(event, value) => {
+                if (value == null) return;
 
-              const mins = parseInt(value);
-              const newDate = createDateFromSelectValues(
-                {
-                  minsAccordingToTimePoint: mins,
-                  beforeOrAfter: beforeOrAfter,
-                  timePoint: timePoint,
-                },
-                startDate && new Date(startDate),
-                finishDate && new Date(finishDate)
-              );
+                const mins = parseInt(value);
+                const newDate = createDateFromSelectValues(
+                  {
+                    minsAccordingToTimePoint: mins,
+                    beforeOrAfter: beforeOrAfter,
+                    timePoint: timePoint,
+                  },
+                  startDate && new Date(startDate),
+                  finishDate && new Date(finishDate)
+                );
 
-              setValue(
-                "notifyDate" as Path<TFormValues>,
-                (newDate || undefined) as PathValue<
-                  TFormValues,
-                  Path<TFormValues>
-                >
-              );
+                setValue(
+                  "notifyDate" as Path<TFormValues>,
+                  (newDate || undefined) as PathValue<
+                    TFormValues,
+                    Path<TFormValues>
+                  >
+                );
 
-              onChange(
-                mins.toString() as unknown as
-                  | PathValue<TFieldValues, Path<TFieldValues>>
-                  | ChangeEvent<Element>
-              );
-            }}
-            value={value ? value.toString() : null}
-            freeSolo
-            options={["5", "10", "15", "30"]}
-            renderInput={(params) => {
-              return (
-                <TextField
-                  {...params}
-                  InputLabelProps={undefined}
-                  disabled={disableSelects}
-                />
-              );
-            }}
-          />
-        )}
-      />
-      <span> min</span>
-      <Controller
-        control={control}
-        name={"beforeOrAfter" as Path<TFieldValues>}
-        render={({ field: { onChange, value } }) => (
-          <Select
-            options={beforeOrAfterOptions}
-            disabled={disableSelects}
-            onChange={(event) => {
-              const newBeforeOrAfterValue = event.target.value as
-                | "Before"
-                | "After"
-                | undefined;
-              const newDate = createDateFromSelectValues(
-                {
-                  minsAccordingToTimePoint: minsAccordingToTimePoint,
-                  beforeOrAfter: newBeforeOrAfterValue,
-                  timePoint: timePoint,
-                },
-                startDate && new Date(startDate),
-                finishDate && new Date(finishDate)
-              );
-
-              setValue(
-                "notifyDate" as Path<TFormValues>,
-                (newDate || undefined) as PathValue<
-                  TFormValues,
-                  Path<TFormValues>
-                >
-              );
-
-              if (newBeforeOrAfterValue)
                 onChange(
-                  newBeforeOrAfterValue as unknown as
+                  mins.toString() as unknown as
                     | PathValue<TFieldValues, Path<TFieldValues>>
                     | ChangeEvent<Element>
                 );
-            }}
-            value={value as "Before" | "After"}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name={"timePoint" as Path<TFieldValues>}
-        render={({ field: { onChange, value } }) => (
-          <Select
-            options={timePointOptions}
-            disabled={disableSelects}
-            defaultValue={"Start"}
-            placeholder={"Time point"}
-            onChange={(event) => {
-              const newTimePoint = event.target.value as
-                | "Start"
-                | "Finish"
-                | undefined;
-              const newDate = createDateFromSelectValues(
-                {
-                  minsAccordingToTimePoint: minsAccordingToTimePoint,
-                  beforeOrAfter: beforeOrAfter,
-                  timePoint: newTimePoint,
-                },
-                startDate && new Date(startDate),
-                finishDate && new Date(finishDate)
-              );
+              }}
+              value={value ? value.toString() : null}
+              freeSolo
+              options={["5", "10", "15", "30"]}
+              renderInput={(params) => {
+                return (
+                  <TextField
+                    {...params}
+                    InputLabelProps={undefined}
+                    disabled={disableSelects}
+                  />
+                );
+              }}
+            />
+          )}
+        />
+        <span> min</span>
+        <Controller
+          control={control}
+          name={"beforeOrAfter" as Path<TFieldValues>}
+          render={({ field: { onChange, value } }) => (
+            <Select
+              options={beforeOrAfterOptions}
+              disabled={disableSelects}
+              onChange={(event) => {
+                const newBeforeOrAfterValue = event.target.value as
+                  | "Before"
+                  | "After"
+                  | undefined;
+                const newDate = createDateFromSelectValues(
+                  {
+                    minsAccordingToTimePoint: minsAccordingToTimePoint,
+                    beforeOrAfter: newBeforeOrAfterValue,
+                    timePoint: timePoint,
+                  },
+                  startDate && new Date(startDate),
+                  finishDate && new Date(finishDate)
+                );
 
-              setValue(
-                "notifyDate" as Path<TFormValues>,
-                (newDate || undefined) as PathValue<
-                  TFormValues,
-                  Path<TFormValues>
-                >
-              );
-
-              onChange(
-                newTimePoint as unknown as
-                  | PathValue<TFieldValues, Path<TFieldValues>>
-                  | ChangeEvent<Element>
-              );
-            }}
-            value={value as "Start" | "Finish"}
-          />
-        )}
-      />
-      <Controller
-        control={control}
-        name={"notifyDate" as Path<TFieldValues>}
-        render={({ field: { ref, onChange, value } }) => (
-          <DateTimePicker
-            disabled={!notify}
-            onChange={(date) => {
-              const selectParams = createNotifySelectParams(
-                date?.toDate(),
-                startDate && new Date(startDate),
-                finishDate && new Date(finishDate)
-              );
-
-              if (selectParams) {
                 setValue(
-                  "minsAccordingToTimePoint" as Path<TFormValues>,
-                  selectParams.minsAccordingToTimePoint as PathValue<
+                  "notifyDate" as Path<TFormValues>,
+                  (newDate || undefined) as PathValue<
                     TFormValues,
                     Path<TFormValues>
                   >
                 );
-                setValue(
-                  "beforeOrAfter" as Path<TFormValues>,
-                  selectParams.beforeOrAfter as PathValue<
-                    TFormValues,
-                    Path<TFormValues>
-                  >
-                );
-                setValue(
-                  "timePoint" as Path<TFormValues>,
-                  selectParams.timePoint as PathValue<
-                    TFormValues,
-                    Path<TFormValues>
-                  >
-                );
-              }
 
-              onChange(
-                date?.toDate() as unknown as
-                  | PathValue<TFieldValues, Path<TFieldValues>>
-                  | ChangeEvent<Element>
-              );
-            }}
-            value={dayjs(value as Date)}
-            inputRef={ref}
-          />
-        )}
-      />
-    </StyledNotifyInputsWrapper>
+                if (newBeforeOrAfterValue)
+                  onChange(
+                    newBeforeOrAfterValue as unknown as
+                      | PathValue<TFieldValues, Path<TFieldValues>>
+                      | ChangeEvent<Element>
+                  );
+              }}
+              value={value as "Before" | "After"}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name={"timePoint" as Path<TFieldValues>}
+          render={({ field: { onChange, value } }) => (
+            <Select
+              options={timePointOptions}
+              disabled={disableSelects}
+              defaultValue={"Start"}
+              placeholder={"Time point"}
+              onChange={(event) => {
+                const newTimePoint = event.target.value as
+                  | "Start"
+                  | "Finish"
+                  | undefined;
+                const newDate = createDateFromSelectValues(
+                  {
+                    minsAccordingToTimePoint: minsAccordingToTimePoint,
+                    beforeOrAfter: beforeOrAfter,
+                    timePoint: newTimePoint,
+                  },
+                  startDate && new Date(startDate),
+                  finishDate && new Date(finishDate)
+                );
+
+                setValue(
+                  "notifyDate" as Path<TFormValues>,
+                  (newDate || undefined) as PathValue<
+                    TFormValues,
+                    Path<TFormValues>
+                  >
+                );
+
+                onChange(
+                  newTimePoint as unknown as
+                    | PathValue<TFieldValues, Path<TFieldValues>>
+                    | ChangeEvent<Element>
+                );
+              }}
+              value={value as "Start" | "Finish"}
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name={"notifyDate" as Path<TFieldValues>}
+          render={({ field: { ref, onChange, value } }) => (
+            <DateTimePicker
+              disabled={!notify}
+              onChange={(date) => {
+                const selectParams = createNotifySelectParams(
+                  date?.toDate(),
+                  startDate && new Date(startDate),
+                  finishDate && new Date(finishDate)
+                );
+
+                if (selectParams) {
+                  setValue(
+                    "minsAccordingToTimePoint" as Path<TFormValues>,
+                    selectParams.minsAccordingToTimePoint as PathValue<
+                      TFormValues,
+                      Path<TFormValues>
+                    >
+                  );
+                  setValue(
+                    "beforeOrAfter" as Path<TFormValues>,
+                    selectParams.beforeOrAfter as PathValue<
+                      TFormValues,
+                      Path<TFormValues>
+                    >
+                  );
+                  setValue(
+                    "timePoint" as Path<TFormValues>,
+                    selectParams.timePoint as PathValue<
+                      TFormValues,
+                      Path<TFormValues>
+                    >
+                  );
+                }
+
+                onChange(
+                  date?.toDate() as unknown as
+                    | PathValue<TFieldValues, Path<TFieldValues>>
+                    | ChangeEvent<Element>
+                );
+              }}
+              value={dayjs(value as Date)}
+              inputRef={ref}
+            />
+          )}
+        />
+      </StyledNotifyInputsWrapper>
+    </>
   );
 };
 
