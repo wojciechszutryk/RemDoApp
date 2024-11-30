@@ -113,7 +113,6 @@ export const plTranslation: Record<TranslationKeys, string> = {
   [TranslationKeys.ClearHistory]: "Wyczyść historię",
 
   [TranslationKeys.Collaborants]: "Twoi współpracownicy",
-  [TranslationKeys.CollaborantsSearch]: "Szukaj użytkownika",
   [TranslationKeys.ShowMyCollaborations]: "Pokaż moje współprace",
   [TranslationKeys.SearchForUser]: "Wyszukaj użytkownika",
   [TranslationKeys.InviteCollaborants]: "Zaproś kogoś",
