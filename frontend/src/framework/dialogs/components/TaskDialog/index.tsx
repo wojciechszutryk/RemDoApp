@@ -12,7 +12,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { StyledForm } from "../TodoListDialog/styles";
 import TaskTabMenu from "./components/TaskTabMenu";
-import { getDefaultFormValues } from "./helpers/getDefaultFormValues";
+import { getDefaultTaskFormValues } from "./helpers/getDefaultFormValues";
 import { getReccuranceStr } from "./helpers/getReccuranceStr";
 import { ITaskDialog } from "./models/taskDialog.model";
 
@@ -31,7 +31,7 @@ const TaskDialog = (): JSX.Element => {
   );
 
   const methods = useForm<ITaskDialog>({
-    defaultValues: getDefaultFormValues(editTaskData),
+    defaultValues: getDefaultTaskFormValues(editTaskData),
     mode: "onSubmit",
   });
 
