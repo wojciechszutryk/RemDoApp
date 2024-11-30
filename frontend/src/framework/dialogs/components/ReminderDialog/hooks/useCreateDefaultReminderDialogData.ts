@@ -1,13 +1,21 @@
 import dayjs from "dayjs";
+import { ReminderTodoListId } from "linked-models/reminder/reminder.const";
 import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { createNotifySelectParams } from "../../TaskDialog/components/NotifyForm/helpers";
+import { getDefaultTaskFormValues } from "../../TaskDialog/helpers/getDefaultFormValues";
 import { IReminderDialogState } from "../models/reminderDialogState.model";
-import { ReminderTodoListId } from "linked-models/reminder/reminder.const";
 
 const useCreateDefaultReminderDialogData = (
   defaultData?: Partial<IReminderDialogState>,
   editReminderData?: IReminderDialogState
 ) => {
+  const taskData = editReminderData?.taskId
+    ? getDefaultTaskFormValues({
+        ...editReminderData,
+        id: editReminderData?.taskId,
+      })
+    : null;
+
   const defaultStartDate =
     defaultData?.startDate ?? editReminderData?.startDate;
   const notifyDateFromArgs =
@@ -31,6 +39,7 @@ const useCreateDefaultReminderDialogData = (
     : null;
 
   return {
+    ...taskData,
     text: defaultData?.text || editReminderData?.text || "",
     name: defaultData?.name || editReminderData?.name || "",
     icon:
@@ -46,8 +55,10 @@ const useCreateDefaultReminderDialogData = (
     assignedUsers:
       defaultData?.assignedUsers || editReminderData?.assignedUsers || [],
     todoListId:
-      defaultData?.todoListId || editReminderData?.todoListId || ReminderTodoListId,
-    notify: !!notifyDateFromArgs,
+      defaultData?.todoListId ||
+      editReminderData?.todoListId ||
+      ReminderTodoListId,
+    notify: !!defaultNotifyDate,
     minsAccordingToTimePoint:
       defaultNotifySelectsValues?.minsAccordingToTimePoint || 15,
     beforeOrAfter: defaultNotifySelectsValues?.beforeOrAfter || "Before",
