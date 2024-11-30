@@ -4,7 +4,7 @@ export const StyledTab = styled(MuiTab, {
   shouldForwardProp: (prop) => prop !== "error",
 })<{ error?: boolean }>(({ theme, error }) => ({
   textTransform: "none",
-  color: error ? theme.palette.error.main : theme.palette.secondary.main,
+  color: error ? theme.palette.error.main : theme.palette.primary.contrastText,
   fontWeight: 800,
   "& svg": {
     animation: "fadeIn 0.3s linear",

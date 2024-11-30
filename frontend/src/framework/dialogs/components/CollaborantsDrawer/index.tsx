@@ -50,15 +50,11 @@ const CollaborantsDrawer = (): JSX.Element => {
     <StyledDrawer open={open} onClose={onClose} anchor={"right"}>
       <StyledTabsWrapper style={{ width: `${width}px`, zIndex: 1 }}>
         <Tabs value={tabIndex} onChange={handleChangeTabIndex}>
+          <Tab label={t(TranslationKeys.Collaborants)} value={0} id={"List"} />
           <Tab
-            label={t(TranslationKeys.Collaborants)}
-            value={0}
-            id={"CollaborantsList"}
-          />
-          <Tab
-            label={t(TranslationKeys.CollaborantsSearch)}
+            label={t(TranslationKeys.SearchForUser)}
             value={1}
-            id={"CollaborantsSearch"}
+            id={"Search"}
           />
         </Tabs>
       </StyledTabsWrapper>

@@ -9,7 +9,7 @@ export const StyledTabsWrapper = styled("div")(({ theme }) => ({
     width: "450px",
   },
   borderBottom: 1,
-  borderColor: "divider",
+  borderColor: theme.palette.secondary.contrastText,
 }));
 
 export const StyledCollaborantListItemText = styled(ListItemText)(
