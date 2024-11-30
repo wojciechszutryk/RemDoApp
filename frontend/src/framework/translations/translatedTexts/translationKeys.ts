@@ -206,7 +206,6 @@ export enum TranslationKeys {
 
   //collaboration
   Collaborants = "Collaborants",
-  CollaborantsSearch = "CollaborantsSearch",
   ShowMyCollaborations = "ShowMyCollaborations",
   SearchForUser = "SearchForUser",
   YouHaveNoCollaborants = "YouHaveNoCollaborants",
