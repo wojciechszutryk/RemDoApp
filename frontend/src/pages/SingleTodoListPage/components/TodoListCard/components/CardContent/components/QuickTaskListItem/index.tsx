@@ -17,21 +17,14 @@ const QuickTaskListItem = ({ task, todoListId }: Props): JSX.Element => {
   const updateQueriesAfterDeletingTask = useUpdateQueriesAfterDeletingTask();
 
   const handleInputBlur = () => {
-    if (!taskText) updateQueriesAfterDeletingTask(QUICK_TASK_ID);
-    createTaskMutation.mutate(
-      {
-        todoListId,
-        data: {
-          ...task,
-          text: taskText,
-        },
+    updateQueriesAfterDeletingTask(QUICK_TASK_ID);
+    createTaskMutation.mutate({
+      todoListId,
+      data: {
+        ...task,
+        text: taskText,
       },
-      {
-        onSuccess: () => {
-          updateQueriesAfterDeletingTask(QUICK_TASK_ID);
-        },
-      }
-    );
+    });
   };
 
   return (
@@ -49,6 +42,11 @@ const QuickTaskListItem = ({ task, todoListId }: Props): JSX.Element => {
           autoFocus
           fullWidth
           value={taskText}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleInputBlur();
+            }
+          }}
           onChange={(e) => setTaskText(e.target.value)}
           onBlur={handleInputBlur}
         />
