@@ -50,7 +50,7 @@
     "rrule": "^2.8.1",
     "socket.io": "^4.6.2",
     "tsc-alias": "^1.8.8",
-    "uuid": "^9.0.1",
+    "uuid": "^11.0.3",
     "web-push": "^3.6.6"
   },
   "devDependencies": {
