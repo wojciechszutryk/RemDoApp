@@ -9,6 +9,7 @@ import { TranslationKeys } from "framework/translations/translatedTexts/translat
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { CardView } from "../..";
 import { StyledExpandMore } from "../../styles";
 import ActionsButtons from "./components/ActionsButtons";
 import ActionsMenu from "./components/ActionsMenu";
@@ -19,8 +20,8 @@ import { StyledCreateTaskButton } from "./styles";
 
 interface Props {
   todoList: IExtendedTodoListDto;
-  expanded: boolean;
-  setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+  view: CardView;
+  setView: React.Dispatch<React.SetStateAction<CardView>>;
   setIsReorderingTasks: React.Dispatch<React.SetStateAction<boolean>>;
   showExpandIcon?: boolean;
   actionsVariant: "buttons" | "menu";
@@ -33,8 +34,8 @@ interface Props {
 
 const CardActions = ({
   todoList: { name, id, icon, assignedOwners, assignedUsers, tasks },
-  expanded,
-  setExpanded,
+  view,
+  setView,
   setIsReorderingTasks,
   showExpandIcon,
   actionsVariant,
@@ -127,17 +128,26 @@ const CardActions = ({
         ) : (
           <ActionsMenu interactions={interactions} />
         ))}
-
-      {showExpandIcon && (
+      <div>
+        {view !== "collapsed" && (
+          <StyledExpandMore
+            expand={view === "normal"}
+            onClick={() => setView(view === "normal" ? "expanded" : "normal")}
+            aria-view={view}
+            aria-label="show more"
+          >
+            <ExpandMoreIcon />
+          </StyledExpandMore>
+        )}
         <StyledExpandMore
-          expand={expanded}
-          onClick={() => setExpanded(!expanded)}
-          aria-expanded={expanded}
+          expand={false}
+          onClick={() => setView("collapsed")}
+          aria-view={view}
           aria-label="show more"
         >
           <ExpandMoreIcon />
         </StyledExpandMore>
-      )}
+      </div>
     </MUICardActions>
   );
 };

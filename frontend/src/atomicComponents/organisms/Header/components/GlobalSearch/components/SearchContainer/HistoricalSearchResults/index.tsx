@@ -19,6 +19,8 @@ const HistoricalSearchResults = ({
   const deleteSearchHistoryRecordMutation =
     useDeleteSearchHistoryRecordMutation();
 
+  //todo: handle history
+
   return (
     <>
       {searchHistory?.map(
