@@ -54,6 +54,11 @@ const TodoListCard = ({
         draggingProps={draggingProps}
         disableHeaderRedirect={disableHeaderRedirect}
       />
+
+      {/* <Collapse
+        in={view !== "normal" || activeTasks.length === 0}
+        timeout="auto"
+      > */}
       {isReorderingTasks ? (
         <ReorderContentAndActions
           onCancelReorder={() => setIsReorderingTasks(false)}
@@ -102,6 +107,7 @@ const TodoListCard = ({
           />
         </>
       )}
+      {/* </Collapse> */}
     </StyledTodoListCard>
   );
 };
