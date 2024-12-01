@@ -8,10 +8,11 @@ import {
 export const StyledDialogTitle = styled(Typography)(({ theme }) => ({
   width: "80%",
   textAlign: "center",
-  color: theme.palette.primary.contrastText,
+  color: theme.palette.background.default,
   margin: "0 auto",
 
   [theme.breakpoints.up("sm")]: {
+    color: theme.palette.primary.contrastText,
     position: "absolute",
     top: 24,
     zIndex: 1,
@@ -32,6 +33,13 @@ export const StyledInnerWrapper = styled("div", {
     height: "auto",
     padding: withTitle ? "64px 55px 10px" : "55px",
     borderRadius: "200px",
+    maxHeight: "90vh",
+    overflowY: "auto",
+    "&:scrollbar, &::-webkit-scrollbar": {
+      display: "none",
+      appearance: "none",
+      "-webkit-appearance": "none",
+    },
   },
 }));
 
@@ -62,26 +70,35 @@ export const StyledDialog = styled(MuiDialog)(({ theme }) => ({
     padding: "0px",
   },
   ".MuiDialog-paper": {
-    position: "absolute",
-    top: 0,
+    maxHeight: "100vh",
     overflow: "visible",
-    backgroundColor: theme.palette.primary.main,
+    background: "transparent",
     color: theme.palette.primary.contrastText,
     boxSizing: "border-box",
+    boxShadow: "none",
     width: "100%",
     minHeight: "100vh",
     margin: "0px",
     maxWidth: "none",
     padding: "10px",
 
+    "&:after": {
+      content: '""',
+      backgroundColor: theme.palette.secondary.light,
+      zIndex: -1,
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+    },
     [theme.breakpoints.up("sm")]: {
-      top: "50%",
       width: `518px`,
       minHeight: "fit-content",
-      borderRadius: "200px 210px 200px 155px",
-      transform: "rotate(5deg) translateY(-50%)",
-      "& > *": {
-        transform: "rotate(-5deg)",
+      "&:after": {
+        opacity: 0.7,
+        borderRadius: "200px 210px 200px 155px",
+        transform: "rotate(5deg)",
       },
     },
     [theme.breakpoints.up("md")]: {
