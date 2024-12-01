@@ -6,6 +6,7 @@ import { ExpirationPlugin } from "workbox-expiration";
 import { createHandlerBoundToURL, precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { NetworkOnly, StaleWhileRevalidate } from "workbox-strategies";
+import { BackgroundSyncPlugin } from "workbox-background-sync";
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -42,6 +43,19 @@ registerRoute(
   new StaleWhileRevalidate({
     cacheName: "images",
     plugins: [new ExpirationPlugin({ maxEntries: 50 })],
+  })
+);
+
+const todoSyncQueue = new BackgroundSyncPlugin("todo-queue", {
+  maxRetentionTime: 24 * 60,
+});
+
+registerRoute(
+  ({ url, request }) =>
+    url.pathname.startsWith("/api/todos") &&
+    ["POST", "PUT", "DELETE"].includes(request.method),
+  new NetworkOnly({
+    plugins: [todoSyncQueue],
   })
 );
 
