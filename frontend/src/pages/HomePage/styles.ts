@@ -22,17 +22,17 @@ export const StyledFeaturesSection = styled("section")(({ theme }) => ({
         maxWidth: "400px",
         lineHeight: 1.5,
         "& > span": {
-          color: theme.palette.primary.contrastText,
+          color: theme.palette.secondary.contrastText,
           textDecoration: "underline",
           cursor: "pointer",
           transition: "color 0.15s ease",
           "&:hover": {
-            color: theme.palette.primary.main,
+            color: theme.palette.primary.dark,
           },
         },
       },
       "& > div > svg": {
-        border: `1px solid ${theme.palette.primary.main}`,
+        border: `1px solid ${theme.palette.primary.dark}`,
         borderRadius: "50%",
         width: 100,
         "& path": {
@@ -97,14 +97,18 @@ export const StyledDetailedSection = styled("section")(({ theme }) => ({
     width: "100%",
     maxWidth: 1000,
   },
-  "& > div > svg": {
-    width: 300,
+  "& > div:nth-child(2)": {
     border: `2px solid ${theme.palette.primary.contrastText}`,
     borderRadius: "50%",
-    "& path": {
-      fill: theme.palette.primary.main,
+    overflow: "hidden",
+    "& > svg": {
+      width: 300,
+      "& path": {
+        fill: theme.palette.secondary.contrastText,
+      },
     },
   },
+
   "& > p": {
     lineHeight: 1.5,
     maxWidth: 1000,
