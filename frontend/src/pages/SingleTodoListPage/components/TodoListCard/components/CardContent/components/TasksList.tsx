@@ -36,32 +36,31 @@ const TasksList = ({
           );
         }
 
+        const canSwipe =
+          checkPermission(
+            TodoListPermissions.CanArchiveTask,
+            todoListId,
+            task.id
+          ) ||
+          (tasksState === "completed" &&
+            checkPermission(
+              TodoListPermissions.CanDeleteTask,
+              todoListId,
+              task.id
+            )) ||
+          (tasksState === "active" &&
+            checkPermission(
+              TodoListPermissions.CanEditTask,
+              todoListId,
+              task.id
+            ));
+
         return (
           <TaskListItem
             key={task.id}
             task={task}
             showHighlight={taskId === task.id}
-            canArchive={checkPermission(
-              TodoListPermissions.CanArchiveTask,
-              todoListId,
-              task.id
-            )}
-            canDelete={
-              tasksState === "completed" &&
-              checkPermission(
-                TodoListPermissions.CanDeleteTask,
-                todoListId,
-                task.id
-              )
-            }
-            canEdit={
-              tasksState === "active" &&
-              checkPermission(
-                TodoListPermissions.CanEditTask,
-                todoListId,
-                task.id
-              )
-            }
+            canSwipe={canSwipe}
           />
         );
       })}
