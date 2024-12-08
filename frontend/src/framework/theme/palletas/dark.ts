@@ -15,7 +15,7 @@ export const darkTheme = {
     paper: "#404040",
   },
   info: {
-    main: "#404040",
+    main: "#4d4d4d",
   },
   warning: {
     main: "#ad4a63",
