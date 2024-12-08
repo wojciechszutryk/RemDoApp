@@ -3,13 +3,13 @@ import { motion } from "framer-motion";
 import { Pages } from "framework/routing/pages";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import useCheckLoader from "hooks/useCheckLoader";
-import TodoListCard from "pages/SingleTodoListPage/components/TodoListCard";
 import EmptyTodoLists from "pages/TodoListsPage/components/EmptyTodoLists";
 import { useGetUserExtendedTodoListsQuery } from "pages/TodoListsPage/queries/getUserExtendedTodoLists.query";
 import { memo, useCallback, useLayoutEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { TodoListCardLoader } from "../../atomicComponents/atoms/Loaders/TodoListCardLoader";
+import ScrollableTodoCard from "./components/ScrollableTodoCard";
 import {
   StyledBackButton,
   StyledSingleTodoListPageWrapper,
@@ -89,14 +89,7 @@ const SingleTodoListPage = ({ disableListsNavigate }: Props): JSX.Element => {
     else if (getUserTodoListsWithTasksQuery.isFetched && !currentTodoList) {
       pageContent = <EmptyTodoLists />;
     } else if (!!currentTodoList) {
-      pageContent = (
-        <TodoListCard
-          disableHeaderRedirect
-          todoList={currentTodoList}
-          scrollableContent
-          actionsVariant="buttons"
-        />
-      );
+      pageContent = <ScrollableTodoCard todoList={currentTodoList} />;
     }
 
     return pageContent;

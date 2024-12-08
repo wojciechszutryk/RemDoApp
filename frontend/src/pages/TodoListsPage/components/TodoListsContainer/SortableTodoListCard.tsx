@@ -4,10 +4,10 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { StyledTodoListCardWrapper } from "atomicComponents/molecules/TodoListCard/styles";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
-import TodoListCard from "pages/SingleTodoListPage/components/TodoListCard";
-import { StyledTodoListCardWrapper } from "pages/SingleTodoListPage/components/TodoListCard/styles";
 import { memo } from "react";
+import TodoListCard from "../TodoListCard";
 
 const animateLayoutChanges: AnimateLayoutChanges = (args) => {
   const { isSorting, wasDragging } = args;
@@ -55,7 +55,6 @@ const SortableTodoListCard = ({
         todoList={todoList}
         withShakeAnimation={withShakeAnimation}
         draggingProps={{ listeners, attributes, isDragging }}
-        actionsVariant="menu"
       />
     </StyledTodoListCardWrapper>
   );

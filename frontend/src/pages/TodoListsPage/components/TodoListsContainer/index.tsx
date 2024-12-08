@@ -16,7 +16,7 @@ import {
   StyledListsColWrapper,
 } from "pages/TodoListsPage/styles";
 import { memo, useEffect, useMemo, useState } from "react";
-import TodoListCard from "../../../SingleTodoListPage/components/TodoListCard";
+import TodoListCard from "../TodoListCard";
 import SortableTodoListCard from "./SortableTodoListCard";
 import useHandleDrag from "./useHandleDrag";
 
@@ -93,9 +93,9 @@ const TodoListsContainer = ({ todoLists }: Props): JSX.Element => {
           })}
         </StyledListsColWrapper>
       </SortableContext>
-      <DragOverlay adjustScale={false} style={{ transformOrigin: "0 0 " }}>
+      <DragOverlay adjustScale={false} style={{ transformOrigin: "0 0" }}>
         {activeId && activeTodoList ? (
-          <TodoListCard todoList={activeTodoList} actionsVariant="menu" />
+          <TodoListCard todoList={activeTodoList} />
         ) : null}
       </DragOverlay>
     </DndContext>

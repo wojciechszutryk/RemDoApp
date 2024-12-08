@@ -1,24 +1,23 @@
-import Collapse from "@mui/material/Collapse";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import EmptyTasksList from "pages/TodoListsPage/components/EmptyTasksList";
 import { memo } from "react";
-import { StyledCardContent } from "../../styles";
+import { StyledCardContent } from "../styles";
 import TasksList from "./components/TasksList";
 
 interface Props {
   activeTasks: IExtendedTaskDto[];
   completedTasks: IExtendedTaskDto[];
-  expanded: boolean;
   scrollable?: boolean;
   todoListId: string;
+  children?: React.ReactNode;
 }
 
 const CardContent = ({
   activeTasks,
   completedTasks,
-  expanded,
   scrollable,
   todoListId,
+  children,
 }: Props): JSX.Element => {
   return (
     <StyledCardContent scrollable={scrollable}>
@@ -32,25 +31,7 @@ const CardContent = ({
             todoListId={todoListId}
           />
 
-          {scrollable ? (
-            <TasksList
-              tasks={completedTasks}
-              tasksState="completed"
-              todoListId={todoListId}
-            />
-          ) : (
-            <Collapse
-              in={expanded || activeTasks.length === 0}
-              timeout="auto"
-              unmountOnExit
-            >
-              <TasksList
-                tasks={completedTasks}
-                tasksState="completed"
-                todoListId={todoListId}
-              />
-            </Collapse>
-          )}
+          {children}
         </>
       )}
     </StyledCardContent>
