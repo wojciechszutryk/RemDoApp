@@ -55,8 +55,7 @@ const ExtendableUserAvatar = ({
     <>
       <UserAvatar
         userData={userData}
-        avatarProps={{ onClick: handleClick }}
-        {...avatarProps}
+        avatarProps={{ ...avatarProps, onClick: handleClick }}
       />
       <Popover
         id={open ? "simple-popover" : undefined}
