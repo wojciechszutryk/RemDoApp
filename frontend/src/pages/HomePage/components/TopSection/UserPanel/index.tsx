@@ -21,7 +21,7 @@ export const UserPanel = (): JSX.Element => {
 
   return (
     <StyledWrapper>
-      <StyledOuterWave></StyledOuterWave>
+      <StyledOuterWave/>
       <StyledContentWrapper>
         <StyledLoginHeader variant={"h5"}>
           {t(TranslationKeys.LoginPanelHeader)}

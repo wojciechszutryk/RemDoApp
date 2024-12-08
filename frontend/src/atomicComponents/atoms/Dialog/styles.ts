@@ -33,6 +33,7 @@ export const StyledInnerWrapper = styled("div", {
     height: "auto",
     padding: withTitle ? "64px 55px 10px" : "55px",
     borderRadius: "200px",
+    animation: "borderWave 5s ease-in-out infinite",
     maxHeight: "90vh",
     overflowY: "auto",
     "&:scrollbar, &::-webkit-scrollbar": {
@@ -47,6 +48,7 @@ export const StyledCloseButton = styled(IconButton)(({ theme }) => ({
   position: "absolute",
   backgroundColor: theme.palette.primary.main,
   borderRadius: "150px 200px 130px 170px",
+
   top: 0,
   right: 2,
   width: 30,
@@ -98,6 +100,8 @@ export const StyledDialog = styled(MuiDialog)(({ theme }) => ({
       "&:after": {
         opacity: 0.7,
         borderRadius: "200px 210px 200px 155px",
+        animation: "borderWave 5s ease-in-out infinite",
+        animationDelay: "1.5s !important",
         transform: "rotate(5deg)",
       },
     },
