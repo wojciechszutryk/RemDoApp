@@ -136,37 +136,8 @@ const CardActions = ({
       {interactions.length > 0 && (
         <InteractionComponent interactions={interactions} />
       )}
-      {/* (actionsVariant === "buttons" ? (
-          <ActionsButtons interactions={interactions} />
-        ) : (
-          <ActionsMenu interactions={interactions} />
-        ))} */}
 
       {children}
-      {/* <div>
-        {view !== "collapsed" && (
-          <StyledExpandMore
-            expand={true}
-            onClick={() =>
-              setView(view === "expanded" ? "normal" : "collapsed")
-            }
-            aria-view={view}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </StyledExpandMore>
-        )}
-        {view === "normal" && completedTasksCount > 0 && (
-          <StyledExpandMore
-            expand={false}
-            onClick={() => setView("expanded")}
-            aria-view={view}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </StyledExpandMore>
-        )}
-      </div> */}
     </MUICardActions>
   );
 };
