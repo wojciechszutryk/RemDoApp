@@ -1,7 +1,7 @@
 import { DraggableAttributes } from "@dnd-kit/core";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Collapse } from "@mui/material";
+import { Badge, Collapse } from "@mui/material";
 import CardActions from "atomicComponents/molecules/TodoListCard/CardActions";
 import ActionsMenu from "atomicComponents/molecules/TodoListCard/CardActions/components/ActionsMenu";
 import CardContent from "atomicComponents/molecules/TodoListCard/CardContent";
@@ -23,6 +23,7 @@ import {
 import * as React from "react";
 import { memo } from "react";
 import UncollapseIcon from "./UncollapseIcon";
+import { StyledIconsWrapper } from "./styles";
 
 export interface IDraggingButtonProps {
   listeners: SyntheticListenerMap | undefined;
@@ -127,7 +128,7 @@ const TodoListCard = ({
               showDeleteButton={canDelete}
               InteractionComponent={ActionsMenu}
             >
-              <div>
+              <StyledIconsWrapper>
                 {displayMode !== "collapsed" && (
                   <StyledExpandMore
                     expand={true}
@@ -147,10 +148,19 @@ const TodoListCard = ({
                     aria-view={displayMode}
                     aria-label="show more"
                   >
-                    <ExpandMoreIcon />
+                    <Badge
+                      badgeContent={
+                        todoList.tasks.length > 99
+                          ? "99+"
+                          : todoList.tasks.length
+                      }
+                      color="primary"
+                    >
+                      <ExpandMoreIcon />
+                    </Badge>
                   </StyledExpandMore>
                 )}
-              </div>
+              </StyledIconsWrapper>
             </CardActions>
           </>
         )}
