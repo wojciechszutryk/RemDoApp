@@ -1,7 +1,7 @@
 import { AnimatePresence } from "framer-motion";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
-import useCheckTodoPermissions from "pages/TodoListsPage/hooks/useCheckTodoPermissions";
+import useCheckTodoPermissions from "pages/TodoListsPage/helpers/hooks/useCheckTodoPermissions";
 import { memo } from "react";
 import { useParams } from "react-router-dom";
 import { QUICK_TASK_ID } from "../../CardActions/components/QuickTaskCreateBtn";

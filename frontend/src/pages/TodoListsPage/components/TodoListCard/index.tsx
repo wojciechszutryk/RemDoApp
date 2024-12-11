@@ -15,18 +15,20 @@ import {
 } from "atomicComponents/molecules/TodoListCard/styles";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
 import useTodoCardState from "pages/SingleTodoListPage/hooks/useTodoCardState";
+import {
+  DisplayMode,
+  getDisplayMode,
+  setDisplayMode,
+} from "pages/TodoListsPage/helpers/state/cardDisplayMode.helpers";
 import * as React from "react";
 import { memo } from "react";
 import UncollapseIcon from "./UncollapseIcon";
-
-export type CardView = "expanded" | "collapsed" | "normal";
 
 export interface IDraggingButtonProps {
   listeners: SyntheticListenerMap | undefined;
   attributes: DraggableAttributes;
   isDragging: boolean;
 }
-
 interface Props {
   todoList: IExtendedTodoListDto;
   withShakeAnimation?: boolean;
@@ -38,7 +40,10 @@ const TodoListCard = ({
   withShakeAnimation,
   draggingProps,
 }: Props): JSX.Element => {
-  const [view, setView] = React.useState<CardView>("normal");
+  const [displayMode, setDisplayModeState] = React.useState(
+    getDisplayMode(todoList.id)
+  );
+
   const {
     isReorderingTasks,
     setIsReorderingTasks,
@@ -50,12 +55,20 @@ const TodoListCard = ({
     canDelete,
   } = useTodoCardState(todoList);
 
+  const handleDisplayModeChange = (newMode: DisplayMode) => () => {
+    setDisplayModeState(newMode);
+    setDisplayMode(todoList.id, newMode);
+  };
+
   return (
     <StyledTodoListCard withShakeAnimation={withShakeAnimation}>
       <CardHeader todoList={todoList}>
         <>
-          {view === "collapsed" && (
-            <UncollapseIcon todoList={todoList} setView={setView} />
+          {displayMode === "collapsed" && (
+            <UncollapseIcon
+              todoList={todoList}
+              handleUncollapse={handleDisplayModeChange("normal")}
+            />
           )}
           {draggingProps && (
             <StyledDragIcon
@@ -67,7 +80,15 @@ const TodoListCard = ({
         </>
       </CardHeader>
 
-      <Collapse in={view !== "collapsed"} timeout="auto">
+      <Collapse
+        in={displayMode !== "collapsed"}
+        sx={{
+          // fix of mui bug with initial 'collapsed' state
+          "&.MuiCollapse-hidden": {
+            height: "0 !important",
+          },
+        }}
+      >
         {isReorderingTasks ? (
           <ReorderContentAndActions
             onCancelReorder={() => setIsReorderingTasks(false)}
@@ -83,7 +104,7 @@ const TodoListCard = ({
               todoListId={todoList.id}
             >
               <Collapse
-                in={view === "expanded" || activeTasks.length === 0}
+                in={displayMode === "expanded" || activeTasks.length === 0}
                 timeout="auto"
                 unmountOnExit
               >
@@ -107,23 +128,23 @@ const TodoListCard = ({
               InteractionComponent={ActionsMenu}
             >
               <div>
-                {view !== "collapsed" && (
+                {displayMode !== "collapsed" && (
                   <StyledExpandMore
                     expand={true}
-                    onClick={() =>
-                      setView(view === "expanded" ? "normal" : "collapsed")
-                    }
-                    aria-view={view}
+                    onClick={handleDisplayModeChange(
+                      displayMode === "expanded" ? "normal" : "collapsed"
+                    )}
+                    aria-view={displayMode}
                     aria-label="show more"
                   >
                     <ExpandMoreIcon />
                   </StyledExpandMore>
                 )}
-                {view === "normal" && completedTasks.length > 0 && (
+                {displayMode === "normal" && completedTasks.length > 0 && (
                   <StyledExpandMore
                     expand={false}
-                    onClick={() => setView("expanded")}
-                    aria-view={view}
+                    onClick={handleDisplayModeChange("expanded")}
+                    aria-view={displayMode}
                     aria-label="show more"
                   >
                     <ExpandMoreIcon />

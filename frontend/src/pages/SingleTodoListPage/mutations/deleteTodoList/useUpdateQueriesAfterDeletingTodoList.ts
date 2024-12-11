@@ -5,6 +5,7 @@ import {
   PARAM_EXTENDED,
   URL_TODO_LISTS,
 } from "linked-models/todoList/todoList.urls";
+import { deleteDisplayMode } from "pages/TodoListsPage/helpers/state/cardDisplayMode.helpers";
 import { useCallback } from "react";
 
 const useUpdateQueriesAfterDeletingTodoList = () => {
@@ -23,6 +24,7 @@ const useUpdateQueriesAfterDeletingTodoList = () => {
           );
         }
       );
+      deleteDisplayMode(deletedTodoList.id);
     },
     [queryClient]
   );

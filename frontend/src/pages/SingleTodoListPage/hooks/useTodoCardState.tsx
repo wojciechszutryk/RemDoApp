@@ -1,7 +1,7 @@
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { IExtendedTodoListDto } from "linked-models/todoList/todoList.dto";
-import useCheckTodoPermissions from "pages/TodoListsPage/hooks/useCheckTodoPermissions";
+import useCheckTodoPermissions from "pages/TodoListsPage/helpers/hooks/useCheckTodoPermissions";
 import { useMemo, useState } from "react";
 
 const useTodoCardState = (todoList: IExtendedTodoListDto) => {
