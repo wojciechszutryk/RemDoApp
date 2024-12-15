@@ -43,7 +43,6 @@ const SearchResults = ({
     isReminder?: boolean,
     saveToHistory?: boolean
   ) => {
-    debugger;
     if (!todoListId) return;
     let link = "";
 
