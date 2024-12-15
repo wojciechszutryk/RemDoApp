@@ -9,7 +9,7 @@ import SearchTabPanel from "../SearchTabPanel";
 interface CurrentSearchResultsProps {
   activeTab: SearchCategory;
   currentResults: ISearchResults;
-  handleRedirect: (
+  handleResultClick: (
     todoListId?: string,
     taskId?: string,
     isReminder?: boolean,
@@ -20,7 +20,7 @@ interface CurrentSearchResultsProps {
 const CurrentSearchResults = ({
   activeTab,
   currentResults,
-  handleRedirect,
+  handleResultClick,
 }: CurrentSearchResultsProps): JSX.Element | null => {
   return (
     <>
@@ -31,7 +31,7 @@ const CurrentSearchResults = ({
             icon={<SearchResultIcon searchCategory={SearchCategory.Reminder} />}
             text={result.name}
             onClick={() =>
-              handleRedirect(result.todoListId, result.taskId, true, true)
+              handleResultClick(result.todoListId, result.taskId, true, true)
             }
           />
         ))}
@@ -42,7 +42,7 @@ const CurrentSearchResults = ({
             key={index}
             icon={<SearchResultIcon searchCategory={SearchCategory.TodoList} />}
             text={result.name}
-            onClick={() => handleRedirect(result.id, undefined, false, true)}
+            onClick={() => handleResultClick(result.id, undefined, false, true)}
           />
         ))}
       </SearchTabPanel>
@@ -53,7 +53,7 @@ const CurrentSearchResults = ({
             icon={<SearchResultIcon searchCategory={SearchCategory.Task} />}
             text={result.text!}
             onClick={() =>
-              handleRedirect(result.todoListId, result.id, false, true)
+              handleResultClick(result.todoListId, result.id, false, true)
             }
           />
         ))}

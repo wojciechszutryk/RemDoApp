@@ -5,7 +5,11 @@ import SearchResults from "./components/SearchContainer";
 import { useGetSearchResultQuery } from "./queries/getSearchResult.query";
 import { GlobalSearchWrapper } from "./styles";
 
-const Search = (): JSX.Element | null => {
+interface Props {
+  onClose: () => void;
+}
+
+const Search = ({ onClose }: Props): JSX.Element | null => {
   const [searchPhrase, setSearchPhrase] = useState<string>("");
   const isSearchPhraseEmpty =
     searchPhrase && searchPhrase.length > 0 ? false : true;
@@ -46,6 +50,7 @@ const Search = (): JSX.Element | null => {
       <SearchResults
         getSearchResultQuery={getSearchResultQuery}
         isSearchPhraseEmpty={!searchPhrase}
+        onClose={onClose}
       />
     </GlobalSearchWrapper>
   );

@@ -10,6 +10,7 @@ const useToggleDrawer = ({ setDrawerState, onClose, onOpen }: Args) => {
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
+        event &&
         event.type === "keydown" &&
         ((event as React.KeyboardEvent).key === "Tab" ||
           (event as React.KeyboardEvent).key === "Shift")

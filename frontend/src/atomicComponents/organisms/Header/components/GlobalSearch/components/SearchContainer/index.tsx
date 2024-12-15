@@ -19,22 +19,25 @@ import { SearchResultsWrapper, StyledSearchContainerWrapper } from "./styles";
 interface SearchContainerProps {
   getSearchResultQuery: UseQueryResult<ISearchResults, unknown>;
   isSearchPhraseEmpty: boolean;
+  onClose: () => void;
 }
 
 const SearchResults = ({
   getSearchResultQuery: { data, isFetched },
   isSearchPhraseEmpty,
+  onClose,
 }: SearchContainerProps): JSX.Element | null => {
   const [activeTab, setActiveTab] = useState<SearchCategory>(
     SearchCategory.Reminder
   );
 
   const getSearchHistoryQuery = useGetSearchHistoryQuery();
+
   const saveSearchHistoryMutation = useSaveSearchHistoryMutation();
 
   const navigate = useNavigate();
 
-  const handleRedirect = (
+  const handleResultClick = (
     todoListId?: string,
     taskId?: string,
     isReminder?: boolean,
@@ -44,9 +47,9 @@ const SearchResults = ({
     if (!todoListId) return;
     let link = "";
 
-    if (isReminder && taskId) {
-      link = Pages.RemindersPage.path;
-    } else if (taskId) link = Pages.TaskPage.path(todoListId, taskId);
+    if (isReminder && taskId) link = Pages.RemindersPage.path;
+    else if (taskId) link = Pages.TaskPage.path(todoListId, taskId);
+    else link = Pages.TodoListPage.path(todoListId);
 
     if (link) {
       navigate(link);
@@ -55,6 +58,8 @@ const SearchResults = ({
           searchedTodoListId: todoListId,
         });
     }
+
+    onClose();
   };
 
   const showNoResultFound =
@@ -88,7 +93,7 @@ const SearchResults = ({
       <SearchResultsWrapper>
         {isSearchPhraseEmpty ? (
           <HistoricalSearchResults
-            handleRedirect={handleRedirect}
+            handleResultClick={handleResultClick}
             searchHistory={getSearchHistoryQuery.data}
           />
         ) : showNoResultFound ? (
@@ -98,7 +103,7 @@ const SearchResults = ({
             <CurrentSearchResults
               activeTab={activeTab}
               currentResults={data}
-              handleRedirect={handleRedirect}
+              handleResultClick={handleResultClick}
             />
           )
         )}

@@ -34,7 +34,7 @@ const GlobalSearch = (): JSX.Element => {
         anchor="top"
       >
         <Suspense fallback={null}>
-          <Search />
+          <Search onClose={() => setShowSearchDrawer(false)} />
         </Suspense>
       </Drawer>
     </>

@@ -4,7 +4,7 @@ import SearchLine from "../SearchLine";
 import SearchResultIcon from "../SearchResultIcon";
 
 interface Props {
-  handleRedirect: (
+  handleResultClick: (
     todoListId?: string,
     taskId?: string,
     isReminder?: boolean
@@ -13,13 +13,11 @@ interface Props {
 }
 
 const HistoricalSearchResults = ({
-  handleRedirect,
+  handleResultClick,
   searchHistory,
 }: Props): JSX.Element | null => {
   const deleteSearchHistoryRecordMutation =
     useDeleteSearchHistoryRecordMutation();
-
-  //todo: handle history
 
   return (
     <>
@@ -37,7 +35,7 @@ const HistoricalSearchResults = ({
             icon={<SearchResultIcon searchCategory={category} />}
             text={displayName}
             onClick={() =>
-              handleRedirect(searchedTodoListId, searchedTaskId, isReminder)
+              handleResultClick(searchedTodoListId, searchedTaskId, isReminder)
             }
             onDelete={() => deleteSearchHistoryRecordMutation.mutate(id)}
           />
