@@ -110,7 +110,7 @@ export class ReminderService {
     const todoListIDToTodoListMap = new Map(todoLists.map((td) => [td.id, td]));
 
     const tasks = await this.taskService.getTasksByTodoListIDs(
-      Object.keys(todoListIDToTodoListMap)
+      Array.from(todoListIDToTodoListMap.keys())
     );
 
     const reminders: ISimplifiedReminder[] = [];

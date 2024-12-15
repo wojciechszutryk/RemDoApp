@@ -45,7 +45,7 @@ export class SearchService {
       },
       {
         $project: {
-          _id: 1,
+          id: 1,
           displayName: 1,
           avatarUrl: 1,
           email: 1,
@@ -108,7 +108,9 @@ export class SearchService {
       },
       {
         $project: {
-          _id: 1,
+          id: {
+            $toString: "$_id",
+          },
           name: 1,
           assignedUsers: 1,
           assignedOwners: 1,
@@ -140,12 +142,6 @@ export class SearchService {
       },
     ]);
 
-    const similarityScores = foundTodos.map((td) => td.similarityScore);
-    console.log(
-      isReminder ? "reminderstodosimilarityScores" : "todossimilarityScores",
-      similarityScores
-    );
-
     return foundTodos.map((td) => mapTodoListToAttachedTodoList(td));
   }
 
@@ -174,7 +170,9 @@ export class SearchService {
       },
       {
         $project: {
-          _id: 1,
+          id: {
+            $toString: "$_id",
+          },
           text: 1,
           description: 1,
           link: 1,
