@@ -66,8 +66,8 @@ export const Header = ({ disableBgcAnimation }: Props): JSX.Element => {
         <SettingsMenu />
         <UserMenu />
         <StyledHeaderButton
-          onClick={handleNavigate(Pages.RemindersPage.path)}
-          disabled={currentPagePath === Pages.RemindersPage.path.substring(1)}
+          onClick={handleNavigate(Pages.RemindersPage.path())}
+          disabled={currentPagePath === Pages.RemindersPage.path().substring(1)}
         >
           {isMobile ? <EventIcon /> : t(TranslationKeys.PageTitleReminders)}
         </StyledHeaderButton>

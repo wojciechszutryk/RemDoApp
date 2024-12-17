@@ -94,7 +94,7 @@ const App = (): JSX.Element => {
             }
           />
           <Route
-            path={Pages.RemindersPage.path}
+            path={Pages.RemindersPage.path()}
             element={
               <Suspense fallback={false}>
                 <PageTemplate>

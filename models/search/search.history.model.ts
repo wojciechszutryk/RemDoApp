@@ -5,7 +5,13 @@ export interface ISearchHistory {
   searchedTodoListId?: string;
   searchedTaskId?: string;
   isReminder?: boolean;
+  entityDate?: string;
   userId: string;
 }
 
-export type ISearchHistoryAttached = ISearchHistory & IBaseModelAttached;
+interface ISearchHistoryWithReadonlyProperties extends ISearchHistory {
+  readonly whenCreated: Date;
+}
+
+export type ISearchHistoryAttached = ISearchHistoryWithReadonlyProperties &
+  IBaseModelAttached;

@@ -58,7 +58,7 @@ const LoginForm = ({
 
     loginUserMutation.mutate(data, {
       onSuccess: () => {
-        navigate(Pages.RemindersPage.path);
+        navigate(Pages.RemindersPage.path());
         setSnackbar({ message: t(TranslationKeys.LoginSuccess) });
       },
       onError: (error) => {

@@ -51,7 +51,19 @@ export const Pages = {
       `${URL_USERS}${URL_USER(userId)}${URL_VERIFY_ACCOUNT}`,
   },
   RemindersPage: {
-    path: "/reminders",
+    path: (highlightTodoListId?: string, initialDate?: string) => {
+      const base = "/reminders";
+      if (!initialDate && !highlightTodoListId) return base;
+
+      const params = new URLSearchParams();
+      if (highlightTodoListId)
+        params.set("highlightTodoListId", highlightTodoListId);
+      if (initialDate) params.set("initialDate", initialDate);
+
+      const paramsString = params.toString();
+
+      return `${base}?${paramsString}`;
+    },
   },
   TodoListsPage: {
     path: URL_TODO_LISTS,
