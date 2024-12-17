@@ -1,13 +1,16 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import { ISearchHistoryRespDto } from "linked-models/search/search.history.dto";
 import { useDeleteSearchHistoryRecordMutation } from "../../../mutations/deleteSearchHistoryRecord.mutation";
 import SearchLine from "../SearchLine";
 import SearchResultIcon from "../SearchResultIcon";
+import SearchResultsWrapper from "../SearchResultsWrapper";
 
 interface Props {
   handleResultClick: (
     todoListId?: string,
     taskId?: string,
-    isReminder?: boolean
+    isReminder?: boolean,
+    entityDate?: string
   ) => void;
   searchHistory?: ISearchHistoryRespDto[];
 }
@@ -20,7 +23,7 @@ const HistoricalSearchResults = ({
     useDeleteSearchHistoryRecordMutation();
 
   return (
-    <>
+    <SearchResultsWrapper>
       {searchHistory?.map(
         ({
           id,
@@ -28,20 +31,30 @@ const HistoricalSearchResults = ({
           searchedTaskId,
           searchedTodoListId,
           isReminder,
+          entityDate,
           category,
         }) => (
           <SearchLine
-            key={displayName}
+            key={id}
             icon={<SearchResultIcon searchCategory={category} />}
             text={displayName}
             onClick={() =>
-              handleResultClick(searchedTodoListId, searchedTaskId, isReminder)
+              handleResultClick(
+                searchedTodoListId,
+                searchedTaskId,
+                isReminder,
+                entityDate
+              )
             }
-            onDelete={() => deleteSearchHistoryRecordMutation.mutate(id)}
-          />
+          >
+            <DeleteIcon
+              sx={{ marginLeft: "auto", "&:hover": { color: "error.main" } }}
+              onClick={() => deleteSearchHistoryRecordMutation.mutate(id)}
+            />
+          </SearchLine>
         )
       )}
-    </>
+    </SearchResultsWrapper>
   );
 };
 

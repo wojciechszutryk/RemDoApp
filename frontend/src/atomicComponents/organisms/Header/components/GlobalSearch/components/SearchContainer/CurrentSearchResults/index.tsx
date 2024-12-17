@@ -13,6 +13,7 @@ interface CurrentSearchResultsProps {
     todoListId?: string,
     taskId?: string,
     isReminder?: boolean,
+    entityDate?: string,
     saveToHistory?: boolean
   ) => void;
 }
@@ -31,7 +32,15 @@ const CurrentSearchResults = ({
             icon={<SearchResultIcon searchCategory={SearchCategory.Reminder} />}
             text={result.name}
             onClick={() =>
-              handleResultClick(result.todoListId, result.taskId, true, true)
+              handleResultClick(
+                result.todoListId,
+                result.taskId,
+                true,
+                result.notifyDate?.toString() ||
+                  result.startDate?.toString() ||
+                  result.finishDate?.toString(),
+                true
+              )
             }
           />
         ))}
@@ -42,7 +51,9 @@ const CurrentSearchResults = ({
             key={index}
             icon={<SearchResultIcon searchCategory={SearchCategory.TodoList} />}
             text={result.name}
-            onClick={() => handleResultClick(result.id, undefined, false, true)}
+            onClick={() =>
+              handleResultClick(result.id, undefined, false, undefined, true)
+            }
           />
         ))}
       </SearchTabPanel>
@@ -53,7 +64,13 @@ const CurrentSearchResults = ({
             icon={<SearchResultIcon searchCategory={SearchCategory.Task} />}
             text={result.text!}
             onClick={() =>
-              handleResultClick(result.todoListId, result.id, false, true)
+              handleResultClick(
+                result.todoListId,
+                result.id,
+                false,
+                undefined,
+                true
+              )
             }
           />
         ))}

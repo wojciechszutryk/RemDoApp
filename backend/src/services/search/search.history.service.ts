@@ -37,6 +37,10 @@ export class SearchHistoryService {
         searchedTaskId: task.id,
         isReminder,
         displayName: todoList.name,
+        entityDate:
+          task.notifyDate?.toString() ||
+          task.startDate?.toString() ||
+          task.finishDate?.toString(),
         category: SearchCategory.Reminder,
       };
     } else if (task) {
@@ -70,9 +74,6 @@ export class SearchHistoryService {
         },
         {
           $sort: { whenCreated: -1 },
-        },
-        {
-          $limit: 7,
         },
       ]);
 
@@ -142,6 +143,12 @@ export class SearchHistoryService {
       record.searchedTaskId
         ? this.taskService.getTaskById(record.searchedTaskId)
         : Promise.resolve(undefined),
+      this.searchHistoryCollection.deleteOne(
+        {
+          userId,
+        },
+        { sort: { whenCreated: 1 } }
+      ),
     ]);
 
     if (!todoList) return null;
