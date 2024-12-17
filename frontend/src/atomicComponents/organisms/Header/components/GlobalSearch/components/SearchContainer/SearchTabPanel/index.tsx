@@ -1,19 +1,11 @@
-import { motion } from "framer-motion";
 import { SearchCategory } from "linked-models/search/search.model";
+import SearchResultsWrapper from "../SearchResultsWrapper";
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: SearchCategory;
   value: SearchCategory;
 }
-
-const parent = {
-  show: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
 
 const SearchTabPanel = ({
   children,
@@ -26,10 +18,7 @@ const SearchTabPanel = ({
   }
 
   return (
-    <motion.div
-      variants={parent}
-      initial="hidden"
-      animate="show"
+    <SearchResultsWrapper
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
@@ -37,7 +26,7 @@ const SearchTabPanel = ({
       {...other}
     >
       {value === index && <>{children}</>}
-    </motion.div>
+    </SearchResultsWrapper>
   );
 };
 
