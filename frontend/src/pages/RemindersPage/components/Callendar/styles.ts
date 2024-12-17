@@ -25,6 +25,7 @@ export const StyledCallendarWrapper = styled("div", {
       height: 2,
     },
     "& .rbc-event": {
+      color: theme.palette.primary.contrastText,
       backgroundColor: theme.palette.primary.main,
     },
     "& .rbc-calendar": {

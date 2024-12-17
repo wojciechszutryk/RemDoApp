@@ -7,4 +7,5 @@ export interface ICallendarEvent extends IReminderAttached {
   title: string;
   start: Date;
   end: Date;
+  highlight?: boolean;
 }

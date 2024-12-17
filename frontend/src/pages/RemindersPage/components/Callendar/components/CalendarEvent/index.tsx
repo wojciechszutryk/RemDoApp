@@ -8,7 +8,11 @@ interface Props {
 }
 
 const CallendarEvent = ({ calendarEvent }: Props): JSX.Element => {
-  return <StyledEventWrapper>{calendarEvent.event.name}</StyledEventWrapper>;
+  return (
+    <StyledEventWrapper highlight={calendarEvent.event.highlight}>
+      {calendarEvent.event.name}
+    </StyledEventWrapper>
+  );
 };
 
 export default memo(CallendarEvent);

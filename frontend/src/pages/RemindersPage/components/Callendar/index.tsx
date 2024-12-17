@@ -26,12 +26,21 @@ Ls.en.weekStart = 1;
 
 const DnDCalendar = withDragAndDrop<ICallendarEvent>(Calendar);
 
-const BigCallendar = (): JSX.Element => {
+interface Props {
+  highlightTodoListId?: string | null;
+  initialDate?: string | null;
+}
+
+const BigCallendar = ({
+  highlightTodoListId,
+  initialDate,
+}: Props): JSX.Element => {
+  const initDate = initialDate ? new Date(initialDate) : new Date();
   const [dateRange, setDateRange] = useState<DateRange>({
-    start: dayjs().subtract(3, "month").startOf("month").toDate(),
-    end: dayjs().add(3, "month").endOf("month").toDate(),
+    start: dayjs(initDate).subtract(3, "month").startOf("month").toDate(),
+    end: dayjs(initDate).add(3, "month").endOf("month").toDate(),
   });
-  const [date, setDate] = useState<Date>(new Date());
+  const [date, setDate] = useState<Date>(initDate);
   const [view, setView] = useState<View>(
     (localStorage.getItem(LAST_CALLENDAR_VIEW_LS_KEY) as View) || "month"
   );
@@ -64,6 +73,7 @@ const BigCallendar = (): JSX.Element => {
       eventsArr.push({
         ...reminder,
         id: reminder.taskId,
+        highlight: reminder.todoListId === highlightTodoListId,
         title: reminder.name,
         start: new Date(reminder.startDate),
         end: new Date(reminder.finishDate),
