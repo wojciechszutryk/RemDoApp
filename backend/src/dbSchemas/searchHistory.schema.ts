@@ -1,4 +1,4 @@
-import { ISearchHistory } from "linked-models/search/search.history.model";
+import { ISearchHistoryWithReadonlyProperties } from "linked-models/search/search.history.model";
 import mongoose, { Document } from "mongoose";
 
 export const SearchHistoryCollectionName = "SearchHistorys";
@@ -24,9 +24,15 @@ const SearchHistorySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  whenCreated: {
+    type: Date,
+    required: true,
+  },
 });
 
-export interface ISearchHistoryDocument extends ISearchHistory, Document {}
+export interface ISearchHistoryDocument
+  extends ISearchHistoryWithReadonlyProperties,
+    Document {}
 
 export type SearchHistoryCollectionType =
   mongoose.Model<ISearchHistoryDocument>;
