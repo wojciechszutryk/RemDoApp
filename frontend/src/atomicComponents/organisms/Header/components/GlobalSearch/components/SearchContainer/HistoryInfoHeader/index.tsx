@@ -1,8 +1,8 @@
-import HistoryIcon from "@mui/icons-material/History";
+import { Button } from "atomicComponents/atoms/Button";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import { useTranslation } from "react-i18next";
 import { useDeleteAllSearchHistoryMutation } from "../../../mutations/deleteAllSearchHistory.mutation";
-import { ClearHistoryWrapper, StyledWrapper } from "./styles";
+import { StyledWrapper } from "./styles";
 
 const HistoryInfoHeader = (): JSX.Element | null => {
   const { t } = useTranslation();
@@ -10,15 +10,15 @@ const HistoryInfoHeader = (): JSX.Element | null => {
 
   return (
     <StyledWrapper>
-      <div>
-        <HistoryIcon />
-        {t(TranslationKeys.LastSearches)}
-      </div>
-      <ClearHistoryWrapper
+      <div>{t(TranslationKeys.LastSearches)}</div>
+      <Button
+        variant="outlined"
+        color="secondary"
+        sx={{ mr: 2 }}
         onClick={() => deleteAllSearchHistoryMutation.mutate()}
       >
         {t(TranslationKeys.ClearHistory)}
-      </ClearHistoryWrapper>
+      </Button>
     </StyledWrapper>
   );
 };

@@ -49,7 +49,10 @@ const HistoricalSearchResults = ({
           >
             <DeleteIcon
               sx={{ marginLeft: "auto", "&:hover": { color: "error.main" } }}
-              onClick={() => deleteSearchHistoryRecordMutation.mutate(id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteSearchHistoryRecordMutation.mutate(id);
+              }}
             />
           </SearchLine>
         )
