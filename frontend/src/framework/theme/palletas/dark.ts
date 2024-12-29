@@ -14,6 +14,9 @@ export const darkTheme = {
   background: {
     paper: "#404040",
   },
+  grey: {
+    100: "rgba(0, 0, 0, 0.6)",
+  },
   info: {
     main: "#4d4d4d",
   },

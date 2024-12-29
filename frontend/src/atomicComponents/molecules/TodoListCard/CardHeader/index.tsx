@@ -35,6 +35,7 @@ const CardHeader = ({
 
   return (
     <MuiCardHeader
+      sx={{ padding: "5px" }}
       avatar={
         <StyledAvatarGroup max={3}>
           {Array.from(new Set(allMembers)).map((user) => (

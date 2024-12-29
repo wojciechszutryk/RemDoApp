@@ -14,6 +14,9 @@ export const lightTheme = {
   background: {
     paper: "#fff",
   },
+  grey: {
+    100: "rgba(255, 255, 255, 0.4)",
+  },
   info: {
     main: "#F5F6F7",
   },

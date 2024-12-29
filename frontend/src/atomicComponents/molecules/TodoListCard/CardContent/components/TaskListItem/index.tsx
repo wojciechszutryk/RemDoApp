@@ -42,8 +42,8 @@ const TaskListItem = ({
     <SwippableItem
       defaultColor={
         isTaskCompleted
-          ? theme.palette.background.paper
-          : theme.palette.info.main
+          ? theme.palette.info.main
+          : theme.palette.background.paper
       }
       rightShift={{
         color: isTaskCompleted
