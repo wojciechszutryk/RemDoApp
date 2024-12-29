@@ -1,5 +1,5 @@
-import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import EventIcon from "@mui/icons-material/Event";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
 import TaskIcon from "@mui/icons-material/Task";
 import { SearchCategory } from "linked-models/search/search.model";
 
@@ -10,9 +10,9 @@ interface Props {
 const SearchResultIcon = ({ searchCategory }: Props): JSX.Element => {
   switch (searchCategory) {
     case SearchCategory.Reminder:
-      return <CircleNotificationsIcon />;
+      return <EventIcon />;
     case SearchCategory.TodoList:
-      return <FormatListBulletedIcon />;
+      return <FactCheckIcon />;
     case SearchCategory.Task:
       return <TaskIcon />;
     default:

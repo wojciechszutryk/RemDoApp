@@ -41,20 +41,32 @@ const SearchResults = ({
     todoListId?: string,
     taskId?: string,
     isReminder?: boolean,
+    entityData?: string,
     saveToHistory?: boolean
   ) => {
     if (!todoListId) return;
     let link = "";
 
-    if (isReminder && taskId) link = Pages.RemindersPage.path;
+    if (isReminder && taskId)
+      link = Pages.RemindersPage.path(todoListId, entityData);
     else if (taskId) link = Pages.TaskPage.path(todoListId, taskId);
     else link = Pages.TodoListPage.path(todoListId);
 
     if (link) {
       navigate(link);
-      if (saveToHistory)
+
+      const shouldSave =
+        saveToHistory &&
+        !getSearchHistoryQuery.data?.some(
+          (item) =>
+            item.searchedTodoListId === todoListId &&
+            item.searchedTaskId == taskId
+        );
+
+      if (shouldSave)
         saveSearchHistoryMutation.mutate({
           searchedTodoListId: todoListId,
+          searchedTaskId: taskId,
         });
     }
 
