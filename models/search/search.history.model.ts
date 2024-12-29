@@ -9,7 +9,7 @@ export interface ISearchHistory {
   userId: string;
 }
 
-interface ISearchHistoryWithReadonlyProperties extends ISearchHistory {
+export interface ISearchHistoryWithReadonlyProperties extends ISearchHistory {
   readonly whenCreated: Date;
 }
 

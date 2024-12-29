@@ -12,7 +12,6 @@ export const useDeleteSearchHistoryRecordMutation = () => {
   const queryClient = useQueryClient();
 
   const deleteSearchHistoryRecord = async (recordId: string) => {
-    debugger;
     const url = FRONTIFY_URL(
       URL_SEARCH,
       URL_HISTORY + URL_SINGLE_HISTORY(recordId)
