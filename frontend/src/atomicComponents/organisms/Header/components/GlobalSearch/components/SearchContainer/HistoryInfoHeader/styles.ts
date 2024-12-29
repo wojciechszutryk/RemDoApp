@@ -8,11 +8,3 @@ export const StyledWrapper = styled("div")({
   alignItems: "center",
   justifyContent: "space-between",
 });
-
-export const ClearHistoryWrapper = styled("div")({
-  paddingRight: "25px",
-  display: "flex",
-  width: "fit-content",
-  color: "#737375",
-  cursor: "pointer",
-});
