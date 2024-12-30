@@ -1,10 +1,11 @@
 import { Typography } from "@mui/material";
+import { MouseEventHandler } from "react";
 import { StyledWrapper } from "./styles";
 
 interface SearchLineProps {
   icon: JSX.Element;
   text: string;
-  onClick: () => void;
+  onClick: MouseEventHandler<HTMLDivElement>;
   children?: JSX.Element;
 }
 

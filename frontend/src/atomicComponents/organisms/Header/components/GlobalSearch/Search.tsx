@@ -6,7 +6,7 @@ import { useGetSearchResultQuery } from "./queries/getSearchResult.query";
 import { GlobalSearchWrapper } from "./styles";
 
 interface Props {
-  onClose: () => void;
+  onClose: (event: React.KeyboardEvent | React.MouseEvent) => void;
 }
 
 const Search = ({ onClose }: Props): JSX.Element | null => {

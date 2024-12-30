@@ -10,6 +10,7 @@ interface CurrentSearchResultsProps {
   activeTab: SearchCategory;
   currentResults: ISearchResults;
   handleResultClick: (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     todoListId?: string,
     taskId?: string,
     isReminder?: boolean,
@@ -31,8 +32,9 @@ const CurrentSearchResults = ({
             key={index}
             icon={<SearchResultIcon searchCategory={SearchCategory.Reminder} />}
             text={result.name}
-            onClick={() =>
+            onClick={(e) =>
               handleResultClick(
+                e,
                 result.todoListId,
                 result.taskId,
                 true,
@@ -51,8 +53,8 @@ const CurrentSearchResults = ({
             key={index}
             icon={<SearchResultIcon searchCategory={SearchCategory.TodoList} />}
             text={result.name}
-            onClick={() =>
-              handleResultClick(result.id, undefined, false, undefined, true)
+            onClick={(e) =>
+              handleResultClick(e, result.id, undefined, false, undefined, true)
             }
           />
         ))}
@@ -63,8 +65,9 @@ const CurrentSearchResults = ({
             key={index}
             icon={<SearchResultIcon searchCategory={SearchCategory.Task} />}
             text={result.text!}
-            onClick={() =>
+            onClick={(e) =>
               handleResultClick(
+                e,
                 result.todoListId,
                 result.id,
                 false,

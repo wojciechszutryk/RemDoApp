@@ -19,7 +19,7 @@ import { SearchResultsWrapper, StyledSearchContainerWrapper } from "./styles";
 interface SearchContainerProps {
   getSearchResultQuery: UseQueryResult<ISearchResults, unknown>;
   isSearchPhraseEmpty: boolean;
-  onClose: () => void;
+  onClose: (event: React.KeyboardEvent | React.MouseEvent) => void;
 }
 
 const SearchResults = ({
@@ -38,6 +38,7 @@ const SearchResults = ({
   const navigate = useNavigate();
 
   const handleResultClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     todoListId?: string,
     taskId?: string,
     isReminder?: boolean,
@@ -70,7 +71,7 @@ const SearchResults = ({
         });
     }
 
-    onClose();
+    setTimeout(() => onClose(e), 100);
   };
 
   const showNoResultFound =

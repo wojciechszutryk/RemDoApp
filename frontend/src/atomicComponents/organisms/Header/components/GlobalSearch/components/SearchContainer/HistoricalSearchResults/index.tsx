@@ -7,6 +7,7 @@ import SearchResultsWrapper from "../SearchResultsWrapper";
 
 interface Props {
   handleResultClick: (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     todoListId?: string,
     taskId?: string,
     isReminder?: boolean,
@@ -38,8 +39,9 @@ const HistoricalSearchResults = ({
             key={id}
             icon={<SearchResultIcon searchCategory={category} />}
             text={displayName}
-            onClick={() =>
+            onClick={(e) =>
               handleResultClick(
+                e,
                 searchedTodoListId,
                 searchedTaskId,
                 isReminder,
