@@ -105,7 +105,12 @@ const BigCallendar = (): JSX.Element => {
           agenda: {
             event: (a) => {
               if (!a.event) return null;
-              return <CollapsableReminder reminder={a.event} />;
+              return (
+                <CollapsableReminder
+                  reminder={a.event}
+                  highlight={a.event.highlight}
+                />
+              );
             },
           },
           week: {

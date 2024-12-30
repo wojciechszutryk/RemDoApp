@@ -13,9 +13,10 @@ import { StyledRemindersListItem } from "./styles";
 
 interface Props {
   reminder: IReminderAttached;
+  highlight?: boolean;
 }
 
-const CollapsableReminder = ({ reminder }: Props): JSX.Element => {
+const CollapsableReminder = ({ reminder, highlight }: Props): JSX.Element => {
   const [expanded, setExpanded] = useState(false);
   const onSelectEvent = useOnSelectEvent();
 
@@ -37,6 +38,7 @@ const CollapsableReminder = ({ reminder }: Props): JSX.Element => {
 
   return (
     <StyledRemindersListItem
+      highlight={highlight}
       disableGutters
       dense
       disablePadding
