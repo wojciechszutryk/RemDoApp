@@ -5,7 +5,8 @@ import { DateRange, View } from "react-big-calendar";
 const useOnRangeChange = (
   dateRange: DateRange,
   setDateRange: Dispatch<SetStateAction<DateRange>>,
-  setDate: Dispatch<SetStateAction<Date>>
+  setDate: Dispatch<SetStateAction<Date>>,
+  callback: () => void
 ) => {
   return useCallback(
     (
@@ -42,6 +43,8 @@ const useOnRangeChange = (
           setDate(dayjs(newRangeStart).toDate());
           break;
       }
+
+      callback();
 
       if (
         newRangeStart.getTime() < dateRange.start.getTime() ||
