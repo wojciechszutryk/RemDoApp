@@ -82,30 +82,41 @@ export class TodoListService {
     return uniqueTodoLists.map((td) => mapTodoListToAttachedTodoList(td));
   }
 
+  public async addUsersPublicData<T extends Partial<ITodoList> & { creatorId: string }>(
+    obj: T
+  ) {
+    const [users, owners, creator] = await Promise.all([
+      obj.assignedUsers
+        ? this.userService.getUsersPublicDataByIDs(obj.assignedUsers)
+        : [],
+      obj.assignedOwners
+        ? this.userService.getUsersPublicDataByIDs(obj.assignedOwners)
+        : [],
+      obj.creatorId
+        ? this.userService.getUserPublicData(obj.creatorId)
+        : undefined,
+    ]);
+
+    if (!creator)
+      throw new Error(
+        `Creator of todoList does not exist. Cannot get todoList with members.`
+      );
+
+    return {
+      ...obj,
+      assignedUsers: users,
+      assignedOwners: owners,
+      creator,
+    };
+  }
+
   public async getTodoListWithMembersById(
     todoListId: string
   ): Promise<ITodoListWithMembersDto | undefined> {
     const todoList = await this.getTodoListById(todoListId);
     if (!todoList) return undefined;
 
-    const [users, owners, creator] = await Promise.all([
-      todoList.assignedUsers
-        ? this.userService.getUsersPublicDataByIDs(todoList.assignedUsers)
-        : [],
-      todoList.assignedOwners
-        ? this.userService.getUsersPublicDataByIDs(todoList.assignedOwners)
-        : [],
-      this.userService.getUserPublicData(todoList.creatorId),
-    ]);
-
-    if (!creator) return undefined;
-
-    return {
-      ...todoList,
-      assignedUsers: users,
-      assignedOwners: owners,
-      creator,
-    };
+    return await this.addUsersPublicData(todoList);
   }
 
   public async getTodoListMemberIDs(todoListId: string): Promise<string[]> {

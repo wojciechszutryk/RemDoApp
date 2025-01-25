@@ -1,4 +1,5 @@
 import { EventHandler } from "framework/events/event.handler.decorator";
+import { timezone } from "helpers/date/timeZone.helper";
 import { inject } from "inversify";
 import { EventName, EventSubject } from "linked-models/event/event.enum";
 import {
@@ -119,11 +120,11 @@ export class TaskCreatedEventHandler
         }),
         start: {
           dateTime: new Date(createdTask.startDate).toISOString(),
-          timeZone: "UTC",
+          timeZone: timezone,
         },
         end: {
           dateTime: new Date(createdTask.finishDate).toISOString(),
-          timeZone: "UTC",
+          timeZone: timezone,
         },
       });
     }

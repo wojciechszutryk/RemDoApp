@@ -10,6 +10,7 @@ import {
   requestParam,
 } from "inversify-express-utils";
 import { OkResult } from "inversify-express-utils/lib/results";
+import { GoogleIDPrefix } from "linked-models/google/google.constants";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { IReminderDTO } from "linked-models/reminder/reminder.dto";
 import { URL_REMINDERS } from "linked-models/reminder/reminder.urls";
@@ -54,10 +55,20 @@ export class ReminderController
     if (Object.values(body).length === 0) return this.json("Invalid data", 400);
 
     try {
+      const parsedBody = parseTaskDateFields(body);
+
+      // edit google event
+      if (todoListId.includes(GoogleIDPrefix))
+        await this.reminderService.editGoogleEventReminder(
+          todoListId.split(GoogleIDPrefix)[1],
+          currentUser,
+          parsedBody
+        );
+
       const reminder = await this.reminderService.editReminder(
         todoListId,
         taskId,
-        parseTaskDateFields(body),
+        parsedBody,
         currentUser
       );
 
