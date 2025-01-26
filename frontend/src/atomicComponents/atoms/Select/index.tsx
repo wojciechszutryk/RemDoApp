@@ -1,10 +1,10 @@
 import {
   FormControl,
-  InputLabel,
   MenuItem,
   MenuProps as MuiMenuProps,
   SelectProps as MuiSelectProps,
 } from "@mui/material";
+import { InputLabel } from "../Label/InputLabel";
 import { StyledSelect, StyledWrapper } from "./styles";
 
 const MenuProps: Partial<MuiMenuProps> = {
