@@ -95,7 +95,6 @@ const GeneralInfo = ({
             placeholder={t(TranslationKeys.ReminderDescription)}
           />
           <DatesPickers />
-          {"BETA!"}
           <CollapsableReccuranceForm />
         </StyledForm>
       </AccordionDetails>
