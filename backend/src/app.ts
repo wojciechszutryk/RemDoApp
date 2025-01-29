@@ -96,6 +96,9 @@ const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 httpServer.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log("API listening on port " + port);
+
+  //TODO: create a notification job fired everyday at night, gathering that day's notifications and scheduling them in separate jobs
+  //OR use google tasks to keep notification data there (it will send a request back)
   connectToMongo();
 });
 
