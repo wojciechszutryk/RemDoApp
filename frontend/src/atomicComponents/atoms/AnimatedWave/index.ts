@@ -1,9 +1,8 @@
 import { styled } from "@mui/material";
 
-export const StyledWave = styled('div', {
+export const StyledWave = styled("div", {
   shouldForwardProp: (prop) => prop !== "disableBgcAnimation",
-})<{ disableBgcAnimation?: boolean; }>(
-  ({ disableBgcAnimation, theme }) => ({
+})<{ disableBgcAnimation?: boolean }>(({ disableBgcAnimation, theme }) => ({
   width: "100vw",
   height: "100vh",
   position: "relative",

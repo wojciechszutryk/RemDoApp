@@ -1,28 +1,30 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import { ISearchHistoryRespDto } from "linked-models/search/search.history.dto";
 import { useDeleteSearchHistoryRecordMutation } from "../../../mutations/deleteSearchHistoryRecord.mutation";
 import SearchLine from "../SearchLine";
 import SearchResultIcon from "../SearchResultIcon";
+import SearchResultsWrapper from "../SearchResultsWrapper";
 
 interface Props {
-  handleRedirect: (
+  handleResultClick: (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     todoListId?: string,
     taskId?: string,
-    isReminder?: boolean
+    isReminder?: boolean,
+    entityDate?: string
   ) => void;
   searchHistory?: ISearchHistoryRespDto[];
 }
 
 const HistoricalSearchResults = ({
-  handleRedirect,
+  handleResultClick,
   searchHistory,
 }: Props): JSX.Element | null => {
   const deleteSearchHistoryRecordMutation =
     useDeleteSearchHistoryRecordMutation();
 
-  //todo: handle history
-
   return (
-    <>
+    <SearchResultsWrapper>
       {searchHistory?.map(
         ({
           id,
@@ -30,20 +32,34 @@ const HistoricalSearchResults = ({
           searchedTaskId,
           searchedTodoListId,
           isReminder,
+          entityDate,
           category,
         }) => (
           <SearchLine
-            key={displayName}
+            key={id}
             icon={<SearchResultIcon searchCategory={category} />}
             text={displayName}
-            onClick={() =>
-              handleRedirect(searchedTodoListId, searchedTaskId, isReminder)
+            onClick={(e) =>
+              handleResultClick(
+                e,
+                searchedTodoListId,
+                searchedTaskId,
+                isReminder,
+                entityDate
+              )
             }
-            onDelete={() => deleteSearchHistoryRecordMutation.mutate(id)}
-          />
+          >
+            <DeleteIcon
+              sx={{ marginLeft: "auto", "&:hover": { color: "error.main" } }}
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteSearchHistoryRecordMutation.mutate(id);
+              }}
+            />
+          </SearchLine>
         )
       )}
-    </>
+    </SearchResultsWrapper>
   );
 };
 

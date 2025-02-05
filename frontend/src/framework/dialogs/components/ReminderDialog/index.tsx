@@ -15,7 +15,7 @@ import DeleteSection from "./components/DeleteSection";
 import GeneralInfo from "./components/GeneralInfo";
 import NotifySetup from "./components/NotifySetup";
 import ScopesChoose from "./components/ScopesChoose";
-import useCreateDefaultReminderDialogData from "./hooks/useCreateDefaultReminderDialogData";
+import createDefaultReminderDialogData from "./helpers/createDefaultReminderDialogData";
 import { IReminderDialog } from "./models/reminderDialog.model";
 import { IReminderDialogState } from "./models/reminderDialogState.model";
 
@@ -41,7 +41,7 @@ const ReminderDialog = (): JSX.Element => {
     }
   };
 
-  const defaultFormValues = useCreateDefaultReminderDialogData(
+  const defaultFormValues = createDefaultReminderDialogData(
     defaultData,
     editReminderData
   );
@@ -81,6 +81,7 @@ const ReminderDialog = (): JSX.Element => {
         startDate: data.startDate,
         finishDate: data.finishDate,
       };
+
       createReminderMutation.mutate(createReminderData);
     }
 

@@ -7,4 +7,4 @@ export interface ISearchHistoryRespDto
   category: SearchCategory;
 }
 
-export type ISearchHistoryDto = Omit<ISearchHistory, "userId">;
+export type ISearchHistoryDto = Omit<ISearchHistory, "userId" | "whenCreated">;

@@ -25,24 +25,31 @@ export class SearchHistoryService {
   ) {}
 
   private mapTodoAndTaskToSearchHistory(
-    searchHistoryRecordId: string,
+    searchHistory: ISearchHistoryAttached,
     todoList: ITodoListAttached,
     task?: ITaskAttached,
     isReminder?: boolean
   ): ISearchHistoryRespDto {
+    const base = {
+      id: searchHistory.id,
+      whenCreated: searchHistory.whenCreated,
+      searchedTodoListId: todoList.id,
+    };
     if (isReminder && task) {
       return {
-        id: searchHistoryRecordId,
-        searchedTodoListId: todoList.id,
+        ...base,
         searchedTaskId: task.id,
         isReminder,
         displayName: todoList.name,
+        entityDate:
+          task.notifyDate?.toString() ||
+          task.startDate?.toString() ||
+          task.finishDate?.toString(),
         category: SearchCategory.Reminder,
       };
     } else if (task) {
       return {
-        id: searchHistoryRecordId,
-        searchedTodoListId: todoList.id,
+        ...base,
         searchedTaskId: task.id,
         displayName: task.text || "",
         category: SearchCategory.Task,
@@ -50,8 +57,7 @@ export class SearchHistoryService {
     }
 
     return {
-      id: searchHistoryRecordId,
-      searchedTodoListId: todoList.id,
+      ...base,
       displayName: todoList.name,
       category: SearchCategory.TodoList,
     };
@@ -61,7 +67,6 @@ export class SearchHistoryService {
     userId: string
   ): Promise<ISearchHistoryRespDto[]> {
     const searchHistoryRecords: ISearchHistoryAttached[] =
-      //todo create a job periodically deleting older then most recent 7 history entries
       await this.searchHistoryCollection.aggregate([
         {
           $match: {
@@ -72,7 +77,7 @@ export class SearchHistoryService {
           $sort: { whenCreated: -1 },
         },
         {
-          $limit: 7,
+          $addFields: { id: { $toString: "$_id" } },
         },
       ]);
 
@@ -106,20 +111,22 @@ export class SearchHistoryService {
 
     const resp: ISearchHistoryRespDto[] = [];
 
-    for (const {
-      id,
-      isReminder,
-      searchedTaskId,
-      searchedTodoListId,
-    } of searchHistoryRecords) {
-      if (!searchedTodoListId) continue;
-      const task = searchedTaskId ? taksMap[searchedTaskId] : undefined;
-      const todoList = todoListsMap[searchedTodoListId];
+    for (const searchHistory of searchHistoryRecords) {
+      if (!searchHistory.searchedTodoListId) continue;
+      const task = searchHistory.searchedTaskId
+        ? taksMap[searchHistory.searchedTaskId]
+        : undefined;
+      const todoList = todoListsMap[searchHistory.searchedTodoListId];
 
       if (!todoList) continue;
 
       resp.push(
-        this.mapTodoAndTaskToSearchHistory(id, todoList, task, isReminder)
+        this.mapTodoAndTaskToSearchHistory(
+          searchHistory,
+          todoList,
+          task,
+          todoList.isReminder
+        )
       );
     }
 
@@ -130,10 +137,16 @@ export class SearchHistoryService {
     userId: string,
     searchHistoryRecord: ISearchHistoryDto
   ): Promise<ISearchHistoryRespDto | null> {
-    const record = await this.searchHistoryCollection.create({
-      ...searchHistoryRecord,
-      userId,
-    });
+    const [record, recordCount] = await Promise.all([
+      this.searchHistoryCollection.create({
+        ...searchHistoryRecord,
+        whenCreated: new Date(),
+        userId,
+      }),
+      this.searchHistoryCollection.countDocuments({
+        userId,
+      }),
+    ]);
 
     if (!record.searchedTodoListId) return null;
 
@@ -142,12 +155,20 @@ export class SearchHistoryService {
       record.searchedTaskId
         ? this.taskService.getTaskById(record.searchedTaskId)
         : Promise.resolve(undefined),
+      recordCount > 7
+        ? this.searchHistoryCollection.deleteOne(
+            {
+              userId,
+            },
+            { sort: { whenCreated: 1 } }
+          )
+        : Promise.resolve(null),
     ]);
 
     if (!todoList) return null;
 
     return this.mapTodoAndTaskToSearchHistory(
-      record.id,
+      record as ISearchHistoryAttached,
       todoList,
       task,
       record.isReminder

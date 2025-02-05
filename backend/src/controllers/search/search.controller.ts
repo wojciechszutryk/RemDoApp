@@ -81,7 +81,7 @@ export class SearchController
           return results;
         default:
           const [reminders, todoLists, tasks] = await Promise.all([
-            this.searchService.searchForTodoLists(searchPhrase, limit, true),
+            this.searchService.searchForReminders(searchPhrase, limit),
             this.searchService.searchForTodoLists(searchPhrase, limit, false),
             this.searchService.searchForTasks(searchPhrase, limit),
           ]);

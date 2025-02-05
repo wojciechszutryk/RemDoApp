@@ -1,4 +1,6 @@
 import { EventService } from "framework/events/event.service";
+import { calendar_v3 } from "googleapis";
+import { timezone } from "helpers/date/timeZone.helper";
 import { extractPropertiesToUpdate } from "helpers/extractPropertiesToUpdate";
 import { inject, injectable } from "inversify";
 import {
@@ -7,7 +9,7 @@ import {
   ReminderUpdatedEvent,
 } from "linked-models/event/implementation/reminder.events";
 import { ReminderTodoListId } from "linked-models/reminder/reminder.const";
-import { IReminder } from "linked-models/reminder/reminder.dto";
+import { IReminder, IReminderDTO } from "linked-models/reminder/reminder.dto";
 import {
   IReminderAttached,
   ISimplifiedReminder,
@@ -21,8 +23,10 @@ import {
 import { IUserPublicDataDTO } from "linked-models/user/user.dto";
 import { IUserAttached } from "linked-models/user/user.model";
 import { RRule } from "rrule";
+import { GoogleEventService } from "services/googleEvent/googleEvent.service";
 import { TaskService } from "services/task/task.service";
 import { TodoListService } from "services/todoList/todoList.service";
+import { UserAuthService } from "services/user/user.auth.service";
 import { UserService } from "services/user/user.service";
 
 @injectable()
@@ -35,7 +39,10 @@ export class ReminderService {
     @inject(UserService)
     private readonly userService: UserService,
     @inject(TodoListService)
-    private readonly todoListService: TodoListService
+    private readonly todoListService: TodoListService,
+    @inject(UserAuthService) private readonly userAuthService: UserAuthService,
+    @inject(GoogleEventService)
+    private readonly googleEventService: GoogleEventService
   ) {}
 
   //TODO: make this generic and get rid of mapTodoListAndTaskToSimplifiedReminder
@@ -110,7 +117,7 @@ export class ReminderService {
     const todoListIDToTodoListMap = new Map(todoLists.map((td) => [td.id, td]));
 
     const tasks = await this.taskService.getTasksByTodoListIDs(
-      Object.keys(todoListIDToTodoListMap)
+      Array.from(todoListIDToTodoListMap.keys())
     );
 
     const reminders: ISimplifiedReminder[] = [];
@@ -261,6 +268,76 @@ export class ReminderService {
     });
 
     return { ...createdReminder, notifyDate: reminderData.notifyDate };
+  }
+
+  public async editGoogleEventReminder(
+    googleEventId: string,
+    currentUser: IUserAttached,
+    parsedBody: Partial<IReminderDTO> & {
+      finishDate: Date | null | undefined;
+      startDate: Date | null | undefined;
+      completionDate: Date | null | undefined;
+    }
+  ): Promise<void> {
+    const [userOAuth2Client, assignedOwners, assignedUsers] = await Promise.all(
+      [
+        this.userAuthService.getUserOAuth2Client(currentUser),
+        parsedBody.assignedOwners?.length &&
+          this.userService.getUsersPublicDataByIDs(parsedBody.assignedOwners),
+        parsedBody.assignedUsers?.length &&
+          this.userService.getUsersPublicDataByIDs(parsedBody.assignedUsers),
+      ]
+    );
+
+    if (!userOAuth2Client)
+      return console.error("Error while getting user OAuth2 client");
+
+    const event: calendar_v3.Schema$Event = {};
+
+    if (parsedBody.text) {
+      event.summary = parsedBody.text;
+    }
+    if (parsedBody.name) {
+      event.description = parsedBody.name;
+    }
+    if (parsedBody.startDate) {
+      event.start = {
+        dateTime: parsedBody.startDate.toISOString(),
+        timeZone: timezone,
+      };
+    }
+    if (parsedBody.finishDate) {
+      event.end = {
+        dateTime: parsedBody.finishDate.toISOString(),
+        timeZone: timezone,
+      };
+    }
+    if (
+      (assignedOwners && assignedOwners?.length) ||
+      (assignedUsers && assignedUsers?.length)
+    ) {
+      event.attendees = (
+        assignedOwners &&
+        assignedOwners?.length &&
+        assignedUsers &&
+        assignedUsers?.length
+          ? assignedOwners.concat(assignedUsers)
+          : assignedOwners || assignedUsers || []
+      ).map((owner) => ({
+        email: owner.email,
+        displayName: owner.displayName,
+        responseStatus: "accepted",
+      }));
+    }
+    if (parsedBody.recurrance) {
+      event.recurrence = [parsedBody.recurrance];
+    }
+
+    await this.googleEventService.updateEventInGoogleCallendar(
+      userOAuth2Client,
+      googleEventId,
+      event
+    );
   }
 
   /**

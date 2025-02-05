@@ -14,7 +14,11 @@ export const StyledCallendarWrapper = styled("div", {
     [theme.breakpoints.up(780)]: {
       paddingTop: "0px",
     },
-    "& *": {
+    "& div, & div + .rbc-day-bg, & .rbc-month-row + .rbc-month-row, & .rbc-header + .rbc-header, & .rbc-day-slot .rbc-time-slot":
+      {
+        borderColor: theme.palette.primary.main,
+      },
+    "& .rbc-agenda-view *": {
       borderColor: theme.palette.primary.main + " !important",
     },
     "& .rbc-today": {
@@ -25,6 +29,7 @@ export const StyledCallendarWrapper = styled("div", {
       height: 2,
     },
     "& .rbc-event": {
+      color: theme.palette.primary.contrastText,
       backgroundColor: theme.palette.primary.main,
     },
     "& .rbc-calendar": {

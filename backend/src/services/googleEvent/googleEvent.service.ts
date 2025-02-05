@@ -2,6 +2,7 @@ import { OAuth2Client } from "google-auth-library";
 import { google } from "googleapis";
 import { calendar_v3 } from "googleapis/build/src/apis/calendar/v3";
 import { injectable } from "inversify";
+import { GoogleIDPrefix } from "linked-models/google/google.constants";
 import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import { TodoListIconEnum } from "linked-models/todoList/todoList.enum";
 import { IUserAttached } from "linked-models/user/user.model";
@@ -108,14 +109,16 @@ export class GoogleEventService {
 
     if (!startDate || !finishDate || !event.id) return null;
 
+    const googleId = `${GoogleIDPrefix}${event.id}`;
+
     return {
       text: event.description || "",
       name: event.summary || "",
       startDate,
       finishDate,
       recurrance: event.recurrence?.[0] || undefined,
-      todoListId: `google-${event.id}`,
-      taskId: `google-${event.id}`,
+      todoListId: googleId,
+      taskId: googleId,
       creator: event.creator?.self ? currentUser : (event.creator as any),
       whenCreated: event.created ? new Date(event.created) : new Date(),
       whenUpdated: event.updated ? new Date(event.updated) : new Date(),
@@ -128,29 +131,6 @@ export class GoogleEventService {
         })) || [],
       assignedUsers: [],
       icon: TodoListIconEnum.Google,
-    };
-  }
-
-  public convertReminderToGoogleEvent(
-    reminder: IReminderAttached
-  ): calendar_v3.Schema$Event {
-    return {
-      summary: reminder.text,
-      description: reminder.name,
-      start: {
-        dateTime: reminder.startDate?.toISOString(),
-        timeZone: "Europe/Warsaw",
-      },
-      end: {
-        dateTime: reminder.finishDate?.toISOString(),
-        timeZone: "Europe/Warsaw",
-      },
-      attendees: reminder.assignedOwners.map((owner) => ({
-        email: owner.email,
-        displayName: owner.displayName,
-        responseStatus: "accepted",
-      })),
-      recurrence: reminder.recurrance ? [reminder.recurrance] : undefined,
     };
   }
 }

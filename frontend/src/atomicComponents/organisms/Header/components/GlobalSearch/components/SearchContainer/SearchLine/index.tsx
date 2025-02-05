@@ -1,12 +1,12 @@
-import DeleteIcon from "@mui/icons-material/Delete";
 import { Typography } from "@mui/material";
+import { MouseEventHandler } from "react";
 import { StyledWrapper } from "./styles";
 
 interface SearchLineProps {
   icon: JSX.Element;
   text: string;
-  onClick: () => void;
-  onDelete?: () => void;
+  onClick: MouseEventHandler<HTMLDivElement>;
+  children?: JSX.Element;
 }
 
 const stat = {
@@ -24,13 +24,13 @@ const SearchLine = ({
   icon,
   text,
   onClick,
-  onDelete,
+  children,
 }: SearchLineProps): JSX.Element | null => {
   return (
     <StyledWrapper onClick={onClick} variants={stat}>
       {icon}
       <Typography>{text}</Typography>
-      {onDelete && <DeleteIcon onClick={onDelete} />}
+      {children}
     </StyledWrapper>
   );
 };

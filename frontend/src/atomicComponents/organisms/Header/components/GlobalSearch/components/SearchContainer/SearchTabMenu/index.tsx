@@ -1,6 +1,3 @@
-import EventIcon from "@mui/icons-material/Event";
-import FactCheckIcon from "@mui/icons-material/FactCheck";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { TranslationKeys } from "framework/translations/translatedTexts/translationKeys";
 import {
   ISearchResults,
@@ -9,6 +6,7 @@ import {
 import { useMemo } from "react";
 
 import { useTranslation } from "react-i18next";
+import SearchResultIcon from "../SearchResultIcon";
 import { StyledTab, StyledTabs } from "./styles";
 
 interface Props {
@@ -31,7 +29,7 @@ export const SearchTabList = ({
         text: `${t(TranslationKeys.PageTitleReminders)} ${
           currentResults?.[SearchCategory.Reminder]?.length || 0
         }`,
-        icon: <EventIcon />,
+        icon: <SearchResultIcon searchCategory={SearchCategory.Reminder} />,
         disabled: !currentResults?.[SearchCategory.Reminder]?.length,
       },
       {
@@ -39,7 +37,7 @@ export const SearchTabList = ({
         text: `${t(TranslationKeys.PageTitleTodoLists)} ${
           currentResults?.[SearchCategory.TodoList]?.length || 0
         }`,
-        icon: <FactCheckIcon />,
+        icon: <SearchResultIcon searchCategory={SearchCategory.TodoList} />,
         disabled: !currentResults?.[SearchCategory.TodoList]?.length,
       },
       {
@@ -47,7 +45,7 @@ export const SearchTabList = ({
         text: `${t(TranslationKeys.Tasks)} ${
           currentResults?.[SearchCategory.Task]?.length || 0
         }`,
-        icon: <PlayCircleOutlineIcon />,
+        icon: <SearchResultIcon searchCategory={SearchCategory.Task} />,
         disabled: !currentResults?.[SearchCategory.Task]?.length,
       },
     ],

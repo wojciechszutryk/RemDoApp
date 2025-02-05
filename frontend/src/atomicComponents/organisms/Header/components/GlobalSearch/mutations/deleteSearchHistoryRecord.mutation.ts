@@ -11,7 +11,7 @@ import {
 export const useDeleteSearchHistoryRecordMutation = () => {
   const queryClient = useQueryClient();
 
-  const deleteAllSearchHistory = async (recordId: string) => {
+  const deleteSearchHistoryRecord = async (recordId: string) => {
     const url = FRONTIFY_URL(
       URL_SEARCH,
       URL_HISTORY + URL_SINGLE_HISTORY(recordId)
@@ -19,7 +19,7 @@ export const useDeleteSearchHistoryRecordMutation = () => {
     return await apiDelete(url).then((res) => res.data);
   };
 
-  return useMutation(deleteAllSearchHistory, {
+  return useMutation(deleteSearchHistoryRecord, {
     onSuccess: (_, recordId) => {
       queryClient.setQueryData(
         [URL_SEARCH, URL_HISTORY],

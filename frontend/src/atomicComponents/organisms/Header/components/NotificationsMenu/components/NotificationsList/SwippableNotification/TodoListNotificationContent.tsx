@@ -36,7 +36,12 @@ const TodoListNotificationContent = ({
             <span
               onClick={(e) => {
                 if (actionSubject === EventSubject.Reminder) {
-                  navigate(Pages.RemindersPage.path);
+                  navigate(
+                    Pages.RemindersPage.path(
+                      todoList?.id,
+                      task?.notifyDate?.toString()
+                    )
+                  );
                 } else if (todoList?.id) {
                   if (task?.id && todoList?.id)
                     navigate(Pages.TaskPage.path(todoList.id, task.id));

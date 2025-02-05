@@ -31,7 +31,7 @@ export const LoginPanel = ({
 
   useEffect(() => {
     const lastPageFromLS = localStorage.getItem(LAST_PAGE_LS_KEY);
-    if (currentUser) navigate(lastPageFromLS ?? Pages.RemindersPage.path);
+    if (currentUser) navigate(lastPageFromLS ?? Pages.RemindersPage.path());
     else if (isRegistering) navigate(Pages.RegisterPage.path);
     else if (!disableAutoRedirect) navigate(Pages.LoginPage.path);
   }, [currentUser, disableAutoRedirect, isRegistering, navigate]);

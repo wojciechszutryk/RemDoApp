@@ -36,16 +36,14 @@ const LoginPage = ({ showAccountVerifyPanel }: Props): JSX.Element => {
   }, [currentUser, navigate]);
 
   return (
-    <>
-      <LoginPanel
-        defaultEmail={email}
-        setIsRegistering={setIsRegistering}
-        isRegistering={isRegistering}
-        disableAutoRedirect={showAccountVerifyPanel}
-      >
-        {showAccountVerifyPanel && <VerifyAccountPanel />}
-      </LoginPanel>
-    </>
+    <LoginPanel
+      defaultEmail={email}
+      setIsRegistering={setIsRegistering}
+      isRegistering={isRegistering}
+      disableAutoRedirect={showAccountVerifyPanel}
+    >
+      {showAccountVerifyPanel && <VerifyAccountPanel />}
+    </LoginPanel>
   );
 };
 

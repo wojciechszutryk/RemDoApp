@@ -1,7 +1,7 @@
 import { AnimatePresence } from "framer-motion";
 import { TodoListPermissions } from "linked-models/permissions/todoList.permissions.enum";
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
-import useCheckTodoPermissions from "pages/TodoListsPage/hooks/useCheckTodoPermissions";
+import useCheckTodoPermissions from "pages/TodoListsPage/helpers/hooks/useCheckTodoPermissions";
 import { memo } from "react";
 import { useParams } from "react-router-dom";
 import { QUICK_TASK_ID } from "../../CardActions/components/QuickTaskCreateBtn";
@@ -36,32 +36,31 @@ const TasksList = ({
           );
         }
 
+        const canSwipe =
+          checkPermission(
+            TodoListPermissions.CanArchiveTask,
+            todoListId,
+            task.id
+          ) ||
+          (tasksState === "completed" &&
+            checkPermission(
+              TodoListPermissions.CanDeleteTask,
+              todoListId,
+              task.id
+            )) ||
+          (tasksState === "active" &&
+            checkPermission(
+              TodoListPermissions.CanEditTask,
+              todoListId,
+              task.id
+            ));
+
         return (
           <TaskListItem
             key={task.id}
             task={task}
             showHighlight={taskId === task.id}
-            canArchive={checkPermission(
-              TodoListPermissions.CanArchiveTask,
-              todoListId,
-              task.id
-            )}
-            canDelete={
-              tasksState === "completed" &&
-              checkPermission(
-                TodoListPermissions.CanDeleteTask,
-                todoListId,
-                task.id
-              )
-            }
-            canEdit={
-              tasksState === "active" &&
-              checkPermission(
-                TodoListPermissions.CanEditTask,
-                todoListId,
-                task.id
-              )
-            }
+            canSwipe={canSwipe}
           />
         );
       })}

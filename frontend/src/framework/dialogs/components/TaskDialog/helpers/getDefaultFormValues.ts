@@ -14,7 +14,6 @@ import { getReccuranceValues } from "../components/DateForm/RecurranceForm/helpe
 
 export const getDefaultTaskFormValues = <
   T extends ITask & {
-    id: string;
     notifyDate?: Date | null | undefined;
   }
 >(

@@ -19,11 +19,13 @@ import { SearchResultsWrapper, StyledSearchContainerWrapper } from "./styles";
 interface SearchContainerProps {
   getSearchResultQuery: UseQueryResult<ISearchResults, unknown>;
   isSearchPhraseEmpty: boolean;
+  onClose: (event: React.KeyboardEvent | React.MouseEvent) => void;
 }
 
 const SearchResults = ({
   getSearchResultQuery: { data, isFetched },
   isSearchPhraseEmpty,
+  onClose,
 }: SearchContainerProps): JSX.Element | null => {
   const [activeTab, setActiveTab] = useState<SearchCategory>(
     SearchCategory.Reminder
@@ -34,27 +36,41 @@ const SearchResults = ({
 
   const navigate = useNavigate();
 
-  const handleRedirect = (
+  const handleResultClick = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     todoListId?: string,
     taskId?: string,
     isReminder?: boolean,
+    entityData?: string,
     saveToHistory?: boolean
   ) => {
-    debugger;
     if (!todoListId) return;
     let link = "";
 
-    if (isReminder && taskId) {
-      link = Pages.RemindersPage.path;
-    } else if (taskId) link = Pages.TaskPage.path(todoListId, taskId);
+    if (isReminder && taskId)
+      link = Pages.RemindersPage.path(todoListId, entityData);
+    else if (taskId) link = Pages.TaskPage.path(todoListId, taskId);
+    else link = Pages.TodoListPage.path(todoListId);
 
     if (link) {
       navigate(link);
-      if (saveToHistory)
+
+      const shouldSave =
+        saveToHistory &&
+        !getSearchHistoryQuery.data?.some(
+          (item) =>
+            item.searchedTodoListId === todoListId &&
+            item.searchedTaskId == taskId
+        );
+
+      if (shouldSave)
         saveSearchHistoryMutation.mutate({
           searchedTodoListId: todoListId,
+          searchedTaskId: taskId,
         });
     }
+
+    setTimeout(() => onClose(e), 100);
   };
 
   const showNoResultFound =
@@ -88,7 +104,7 @@ const SearchResults = ({
       <SearchResultsWrapper>
         {isSearchPhraseEmpty ? (
           <HistoricalSearchResults
-            handleRedirect={handleRedirect}
+            handleResultClick={handleResultClick}
             searchHistory={getSearchHistoryQuery.data}
           />
         ) : showNoResultFound ? (
@@ -98,7 +114,7 @@ const SearchResults = ({
             <CurrentSearchResults
               activeTab={activeTab}
               currentResults={data}
-              handleRedirect={handleRedirect}
+              handleResultClick={handleResultClick}
             />
           )
         )}

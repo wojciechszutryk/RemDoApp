@@ -28,7 +28,7 @@ export const StyledTodoListCard = styled(Card, {
   shouldForwardProp: (prop) => prop !== "withShakeAnimation",
 })<{
   withShakeAnimation?: boolean;
-}>(({ withShakeAnimation }) => ({
+}>(({ withShakeAnimation, theme }) => ({
   display: "flex",
   flexDirection: "column",
   animation: withShakeAnimation ? "shakeDeg 1s" : "unset",
@@ -40,7 +40,8 @@ export const StyledTodoListCard = styled(Card, {
   animationIterationCount: "infinite",
   boxShadow: "none",
   borderRadius: "20px",
-  backgroundImage: "none",
+  backgroundColor: theme.palette.grey[100],
+  border: `2px solid ${theme.palette.primary.main}`,
 }));
 
 export const StyledDragIcon = styled(DragIndicatorIcon, {
@@ -53,7 +54,7 @@ export const StyledDragIcon = styled(DragIndicatorIcon, {
 
 export const StyledCardHeaderActions = styled("div")({
   display: "flex",
-  marginRight: "4px",
+  margin: "13px 5px 0 0",
 });
 
 export const StyledExpandMore = styled("div", {
@@ -70,5 +71,6 @@ export const StyledCardContent = styled(CardContent, {
   shouldForwardProp: (prop) => prop !== "scrollable",
 })<{ scrollable?: boolean }>(({ scrollable }) => ({
   flexGrow: 1,
+  padding: "0",
   overflowY: scrollable ? "auto" : "unset",
 }));

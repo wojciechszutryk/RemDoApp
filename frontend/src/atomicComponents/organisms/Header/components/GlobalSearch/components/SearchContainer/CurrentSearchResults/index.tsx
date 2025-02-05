@@ -9,10 +9,12 @@ import SearchTabPanel from "../SearchTabPanel";
 interface CurrentSearchResultsProps {
   activeTab: SearchCategory;
   currentResults: ISearchResults;
-  handleRedirect: (
+  handleResultClick: (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
     todoListId?: string,
     taskId?: string,
     isReminder?: boolean,
+    entityDate?: string,
     saveToHistory?: boolean
   ) => void;
 }
@@ -20,7 +22,7 @@ interface CurrentSearchResultsProps {
 const CurrentSearchResults = ({
   activeTab,
   currentResults,
-  handleRedirect,
+  handleResultClick,
 }: CurrentSearchResultsProps): JSX.Element | null => {
   return (
     <>
@@ -30,8 +32,17 @@ const CurrentSearchResults = ({
             key={index}
             icon={<SearchResultIcon searchCategory={SearchCategory.Reminder} />}
             text={result.name}
-            onClick={() =>
-              handleRedirect(result.todoListId, result.taskId, true, true)
+            onClick={(e) =>
+              handleResultClick(
+                e,
+                result.todoListId,
+                result.taskId,
+                true,
+                result.notifyDate?.toString() ||
+                  result.startDate?.toString() ||
+                  result.finishDate?.toString(),
+                true
+              )
             }
           />
         ))}
@@ -42,7 +53,9 @@ const CurrentSearchResults = ({
             key={index}
             icon={<SearchResultIcon searchCategory={SearchCategory.TodoList} />}
             text={result.name}
-            onClick={() => handleRedirect(result.id, undefined, false, true)}
+            onClick={(e) =>
+              handleResultClick(e, result.id, undefined, false, undefined, true)
+            }
           />
         ))}
       </SearchTabPanel>
@@ -52,8 +65,15 @@ const CurrentSearchResults = ({
             key={index}
             icon={<SearchResultIcon searchCategory={SearchCategory.Task} />}
             text={result.text!}
-            onClick={() =>
-              handleRedirect(result.todoListId, result.id, false, true)
+            onClick={(e) =>
+              handleResultClick(
+                e,
+                result.todoListId,
+                result.id,
+                false,
+                undefined,
+                true
+              )
             }
           />
         ))}

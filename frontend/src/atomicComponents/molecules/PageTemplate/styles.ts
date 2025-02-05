@@ -14,6 +14,7 @@ export const StyledPageBackground = styled(StyledWave, {
     "&:before": {
       transition: "bottom 0.5s ease-in-out",
       bottom: contentVisible ? "5%" : "150%",
+      opacity: 0.3,
     },
 
     "&:after": {

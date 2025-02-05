@@ -1,11 +1,11 @@
 import EditIcon from "@mui/icons-material/Edit";
 import { ListItemText } from "@mui/material";
-import { IReminderAttached } from "linked-models/reminder/reminder.model";
-import TaskDetailsList from "pages/SingleTodoListPage/components/TodoListCard/components/CardContent/components/TaskListItem/TaskDetailsList";
+import TaskDetailsList from "atomicComponents/molecules/TodoListCard/CardContent/components/TaskListItem/TaskDetailsList";
 import {
   StyledDetailsColapse,
   StyledListItemIcon,
-} from "pages/SingleTodoListPage/components/TodoListCard/components/CardContent/components/TaskListItem/styles";
+} from "atomicComponents/molecules/TodoListCard/CardContent/components/TaskListItem/styles";
+import { IReminderAttached } from "linked-models/reminder/reminder.model";
 import TodoListIcon from "pages/TodoListsPage/components/TodoListIcon";
 import { memo, useState } from "react";
 import useOnSelectEvent from "../Callendar/hooks/useOnSelectEvent";
@@ -13,9 +13,10 @@ import { StyledRemindersListItem } from "./styles";
 
 interface Props {
   reminder: IReminderAttached;
+  highlight?: boolean;
 }
 
-const CollapsableReminder = ({ reminder }: Props): JSX.Element => {
+const CollapsableReminder = ({ reminder, highlight }: Props): JSX.Element => {
   const [expanded, setExpanded] = useState(false);
   const onSelectEvent = useOnSelectEvent();
 
@@ -37,6 +38,7 @@ const CollapsableReminder = ({ reminder }: Props): JSX.Element => {
 
   return (
     <StyledRemindersListItem
+      highlight={highlight}
       disableGutters
       dense
       disablePadding

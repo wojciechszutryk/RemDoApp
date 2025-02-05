@@ -38,9 +38,9 @@ export const StyledTopSection = styled("div", {
   },
 }));
 
-export const StyledLoginHeader = styled(Typography)(({ theme }) => ({
-  color: theme.palette.primary.contrastText,
-}));
+export const StyledLoginHeader = styled(Typography)({
+  color: "white",
+});
 
 export const StyledIntroWrapper = styled("div")(({ theme }) => ({
   zIndex: 3,

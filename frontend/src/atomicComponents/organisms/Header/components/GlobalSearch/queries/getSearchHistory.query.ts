@@ -4,8 +4,6 @@ import { FRONTIFY_URL } from "framework/asyncInteractions/frontifyRequestUrl.hel
 import { ISearchHistoryRespDto } from "linked-models/search/search.history.dto";
 import { URL_HISTORY, URL_SEARCH } from "linked-models/search/search.urls";
 
-export const SearchHistoryLSKey = "searchHistory";
-
 export const useGetSearchHistoryQuery = (): UseQueryResult<
   ISearchHistoryRespDto[],
   unknown
@@ -19,9 +17,5 @@ export const useGetSearchHistoryQuery = (): UseQueryResult<
   return useQuery([URL_SEARCH, URL_HISTORY], getCurrentSearchResult, {
     cacheTime: 600000,
     staleTime: 600000,
-    initialData: JSON.parse(localStorage.getItem(SearchHistoryLSKey) || "[]"),
-    onSuccess: (data) => {
-      localStorage.setItem(SearchHistoryLSKey, JSON.stringify(data));
-    },
   });
 };

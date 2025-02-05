@@ -1,6 +1,6 @@
 import { IExtendedTaskDto } from "linked-models/task/task.dto";
 import { memo, useState } from "react";
-import { StyledCardContent } from "../../styles";
+import { StyledCardContent } from "../styles";
 import SortableTaskList from "./SortableTaskList";
 import SortableTasksActions from "./SortableTasksActions";
 

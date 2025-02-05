@@ -5,11 +5,12 @@ import { LAST_CALLENDAR_VIEW_LS_KEY } from "pages/RemindersPage/helpers/LS.keys.
 import { CalendarAnimation } from "pages/RemindersPage/helpers/enums";
 import { ICallendarEvent } from "pages/RemindersPage/helpers/models";
 import { useGetUserRemindersForDateRange } from "pages/RemindersPage/queries/getUserRemindersForDateRange.query";
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { Calendar, DateRange, View } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { useSearchParams } from "react-router-dom";
 import CallendarLoader from "../CallendarLoader";
 import CollapsableReminder from "../CollapsableReminder";
 import CallendarEvent from "./components/CalendarEvent";
@@ -27,11 +28,16 @@ Ls.en.weekStart = 1;
 const DnDCalendar = withDragAndDrop<ICallendarEvent>(Calendar);
 
 const BigCallendar = (): JSX.Element => {
+  const [queryParams, setQueryParams] = useSearchParams();
+  const highlightTodoListId = queryParams.get("highlightTodoListId");
+  const initialDate = queryParams.get("initialDate");
+
+  const initDate = initialDate ? new Date(initialDate) : new Date();
   const [dateRange, setDateRange] = useState<DateRange>({
-    start: dayjs().subtract(3, "month").startOf("month").toDate(),
-    end: dayjs().add(3, "month").endOf("month").toDate(),
+    start: dayjs(initDate).subtract(3, "month").startOf("month").toDate(),
+    end: dayjs(initDate).add(3, "month").endOf("month").toDate(),
   });
-  const [date, setDate] = useState<Date>(new Date());
+  const [date, setDate] = useState<Date>(initDate);
   const [view, setView] = useState<View>(
     (localStorage.getItem(LAST_CALLENDAR_VIEW_LS_KEY) as View) || "month"
   );
@@ -48,7 +54,13 @@ const BigCallendar = (): JSX.Element => {
   const onSelectSlot = useOnSelectSlot();
   const onNavigate = useOnNavigate(setContentAnimation);
   const onView = useOnView(setContentAnimation, setView);
-  const onRangeChange = useOnRangeChange(dateRange, setDateRange, setDate);
+  const onRangeChange = useOnRangeChange(
+    dateRange,
+    setDateRange,
+    setDate,
+    () => (highlightTodoListId || initDate) && setQueryParams({})
+  );
+
   const [onTouchStart, onTouchMove, onTouchEnd] = useSwipeHandlers({
     date,
     view,
@@ -64,6 +76,7 @@ const BigCallendar = (): JSX.Element => {
       eventsArr.push({
         ...reminder,
         id: reminder.taskId,
+        highlight: reminder.todoListId === highlightTodoListId,
         title: reminder.name,
         start: new Date(reminder.startDate),
         end: new Date(reminder.finishDate),
@@ -71,7 +84,11 @@ const BigCallendar = (): JSX.Element => {
     });
 
     return eventsArr;
-  }, [getUserRemindersForDateRange.data]);
+  }, [getUserRemindersForDateRange.data, highlightTodoListId]);
+
+  useEffect(() => {
+    if (initialDate) setDate(new Date(initialDate));
+  }, [initialDate]);
 
   return (
     <StyledCallendarWrapper
@@ -88,7 +105,12 @@ const BigCallendar = (): JSX.Element => {
           agenda: {
             event: (a) => {
               if (!a.event) return null;
-              return <CollapsableReminder reminder={a.event} />;
+              return (
+                <CollapsableReminder
+                  reminder={a.event}
+                  highlight={a.event.highlight}
+                />
+              );
             },
           },
           week: {

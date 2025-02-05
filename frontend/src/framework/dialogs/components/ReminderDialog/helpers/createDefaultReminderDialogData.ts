@@ -5,22 +5,21 @@ import { createNotifySelectParams } from "../../TaskDialog/components/NotifyForm
 import { getDefaultTaskFormValues } from "../../TaskDialog/helpers/getDefaultFormValues";
 import { IReminderDialogState } from "../models/reminderDialogState.model";
 
-const useCreateDefaultReminderDialogData = (
+const createDefaultReminderDialogData = (
   defaultData?: Partial<IReminderDialogState>,
   editReminderData?: IReminderDialogState
 ) => {
-  const taskData = editReminderData?.taskId
-    ? getDefaultTaskFormValues({
-        ...editReminderData,
-        id: editReminderData?.taskId,
-      })
-    : null;
+  const taskData = getDefaultTaskFormValues({
+    ...defaultData,
+    ...editReminderData,
+    id: editReminderData?.taskId,
+  });
 
   const defaultStartDate =
     defaultData?.startDate ?? editReminderData?.startDate;
   const notifyDateFromArgs =
     defaultData?.notifyDate ?? editReminderData?.notifyDate;
-  // if notifyDate wasn't passed, we set it to 15 mins before startDate as default
+  // if notifyDate wasn't provided, it is set to 15 mins before startDate as default
   const defaultNotifyDate = notifyDateFromArgs
     ? new Date(notifyDateFromArgs)
     : defaultStartDate
@@ -67,4 +66,4 @@ const useCreateDefaultReminderDialogData = (
   };
 };
 
-export default useCreateDefaultReminderDialogData;
+export default createDefaultReminderDialogData;

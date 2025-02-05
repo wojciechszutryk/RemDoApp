@@ -18,6 +18,12 @@ export const StyledContentWrapper = styled("div")(({ theme }) => ({
     minHeight: "fit-content",
     animation: "borderWave 5s ease-in-out infinite",
   },
+
+  // override separator styles
+  "& button+div > div": {
+    color: "white !important",
+    borderColor: "white !important",
+  },
 }));
 
 export const StyledOuterWave = styled(StyledContentWrapper)({

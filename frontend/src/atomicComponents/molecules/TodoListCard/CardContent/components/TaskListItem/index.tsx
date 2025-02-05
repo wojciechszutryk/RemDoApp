@@ -17,17 +17,13 @@ import { StyledCancelExitTaskText } from "./styles";
 
 interface Props {
   task: IExtendedTaskDto;
-  canArchive?: boolean;
-  canDelete?: boolean;
-  canEdit?: boolean;
+  canSwipe?: boolean;
   showHighlight?: boolean;
 }
 
 const TaskListItem = ({
   task,
-  canArchive,
-  canEdit,
-  canDelete,
+  canSwipe,
   showHighlight,
 }: Props): JSX.Element => {
   const isTaskCompleted = !!task.completionDate;
@@ -36,11 +32,9 @@ const TaskListItem = ({
   const { t } = useTranslation();
   const { dialogsActions } = useDialogs();
 
-  const isSwippable = canArchive || canDelete || canEdit;
-
   const theme = useTheme();
 
-  if (!isSwippable) {
+  if (!canSwipe) {
     return <TaskItemContent task={task} showHighlight={showHighlight} />;
   }
 
@@ -48,8 +42,8 @@ const TaskListItem = ({
     <SwippableItem
       defaultColor={
         isTaskCompleted
-          ? theme.palette.background.paper
-          : theme.palette.info.main
+          ? theme.palette.info.main
+          : theme.palette.background.paper
       }
       rightShift={{
         color: isTaskCompleted
