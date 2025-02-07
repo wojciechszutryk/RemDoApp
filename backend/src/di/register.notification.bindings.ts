@@ -6,6 +6,7 @@ import {
   PushSubscriptionCollectionName,
   getPushSubscriptionCollection,
 } from "dbSchemas/pushSubscription.schema";
+import { ScheduledNotificationCollectionName, getScheduledNotificationCollection } from "dbSchemas/schedultedNotification.schema";
 import {
   UserNotificationCollectionName,
   getUserNotificationCollection,
@@ -16,6 +17,7 @@ import { NotificationService } from "services/notification/notification.service"
 import { NotifyService } from "services/notification/notify.service";
 import { PushNotificationService } from "services/notification/push.notification.service";
 import { ScheduleNotificationService } from "services/notification/schedule.notification.service";
+import { ScheduledNotificationService } from "services/notification/scheduled.notification.service";
 
 export const registerNotificationBindings = (container: Container) => {
   container
@@ -33,5 +35,9 @@ export const registerNotificationBindings = (container: Container) => {
     .toDynamicValue(() => getPushSubscriptionCollection());
 
   container.bind(ScheduleNotificationService).toSelf();
+  container.bind(ScheduledNotificationService).toSelf();
+  container
+    .bind(ScheduledNotificationCollectionName)
+    .toDynamicValue(() => getScheduledNotificationCollection());
   container.bind(NotifyService).toSelf();
 };
