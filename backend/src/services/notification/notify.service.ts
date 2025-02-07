@@ -21,7 +21,6 @@ import {
 } from "linked-models/user/user.model";
 import { URL_USER } from "linked-models/user/user.urls";
 import { INotificationsTexts } from "models/notification.text.model";
-import { RRule } from "rrule";
 import { UserService } from "services/user/user.service";
 import { EmailNotificationService } from "./email.notification.service";
 import { NotificationService } from "./notification.service";
@@ -57,7 +56,7 @@ export class NotifyService {
     private readonly userService: UserService
   ) {}
 
-  private getUsersToNotiftByPreference(
+  private getUsersToNotifyByPreference(
     users: IUserAttached[],
     preferenceScope: EventName,
     preference: NotificationPreference
@@ -373,7 +372,7 @@ export class NotifyService {
     );
 
     /** SOCKET START */
-    const usersToNotifyBySocket = this.getUsersToNotiftByPreference(
+    const usersToNotifyBySocket = this.getUsersToNotifyByPreference(
       usersToNotify,
       eventName,
       NotificationPreference.SOCKET
@@ -398,7 +397,7 @@ export class NotifyService {
     const notificationLink = this.createNotificationLink(eventName, payload);
 
     /** PUSH START */
-    const usersToNotifyByPush = this.getUsersToNotiftByPreference(
+    const usersToNotifyByPush = this.getUsersToNotifyByPreference(
       usersToNotify,
       eventName,
       NotificationPreference.PUSH
@@ -412,7 +411,7 @@ export class NotifyService {
     /** PUSH END */
 
     /** EMAIL START */
-    const usersToNotifyByEmail = this.getUsersToNotiftByPreference(
+    const usersToNotifyByEmail = this.getUsersToNotifyByPreference(
       usersToNotify,
       eventName,
       NotificationPreference.EMAIL
