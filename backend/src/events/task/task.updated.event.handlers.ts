@@ -78,6 +78,11 @@ export class TaskUpdatedEventHandler
       todoListMembers.map((u) => u.id)
     );
 
+    //cancel scheduled notification (in case it extisted when task was updated/created before)
+    this.scheduleNotificationService.cancelScheduledNotification(
+      eventCreator.id,
+      updatedTask.id
+    );
     //schedule notification for user
     if (updatedTask.notifyDate) {
       this.scheduleNotificationService.scheduleNotification(
@@ -100,11 +105,6 @@ export class TaskUpdatedEventHandler
             true
           );
         }
-      );
-    } else {
-      this.scheduleNotificationService.cancelScheduledNotification(
-        eventCreator.id,
-        updatedTask.id
       );
     }
   }

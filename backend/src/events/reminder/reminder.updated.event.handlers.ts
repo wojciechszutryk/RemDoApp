@@ -62,6 +62,11 @@ export class ReminderUpdatedEventHandler
       }
     );
 
+    //cancel scheduled notification (in case it extisted when reminder was updated/created before)
+    this.scheduleNotificationService.cancelScheduledNotification(
+      eventCreator.id,
+      `${updatedReminder.todoListId}-${updatedReminder.taskId}`
+    );
     //schedule notification for user
     if (updatedReminder.notifyDate) {
       this.scheduleNotificationService.scheduleNotification(
@@ -85,11 +90,6 @@ export class ReminderUpdatedEventHandler
             true
           );
         }
-      );
-    } else {
-      this.scheduleNotificationService.cancelScheduledNotification(
-        eventCreator.id,
-        `${updatedReminder.todoListId}-${updatedReminder.taskId}`
       );
     }
   }
