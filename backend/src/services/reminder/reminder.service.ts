@@ -67,6 +67,7 @@ export class ReminderService {
       todoListId: todoList.id,
       taskId: task.id,
       icon: todoList.icon,
+      notifyDate: task.notifyDate,
     };
   }
 
@@ -222,13 +223,12 @@ export class ReminderService {
     const isReminder = reminderData.todoListId === ReminderTodoListId;
     let todoList: ITodoListWithMembersDto | undefined;
     if (isReminder) {
-      const newTodoListToCreate: ITodoList = {
-        name: reminderData.name,
-        icon: reminderData.icon,
-        isReminder,
-      };
       todoList = await this.todoListService.createTodoList(
-        newTodoListToCreate,
+        {
+          name: reminderData.name,
+          icon: reminderData.icon,
+          isReminder,
+        },
         creator.id,
         true,
         false
@@ -245,6 +245,7 @@ export class ReminderService {
       text: reminderData.text,
       startDate: reminderData.startDate,
       finishDate: reminderData.finishDate,
+      notifyDate: reminderData.notifyDate,
     };
 
     const newTask = await this.taskService.createTaskInTodoList(
@@ -377,6 +378,7 @@ export class ReminderService {
       "startDate",
       "startDate",
       "finishDate",
+      "notifyDate",
     ];
 
     const taskDataToEdit = extractPropertiesToUpdate(
