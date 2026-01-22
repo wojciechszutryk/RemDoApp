@@ -1,7 +1,6 @@
 import PageTemplate from "atomicComponents/molecules/PageTemplate";
 import { RequireAuthPageWrapper } from "atomicComponents/organisms/RequireAuthPageWrapper";
 import { RequireShareTokenWrapper } from "atomicComponents/organisms/RequireShareTokenWrapper";
-import useNotificationSocket from "framework/notifications/useNotificationSocket";
 
 import { Pages } from "framework/routing/pages";
 import "framework/translations/i18.config/resources";
@@ -29,7 +28,8 @@ const App = (): JSX.Element => {
     document.title = title;
   }, []);
 
-  useNotificationSocket();
+  // Temporarly turned off notifications
+  // useNotificationSocket();
 
   return (
     <>

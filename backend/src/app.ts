@@ -65,7 +65,9 @@ container.load(buildProviderModule());
 const app = server.build();
 const httpServer = createServer(app);
 const socketService = new SocketNotificationService(httpServer);
-container.bind(SocketNotificationService).toConstantValue(socketService);
+
+// Temporarly turned off notifications
+// container.bind(SocketNotificationService).toConstantValue(socketService);
 
 const connectToMongo = () => {
   mongoose.set("strictQuery", false);
