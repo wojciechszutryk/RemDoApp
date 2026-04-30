@@ -14,7 +14,6 @@ import { InversifyExpressServer } from "inversify-express-utils";
 import { SessionAge } from "linked-models/user/auth.consts";
 import mongoose from "mongoose";
 import passport from "passport";
-import { SocketNotificationService } from "services/notification/socket.notification.service";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config();
@@ -64,9 +63,9 @@ server.setConfig((app) => {
 container.load(buildProviderModule());
 const app = server.build();
 const httpServer = createServer(app);
-const socketService = new SocketNotificationService(httpServer);
 
 // Temporarly turned off notifications
+// const socketService = new SocketNotificationService(httpServer);
 // container.bind(SocketNotificationService).toConstantValue(socketService);
 
 const connectToMongo = () => {

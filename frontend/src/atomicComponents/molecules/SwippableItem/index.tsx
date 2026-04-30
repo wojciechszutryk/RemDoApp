@@ -7,6 +7,7 @@ import {
 import { memo, useState } from "react";
 import LeftShiftContent from "./LeftShiftContent";
 import RightShiftContent from "./RightShiftContent";
+import RightShiftFullContent from "./RightShiftFullContent";
 import { SwippableItemContextProvider } from "./context";
 import useOnDragEnd from "./onDragEnd.helper";
 import { listItemAnimations } from "./styles";
@@ -19,15 +20,19 @@ interface SideShiftProps {
 
 interface SwippableItemProps {
   defaultColor?: string;
+  rightShiftFull?: SideShiftProps;
   rightShift?: SideShiftProps;
   leftShift?: SideShiftProps;
+  leftShiftFull?: SideShiftProps;
   children: JSX.Element;
 }
 
 const SwippableItem = ({
   defaultColor,
   rightShift,
+  rightShiftFull,
   leftShift,
+  leftShiftFull,
   children,
 }: SwippableItemProps): JSX.Element => {
   const [isPresent, safeToRemove] = usePresence();
@@ -41,7 +46,9 @@ const SwippableItem = ({
     setDragStartPosition,
     safeToRemove,
     leftShiftAction: leftShift?.action,
+    leftShiftFullAction: leftShiftFull?.action,
     rightShiftAction: rightShift?.action,
+    rightShiftFullAction: rightShiftFull?.action,
   });
 
   const background = useTransform(
@@ -69,7 +76,16 @@ const SwippableItem = ({
         }}
       >
         <RightShiftContent x={x} RightShiftIcon={rightShift?.Icon} />
+        {rightShiftFull && (
+          <RightShiftFullContent
+            x={x}
+            RightShiftFullIcon={rightShiftFull?.Icon}
+          />
+        )}
         <LeftShiftContent x={x} LeftShiftIcon={leftShift?.Icon} />
+        {/* {leftShiftFull && ( */}
+        {/* // <RightShiftFullContent x={x} RightShiftIcon={leftShiftFull?.Icon} /> */}
+        {/* )} */}
         <motion.div
           drag={"x"}
           style={{ x }}

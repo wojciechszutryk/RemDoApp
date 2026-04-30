@@ -92,6 +92,20 @@ const TaskListItem = ({
           );
         },
       }}
+      rightShiftFull={
+        !isTaskCompleted
+          ? {
+              color: theme.palette.warning.main,
+              Icon: <DeleteIcon />,
+              action: () =>
+                dialogsActions.updateDeleteTaskDialog({
+                  visible: true,
+                  taskId: task.id,
+                  todoListId: task.todoListId,
+                }),
+            }
+          : undefined
+      }
       leftShift={{
         color: isTaskCompleted
           ? theme.palette.warning.main

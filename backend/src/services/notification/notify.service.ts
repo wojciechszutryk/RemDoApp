@@ -25,7 +25,6 @@ import { UserService } from "services/user/user.service";
 import { EmailNotificationService } from "./email.notification.service";
 import { NotificationService } from "./notification.service";
 import { PushNotificationService } from "./push.notification.service";
-import { SocketNotificationService } from "./socket.notification.service";
 
 /**
  * for collaboration - IUserPublicDataDTO
@@ -46,8 +45,9 @@ export class NotifyService {
   constructor(
     @inject(NotificationService)
     private readonly notificationService: NotificationService,
-    @inject(SocketNotificationService)
-    private readonly socketNotificationService: SocketNotificationService,
+    // Temporarly turned off notifications
+    // @inject(SocketNotificationService)
+    // private readonly socketNotificationService: SocketNotificationService,
     @inject(EmailNotificationService)
     private readonly emailNotificationService: EmailNotificationService,
     @inject(PushNotificationService)
@@ -372,26 +372,27 @@ export class NotifyService {
     );
 
     /** SOCKET START */
-    const usersToNotifyBySocket = this.getUsersToNotifyByPreference(
-      usersToNotify,
-      eventName,
-      NotificationPreference.SOCKET
-    );
-    const notificationsToSendBySocket = createdNotifications
-      .filter((n) => usersToNotifyBySocket.some((u) => u.id === n.userId))
-      .map((n) =>
-        //we handle all subevents (TaskRescheduled, etc.) on client side as TaskUpdated
-        ({
-          ...n,
-          action: EventName.TaskUpdated,
-        })
-      );
-    this.socketNotificationService.notifyUsers(
-      notificationsToSendBySocket,
-      payload,
-      notificationTexts,
-      usersToNotifyBySocket
-    );
+    // Temporarly turned off notifications
+    // const usersToNotifyBySocket = this.getUsersToNotifyByPreference(
+    //   usersToNotify,
+    //   eventName,
+    //   NotificationPreference.SOCKET
+    // );
+    // const notificationsToSendBySocket = createdNotifications
+    //   .filter((n) => usersToNotifyBySocket.some((u) => u.id === n.userId))
+    //   .map((n) =>
+    //     //we handle all subevents (TaskRescheduled, etc.) on client side as TaskUpdated
+    //     ({
+    //       ...n,
+    //       action: EventName.TaskUpdated,
+    //     })
+    //   );
+    // this.socketNotificationService.notifyUsers(
+    //   notificationsToSendBySocket,
+    //   payload,
+    //   notificationTexts,
+    //   usersToNotifyBySocket
+    // );
     /** SOCKET END */
 
     const notificationLink = this.createNotificationLink(eventName, payload);
